@@ -255,9 +255,9 @@ export const gentlePulseVariant: Variants = {
   animate: {
     scale: [1, 1.025, 1],
     boxShadow: [
-      '0 0 15px rgba(201, 160, 99, 0.2)',
-      '0 0 30px rgba(223, 186, 127, 0.45)',
-      '0 0 15px rgba(201, 160, 99, 0.2)',
+      '0 0 12px rgba(0, 0, 0, 0.08)',
+      '0 0 22px rgba(0, 0, 0, 0.16)',
+      '0 0 12px rgba(0, 0, 0, 0.08)',
     ],
     transition: {
       duration: 2.2,
@@ -269,16 +269,12 @@ export const gentlePulseVariant: Variants = {
 
 /**
  * 8. BREATHING CRESCENT MOON
- * Scale 0.9 to 1.1, 2s loop in gold
+ * Scale 0.9 to 1.1, 2s loop
  */
 export const breathingCrescentVariant: Variants = {
   animate: {
-    scale: [0.9, 1.1, 0.9],
-    filter: [
-      'drop-shadow(0 0 6px rgba(201, 160, 99, 0.35))',
-      'drop-shadow(0 0 18px rgba(223, 186, 127, 0.75))',
-      'drop-shadow(0 0 6px rgba(201, 160, 99, 0.35))',
-    ],
+    scale: [0.92, 1.08, 0.92],
+    opacity: [0.75, 1, 0.75],
     transition: {
       duration: 2.0,
       repeat: Infinity,

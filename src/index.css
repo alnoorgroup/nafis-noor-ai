@@ -1,12 +1,16 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
   :root {
-    --bg-light: #F8F6F0;
-    --bg-dark: #080A0E;
-    --gold-primary: #C9A063;
-    --gold-bright: #DFBA7F;
-    --gold-deep: #A67C38;
+    --bg-light: #FCFCFA;
+    --bg-dark: #0B0C0E;
+    --ink-primary: #111214;
+    --ink-muted: #6B6F76;
+    --surface-light: #FFFFFF;
+    --surface-subtle-light: #F3F3F1;
+    --surface-dark: #14161A;
+    --surface-subtle-dark: #1C1E24;
     --sat: env(safe-area-inset-top, 0px);
     --sab: env(safe-area-inset-bottom, 0px);
     --sal: env(safe-area-inset-left, 0px);
@@ -33,7 +37,7 @@
     padding: 0;
     overflow-x: hidden;
     font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
-    transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     padding-top: env(safe-area-inset-top, 0px);
     padding-left: env(safe-area-inset-left, 0px);
     padding-right: env(safe-area-inset-right, 0px);
@@ -74,161 +78,168 @@
 }
 
 /* ========================================================================= */
-/* LIQUID GLASS DESIGN SYSTEM (IOS SAFARI HARDWARE-OPTIMIZED)                 */
+/* NOOR AI UNIFIED MINIMALIST SURFACE SYSTEM (LIGHT & DARK)                  */
 /* ========================================================================= */
 
-/* Primary Panels - Core Main Panels (Optimized solid/translucent for iOS) */
+/* Primary Panels */
+.liquid-glass,
 .liquid-glass-primary-dark {
-  background: rgba(13, 17, 24, 0.94);
-  border: 1px solid rgba(201, 160, 99, 0.22);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  background: #14161A;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
 }
 
+.liquid-glass-light,
 .liquid-glass-primary-light {
-  background: rgba(255, 255, 255, 0.96);
-  border: 1px solid rgba(190, 150, 85, 0.28);
-  box-shadow: 0 2px 8px rgba(45, 35, 20, 0.06);
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 /* Secondary Panels - Sub-cards & Nested sections */
 .liquid-glass-secondary-dark {
-  background: rgba(19, 25, 35, 0.92);
-  border: 1px solid rgba(201, 160, 99, 0.16);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  background: #1B1D23;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
 .liquid-glass-secondary-light {
-  background: rgba(248, 246, 240, 0.96);
-  border: 1px solid rgba(190, 150, 85, 0.2);
-  box-shadow: 0 2px 8px rgba(45, 35, 20, 0.05);
+  background: #F3F3F1;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
-/* Feature Hero Card - Prayer, Qur'an, Noor AI */
+/* Feature Hero Card */
 .liquid-glass-hero-dark {
-  background: radial-gradient(130% 130% at 50% 0%, rgba(201, 160, 99, 0.15) 0%, rgba(13, 17, 24, 0.96) 55%, rgba(8, 10, 14, 0.98) 100%);
-  border: 1px solid rgba(223, 186, 127, 0.32);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(180deg, #181A20 0%, #121418 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
 .liquid-glass-hero-light {
-  background: radial-gradient(120% 120% at 50% 0%, rgba(255, 248, 235, 0.98) 0%, rgba(255, 255, 255, 0.96) 60%, rgba(248, 245, 238, 0.98) 100%);
-  border: 1px solid rgba(190, 150, 85, 0.35);
-  box-shadow: 0 2px 8px rgba(45, 35, 20, 0.06);
+  background: linear-gradient(180deg, #FFFFFF 0%, #F7F7F5 100%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-/* Radiant Glass Orb - Noor AI Avatar & Hero Emblems */
+/* Radiant Minimalist Orb - Noor AI Avatar & Hero Emblems */
 .liquid-glass-orb {
-  background: radial-gradient(circle at 35% 30%, rgba(223, 186, 127, 0.55) 0%, rgba(201, 160, 99, 0.3) 45%, rgba(13, 17, 24, 0.95) 100%);
-  border: 1.5px solid rgba(223, 186, 127, 0.55);
-  box-shadow: 0 2px 8px rgba(201, 160, 99, 0.2);
+  background: #FFFFFF;
+  color: #111214;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
 }
 
 .liquid-glass-orb-light {
-  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.98) 0%, rgba(223, 186, 127, 0.45) 50%, rgba(190, 150, 85, 0.3) 100%);
-  border: 1.5px solid rgba(190, 150, 85, 0.45);
-  box-shadow: 0 2px 8px rgba(190, 150, 85, 0.15);
+  background: #111214;
+  color: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
-/* Floating Navigation Bar - Blur preserved as requested */
+/* Floating Navigation Bar */
 .liquid-glass-floating-nav-dark {
-  background: rgba(11, 15, 22, 0.94);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(201, 160, 99, 0.25);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  background: rgba(17, 18, 22, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
 }
 
 .liquid-glass-floating-nav-light {
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(190, 150, 85, 0.32);
-  box-shadow: 0 2px 8px rgba(45, 35, 20, 0.08);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
-/* Modal Dialog Overlay - Blur preserved as requested */
+/* Modal Dialog Overlay */
 .liquid-glass-modal-dark {
-  background: rgba(11, 14, 20, 0.96);
+  background: #14161A;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(201, 160, 99, 0.3);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
 }
 
 .liquid-glass-modal-light {
-  background: rgba(255, 255, 255, 0.98);
+  background: #FFFFFF;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(190, 150, 85, 0.35);
-  box-shadow: 0 2px 8px rgba(45, 35, 20, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
 }
 
-/* Glass Inputs - Fast rendering without filter */
+/* Inputs */
 .liquid-glass-input-dark {
-  background: rgba(15, 20, 28, 0.92);
-  border: 1px solid rgba(201, 160, 99, 0.25);
-  color: #F5EFE6;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+  background: #1A1C22;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #F3F4F6;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .liquid-glass-input-dark:focus {
-  border-color: #DFBA7F;
-  box-shadow: 0 0 0 1px rgba(223, 186, 127, 0.3);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15);
 }
 
 .liquid-glass-input-light {
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(190, 150, 85, 0.32);
-  color: #1F1E1B;
-  box-shadow: inset 0 1px 2px rgba(45, 35, 20, 0.05);
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #111214;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
 .liquid-glass-input-light:focus {
-  border-color: #A67C38;
-  box-shadow: 0 0 0 1px rgba(166, 124, 56, 0.25);
+  border-color: #111214;
+  box-shadow: 0 0 0 1px rgba(17, 18, 20, 0.12);
 }
 
-/* Gradients & Accents */
+/* Monochrome Accent Utilities (Preserving legacy helper names cleanly without gold) */
+/* Opulent Gold Gradient & Accent Utilities */
 .bg-gold-gradient {
-  background: linear-gradient(135deg, #C9A063 0%, #DFBA7F 50%, #B88E4F 100%);
+  background: linear-gradient(135deg, #DFBA7F 0%, #C9A063 50%, #9E7432 100%);
+  color: #080A0E;
+}
+
+.dark .bg-gold-gradient {
+  background: linear-gradient(135deg, #FFF5E1 0%, #DFBA7F 50%, #C9A063 100%);
+  color: #080A0E;
 }
 
 .bg-gold-gradient-subtle-dark {
-  background: linear-gradient(135deg, rgba(201, 160, 99, 0.16) 0%, rgba(223, 186, 127, 0.08) 100%);
+  background: rgba(223, 186, 127, 0.15);
 }
 
 .bg-gold-gradient-subtle-light {
-  background: linear-gradient(135deg, rgba(201, 160, 99, 0.12) 0%, rgba(223, 186, 127, 0.05) 100%);
+  background: rgba(201, 160, 99, 0.12);
 }
 
 .text-gold-gradient {
-  background: linear-gradient(135deg, #DFBA7F 0%, #C9A063 60%, #EAD5AE 100%);
+  background: linear-gradient(135deg, #FFF5E1 0%, #DFBA7F 50%, #C9A063 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .text-gold-gradient-light {
-  background: linear-gradient(135deg, #8E6527 0%, #A67C38 60%, #6E4D1B 100%);
+  background: linear-gradient(135deg, #A6782E 0%, #845D1C 50%, #5E3E0C 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* Subtle Islamic Star Lattice Geometry */
+/* Subtle Geometric Dot Grid (Neutral Ink) */
 .islamic-pattern {
-  background-image: radial-gradient(rgba(201, 160, 99, 0.1) 1.2px, transparent 1.2px),
-    radial-gradient(rgba(223, 186, 127, 0.06) 1.2px, transparent 1.2px);
-  background-size: 36px 36px;
-  background-position: 0 0, 18px 18px;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 32px 32px;
 }
 
 .islamic-pattern-light {
-  background-image: radial-gradient(rgba(190, 150, 85, 0.12) 1.2px, transparent 1.2px),
-    radial-gradient(rgba(166, 124, 56, 0.06) 1.2px, transparent 1.2px);
-  background-size: 36px 36px;
-  background-position: 0 0, 18px 18px;
+  background-image: radial-gradient(rgba(17, 18, 20, 0.045) 1px, transparent 1px);
+  background-size: 32px 32px;
 }
 
-/* Animation utilities - Simplified to single transition and 200ms duration for iOS */
+/* Animation utilities */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -333,13 +344,13 @@
   text-align: start;
 }
 
-/* Streak Pulse and Glow Micro-interactions - Simplified to single property for iOS 60fps smoothness */
+/* Streak Pulse and Glow Micro-interactions */
 @keyframes streakPulseGlow {
   0%, 100% {
-    box-shadow: 0 2px 8px rgba(223, 186, 127, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
   }
   50% {
-    box-shadow: 0 2px 8px rgba(223, 186, 127, 0.5);
+    box-shadow: 0 2px 14px rgba(17, 18, 20, 0.22);
   }
 }
 
@@ -375,14 +386,14 @@
   will-change: transform;
 }
 
-/* Pure CSS Star Particles - Maximum 30 particles, zero JavaScript */
+/* Pure CSS Ambient Particles (Subtle Monochrome) */
 @keyframes starTwinkle {
   0%, 100% {
-    opacity: 0.15;
+    opacity: 0.1;
     transform: scale(0.9);
   }
   50% {
-    opacity: 0.65;
+    opacity: 0.4;
     transform: scale(1);
   }
 }
@@ -390,17 +401,22 @@
 .star-particle {
   position: absolute;
   border-radius: 9999px;
-  background-color: #DFBA7F;
+  background-color: rgba(255, 255, 255, 0.35);
   pointer-events: none;
-  animation: starTwinkle 3s ease-in-out infinite;
+  animation: starTwinkle 3.5s ease-in-out infinite;
   will-change: transform, opacity;
 }
 
+html:not(.dark) .star-particle {
+  background-color: rgba(17, 18, 20, 0.14);
+  opacity: 0.18;
+}
+
 /* ========================================================================= */
-/* FRAMER MOTION & CSS ANIMATION SYSTEM (CALM, PREMIUM, INTENTIONAL)        */
+/* FRAMER MOTION & CSS ANIMATION SYSTEM (CALM, MINIMALIST)                   */
 /* ========================================================================= */
 
-/* 5. Quran Verse Highlighting: Right-to-Left Gold Sweep over 300ms */
+/* Quran Verse Highlighting: Right-to-Left Subtle Ink Sweep over 300ms */
 @keyframes verseHighlightRTL {
   0% {
     background-size: 0% 100%;
@@ -413,10 +429,14 @@
 }
 
 .verse-highlight-rtl {
-  background-image: linear-gradient(to left, rgba(201, 160, 99, 0.25), rgba(223, 186, 127, 0.35));
+  background-image: linear-gradient(to left, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.14));
   background-repeat: no-repeat;
   background-position: 100% 50%;
   animation: verseHighlightRTL 300ms cubic-bezier(0.32, 0.72, 0, 1) forwards;
+}
+
+html:not(.dark) .verse-highlight-rtl {
+  background-image: linear-gradient(to left, rgba(17, 18, 20, 0.06), rgba(17, 18, 20, 0.1));
 }
 
 /* Previous Highlights Trail: 30% Opacity */
@@ -447,13 +467,13 @@
   left: 0;
   width: 60%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(223, 186, 127, 0.16), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
   transform: skewX(-20deg);
   animation: verseShimmer 2.4s infinite cubic-bezier(0.32, 0.72, 0, 1);
   pointer-events: none;
 }
 
-/* 6. Micro-interactions */
+/* Micro-interactions */
 .btn-press-bounce {
   transition: transform 100ms cubic-bezier(0.32, 0.72, 0, 1);
 }
@@ -462,11 +482,11 @@
 }
 
 .card-hover-lift {
-  transition: transform 400ms cubic-bezier(0.32, 0.72, 0, 1), box-shadow 400ms cubic-bezier(0.32, 0.72, 0, 1);
+  transition: transform 300ms cubic-bezier(0.32, 0.72, 0, 1), box-shadow 300ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 .card-hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 28px -6px rgba(201, 160, 99, 0.25), 0 8px 14px -4px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.12);
 }
 
 /* Liquid Wave Fill for Progress Bars */
@@ -483,9 +503,14 @@
 }
 
 .liquid-wave-bar {
-  background: linear-gradient(90deg, #8E6527 0%, #C9A063 25%, #DFBA7F 50%, #C9A063 75%, #8E6527 100%);
+  background: linear-gradient(90deg, #111214 0%, #3F4248 50%, #111214 100%);
   background-size: 200% 200%;
   animation: liquidWave 3.2s ease infinite;
+}
+
+.dark .liquid-wave-bar {
+  background: linear-gradient(90deg, #D1D5DB 0%, #FFFFFF 50%, #D1D5DB 100%);
+  background-size: 200% 200%;
 }
 
 /* SVG Checkmark Stroke Draw */
@@ -504,15 +529,15 @@
   animation: checkmarkDraw 400ms cubic-bezier(0.32, 0.72, 0, 1) forwards;
 }
 
-/* 4. Pulsing Gold Aura for Unlocked Button */
+/* Pulsing Subtle Aura for Unlocked Button */
 @keyframes goldAuraPulse {
   0%, 100% {
-    box-shadow: 0 0 16px rgba(201, 160, 99, 0.35), 0 0 32px rgba(223, 186, 127, 0.2);
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.12);
     transform: scale(1);
   }
   50% {
-    box-shadow: 0 0 30px rgba(223, 186, 127, 0.75), 0 0 55px rgba(201, 160, 99, 0.45);
-    transform: scale(1.018);
+    box-shadow: 0 0 22px rgba(0, 0, 0, 0.22);
+    transform: scale(1.015);
   }
 }
 
@@ -520,15 +545,15 @@
   animation: goldAuraPulse 1.8s ease-in-out infinite;
 }
 
-/* 8. Breathing Crescent Moon in Gold (scale 0.9 to 1.1, 2s loop) */
+/* Breathing Crescent Moon */
 @keyframes crescentBreathe {
   0%, 100% {
-    transform: scale(0.9);
-    filter: drop-shadow(0 0 6px rgba(201, 160, 99, 0.4));
+    transform: scale(0.92);
+    opacity: 0.75;
   }
   50% {
-    transform: scale(1.1);
-    filter: drop-shadow(0 0 22px rgba(223, 186, 127, 0.8));
+    transform: scale(1.08);
+    opacity: 1;
   }
 }
 
@@ -548,39 +573,36 @@
 }
 
 .skeleton-pulse {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 25%, rgba(223, 186, 127, 0.12) 50%, rgba(255, 255, 255, 0.04) 75%);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.04) 25%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.04) 75%);
   background-size: 200% 100%;
   animation: flowingGradient 1.8s ease-in-out infinite;
 }
 
 .skeleton-pulse-light {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.04) 25%, rgba(201, 160, 99, 0.14) 50%, rgba(0, 0, 0, 0.04) 75%);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.04) 25%, rgba(0, 0, 0, 0.08) 50%, rgba(0, 0, 0, 0.04) 75%);
   background-size: 200% 100%;
   animation: flowingGradient 1.8s ease-in-out infinite;
 }
 
-/* PEAK CELESTIAL PULSING ANIMATION (WORLD-CLASS BREATHING GOLDEN AURA) */
 @keyframes peakPulseCelestial {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 0 15px rgba(201, 160, 99, 0.35), 0 0 30px rgba(223, 186, 127, 0.2), inset 0 0 12px rgba(255, 235, 180, 0.25);
-    filter: drop-shadow(0 0 8px rgba(201, 160, 99, 0.4));
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
   }
   50% {
-    transform: scale(1.035);
-    box-shadow: 0 0 35px rgba(223, 186, 127, 0.8), 0 0 70px rgba(201, 160, 99, 0.5), inset 0 0 24px rgba(255, 245, 210, 0.6);
-    filter: drop-shadow(0 0 24px rgba(223, 186, 127, 0.85));
+    transform: scale(1.03);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
   }
 }
 
 @keyframes peakRadiantRings {
   0% {
     transform: scale(0.85);
-    opacity: 0.9;
+    opacity: 0.7;
   }
   50% {
     transform: scale(1.22);
-    opacity: 0.45;
+    opacity: 0.35;
   }
   100% {
     transform: scale(1.45);
@@ -605,4 +627,3 @@
     scroll-behavior: auto !important;
   }
 }
-

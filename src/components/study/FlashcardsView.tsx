@@ -193,11 +193,11 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
       {/* Top Deck Management Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold flex items-center gap-2">
-            <Layers className="w-5 h-5 text-[#DFBA7F]" />
+          <h2 className={`text-xl font-bold flex items-center gap-2 ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
+            <Layers className={`w-5 h-5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
             <span>Flashcards</span>
           </h2>
-          <p className="text-xs text-stone-400 mt-0.5">
+          <p className={`text-xs mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
             Spaced repetition mastery for {selectedSubject.name}{' '}
             {selectedTopic ? `• ${selectedTopic.name}` : ''}
           </p>
@@ -209,8 +209,8 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
             onClick={() => setShowAddModal(true)}
             className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold border transition-all ${
               isDark
-                ? 'border-white/10 hover:border-white/20 text-stone-200 bg-[#121724]'
-                : 'border-stone-300 hover:border-stone-400 text-stone-800 bg-white shadow-xs'
+                ? 'border-white/[0.08] hover:bg-white/[0.08] text-stone-200 bg-[#1B1D23]'
+                : 'border-black/[0.08] hover:bg-black/[0.04] text-[#111214] bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
             }`}
           >
             <Plus className="w-3.5 h-3.5" />
@@ -219,7 +219,11 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
           <button
             type="button"
             onClick={() => setShowGenerateModal(true)}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] shadow-sm hover:opacity-95 transition-opacity"
+            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors ${
+              isDark
+                ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                : 'bg-[#111214] hover:bg-[#27292D] text-white'
+            }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>AI Generate</span>
@@ -247,18 +251,22 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
                 setCurrentIndex(0);
                 setIsFlipped(false);
               }}
-              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl font-medium shrink-0 transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl font-medium shrink-0 border transition-all ${
                 isActive
-                  ? 'bg-[#C9A063] text-[#080A0E] font-bold shadow-xs'
+                  ? isDark
+                    ? 'bg-white text-[#111214] border-white font-bold'
+                    : 'bg-[#111214] text-white border-[#111214] font-bold'
                   : isDark
-                  ? 'bg-[#121722] text-stone-400 hover:text-stone-200 border border-white/10'
-                  : 'bg-stone-100 text-stone-600 hover:text-stone-900 border border-stone-200'
+                  ? 'bg-[#1B1D23] text-stone-300 hover:text-white border-white/[0.08]'
+                  : 'bg-[#F3F3F1] text-[#3F4248] hover:text-[#111214] border-black/[0.08]'
               }`}
             >
               <Icon className="w-3.5 h-3.5" />
               <span>{tab.label}</span>
               {tab.id === 'difficult' && (
-                <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-red-500/20 text-red-400 font-mono">
+                <span className={`ml-1 px-1.5 py-0.2 rounded-full text-[10px] font-mono ${
+                  isDark ? 'bg-rose-500/20 text-rose-300' : 'bg-rose-100 text-rose-700'
+                }`}>
                   {
                     subjectCards.filter(
                       (c) => c.difficulty === 'again' || c.difficulty === 'hard'
@@ -276,14 +284,20 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
         activeDeck.length === 0 ? (
           <div
             className={`p-12 text-center rounded-3xl border ${
-              isDark ? 'bg-[#0D1220] border-white/10' : 'bg-white border-stone-200'
+              isDark
+                ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+                : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
             }`}
           >
-            <div className="w-12 h-12 rounded-2xl bg-[#C9A063]/15 text-[#DFBA7F] flex items-center justify-center mx-auto mb-3">
+            <div className={`w-12 h-12 rounded-2xl border flex items-center justify-center mx-auto mb-3 ${
+              isDark
+                ? 'bg-white/[0.08] text-white border-white/[0.12]'
+                : 'bg-black/[0.04] text-[#111214] border-black/[0.08]'
+            }`}>
               <Layers className="w-6 h-6" />
             </div>
-            <h3 className="font-bold text-base mb-1">No Flashcards in this Deck</h3>
-            <p className="text-xs text-stone-400 max-w-sm mx-auto mb-4">
+            <h3 className={`font-bold text-base mb-1 ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>No Flashcards in this Deck</h3>
+            <p className={`text-xs max-w-sm mx-auto mb-4 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               {filterMode === 'difficult'
                 ? 'No cards are marked as difficult. Great job retaining this material!'
                 : 'Create cards manually or let AI generate active-recall cards from your study notes or textbook.'}
@@ -291,7 +305,11 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
             <button
               type="button"
               onClick={() => setShowGenerateModal(true)}
-              className="px-4 py-2 text-xs font-semibold rounded-xl bg-[#C9A063] text-[#080A0E]"
+              className={`px-4 py-2 text-xs font-semibold rounded-xl transition-colors ${
+                isDark
+                  ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                  : 'bg-[#111214] hover:bg-[#27292D] text-white'
+              }`}
             >
               Generate Cards with AI
             </button>
@@ -299,9 +317,9 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
         ) : (
           <div className="max-w-2xl mx-auto space-y-4">
             {/* Progress / Remaining stats */}
-            <div className="flex items-center justify-between text-xs text-stone-400 px-1">
+            <div className={`flex items-center justify-between text-xs px-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               <span>
-                Card <strong className="text-stone-200 font-mono">{currentIndex + 1}</strong> of{' '}
+                Card <strong className={`font-mono ${isDark ? 'text-white' : 'text-[#111214]'}`}>{currentIndex + 1}</strong> of{' '}
                 <span className="font-mono">{activeDeck.length}</span>
               </span>
               <span className="font-mono">
@@ -312,19 +330,23 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
             {/* The Flashcard (Interactive Flip) */}
             <div
               onClick={() => setIsFlipped(!isFlipped)}
-              className={`relative min-h-[320px] sm:min-h-[360px] rounded-3xl p-8 sm:p-12 flex flex-col items-center justify-center text-center cursor-pointer border shadow-lg transition-all duration-300 select-none ${
+              className={`relative min-h-[320px] sm:min-h-[360px] rounded-3xl p-8 sm:p-12 flex flex-col items-center justify-center text-center cursor-pointer border transition-all duration-300 select-none ${
                 isDark
-                  ? 'bg-gradient-to-b from-[#111728] to-[#0A0E18] border-white/15 hover:border-[#DFBA7F]/40 text-stone-100'
-                  : 'bg-white border-stone-300 hover:border-[#C9A063]/60 text-stone-900'
+                  ? 'bg-[#14161A] border-white/[0.1] hover:border-white/30 text-[#F3F4F6] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+                  : 'bg-white border-black/[0.1] hover:border-[#111214]/40 text-[#111214] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
               }`}
             >
               {/* Badge indicating Front / Back */}
-              <div className="absolute top-5 left-5 text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full bg-stone-500/15 text-stone-400">
+              <div className={`absolute top-5 left-5 text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full border ${
+                isDark
+                  ? 'bg-white/[0.06] text-stone-300 border-white/[0.08]'
+                  : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.08]'
+              }`}>
                 {isFlipped ? 'Answer / Explanation' : 'Question / Concept'}
               </div>
 
               {/* Tap to flip hint */}
-              <div className="absolute top-5 right-5 flex items-center gap-1 text-[11px] text-stone-400">
+              <div className={`absolute top-5 right-5 flex items-center gap-1 text-[11px] ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                 <RotateCw className="w-3.5 h-3.5" />
                 <span>Tap to flip</span>
               </div>
@@ -333,13 +355,13 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
               <div className="space-y-4 max-w-lg">
                 {!isFlipped ? (
                   <div>
-                    <h3 className="text-lg sm:text-xl font-bold leading-relaxed">
+                    <h3 className={`text-lg sm:text-xl font-bold leading-relaxed ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                       {currentCard?.front}
                     </h3>
                   </div>
                 ) : (
                   <div className="animate-fadeIn">
-                    <p className="text-sm sm:text-base leading-relaxed text-stone-300 dark:text-stone-200 whitespace-pre-wrap">
+                    <p className={`text-sm sm:text-base leading-relaxed whitespace-pre-wrap ${isDark ? 'text-stone-200' : 'text-[#3F4248]'}`}>
                       {currentCard?.back}
                     </p>
                   </div>
@@ -353,7 +375,11 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
                     e.stopPropagation();
                     setIsFlipped(true);
                   }}
-                  className="mt-8 px-4 py-2 rounded-xl text-xs font-semibold bg-[#DFBA7F]/20 text-[#DFBA7F] border border-[#DFBA7F]/30 hover:bg-[#DFBA7F]/30 transition-colors"
+                  className={`mt-8 px-4 py-2 rounded-xl text-xs font-semibold border transition-colors ${
+                    isDark
+                      ? 'bg-white/[0.08] text-white border-white/[0.14] hover:bg-white/[0.14]'
+                      : 'bg-[#F3F3F1] text-[#111214] border-black/[0.1] hover:bg-black/[0.06]'
+                  }`}
                 >
                   Show Answer
                 </button>
@@ -362,42 +388,60 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
 
             {/* Spaced Repetition Rating Buttons */}
             {isFlipped && (
-              <div className="p-4 rounded-2xl border bg-stone-900/40 border-white/10 space-y-2 animate-fadeIn">
-                <p className="text-center text-xs font-semibold text-stone-400 mb-2">
+              <div className={`p-4 rounded-2xl border space-y-2 animate-fadeIn ${
+                isDark ? 'bg-[#14161A] border-white/[0.08]' : 'bg-white border-black/[0.08]'
+              }`}>
+                <p className={`text-center text-xs font-semibold mb-2 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                   Rate your recall difficulty:
                 </p>
                 <div className="grid grid-cols-4 gap-2">
                   <button
                     type="button"
                     onClick={() => handleRate('again')}
-                    className="p-3 rounded-xl bg-red-500/15 hover:bg-red-500/25 border border-red-500/30 text-red-300 text-xs font-semibold flex flex-col items-center gap-1 transition-all"
+                    className={`p-3 rounded-xl border text-xs font-semibold flex flex-col items-center gap-1 transition-all ${
+                      isDark
+                        ? 'bg-rose-500/15 hover:bg-rose-500/25 border-rose-500/30 text-rose-300'
+                        : 'bg-rose-50 hover:bg-rose-100 border-rose-300 text-rose-700'
+                    }`}
                   >
                     <span>Again</span>
-                    <span className="text-[10px] text-red-400 opacity-80 font-mono">&lt; 10m</span>
+                    <span className={`text-[10px] opacity-80 font-mono ${isDark ? 'text-rose-300' : 'text-rose-600'}`}>&lt; 10m</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => handleRate('hard')}
-                    className="p-3 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 text-xs font-semibold flex flex-col items-center gap-1 transition-all"
+                    className={`p-3 rounded-xl border text-xs font-semibold flex flex-col items-center gap-1 transition-all ${
+                      isDark
+                        ? 'bg-sky-500/15 hover:bg-sky-500/25 border-sky-500/30 text-sky-300'
+                        : 'bg-sky-50 hover:bg-sky-100 border-sky-300 text-sky-700'
+                    }`}
                   >
                     <span>Hard</span>
-                    <span className="text-[10px] text-amber-400 opacity-80 font-mono">1 day</span>
+                    <span className={`text-[10px] opacity-80 font-mono ${isDark ? 'text-sky-300' : 'text-sky-600'}`}>1 day</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => handleRate('good')}
-                    className="p-3 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 text-xs font-semibold flex flex-col items-center gap-1 transition-all"
+                    className={`p-3 rounded-xl border text-xs font-semibold flex flex-col items-center gap-1 transition-all ${
+                      isDark
+                        ? 'bg-emerald-500/15 hover:bg-emerald-500/25 border-emerald-500/30 text-emerald-300'
+                        : 'bg-emerald-50 hover:bg-emerald-100 border-emerald-300 text-emerald-700'
+                    }`}
                   >
                     <span>Good</span>
-                    <span className="text-[10px] text-emerald-400 opacity-80 font-mono">3 days</span>
+                    <span className={`text-[10px] opacity-80 font-mono ${isDark ? 'text-emerald-300' : 'text-emerald-600'}`}>3 days</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => handleRate('easy')}
-                    className="p-3 rounded-xl bg-blue-500/15 hover:bg-blue-500/25 border border-blue-500/30 text-blue-300 text-xs font-semibold flex flex-col items-center gap-1 transition-all"
+                    className={`p-3 rounded-xl border text-xs font-semibold flex flex-col items-center gap-1 transition-all ${
+                      isDark
+                        ? 'bg-white/[0.08] hover:bg-white/[0.14] border-white/[0.14] text-white'
+                        : 'bg-[#F3F3F1] hover:bg-black/[0.06] border-black/[0.1] text-[#111214]'
+                    }`}
                   >
                     <span>Easy</span>
-                    <span className="text-[10px] text-blue-400 opacity-80 font-mono">7 days</span>
+                    <span className={`text-[10px] opacity-80 font-mono ${isDark ? 'text-stone-300' : 'text-[#5A5D63]'}`}>7 days</span>
                   </button>
                 </div>
               </div>
@@ -408,36 +452,50 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
         /* Management Table of All Cards */
         <div
           className={`rounded-2xl border overflow-hidden ${
-            isDark ? 'bg-[#0E131E] border-white/10' : 'bg-white border-stone-200'
+            isDark
+              ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+              : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
           }`}
         >
-          <div className="p-4 border-b flex items-center justify-between text-xs text-stone-400">
+          <div className={`p-4 border-b flex items-center justify-between text-xs ${
+            isDark ? 'border-white/[0.08] text-stone-400' : 'border-black/[0.08] text-[#5A5D63]'
+          }`}>
             <span>Total Cards: {subjectCards.length}</span>
           </div>
 
           {subjectCards.length === 0 ? (
-            <div className="p-8 text-center text-xs text-stone-400">No cards created yet.</div>
+            <div className={`p-8 text-center text-xs ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>No cards created yet.</div>
           ) : (
-            <div className="divide-y divide-white/5">
+            <div className={`divide-y ${isDark ? 'divide-white/[0.08]' : 'divide-black/[0.08]'}`}>
               {subjectCards.map((card) => (
                 <div
                   key={card.id}
-                  className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs hover:bg-white/5 transition-colors"
+                  className={`p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs transition-colors ${
+                    isDark ? 'hover:bg-white/[0.04]' : 'hover:bg-black/[0.03]'
+                  }`}
                 >
                   <div className="space-y-1 flex-1">
-                    <p className="font-bold text-stone-100">{card.front}</p>
-                    <p className="text-stone-400 line-clamp-2">{card.back}</p>
+                    <p className={`font-bold ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>{card.front}</p>
+                    <p className={`line-clamp-2 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{card.back}</p>
                   </div>
                   <div className="flex items-center gap-3 shrink-0">
                     <span
                       className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${
                         card.difficulty === 'again'
-                          ? 'bg-red-500/20 text-red-400'
+                          ? isDark
+                            ? 'bg-rose-500/20 text-rose-300'
+                            : 'bg-rose-50 text-rose-700'
                           : card.difficulty === 'hard'
-                          ? 'bg-amber-500/20 text-amber-400'
+                          ? isDark
+                            ? 'bg-sky-500/20 text-sky-300'
+                            : 'bg-sky-50 text-sky-700'
                           : card.difficulty === 'good'
-                          ? 'bg-emerald-500/20 text-emerald-400'
-                          : 'bg-blue-500/20 text-blue-400'
+                          ? isDark
+                            ? 'bg-emerald-500/20 text-emerald-300'
+                            : 'bg-emerald-50 text-emerald-700'
+                          : isDark
+                          ? 'bg-white/[0.1] text-stone-200'
+                          : 'bg-black/[0.06] text-[#111214]'
                       }`}
                     >
                       {card.difficulty}
@@ -448,7 +506,9 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
                         deleteFlashcard(card.id);
                         reloadCards();
                       }}
-                      className="p-1.5 text-stone-500 hover:text-red-400 transition-colors"
+                      className={`p-1.5 transition-colors ${
+                        isDark ? 'text-stone-400 hover:text-rose-400' : 'text-[#6B6F76] hover:text-rose-600'
+                      }`}
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -465,16 +525,18 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div
             className={`w-full max-w-lg rounded-3xl p-6 border shadow-2xl ${
-              isDark ? 'bg-[#0E131E] border-white/15 text-stone-100' : 'bg-white border-stone-200 text-stone-900'
+              isDark
+                ? 'bg-[#14161A] border-white/[0.1] text-[#F3F4F6]'
+                : 'bg-white border-black/[0.1] text-[#111214]'
             }`}
           >
             <h3 className="text-base font-bold mb-1">Add Flashcard</h3>
-            <p className="text-xs text-stone-400 mb-4">
+            <p className={`text-xs mb-4 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               Saving to: {selectedSubject.name} {selectedTopic ? `• ${selectedTopic.name}` : ''}
             </p>
             <form onSubmit={handleManualAdd} className="space-y-4">
               <div>
-                <label className="text-xs font-semibold text-stone-400 block mb-1">
+                <label className={`text-xs font-semibold block mb-1 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                   Front (Question / Prompt)
                 </label>
                 <textarea
@@ -484,13 +546,15 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
                   onChange={(e) => setManualFront(e.target.value)}
                   placeholder="e.g. What is the primary function of ribosomes?"
                   className={`w-full p-3 rounded-xl text-xs sm:text-sm border outline-none ${
-                    isDark ? 'bg-[#141B2B] border-white/10' : 'bg-stone-50 border-stone-200'
+                    isDark
+                      ? 'bg-[#1B1D23] border-white/[0.08] text-[#F3F4F6]'
+                      : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
                   }`}
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-stone-400 block mb-1">
+                <label className={`text-xs font-semibold block mb-1 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                   Back (Answer / Explanation)
                 </label>
                 <textarea
@@ -500,7 +564,9 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
                   onChange={(e) => setManualBack(e.target.value)}
                   placeholder="e.g. Ribosomes perform protein synthesis by translating mRNA into amino acid polypeptide chains."
                   className={`w-full p-3 rounded-xl text-xs sm:text-sm border outline-none ${
-                    isDark ? 'bg-[#141B2B] border-white/10' : 'bg-stone-50 border-stone-200'
+                    isDark
+                      ? 'bg-[#1B1D23] border-white/[0.08] text-[#F3F4F6]'
+                      : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
                   }`}
                 />
               </div>
@@ -509,13 +575,19 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 text-xs font-medium text-stone-400 hover:text-stone-200"
+                  className={`px-4 py-2 text-xs font-medium ${
+                    isDark ? 'text-stone-400 hover:text-white' : 'text-[#5A5D63] hover:text-[#111214]'
+                  }`}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 text-xs font-semibold rounded-xl bg-[#C9A063] text-[#080A0E]"
+                  className={`px-4 py-2 text-xs font-semibold rounded-xl transition-colors ${
+                    isDark
+                      ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                      : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                  }`}
                 >
                   Save Card
                 </button>
@@ -530,25 +602,35 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div
             className={`w-full max-w-lg rounded-3xl p-6 border shadow-2xl ${
-              isDark ? 'bg-[#0E131E] border-white/15 text-stone-100' : 'bg-white border-stone-200 text-stone-900'
+              isDark
+                ? 'bg-[#14161A] border-white/[0.1] text-[#F3F4F6]'
+                : 'bg-white border-black/[0.1] text-[#111214]'
             }`}
           >
             <div className="flex items-center gap-2 mb-1">
-              <Sparkles className="w-4 h-4 text-[#DFBA7F]" />
+              <Sparkles className={`w-4 h-4 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
               <h3 className="text-base font-bold">Generate Active-Recall Flashcards</h3>
             </div>
-            <p className="text-xs text-stone-400 mb-4">
+            <p className={`text-xs mb-4 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               AI creates high-yield cards with key definitions, formulas, and concepts.
             </p>
 
             <form onSubmit={handleAiGenerate} className="space-y-4">
               {/* Source tabs */}
-              <div className="flex items-center gap-2 p-1 rounded-xl bg-black/20 text-xs">
+              <div className={`flex items-center gap-2 p-1 rounded-xl text-xs border ${
+                isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
+              }`}>
                 <button
                   type="button"
                   onClick={() => setAiSourceMode('topic')}
                   className={`flex-1 py-1.5 rounded-lg font-medium transition-all ${
-                    aiSourceMode === 'topic' ? 'bg-[#C9A063] text-[#080A0E] font-bold' : 'text-stone-400'
+                    aiSourceMode === 'topic'
+                      ? isDark
+                        ? 'bg-white text-[#111214] font-bold'
+                        : 'bg-[#111214] text-white font-bold'
+                      : isDark
+                      ? 'text-stone-400 hover:text-white'
+                      : 'text-[#5A5D63] hover:text-[#111214]'
                   }`}
                 >
                   Topic Core
@@ -557,7 +639,13 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
                   type="button"
                   onClick={() => setAiSourceMode('text')}
                   className={`flex-1 py-1.5 rounded-lg font-medium transition-all ${
-                    aiSourceMode === 'text' ? 'bg-[#C9A063] text-[#080A0E] font-bold' : 'text-stone-400'
+                    aiSourceMode === 'text'
+                      ? isDark
+                        ? 'bg-white text-[#111214] font-bold'
+                        : 'bg-[#111214] text-white font-bold'
+                      : isDark
+                      ? 'text-stone-400 hover:text-white'
+                      : 'text-[#5A5D63] hover:text-[#111214]'
                   }`}
                 >
                   Paste Notes
@@ -566,7 +654,13 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
                   type="button"
                   onClick={() => setAiSourceMode('file')}
                   className={`flex-1 py-1.5 rounded-lg font-medium transition-all ${
-                    aiSourceMode === 'file' ? 'bg-[#C9A063] text-[#080A0E] font-bold' : 'text-stone-400'
+                    aiSourceMode === 'file'
+                      ? isDark
+                        ? 'bg-white text-[#111214] font-bold'
+                        : 'bg-[#111214] text-white font-bold'
+                      : isDark
+                      ? 'text-stone-400 hover:text-white'
+                      : 'text-[#5A5D63] hover:text-[#111214]'
                   }`}
                 >
                   Upload PDF/Image
@@ -574,7 +668,11 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
               </div>
 
               {aiSourceMode === 'topic' && (
-                <div className="p-3 rounded-xl border border-white/10 bg-white/5 text-xs text-stone-300">
+                <div className={`p-3 rounded-xl border text-xs ${
+                  isDark
+                    ? 'border-white/[0.08] bg-[#1B1D23] text-stone-300'
+                    : 'border-black/[0.08] bg-[#F3F3F1] text-[#3F4248]'
+                }`}>
                   Will generate cards based on: <strong>{selectedTopic?.name || selectedSubject.name}</strong>
                 </div>
               )}
@@ -586,7 +684,9 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
                   onChange={(e) => setAiTextPrompt(e.target.value)}
                   placeholder="Paste lecture notes, study guide text, or textbook excerpt here..."
                   className={`w-full p-3 rounded-xl text-xs border outline-none ${
-                    isDark ? 'bg-[#141B2B] border-white/10' : 'bg-stone-50 border-stone-200'
+                    isDark
+                      ? 'bg-[#1B1D23] border-white/[0.08] text-[#F3F4F6]'
+                      : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
                   }`}
                 />
               )}
@@ -597,10 +697,14 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
                     type="file"
                     accept="image/*,application/pdf"
                     onChange={handleFileUpload}
-                    className="text-xs text-stone-400"
+                    className={`text-xs ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}
                   />
                   {aiFileAttachment && (
-                    <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs">
+                    <div className={`p-2 rounded-lg border text-xs ${
+                      isDark
+                        ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
+                        : 'bg-emerald-50 border-emerald-300 text-emerald-700'
+                    }`}>
                       Attached: {aiFileAttachment.name}
                     </div>
                   )}
@@ -609,7 +713,7 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
 
               {/* Card Count Selector */}
               <div className="flex items-center justify-between text-xs">
-                <span className="text-stone-400 font-medium">Number of Cards:</span>
+                <span className={`font-medium ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>Number of Cards:</span>
                 <div className="flex items-center gap-1.5">
                   {[3, 5, 10].map((num) => (
                     <button
@@ -618,8 +722,12 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
                       onClick={() => setAiCardCount(num)}
                       className={`px-3 py-1 rounded-lg border font-mono font-bold transition-all ${
                         aiCardCount === num
-                          ? 'bg-[#C9A063] text-[#080A0E] border-[#C9A063]'
-                          : 'border-white/10 text-stone-400'
+                          ? isDark
+                            ? 'bg-white text-[#111214] border-white'
+                            : 'bg-[#111214] text-white border-[#111214]'
+                          : isDark
+                          ? 'border-white/[0.08] text-stone-400 hover:text-white'
+                          : 'border-black/[0.08] text-[#5A5D63] hover:text-[#111214]'
                       }`}
                     >
                       {num}
@@ -629,7 +737,11 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
               </div>
 
               {generateError && (
-                <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs">
+                <div className={`p-3 rounded-xl border text-xs ${
+                  isDark
+                    ? 'bg-rose-500/10 border-rose-500/20 text-rose-400'
+                    : 'bg-rose-50 border-rose-300 text-rose-700'
+                }`}>
                   {generateError}
                 </div>
               )}
@@ -638,14 +750,20 @@ export const FlashcardsView: React.FC<FlashcardsViewProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowGenerateModal(false)}
-                  className="px-4 py-2 text-xs font-medium text-stone-400 hover:text-stone-200"
+                  className={`px-4 py-2 text-xs font-medium ${
+                    isDark ? 'text-stone-400 hover:text-white' : 'text-[#5A5D63] hover:text-[#111214]'
+                  }`}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isGenerating}
-                  className="px-4 py-2 text-xs font-semibold rounded-xl bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] disabled:opacity-40"
+                  className={`px-4 py-2 text-xs font-semibold rounded-xl disabled:opacity-40 transition-colors ${
+                    isDark
+                      ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                      : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                  }`}
                 >
                   {isGenerating ? 'Analyzing & Generating...' : 'Generate Flashcards'}
                 </button>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Bell, X, Volume2, Sparkles, ChevronRight, Clock } from 'lucide-react';
+import { Bell, X, Volume2, ChevronRight, Clock } from 'lucide-react';
 import { PrayerNotificationEvent, playGentleChime } from '../utils/notificationService';
 import { t, getLanguageCode, isRTLLanguage } from '../utils/i18n';
 
@@ -62,16 +62,16 @@ export const PrayerNotificationToast: React.FC<PrayerNotificationToastProps> = (
       dir={isRTL ? 'rtl' : 'ltr'}
     >
       <div
-        className={`rounded-3xl p-4 sm:p-5 border shadow-[0_2px_8px_rgba(0,0,0,0.25)] relative overflow-hidden transition-all duration-200 ${
+        className={`rounded-3xl p-4 sm:p-5 border shadow-lg relative overflow-hidden transition-all duration-200 ${
           isDark
-            ? 'bg-[#0E1218]/98 border-[#DFBA7F]/40 text-[#F5EFE6]'
-            : 'bg-white/98 border-[#A67C38]/40 text-stone-900 shadow-md'
+            ? 'bg-[#14161A] border-white/[0.12] text-[#F3F4F6]'
+            : 'bg-white border-black/[0.1] text-[#111214]'
         }`}
       >
-        {/* Animated Gold Progress Line */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-stone-800/40">
+        {/* Minimal Progress Line */}
+        <div className={`absolute top-0 left-0 right-0 h-1 ${isDark ? 'bg-white/[0.08]' : 'bg-black/[0.06]'}`}>
           <div
-            className="h-full bg-gradient-to-r from-[#C9A063] via-[#DFBA7F] to-[#C9A063] transition-all duration-100 ease-linear"
+            className={`h-full transition-all duration-100 ease-linear ${isDark ? 'bg-white' : 'bg-[#111214]'}`}
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -79,22 +79,28 @@ export const PrayerNotificationToast: React.FC<PrayerNotificationToastProps> = (
         {/* Top Header Row */}
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#C9A063]/30 to-[#DFBA7F]/20 border border-[#DFBA7F]/40 flex items-center justify-center text-[#DFBA7F] shrink-0 shadow-sm">
+            <div className={`w-10 h-10 rounded-2xl border flex items-center justify-center shrink-0 ${
+              isDark
+                ? 'bg-white/[0.08] border-white/[0.12] text-white'
+                : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+            }`}>
               <span className="text-xl">🕌</span>
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-cinzel font-bold tracking-widest text-[#DFBA7F] uppercase flex items-center gap-1">
-                  <Bell className="w-3 h-3 text-[#DFBA7F] animate-bounce" />
+                <span className={`text-[10px] font-bold tracking-widest uppercase flex items-center gap-1 ${
+                  isDark ? 'text-stone-300' : 'text-[#6B6F76]'
+                }`}>
+                  <Bell className="w-3 h-3 animate-bounce" />
                   <span>{t(langCode, 'prayerReminderTitle')}</span>
                 </span>
                 {!isArabic && (
-                  <span className="font-arabic text-sm text-[#DFBA7F] font-bold">
+                  <span className={`font-arabic text-sm font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                     {notification.arabicName}
                   </span>
                 )}
               </div>
-              <h4 className="text-sm sm:text-base font-serif-heading font-bold mt-0.5">
+              <h4 className="text-sm sm:text-base font-bold mt-0.5">
                 {isArabic
                   ? `صلاة ${notification.arabicName} ${
                       notification.minutesBefore > 0
@@ -113,14 +119,22 @@ export const PrayerNotificationToast: React.FC<PrayerNotificationToastProps> = (
           <div className="flex items-center gap-1">
             <button
               onClick={() => playGentleChime(0.3)}
-              className="p-1.5 rounded-full hover:bg-stone-700/30 text-stone-400 hover:text-[#DFBA7F] transition-colors"
+              className={`p-1.5 rounded-full transition-colors cursor-pointer ${
+                isDark
+                  ? 'hover:bg-white/[0.08] text-stone-400 hover:text-white'
+                  : 'hover:bg-black/[0.05] text-[#6B6F76] hover:text-[#111214]'
+              }`}
               title={isArabic ? 'تشغيل التنبيه' : 'Play Chime'}
             >
               <Volume2 className="w-4 h-4" />
             </button>
             <button
               onClick={onDismiss}
-              className="p-1.5 rounded-full hover:bg-stone-700/30 text-stone-400 hover:text-stone-200 transition-colors"
+              className={`p-1.5 rounded-full transition-colors cursor-pointer ${
+                isDark
+                  ? 'hover:bg-white/[0.08] text-stone-400 hover:text-white'
+                  : 'hover:bg-black/[0.05] text-[#6B6F76] hover:text-[#111214]'
+              }`}
               title={isArabic ? 'إغلاق' : 'Dismiss'}
             >
               <X className="w-4 h-4" />
@@ -130,7 +144,7 @@ export const PrayerNotificationToast: React.FC<PrayerNotificationToastProps> = (
 
         {/* Body Message & Quran Quote */}
         <div className="mt-2.5 pl-1">
-          <p className="text-xs font-medium text-[#DFBA7F] flex items-center gap-1.5">
+          <p className={`text-xs font-medium flex items-center gap-1.5 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
             <Clock className="w-3.5 h-3.5" />
             <span>
               {isArabic
@@ -138,14 +152,14 @@ export const PrayerNotificationToast: React.FC<PrayerNotificationToastProps> = (
                 : `${t(langCode, 'prayerScheduledFor')} ${notification.prayerTime}`}
             </span>
           </p>
-          <p className={`text-[11px] mt-1 font-light italic leading-relaxed ${isDark ? 'text-stone-300' : 'text-stone-700'}`}>
+          <p className={`text-[11px] mt-1 font-light italic leading-relaxed ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
             {notification.quote}
           </p>
         </div>
 
         {/* Bottom Quick Action */}
-        <div className="mt-3 pt-2.5 border-t border-[#DFBA7F]/20 flex items-center justify-between">
-          <span className="text-[10px] text-stone-400">
+        <div className={`mt-3 pt-2.5 border-t flex items-center justify-between ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
+          <span className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
             {isArabic
               ? notification.minutesBefore > 0
                 ? 'استعد للوضوء والتأهب للصلاة'
@@ -161,7 +175,11 @@ export const PrayerNotificationToast: React.FC<PrayerNotificationToastProps> = (
                   onNavigateToTab('prayer-check');
                   onDismiss();
                 }}
-                className="px-3 py-1 rounded-xl text-[11px] font-semibold bg-[#C9A063]/30 hover:bg-[#C9A063]/45 border border-[#DFBA7F]/50 text-[#DFBA7F] transition-all flex items-center gap-1 shadow-xs cursor-pointer"
+                className={`px-3 py-1 rounded-full text-[11px] font-semibold transition-all flex items-center gap-1 cursor-pointer ${
+                  isDark
+                    ? 'bg-white text-[#111214] hover:bg-stone-200'
+                    : 'bg-[#111214] text-white hover:bg-[#27292D]'
+                }`}
               >
                 <span>{isArabic ? 'التحقق من الصلاة' : 'Check Prayer (Oath)'}</span>
                 <ChevronRight className={`w-3 h-3 ${isRTL ? 'rotate-180' : ''}`} />
@@ -169,7 +187,9 @@ export const PrayerNotificationToast: React.FC<PrayerNotificationToastProps> = (
             )}
             <button
               onClick={onDismiss}
-              className="px-2.5 py-1 rounded-xl text-[11px] font-medium text-stone-400 hover:text-stone-200 transition-colors cursor-pointer"
+              className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition-colors cursor-pointer ${
+                isDark ? 'text-stone-400 hover:text-white' : 'text-[#6B6F76] hover:text-[#111214]'
+              }`}
             >
               {isArabic ? 'إغلاق' : 'Dismiss'}
             </button>

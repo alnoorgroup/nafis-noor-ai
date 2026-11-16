@@ -173,11 +173,11 @@ export const QuizModeView: React.FC<QuizModeViewProps> = ({
       {/* Quiz Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold flex items-center gap-2">
-            <FileQuestion className="w-5 h-5 text-[#DFBA7F]" />
+          <h2 className={`text-xl font-bold flex items-center gap-2 ${isDark ? 'text-stone-100' : 'text-[#111214]'}`}>
+            <FileQuestion className={`w-5 h-5 ${isDark ? 'text-stone-300' : 'text-[#111214]'}`} />
             <span>AI Quiz Mode</span>
           </h2>
-          <p className="text-xs text-stone-400 mt-0.5">
+          <p className={`text-xs mt-0.5 ${isDark ? 'text-stone-400' : 'text-stone-600'}`}>
             Rigorous, non-revealing assessment for {selectedSubject.name}{' '}
             {selectedTopic ? `• ${selectedTopic.name}` : ''}
           </p>
@@ -188,7 +188,7 @@ export const QuizModeView: React.FC<QuizModeViewProps> = ({
             type="button"
             onClick={() => setQuizState('setup')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border ${
-              isDark ? 'border-white/10 text-stone-300' : 'border-stone-300 text-stone-700'
+              isDark ? 'border-white/10 text-stone-300 bg-[#14161A]' : 'border-stone-300 text-stone-700 bg-white'
             }`}
           >
             <RotateCcw className="w-3.5 h-3.5" />
@@ -200,22 +200,22 @@ export const QuizModeView: React.FC<QuizModeViewProps> = ({
       {/* SETUP VIEW */}
       {quizState === 'setup' && (
         <div
-          className={`max-w-2xl mx-auto p-6 sm:p-8 rounded-3xl border shadow-lg ${
-            isDark ? 'bg-[#0E131E] border-white/15 text-stone-100' : 'bg-white border-stone-200 text-stone-900'
+          className={`max-w-2xl mx-auto p-6 sm:p-8 rounded-3xl border shadow-sm ${
+            isDark ? 'bg-[#14161A] border-white/10 text-stone-100' : 'bg-white border-stone-200 text-[#111214]'
           }`}
         >
           <div className="flex items-center gap-2 mb-2">
-            <Sparkles className="w-5 h-5 text-[#DFBA7F]" />
+            <Sparkles className={`w-5 h-5 ${isDark ? 'text-stone-300' : 'text-[#111214]'}`} />
             <h3 className="text-base font-bold">Configure Quiz Parameters</h3>
           </div>
-          <p className="text-xs text-stone-400 mb-6">
+          <p className={`text-xs mb-6 ${isDark ? 'text-stone-400' : 'text-stone-600'}`}>
             Questions are generated to test active conceptual recall without early answer leakage.
           </p>
 
           <form onSubmit={handleGenerateQuiz} className="space-y-5">
             {/* Source selector */}
             <div>
-              <label className="text-xs font-semibold text-stone-400 block mb-1.5">
+              <label className={`text-xs font-semibold block mb-1.5 ${isDark ? 'text-stone-400' : 'text-stone-600'}`}>
                 Generate From
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
@@ -231,10 +231,10 @@ export const QuizModeView: React.FC<QuizModeViewProps> = ({
                     onClick={() => setSourceType(s.id)}
                     className={`py-2 px-3 rounded-xl border text-xs font-semibold transition-all ${
                       sourceType === s.id
-                        ? 'bg-[#C9A063] text-[#080A0E] border-[#C9A063]'
+                        ? isDark ? 'bg-white text-[#111214] border-white' : 'bg-[#111214] text-white border-[#111214]'
                         : isDark
-                        ? 'border-white/10 text-stone-400 hover:text-stone-200'
-                        : 'border-stone-200 text-stone-600 hover:text-stone-900'
+                        ? 'border-white/10 text-stone-400 hover:text-stone-200 bg-[#1B1D23]'
+                        : 'border-stone-200 text-stone-700 hover:text-[#111214] bg-stone-50'
                     }`}
                   >
                     {s.label}
@@ -244,7 +244,7 @@ export const QuizModeView: React.FC<QuizModeViewProps> = ({
             </div>
 
             {sourceType === 'topic' && (
-              <div className="p-3 rounded-xl border border-white/10 bg-white/5 text-xs text-stone-300">
+              <div className={`p-3 rounded-xl border text-xs ${isDark ? 'border-white/10 bg-white/5 text-stone-300' : 'border-stone-200 bg-stone-50 text-stone-700'}`}>
                 Generating quiz based on:{' '}
                 <strong>{selectedTopic?.name || selectedSubject.name}</strong>
               </div>
@@ -252,7 +252,7 @@ export const QuizModeView: React.FC<QuizModeViewProps> = ({
 
             {sourceType === 'notes' && (
               <div>
-                <label className="text-xs font-semibold text-stone-400 block mb-1">
+                <label className={`text-xs font-semibold block mb-1 ${isDark ? 'text-stone-400' : 'text-stone-600'}`}>
                   Paste Study Notes or Text
                 </label>
                 <textarea
@@ -262,7 +262,7 @@ export const QuizModeView: React.FC<QuizModeViewProps> = ({
                   onChange={(e) => setCustomText(e.target.value)}
                   placeholder="Paste lecture excerpts or textbook paragraphs to test..."
                   className={`w-full p-3 rounded-xl text-xs border outline-none ${
-                    isDark ? 'bg-[#141B2B] border-white/10' : 'bg-stone-50 border-stone-200'
+                    isDark ? 'bg-[#1B1D23] border-white/10 text-stone-100' : 'bg-stone-50 border-stone-200 text-[#111214]'
                   }`}
                 />
               </div>
@@ -270,17 +270,17 @@ export const QuizModeView: React.FC<QuizModeViewProps> = ({
 
             {sourceType === 'file' && (
               <div className="space-y-2">
-                <label className="text-xs font-semibold text-stone-400 block">
+                <label className={`text-xs font-semibold block ${isDark ? 'text-stone-400' : 'text-stone-600'}`}>
                   Upload PDF or Textbook Worksheet Photo
                 </label>
                 <input
                   type="file"
                   accept="image/*,application/pdf"
                   onChange={handleFileUpload}
-                  className="text-xs text-stone-400"
+                  className={`text-xs ${isDark ? 'text-stone-400' : 'text-stone-600'}`}
                 />
                 {fileAttachment && (
-                  <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs">
+                  <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs">
                     Ready to analyze: {fileAttachment.name}
                   </div>
                 )}
@@ -290,7 +290,7 @@ export const QuizModeView: React.FC<QuizModeViewProps> = ({
             {/* Quiz Type & Difficulty */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="text-xs font-semibold text-stone-400 block mb-1.5">
+                <label className={`text-xs font-semibold block mb-1.5 ${isDark ? 'text-stone-400' : 'text-stone-600'}`}>
                   Question Format
                 </label>
                 <select
@@ -298,18 +298,18 @@ export const QuizModeView: React.FC<QuizModeViewProps> = ({
                   value={quizType}
                   onChange={(e) => setQuizType(e.target.value as QuizType)}
                   className={`w-full p-2.5 rounded-xl text-xs border outline-none font-medium ${
-                    isDark ? 'bg-[#141B2B] border-white/10' : 'bg-stone-50 border-stone-200'
+                    isDark ? 'bg-[#1B1D23] border-white/10 text-stone-100' : 'bg-stone-50 border-stone-200 text-[#111214]'
                   }`}
                 >
-                  <option value="multiple_choice">Multiple Choice (4 Options)</option>
-                  <option value="true_false">True / False</option>
-                  <option value="short_answer">Short Answer</option>
-                  <option value="mixed">Mixed Quiz Formats</option>
+                  <option value="multiple_choice" className={isDark ? 'bg-[#14161A]' : 'bg-white'}>Multiple Choice (4 Options)</option>
+                  <option value="true_false" className={isDark ? 'bg-[#14161A]' : 'bg-white'}>True / False</option>
+                  <option value="short_answer" className={isDark ? 'bg-[#14161A]' : 'bg-white'}>Short Answer</option>
+                  <option value="mixed" className={isDark ? 'bg-[#14161A]' : 'bg-white'}>Mixed Quiz Formats</option>
                 </select>
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-stone-400 block mb-1.5">
+                <label className={`text-xs font-semibold block mb-1.5 ${isDark ? 'text-stone-400' : 'text-stone-600'}`}>
                   Difficulty Tier
                 </label>
                 <select
@@ -317,13 +317,13 @@ export const QuizModeView: React.FC<QuizModeViewProps> = ({
                   value={difficulty}
                   onChange={(e) => setDifficulty(e.target.value as QuizDifficulty)}
                   className={`w-full p-2.5 rounded-xl text-xs border outline-none font-medium ${
-                    isDark ? 'bg-[#141B2B] border-white/10' : 'bg-stone-50 border-stone-200'
+                    isDark ? 'bg-[#1B1D23] border-white/10 text-stone-100' : 'bg-stone-50 border-stone-200 text-[#111214]'
                   }`}
                 >
-                  <option value="easy">Easy (Foundations)</option>
-                  <option value="medium">Medium (Standard)</option>
-                  <option value="hard">Hard (Rigorous)</option>
-                  <option value="exam">Exam-Level (Challenging)</option>
+                  <option value="easy" className={isDark ? 'bg-[#14161A]' : 'bg-white'}>Easy (Foundations)</option>
+                  <option value="medium" className={isDark ? 'bg-[#14161A]' : 'bg-white'}>Medium (Standard)</option>
+                  <option value="hard" className={isDark ? 'bg-[#14161A]' : 'bg-white'}>Hard (Rigorous)</option>
+                  <option value="exam" className={isDark ? 'bg-[#14161A]' : 'bg-white'}>Exam-Level (Challenging)</option>
                 </select>
               </div>
             </div>
@@ -331,7 +331,7 @@ export const QuizModeView: React.FC<QuizModeViewProps> = ({
             {/* Question Count */}
             <div>
               <div className="flex items-center justify-between text-xs mb-1.5">
-                <span className="font-semibold text-stone-400">Total Questions</span>
+                <span className={`font-semibold ${isDark ? 'text-stone-400' : 'text-stone-600'}`}>Total Questions</span>
                 <div className="flex items-center gap-1.5">
                   {[3, 5, 10].map((num) => (
                     <button
@@ -340,8 +340,8 @@ export const QuizModeView: React.FC<QuizModeViewProps> = ({
                       onClick={() => setQuestionCount(num)}
                       className={`px-3 py-1 rounded-lg border font-mono font-bold text-xs ${
                         questionCount === num
-                          ? 'bg-[#C9A063] text-[#080A0E] border-[#C9A063]'
-                          : 'border-white/10 text-stone-400'
+                          ? isDark ? 'bg-white text-[#111214] border-white' : 'bg-[#111214] text-white border-[#111214]'
+                          : isDark ? 'border-white/10 text-stone-400 bg-[#1B1D23]' : 'border-stone-200 text-stone-600 bg-stone-50'
                       }`}
                     >
                       {num}
@@ -360,7 +360,9 @@ export const QuizModeView: React.FC<QuizModeViewProps> = ({
             <button
               type="submit"
               disabled={isGenerating}
-              className="w-full py-3 rounded-xl font-bold text-xs sm:text-sm bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] shadow-sm disabled:opacity-40 transition-opacity"
+              className={`w-full py-3 rounded-xl font-bold text-xs sm:text-sm shadow-sm disabled:opacity-40 transition-opacity ${
+                isDark ? 'bg-white text-[#111214] hover:bg-stone-200' : 'bg-[#111214] text-white hover:bg-black'
+              }`}
             >
               {isGenerating ? 'Generating Structured Quiz...' : 'Start Quiz Now'}
             </button>
@@ -371,21 +373,21 @@ export const QuizModeView: React.FC<QuizModeViewProps> = ({
       {/* IN PROGRESS VIEW */}
       {quizState === 'in_progress' && currentQ && (
         <div
-          className={`max-w-2xl mx-auto p-6 sm:p-8 rounded-3xl border shadow-lg ${
-            isDark ? 'bg-[#0E131E] border-white/15 text-stone-100' : 'bg-white border-stone-200 text-stone-900'
+          className={`max-w-2xl mx-auto p-6 sm:p-8 rounded-3xl border shadow-sm ${
+            isDark ? 'bg-[#14161A] border-white/10 text-stone-100' : 'bg-white border-stone-200 text-[#111214]'
           }`}
         >
           {/* Progress Bar */}
           <div className="mb-6">
-            <div className="flex items-center justify-between text-xs text-stone-400 mb-2">
-              <span className="font-bold text-[#DFBA7F]">
+            <div className={`flex items-center justify-between text-xs mb-2 ${isDark ? 'text-stone-400' : 'text-stone-600'}`}>
+              <span className={`font-bold ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>
                 Question {currentQuestionIndex + 1} of {questions.length}
               </span>
               <span className="capitalize">{difficulty} Difficulty</span>
             </div>
-            <div className="w-full h-1.5 rounded-full bg-stone-500/20 overflow-hidden">
+            <div className={`w-full h-1.5 rounded-full overflow-hidden ${isDark ? 'bg-white/10' : 'bg-stone-200'}`}>
               <div
-                className="h-full bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] transition-all duration-300"
+                className={`h-full transition-all duration-300 ${isDark ? 'bg-white' : 'bg-[#111214]'}`}
                 style={{
                   width: `${((currentQuestionIndex + 1) / questions.length) * 100}%`,
                 }}
@@ -410,19 +412,21 @@ export const QuizModeView: React.FC<QuizModeViewProps> = ({
                     onClick={() => handleSelectAnswer(currentQ.id, option)}
                     className={`w-full p-4 rounded-2xl border text-left text-xs sm:text-sm font-medium flex items-center justify-between transition-all ${
                       isSelected
-                        ? 'bg-[#C9A063]/20 border-[#C9A063] text-[#DFBA7F] font-semibold'
+                        ? isDark ? 'bg-white/10 border-white text-stone-100 font-semibold' : 'bg-[#111214]/10 border-[#111214] text-[#111214] font-semibold'
                         : isDark
-                        ? 'bg-[#121826] border-white/10 hover:border-white/20 text-stone-200'
+                        ? 'bg-[#1B1D23] border-white/10 hover:border-white/20 text-stone-200'
                         : 'bg-stone-50 border-stone-200 hover:border-stone-300 text-stone-800'
                     }`}
                   >
                     <span>{option}</span>
                     <div
                       className={`w-4 h-4 rounded-full border flex items-center justify-center ${
-                        isSelected ? 'border-[#DFBA7F] bg-[#DFBA7F]' : 'border-stone-500'
+                        isSelected
+                          ? isDark ? 'border-white bg-white' : 'border-[#111214] bg-[#111214]'
+                          : isDark ? 'border-stone-600' : 'border-stone-400'
                       }`}
                     >
-                      {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-[#080A0E]" />}
+                      {isSelected && <div className={`w-1.5 h-1.5 rounded-full ${isDark ? 'bg-[#14161A]' : 'bg-white'}`} />}
                     </div>
                   </button>
                 );
@@ -435,7 +439,7 @@ export const QuizModeView: React.FC<QuizModeViewProps> = ({
                   onChange={(e) => handleSelectAnswer(currentQ.id, e.target.value)}
                   placeholder="Type your concise answer..."
                   className={`w-full p-3.5 rounded-xl text-xs sm:text-sm border outline-none ${
-                    isDark ? 'bg-[#141B2B] border-white/10' : 'bg-stone-50 border-stone-200'
+                    isDark ? 'bg-[#1B1D23] border-white/10 text-stone-100' : 'bg-stone-50 border-stone-200 text-[#111214]'
                   }`}
                 />
               </div>
@@ -443,12 +447,12 @@ export const QuizModeView: React.FC<QuizModeViewProps> = ({
           </div>
 
           {/* Navigation */}
-          <div className="flex items-center justify-between pt-4 border-t border-white/10">
+          <div className={`flex items-center justify-between pt-4 border-t ${isDark ? 'border-white/10' : 'border-stone-200'}`}>
             <button
               type="button"
               disabled={currentQuestionIndex === 0}
               onClick={() => setCurrentQuestionIndex((prev) => prev - 1)}
-              className="px-4 py-2 text-xs font-medium rounded-xl text-stone-400 hover:text-stone-200 disabled:opacity-30"
+              className={`px-4 py-2 text-xs font-medium rounded-xl disabled:opacity-30 ${isDark ? 'text-stone-400 hover:text-stone-200' : 'text-stone-600 hover:text-stone-900'}`}
             >
               Previous
             </button>
@@ -458,7 +462,9 @@ export const QuizModeView: React.FC<QuizModeViewProps> = ({
                 type="button"
                 disabled={!userAnswers[currentQ.id]}
                 onClick={() => setCurrentQuestionIndex((prev) => prev + 1)}
-                className="px-5 py-2.5 rounded-xl text-xs font-bold bg-[#C9A063] text-[#080A0E] disabled:opacity-40 transition-opacity"
+                className={`px-5 py-2.5 rounded-xl text-xs font-bold disabled:opacity-40 transition-opacity ${
+                  isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+                }`}
               >
                 Next Question
               </button>
@@ -467,7 +473,7 @@ export const QuizModeView: React.FC<QuizModeViewProps> = ({
                 type="button"
                 disabled={!userAnswers[currentQ.id]}
                 onClick={handleFinishQuiz}
-                className="px-5 py-2.5 rounded-xl text-xs font-bold bg-emerald-500 text-white disabled:opacity-40 transition-opacity shadow-sm"
+                className="px-5 py-2.5 rounded-xl text-xs font-bold bg-emerald-600 text-white disabled:opacity-40 transition-opacity shadow-sm"
               >
                 Submit Quiz
               </button>
@@ -481,41 +487,41 @@ export const QuizModeView: React.FC<QuizModeViewProps> = ({
         <div className="max-w-2xl mx-auto space-y-6">
           {/* Result Card */}
           <div
-            className={`p-6 sm:p-8 rounded-3xl border text-center ${
-              isDark ? 'bg-[#0E131E] border-white/15' : 'bg-white border-stone-200'
+            className={`p-6 sm:p-8 rounded-3xl border text-center shadow-sm ${
+              isDark ? 'bg-[#14161A] border-white/10 text-stone-100' : 'bg-white border-stone-200 text-[#111214]'
             }`}
           >
-            <div className="w-16 h-16 rounded-full bg-[#DFBA7F]/20 text-[#DFBA7F] flex items-center justify-center mx-auto mb-3">
+            <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 ${isDark ? 'bg-white/10 text-stone-200' : 'bg-stone-100 text-[#111214]'}`}>
               <Award className="w-8 h-8" />
             </div>
             <h3 className="text-xl font-bold mb-1">Quiz Completed</h3>
-            <p className="text-xs text-stone-400 mb-6">{calculatedResult.quizTitle}</p>
+            <p className={`text-xs mb-6 ${isDark ? 'text-stone-400' : 'text-stone-600'}`}>{calculatedResult.quizTitle}</p>
 
-            <div className="flex items-center justify-center gap-6 py-4 border-y border-white/10">
+            <div className={`flex items-center justify-center gap-6 py-4 border-y ${isDark ? 'border-white/10' : 'border-stone-200'}`}>
               <div>
-                <span className="text-3xl font-extrabold text-[#DFBA7F] font-mono">
+                <span className={`text-3xl font-extrabold font-mono ${isDark ? 'text-stone-100' : 'text-[#111214]'}`}>
                   {calculatedResult.score}%
                 </span>
-                <p className="text-[10px] uppercase font-bold text-stone-400">Score</p>
+                <p className={`text-[10px] uppercase font-bold ${isDark ? 'text-stone-400' : 'text-stone-500'}`}>Score</p>
               </div>
-              <div className="w-px h-8 bg-white/10" />
+              <div className={`w-px h-8 ${isDark ? 'bg-white/10' : 'bg-stone-200'}`} />
               <div>
-                <span className="text-2xl font-bold text-emerald-400 font-mono">
+                <span className="text-2xl font-bold text-emerald-500 font-mono">
                   {calculatedResult.correctCount}
                 </span>
-                <p className="text-[10px] uppercase font-bold text-stone-400">Correct</p>
+                <p className={`text-[10px] uppercase font-bold ${isDark ? 'text-stone-400' : 'text-stone-500'}`}>Correct</p>
               </div>
-              <div className="w-px h-8 bg-white/10" />
+              <div className={`w-px h-8 ${isDark ? 'bg-white/10' : 'bg-stone-200'}`} />
               <div>
-                <span className="text-2xl font-bold text-red-400 font-mono">
+                <span className="text-2xl font-bold text-rose-500 font-mono">
                   {calculatedResult.incorrectCount}
                 </span>
-                <p className="text-[10px] uppercase font-bold text-stone-400">Mistakes</p>
+                <p className={`text-[10px] uppercase font-bold ${isDark ? 'text-stone-400' : 'text-stone-500'}`}>Mistakes</p>
               </div>
             </div>
 
             {calculatedResult.weakAreas.length > 0 && (
-              <div className="mt-4 p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300">
+              <div className={`mt-4 p-3 rounded-2xl border text-xs ${isDark ? 'bg-stone-900/40 border-stone-800 text-stone-300' : 'bg-stone-50 border-stone-200 text-stone-700'}`}>
                 <span className="font-bold">Topics Needing Review: </span>
                 <span>{calculatedResult.weakAreas.join(', ')}</span>
               </div>
@@ -524,7 +530,7 @@ export const QuizModeView: React.FC<QuizModeViewProps> = ({
 
           {/* Breakdown of Every Question */}
           <div className="space-y-4">
-            <h4 className="text-sm font-bold text-stone-300">Detailed Answer Review & Solutions</h4>
+            <h4 className={`text-sm font-bold ${isDark ? 'text-stone-300' : 'text-stone-700'}`}>Detailed Answer Review & Solutions</h4>
             {calculatedResult.questions.map((q, idx) => {
               const studentChoice = calculatedResult.userAnswers[q.id] || '(Unanswered)';
               const isCorrect =
@@ -535,48 +541,48 @@ export const QuizModeView: React.FC<QuizModeViewProps> = ({
                   key={q.id}
                   className={`p-5 rounded-2xl border space-y-3 ${
                     isCorrect
-                      ? 'border-emerald-500/30 bg-emerald-500/5'
-                      : 'border-red-500/30 bg-red-500/5'
+                      ? 'border-emerald-500/30 bg-emerald-500/5 text-stone-100'
+                      : 'border-rose-500/30 bg-rose-500/5 text-stone-100'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-2">
-                    <span className="text-xs font-bold text-stone-400">Question {idx + 1}</span>
+                    <span className={`text-xs font-bold ${isDark ? 'text-stone-400' : 'text-stone-600'}`}>Question {idx + 1}</span>
                     {isCorrect ? (
-                      <span className="flex items-center gap-1 text-emerald-400 text-xs font-bold">
+                      <span className="flex items-center gap-1 text-emerald-500 text-xs font-bold">
                         <CheckCircle2 className="w-4 h-4" />
                         <span>Correct</span>
                       </span>
                     ) : (
-                      <span className="flex items-center gap-1 text-red-400 text-xs font-bold">
+                      <span className="flex items-center gap-1 text-rose-500 text-xs font-bold">
                         <XCircle className="w-4 h-4" />
                         <span>Needs Review</span>
                       </span>
                     )}
                   </div>
 
-                  <p className="text-xs sm:text-sm font-semibold text-stone-100">{q.question}</p>
+                  <p className={`text-xs sm:text-sm font-semibold ${isDark ? 'text-stone-100' : 'text-[#111214]'}`}>{q.question}</p>
 
                   <div className="text-xs space-y-1">
-                    <p className="text-stone-400">
+                    <p className={isDark ? 'text-stone-400' : 'text-stone-600'}>
                       Your answer:{' '}
-                      <strong className={isCorrect ? 'text-emerald-400' : 'text-red-400'}>
+                      <strong className={isCorrect ? 'text-emerald-500 font-bold' : 'text-rose-500 font-bold'}>
                         {studentChoice}
                       </strong>
                     </p>
                     {!isCorrect && (
-                      <p className="text-stone-300">
-                        Correct answer: <strong className="text-emerald-400">{q.correctAnswer}</strong>
+                      <p className={isDark ? 'text-stone-300' : 'text-stone-700'}>
+                        Correct answer: <strong className="text-emerald-500 font-bold">{q.correctAnswer}</strong>
                       </p>
                     )}
                   </div>
 
                   {/* Explanation Callout */}
                   <div
-                    className={`p-3 rounded-xl text-xs leading-relaxed ${
-                      isDark ? 'bg-black/30 text-stone-300' : 'bg-white/80 text-stone-800'
+                    className={`p-3 rounded-xl text-xs leading-relaxed border ${
+                      isDark ? 'bg-[#1B1D23] border-white/10 text-stone-300' : 'bg-stone-50 border-stone-200 text-stone-800'
                     }`}
                   >
-                    <strong className="text-[#DFBA7F] block mb-1">Why:</strong>
+                    <strong className={`block mb-1 ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>Why:</strong>
                     {q.explanation}
                   </div>
                 </div>

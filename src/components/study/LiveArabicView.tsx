@@ -209,31 +209,45 @@ export const LiveArabicView: React.FC<LiveArabicViewProps> = ({ isDark, language
       {/* Top Session Banner */}
       <div
         className={`p-6 rounded-2xl border ${
-          isDark ? 'bg-[#101318] border-white/5 shadow-xl' : 'bg-white border-stone-200 shadow-md'
+          isDark
+            ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+            : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
         }`}
       >
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="flex items-center gap-1.5 px-2.5 py-0.5 text-[11px] font-semibold tracking-wider uppercase rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className={`flex items-center gap-1.5 px-2.5 py-0.5 text-[11px] font-semibold tracking-wider uppercase rounded-full border ${
+                isDark
+                  ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
+                  : 'bg-emerald-50 text-emerald-700 border-emerald-300'
+              }`}>
+                <span className={`w-2 h-2 rounded-full animate-pulse ${isDark ? 'bg-emerald-400' : 'bg-emerald-600'}`} />
                 Live Arabic Session Active
               </span>
               {isSlowMode && (
-                <span className="px-2 py-0.5 text-[10px] rounded-md bg-blue-500/15 text-blue-300 border border-blue-500/30">
+                <span className={`px-2 py-0.5 text-[10px] rounded-md border ${
+                  isDark
+                    ? 'bg-sky-500/15 text-sky-300 border-sky-500/30'
+                    : 'bg-sky-50 text-sky-700 border-sky-200'
+                }`}>
                   Slow Pace (0.6x)
                 </span>
               )}
               {isEasyMode && (
-                <span className="px-2 py-0.5 text-[10px] rounded-md bg-amber-500/15 text-amber-300 border border-amber-500/30">
+                <span className={`px-2 py-0.5 text-[10px] rounded-md border ${
+                  isDark
+                    ? 'bg-white/[0.08] text-stone-200 border-white/15'
+                    : 'bg-[#F3F3F1] text-[#111214] border-black/[0.08]'
+                }`}>
                   Elementary Vocabulary
                 </span>
               )}
             </div>
-            <h2 className="text-2xl font-bold font-serif text-stone-900 dark:text-stone-100">
+            <h2 className={`text-2xl font-bold font-serif ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
               Live Conversational Arabic with Noor
             </h2>
-            <p className="text-sm text-stone-500 dark:text-stone-400 mt-0.5">
+            <p className={`text-sm mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               Natural real-time dialogue. Control pace, difficulty, translation, explanations, and instant corrections on demand.
             </p>
           </div>
@@ -246,7 +260,9 @@ export const LiveArabicView: React.FC<LiveArabicViewProps> = ({ isDark, language
               className={`px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 shadow-xs transition-all ${
                 isListening
                   ? 'bg-rose-500 text-white animate-pulse'
-                  : 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/25'
+                  : isDark
+                  ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/25'
+                  : 'bg-emerald-50 text-emerald-700 border border-emerald-300 hover:bg-emerald-100'
               }`}
             >
               {isListening ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
@@ -259,7 +275,11 @@ export const LiveArabicView: React.FC<LiveArabicViewProps> = ({ isDark, language
                 const last = exchanges.slice().reverse().find(e => e.sender === 'noor');
                 if (last) speakArabic(last.arabic, { rate: speechRate });
               }}
-              className="px-3 py-2 rounded-xl text-xs font-semibold bg-stone-500/10 hover:bg-stone-500/20 text-stone-300 border border-white/5 flex items-center gap-1.5"
+              className={`px-3 py-2 rounded-xl text-xs font-semibold border flex items-center gap-1.5 transition-colors ${
+                isDark
+                  ? 'bg-white/[0.06] hover:bg-white/10 text-stone-300 border-white/[0.08]'
+                  : 'bg-[#F3F3F1] hover:bg-black/[0.08] text-[#3F4248] border-black/[0.08]'
+              }`}
             >
               <Volume2 className="w-3.5 h-3.5" />
               <span>Listen</span>
@@ -268,7 +288,11 @@ export const LiveArabicView: React.FC<LiveArabicViewProps> = ({ isDark, language
             {/* Repeat */}
             <button
               onClick={() => handleTriggerTurn(undefined, 'repeat')}
-              className="px-3 py-2 rounded-xl text-xs font-semibold bg-stone-500/10 hover:bg-stone-500/20 text-stone-300 border border-white/5 flex items-center gap-1.5"
+              className={`px-3 py-2 rounded-xl text-xs font-semibold border flex items-center gap-1.5 transition-colors ${
+                isDark
+                  ? 'bg-white/[0.06] hover:bg-white/10 text-stone-300 border-white/[0.08]'
+                  : 'bg-[#F3F3F1] hover:bg-black/[0.08] text-[#3F4248] border-black/[0.08]'
+              }`}
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Repeat</span>
@@ -279,8 +303,12 @@ export const LiveArabicView: React.FC<LiveArabicViewProps> = ({ isDark, language
               onClick={() => handleTriggerTurn(undefined, 'slow_down')}
               className={`px-3 py-2 rounded-xl text-xs font-semibold border transition-all flex items-center gap-1.5 ${
                 isSlowMode
-                  ? 'border-blue-500/50 bg-blue-500/20 text-blue-300'
-                  : 'border-white/5 bg-stone-500/10 text-stone-300 hover:bg-stone-500/20'
+                  ? isDark
+                    ? 'border-sky-500/50 bg-sky-500/20 text-sky-300'
+                    : 'border-sky-300 bg-sky-50 text-sky-700'
+                  : isDark
+                  ? 'border-white/[0.08] bg-white/[0.06] text-stone-300 hover:bg-white/10'
+                  : 'border-black/[0.08] bg-[#F3F3F1] text-[#3F4248] hover:bg-black/[0.08]'
               }`}
             >
               <Gauge className="w-3.5 h-3.5" />
@@ -290,55 +318,79 @@ export const LiveArabicView: React.FC<LiveArabicViewProps> = ({ isDark, language
         </div>
 
         {/* Secondary Action Toolbar: Make easier, Explain, Translate, Correct me, Test me */}
-        <div className="mt-4 pt-4 border-t border-stone-200/50 dark:border-white/5 flex flex-wrap items-center gap-2">
-          <span className="text-xs text-stone-500 mr-1">Noor AI Controls:</span>
+        <div className={`mt-4 pt-4 border-t flex flex-wrap items-center gap-2 ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
+          <span className={`text-xs mr-1 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>Noor AI Controls:</span>
 
           <button
             onClick={() => handleTriggerTurn(undefined, 'make_easier')}
-            className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-stone-500/10 hover:bg-[#C9A063]/20 text-stone-300 hover:text-[#DFBA7F] border border-white/5 transition-all flex items-center gap-1"
+            className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all flex items-center gap-1 ${
+              isDark
+                ? 'bg-white/[0.06] hover:bg-white/10 text-stone-200 border-white/[0.08]'
+                : 'bg-[#F3F3F1] hover:bg-black/[0.08] text-[#111214] border-black/[0.08]'
+            }`}
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+            <Sparkles className="w-3.5 h-3.5" />
             <span>Make easier</span>
           </button>
 
           <button
             onClick={() => handleTriggerTurn(undefined, 'explain')}
-            className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-stone-500/10 hover:bg-[#C9A063]/20 text-stone-300 hover:text-[#DFBA7F] border border-white/5 transition-all flex items-center gap-1"
+            className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all flex items-center gap-1 ${
+              isDark
+                ? 'bg-white/[0.06] hover:bg-white/10 text-stone-200 border-white/[0.08]'
+                : 'bg-[#F3F3F1] hover:bg-black/[0.08] text-[#111214] border-black/[0.08]'
+            }`}
           >
-            <HelpCircle className="w-3.5 h-3.5 text-blue-300" />
+            <HelpCircle className={`w-3.5 h-3.5 ${isDark ? 'text-sky-300' : 'text-sky-600'}`} />
             <span>Explain</span>
           </button>
 
           <button
             onClick={() => handleTriggerTurn(undefined, 'translate')}
-            className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-stone-500/10 hover:bg-[#C9A063]/20 text-stone-300 hover:text-[#DFBA7F] border border-white/5 transition-all flex items-center gap-1"
+            className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all flex items-center gap-1 ${
+              isDark
+                ? 'bg-white/[0.06] hover:bg-white/10 text-stone-200 border-white/[0.08]'
+                : 'bg-[#F3F3F1] hover:bg-black/[0.08] text-[#111214] border-black/[0.08]'
+            }`}
           >
-            <Languages className="w-3.5 h-3.5 text-emerald-300" />
+            <Languages className={`w-3.5 h-3.5 ${isDark ? 'text-emerald-300' : 'text-emerald-600'}`} />
             <span>Translate</span>
           </button>
 
           <button
             onClick={() => handleTriggerTurn(inputVal || 'كَتَبْتُ الدَّرْسِ', 'correct_me')}
-            className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-stone-500/10 hover:bg-[#C9A063]/20 text-stone-300 hover:text-[#DFBA7F] border border-white/5 transition-all flex items-center gap-1"
+            className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all flex items-center gap-1 ${
+              isDark
+                ? 'bg-white/[0.06] hover:bg-white/10 text-stone-200 border-white/[0.08]'
+                : 'bg-[#F3F3F1] hover:bg-black/[0.08] text-[#111214] border-black/[0.08]'
+            }`}
           >
-            <CheckCircle2 className="w-3.5 h-3.5 text-purple-300" />
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
             <span>Correct me</span>
           </button>
 
           <button
             onClick={() => handleTriggerTurn(undefined, 'test_me')}
-            className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-stone-500/10 hover:bg-[#C9A063]/20 text-stone-300 hover:text-[#DFBA7F] border border-white/5 transition-all flex items-center gap-1"
+            className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all flex items-center gap-1 ${
+              isDark
+                ? 'bg-white/[0.06] hover:bg-white/10 text-stone-200 border-white/[0.08]'
+                : 'bg-[#F3F3F1] hover:bg-black/[0.08] text-[#111214] border-black/[0.08]'
+            }`}
           >
-            <FileQuestion className="w-3.5 h-3.5 text-rose-300" />
+            <FileQuestion className="w-3.5 h-3.5 text-rose-500" />
             <span>Test me</span>
           </button>
         </div>
       </div>
 
       {speechError && (
-        <div className="px-4 py-2.5 rounded-xl border border-amber-500/20 bg-amber-500/10 text-amber-300 text-xs flex items-center justify-between">
+        <div className={`px-4 py-2.5 rounded-xl border text-xs flex items-center justify-between ${
+          isDark
+            ? 'border-sky-500/20 bg-sky-500/10 text-sky-300'
+            : 'border-sky-300 bg-sky-50 text-sky-800'
+        }`}>
           <span>{speechError}</span>
-          <button onClick={() => setSpeechError(null)} className="text-stone-400">
+          <button onClick={() => setSpeechError(null)} className={isDark ? 'text-stone-300' : 'text-sky-700 font-medium'}>
             Dismiss
           </button>
         </div>
@@ -347,7 +399,7 @@ export const LiveArabicView: React.FC<LiveArabicViewProps> = ({ isDark, language
       {/* Live Conversation Stream */}
       <div
         className={`rounded-2xl border flex flex-col h-[500px] overflow-hidden ${
-          isDark ? 'bg-[#101318] border-white/5' : 'bg-white border-stone-200 shadow-sm'
+          isDark ? 'bg-[#14161A] border-white/[0.08]' : 'bg-white border-black/[0.08] shadow-sm'
         }`}
       >
         <div className="flex-1 overflow-y-auto p-5 space-y-4">
@@ -359,7 +411,9 @@ export const LiveArabicView: React.FC<LiveArabicViewProps> = ({ isDark, language
                 className={`flex gap-3 max-w-2xl ${isNoor ? 'mr-auto' : 'ml-auto flex-row-reverse'}`}
               >
                 {isNoor && (
-                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#DFBA7F] to-[#C9A063] flex items-center justify-center text-[#080A0E] text-xs font-bold flex-shrink-0 mt-1">
+                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs font-bold flex-shrink-0 mt-1 ${
+                    isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+                  }`}>
                     ن
                   </div>
                 )}
@@ -368,44 +422,70 @@ export const LiveArabicView: React.FC<LiveArabicViewProps> = ({ isDark, language
                   className={`p-4 rounded-2xl border text-sm space-y-2 ${
                     isNoor
                       ? isDark
-                        ? 'bg-stone-900/80 border-white/5 text-stone-200'
-                        : 'bg-stone-50 border-stone-200 text-stone-800'
-                      : 'bg-[#C9A063]/20 border-[#C9A063]/30 text-stone-100'
+                        ? 'bg-[#1B1D23] border-white/[0.08] text-stone-200'
+                        : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+                      : isDark
+                      ? 'bg-white/[0.1] border-white/20 text-white'
+                      : 'bg-[#111214] border-[#111214] text-white'
                   }`}
                 >
                   <div className="flex items-center justify-between gap-4">
-                    <span className="text-xs font-semibold text-[#DFBA7F]">
+                    <span className={`text-xs font-semibold ${
+                      isNoor ? (isDark ? 'text-white' : 'text-[#111214]') : 'text-white/90'
+                    }`}>
                       {isNoor ? 'Noor AI (Live)' : 'You'}
                     </span>
                     {ex.actionTag && (
-                      <span className="px-2 py-0.5 text-[10px] rounded-md bg-[#DFBA7F]/20 text-[#DFBA7F] border border-[#DFBA7F]/30">
+                      <span className={`px-2 py-0.5 text-[10px] rounded-md border ${
+                        isNoor
+                          ? isDark
+                            ? 'bg-white/[0.08] text-white border-white/15'
+                            : 'bg-white text-[#111214] border-black/[0.08]'
+                          : 'bg-white/15 text-white border-white/20'
+                      }`}>
                         {ex.actionTag}
                       </span>
                     )}
                     <button
                       onClick={() => speakArabic(ex.arabic, { rate: speechRate })}
-                      className="text-stone-400 hover:text-[#DFBA7F]"
+                      className={
+                        isNoor
+                          ? isDark ? 'text-stone-400 hover:text-white' : 'text-[#5A5D63] hover:text-[#111214]'
+                          : 'text-white/80 hover:text-white'
+                      }
                     >
                       <Volume2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
 
-                  <p className="text-2xl font-serif text-right text-stone-100 leading-relaxed select-text">
+                  <p className={`text-2xl font-serif text-right leading-relaxed select-text ${
+                    isNoor ? (isDark ? 'text-[#F3F4F6]' : 'text-[#111214]') : 'text-white'
+                  }`}>
                     {ex.arabic}
                   </p>
 
                   {ex.transliteration && (
-                    <p className="text-xs text-stone-400 italic">{ex.transliteration}</p>
+                    <p className={`text-xs italic ${
+                      isNoor ? (isDark ? 'text-stone-400' : 'text-[#5A5D63]') : 'text-white/80'
+                    }`}>{ex.transliteration}</p>
                   )}
 
                   {ex.english && (
-                    <p className="text-xs text-stone-500 dark:text-stone-400 border-t border-white/5 pt-1.5">
+                    <p className={`text-xs border-t pt-1.5 ${
+                      isNoor
+                        ? isDark ? 'text-stone-400 border-white/[0.08]' : 'text-[#5A5D63] border-black/[0.08]'
+                        : 'text-white/80 border-white/15'
+                    }`}>
                       {ex.english}
                     </p>
                   )}
 
                   {ex.notes && (
-                    <div className="p-2 rounded-xl bg-stone-500/10 text-xs text-stone-300">
+                    <div className={`p-2 rounded-xl text-xs ${
+                      isNoor
+                        ? isDark ? 'bg-white/[0.06] text-stone-300' : 'bg-white text-[#3F4248]'
+                        : 'bg-white/10 text-white/90'
+                    }`}>
                       {ex.notes}
                     </div>
                   )}
@@ -416,11 +496,15 @@ export const LiveArabicView: React.FC<LiveArabicViewProps> = ({ isDark, language
 
           {isProcessing && (
             <div className="flex gap-3 max-w-md mr-auto">
-              <div className="w-8 h-8 rounded-xl bg-[#DFBA7F] flex items-center justify-center text-[#080A0E] text-xs font-bold">
+              <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs font-bold ${
+                isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+              }`}>
                 ن
               </div>
-              <div className="p-3.5 rounded-2xl bg-stone-900/60 border border-white/5 text-xs text-stone-400 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#DFBA7F] animate-pulse" />
+              <div className={`p-3.5 rounded-2xl border text-xs flex items-center gap-2 ${
+                isDark ? 'bg-[#1B1D23] border-white/[0.08] text-stone-300' : 'bg-[#F3F3F1] border-black/[0.08] text-[#3F4248]'
+              }`}>
+                <span className={`w-2 h-2 rounded-full animate-pulse ${isDark ? 'bg-white' : 'bg-[#111214]'}`} />
                 <span>Noor is adapting and responding in Arabic...</span>
               </div>
             </div>
@@ -430,7 +514,9 @@ export const LiveArabicView: React.FC<LiveArabicViewProps> = ({ isDark, language
         </div>
 
         {/* Live Input Field */}
-        <div className="p-4 border-t border-stone-200/50 dark:border-white/5 bg-black/20 flex items-center gap-2">
+        <div className={`p-4 border-t flex items-center gap-2 ${
+          isDark ? 'border-white/[0.08] bg-[#14161A]' : 'border-black/[0.08] bg-[#FCFCFA]'
+        }`}>
           <input
             type="text"
             value={inputVal}
@@ -440,14 +526,18 @@ export const LiveArabicView: React.FC<LiveArabicViewProps> = ({ isDark, language
             dir="auto"
             className={`flex-1 px-4 py-3 rounded-2xl border text-sm focus:outline-hidden ${
               isDark
-                ? 'bg-stone-900 border-white/10 text-stone-100 placeholder-stone-500 focus:border-[#C9A063]'
-                : 'bg-stone-50 border-stone-200 text-stone-900 placeholder-stone-400 focus:border-[#C9A063]'
+                ? 'bg-[#1B1D23] border-white/10 text-[#F3F4F6] placeholder-stone-500 focus:border-white/30'
+                : 'bg-white border-black/[0.08] text-[#111214] placeholder-[#6B6F76] focus:border-[#111214]'
             }`}
           />
           <button
             onClick={() => handleTriggerTurn()}
             disabled={!inputVal.trim() || isProcessing}
-            className="p-3 rounded-2xl bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] hover:opacity-90 disabled:opacity-30 transition-all"
+            className={`p-3 rounded-2xl disabled:opacity-30 transition-all ${
+              isDark
+                ? 'bg-white text-[#111214] hover:bg-stone-200'
+                : 'bg-[#111214] text-white hover:bg-[#27292D]'
+            }`}
           >
             <Send className="w-5 h-5" />
           </button>

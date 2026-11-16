@@ -269,34 +269,36 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
   return (
     <div
       id="tasmee3-modal-overlay"
-      className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-5 bg-black/85 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-5 bg-black/80 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto"
     >
       <div
         id="tasmee3-modal-container"
         className={`relative w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-3xl border shadow-2xl p-4 sm:p-7 flex flex-col justify-between transition-all transform-gpu my-auto ${
           isDark
-            ? 'bg-[#0E1217]/95 border-[#C9A063]/35 text-stone-100 shadow-[0_20px_60px_rgba(0,0,0,0.9)]'
-            : 'bg-white/95 border-[#C9A063]/30 text-stone-900 shadow-xl'
+            ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6] shadow-[0_20px_60px_rgba(0,0,0,0.85)]'
+            : 'bg-white border-black/[0.08] text-[#111214] shadow-xl'
         }`}
       >
-        {/* ========================================================================= */}
-        {/* TOP BRANDING BAR                                                          */}
-        {/* ========================================================================= */}
-        <div className="flex items-center justify-between pb-3.5 border-b border-[#C9A063]/20 mb-4">
+        {/* TOP BRANDING BAR */}
+        <div className={`flex items-center justify-between pb-3.5 border-b mb-4 ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#C9A063]/30 to-[#DFBA7F]/10 border border-[#C9A063]/40 flex items-center justify-center shadow-sm">
-              <Mic className="w-5 h-5 text-[#DFBA7F]" />
+            <div className={`w-10 h-10 rounded-2xl border flex items-center justify-center shadow-sm ${
+              isDark ? 'bg-[#1B1D23] border-white/[0.1] text-white' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+            }`}>
+              <Mic className={`w-5 h-5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-base sm:text-lg font-serif-heading font-bold text-[#DFBA7F]">
+                <h2 className={`text-base sm:text-lg font-serif-heading font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                   {isArabic ? 'تسميع القرآن الصوتي' : 'Tasme3 2.0'}
                 </h2>
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#C9A063]/20 text-[#DFBA7F] font-semibold">
+                <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold border ${
+                  isDark ? 'bg-white/[0.06] border-white/[0.1] text-[#F3F4F6]' : 'bg-[#F3F3F1] border-black/[0.08] text-[#3F4248]'
+                }`}>
                   {isArabic ? 'استماع وتتبع التلاوة' : 'Qur’an Recitation Listening'}
                 </span>
               </div>
-              <p className="text-[11px] text-stone-400">
+              <p className={`text-[11px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 {isArabic
                   ? 'تتبع مستمر للتلاوة مع كشف الكلمات والآيات في القرآن الكريم'
                   : 'Continuous recitation tracking with Qur’anic Arabic mistake analysis'}
@@ -307,40 +309,38 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
           <button
             id="btn-close-tasmee3"
             onClick={handleClose}
-            className="p-1.5 rounded-xl text-stone-400 hover:text-stone-200 hover:bg-stone-800/50 active:scale-90 transition-all"
+            className={`p-1.5 rounded-xl active:scale-90 transition-all ${
+              isDark ? 'text-stone-400 hover:text-white hover:bg-white/[0.06]' : 'text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.04]'
+            }`}
             title={isArabic ? 'إغلاق التسميع' : 'Close Tasmee3'}
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* ========================================================================= */}
-        {/* VIEW 1: CHOOSE EXACTLY WHAT YOU WANT TO RECITE                            */}
-        {/* ========================================================================= */}
+        {/* VIEW 1: CHOOSE EXACTLY WHAT YOU WANT TO RECITE */}
         {viewMode === 'setup' && (
           <div className="space-y-5">
-            {/* Step Explanation Banner */}
             <div
               className={`p-4 rounded-2xl border text-xs leading-relaxed space-y-1 ${
-                isDark ? 'bg-[#141A22]/80 border-[#C9A063]/25 text-stone-300' : 'bg-amber-50/70 border-amber-200 text-stone-700'
+                isDark ? 'bg-[#1B1D23] border-white/[0.08] text-stone-300' : 'bg-[#F3F3F1] border-black/[0.08] text-[#3F4248]'
               }`}
             >
-              <div className="flex items-center gap-1.5 font-bold text-[#DFBA7F]">
+              <div className={`flex items-center gap-1.5 font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>{isArabic ? 'اختر نطاق التسميع المبارك:' : 'Choose your recitation range:'}</span>
               </div>
-              <p className="text-stone-400 text-[11px]">
+              <p className={`text-[11px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 {isArabic
                   ? 'اختر السورة والآيات التي تريد تسميعها. عند البدء، يستمع نور لتلاوتك بشكل متواصل دون مقاطعة.'
                   : 'Select a Surah and choose your exact starting and ending Ayah. When you start, Noor listens continuously with no interruptions.'}
               </p>
             </div>
 
-            {/* Surah Selector */}
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-[#DFBA7F] flex items-center justify-between">
+              <label className={`text-xs font-semibold flex items-center justify-between ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                 <span>{isArabic ? 'اختيار السورة الكريمة:' : 'Select Surah:'}</span>
-                <span className="font-arabic text-sm text-[#DFBA7F]">{selectedSurah.name}</span>
+                <span className={`font-arabic text-sm ${isDark ? 'text-white' : 'text-[#111214]'}`}>{selectedSurah.name}</span>
               </label>
               <select
                 id="tasmee3-surah-select"
@@ -355,17 +355,17 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
                     setCurrentVerse(1);
                   }
                 }}
-                className={`w-full p-3 rounded-2xl text-xs font-medium border transition-all focus:outline-none focus:ring-2 focus:ring-[#C9A063]/50 ${
+                className={`w-full p-3 rounded-2xl text-xs font-medium border transition-all focus:outline-none focus:ring-2 ${
                   isDark
-                    ? 'bg-[#12161D] border-[#C9A063]/30 text-stone-100'
-                    : 'bg-stone-50 border-stone-300 text-stone-900'
+                    ? 'bg-[#0B0C0E] border-white/[0.1] text-[#F3F4F6] focus:ring-white/25'
+                    : 'bg-[#F3F3F1] border-black/[0.1] text-[#111214] focus:ring-black/20'
                 }`}
               >
                 {ALL_SURAHS.map((s) => (
                   <option
                     key={s.number}
                     value={s.number}
-                    className={isDark ? 'bg-stone-900 text-stone-100' : 'bg-white text-stone-900'}
+                    className={isDark ? 'bg-[#14161A] text-[#F3F4F6]' : 'bg-white text-[#111214]'}
                   >
                     {s.number}. {isArabic ? `سورة ${s.name}` : `${s.englishName} (${s.name})`} — {s.numberOfAyahs} {isArabic ? 'آيات' : 'Ayahs'}
                   </option>
@@ -373,17 +373,15 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
               </select>
             </div>
 
-            {/* Coordinated From Ayah & To Ayah Controls */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* From Ayah */}
               <div
                 className={`p-3.5 rounded-2xl border space-y-2 ${
-                  isDark ? 'bg-[#12161D]/70 border-[#C9A063]/25' : 'bg-stone-50 border-stone-200'
+                  isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-semibold text-[#DFBA7F]">{isArabic ? 'من الآية:' : 'From Ayah:'}</label>
-                  <span className="font-mono text-xs font-bold text-[#DFBA7F]">{isArabic ? `الآية ${fromAyah}` : `Ayah ${fromAyah}`}</span>
+                  <label className={`text-xs font-semibold ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>{isArabic ? 'من الآية:' : 'From Ayah:'}</label>
+                  <span className={`font-mono text-xs font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>{isArabic ? `الآية ${fromAyah}` : `Ayah ${fromAyah}`}</span>
                 </div>
                 <input
                   id="tasmee3-from-ayah-slider"
@@ -396,23 +394,22 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
                     setFromAyah(val);
                     if (val > toAyah) setToAyah(val);
                   }}
-                  className="w-full accent-[#C9A063] cursor-pointer h-2 bg-stone-700/60 rounded-lg"
+                  className={`w-full cursor-pointer h-2 rounded-lg ${isDark ? 'accent-white bg-white/[0.12]' : 'accent-[#111214] bg-black/[0.12]'}`}
                 />
-                <div className="flex items-center justify-between text-[10px] text-stone-400 font-mono">
+                <div className={`flex items-center justify-between text-[10px] font-mono ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                   <span>{isArabic ? 'الآية ١' : 'Ayah 1'}</span>
                   <span>{isArabic ? `الأقصى: الآية ${toAyah}` : `Max: Ayah ${toAyah}`}</span>
                 </div>
               </div>
 
-              {/* To Ayah */}
               <div
                 className={`p-3.5 rounded-2xl border space-y-2 ${
-                  isDark ? 'bg-[#12161D]/70 border-[#C9A063]/25' : 'bg-stone-50 border-stone-200'
+                  isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-semibold text-[#DFBA7F]">{isArabic ? 'إلى الآية:' : 'To Ayah:'}</label>
-                  <span className="font-mono text-xs font-bold text-emerald-400">{isArabic ? `الآية ${toAyah}` : `Ayah ${toAyah}`}</span>
+                  <label className={`text-xs font-semibold ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>{isArabic ? 'إلى الآية:' : 'To Ayah:'}</label>
+                  <span className={`font-mono text-xs font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>{isArabic ? `الآية ${toAyah}` : `Ayah ${toAyah}`}</span>
                 </div>
                 <input
                   id="tasmee3-to-ayah-slider"
@@ -424,9 +421,9 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
                     const val = Number(e.target.value);
                     setToAyah(val);
                   }}
-                  className="w-full accent-emerald-500 cursor-pointer h-2 bg-stone-700/60 rounded-lg"
+                  className={`w-full accent-emerald-500 cursor-pointer h-2 rounded-lg ${isDark ? 'bg-stone-700/60' : 'bg-stone-200'}`}
                 />
-                <div className="flex items-center justify-between text-[10px] text-stone-400 font-mono">
+                <div className={`flex items-center justify-between text-[10px] font-mono ${isDark ? 'text-stone-400' : 'text-stone-600'}`}>
                   <span>{isArabic ? `الأدنى: الآية ${fromAyah}` : `Min: Ayah ${fromAyah}`}</span>
                   <span>{isArabic ? `نهاية السورة: ${selectedSurah.numberOfAyahs}` : `End of Surah: ${selectedSurah.numberOfAyahs}`}</span>
                 </div>
@@ -435,15 +432,15 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
 
             {/* Quick Range Presets */}
             <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="text-[11px] text-stone-400">{isArabic ? 'نطاق سريع:' : 'Quick Range:'}</span>
+              <span className={`text-[11px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{isArabic ? 'نطاق سريع:' : 'Quick Range:'}</span>
               <button
                 onClick={() => handleSetPreset('1-5')}
                 className={`px-2.5 py-1 rounded-xl text-[11px] font-semibold border transition-all active:scale-95 ${
                   fromAyah === 1 && toAyah === 5
-                    ? 'bg-[#C9A063]/30 text-[#DFBA7F] border-[#C9A063]'
+                    ? isDark ? 'bg-white text-[#111214] border-white' : 'bg-[#111214] text-white border-[#111214]'
                     : isDark
-                    ? 'bg-stone-900/60 text-stone-400 border-white/10'
-                    : 'bg-stone-100 text-stone-600 border-stone-200'
+                    ? 'bg-[#1B1D23] text-stone-300 border-white/[0.08] hover:bg-white/[0.08]'
+                    : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.08] hover:bg-black/[0.05]'
                 }`}
               >
                 {isArabic ? 'الآيات ١ ← ٥' : 'Ayah 1 → 5'}
@@ -452,10 +449,10 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
                 onClick={() => handleSetPreset('1-10')}
                 className={`px-2.5 py-1 rounded-xl text-[11px] font-semibold border transition-all active:scale-95 ${
                   fromAyah === 1 && toAyah === 10
-                    ? 'bg-[#C9A063]/30 text-[#DFBA7F] border-[#C9A063]'
+                    ? isDark ? 'bg-white text-[#111214] border-white' : 'bg-[#111214] text-white border-[#111214]'
                     : isDark
-                    ? 'bg-stone-900/60 text-stone-400 border-white/10'
-                    : 'bg-stone-100 text-stone-600 border-stone-200'
+                    ? 'bg-[#1B1D23] text-stone-300 border-white/[0.08] hover:bg-white/[0.08]'
+                    : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.08] hover:bg-black/[0.05]'
                 }`}
               >
                 {isArabic ? 'الآيات ١ ← ١٠' : 'Ayah 1 → 10'}
@@ -465,10 +462,10 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
                   onClick={() => handleSetPreset('1-20')}
                   className={`px-2.5 py-1 rounded-xl text-[11px] font-semibold border transition-all active:scale-95 ${
                     fromAyah === 1 && toAyah === 20
-                      ? 'bg-[#C9A063]/30 text-[#DFBA7F] border-[#C9A063]'
+                      ? isDark ? 'bg-white text-[#111214] border-white' : 'bg-[#111214] text-white border-[#111214]'
                       : isDark
-                      ? 'bg-stone-900/60 text-stone-400 border-white/10'
-                      : 'bg-stone-100 text-stone-600 border-stone-200'
+                      ? 'bg-[#1B1D23] text-stone-300 border-white/[0.08] hover:bg-white/[0.08]'
+                      : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.08] hover:bg-black/[0.05]'
                   }`}
                 >
                   {isArabic ? 'الآيات ١ ← ٢٠' : 'Ayah 1 → 20'}
@@ -478,64 +475,68 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
                 onClick={() => handleSetPreset('full')}
                 className={`px-2.5 py-1 rounded-xl text-[11px] font-semibold border transition-all active:scale-95 ${
                   fromAyah === 1 && toAyah === selectedSurah.numberOfAyahs
-                    ? 'bg-[#C9A063]/30 text-[#DFBA7F] border-[#C9A063]'
+                    ? isDark ? 'bg-white text-[#111214] border-white' : 'bg-[#111214] text-white border-[#111214]'
                     : isDark
-                    ? 'bg-stone-900/60 text-stone-400 border-white/10'
-                    : 'bg-stone-100 text-stone-600 border-stone-200'
+                    ? 'bg-[#1B1D23] text-stone-300 border-white/[0.08] hover:bg-white/[0.08]'
+                    : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.08] hover:bg-black/[0.05]'
                 }`}
               >
                 {isArabic ? `كامل السورة (١ ← ${selectedSurah.numberOfAyahs})` : `Entire Surah (1 → ${selectedSurah.numberOfAyahs})`}
               </button>
             </div>
 
-            {/* Clear Selected Range Preview Card (Requirement 1) */}
             <div
               className={`p-4 rounded-3xl border transition-all ${
                 isDark
-                  ? 'bg-gradient-to-r from-[#141A22] to-[#0A0D11] border-[#C9A063]/35 shadow-inner'
-                  : 'bg-gradient-to-r from-amber-50/70 to-white border-[#C9A063]/30'
+                  ? 'bg-[#1B1D23] border-white/[0.1]'
+                  : 'bg-[#F3F3F1] border-black/[0.08]'
               }`}
             >
-              <div className="flex items-center justify-between pb-2 border-b border-[#C9A063]/15">
-                <span className="text-[11px] text-stone-400 uppercase tracking-wider">
+              <div className={`flex items-center justify-between pb-2 border-b ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
+                <span className={`text-[11px] uppercase tracking-wider ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                   {isArabic ? 'النطاق المحدد' : 'Selected Range'}
                 </span>
-                <span className="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-bold font-mono">
+                <span className={`text-xs px-2.5 py-0.5 rounded-full border font-bold font-mono ${
+                  isDark ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400' : 'bg-emerald-50 border-emerald-300 text-emerald-700'
+                }`}>
                   {isArabic ? `${totalRangeCount} آيات في الجلسة` : `${totalRangeCount} Ayahs in session`}
                 </span>
               </div>
 
               <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                 <div>
-                  <h3 className="text-base sm:text-lg font-serif-heading font-bold text-[#DFBA7F]">
+                  <h3 className={`text-base sm:text-lg font-serif-heading font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                     {isArabic ? `سورة ${selectedSurah.name} · الآيات ${fromAyah} ← ${toAyah}` : `Surah ${selectedSurah.englishName} · Ayah ${fromAyah} → Ayah ${toAyah}`}
                   </h3>
                   {!isArabic && (
-                    <p className="text-xs text-stone-400">
+                    <p className={`text-xs ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                       {selectedSurah.englishNameTranslation} • {selectedSurah.revelationType}
                     </p>
                   )}
                 </div>
-                <div dir="rtl" className="font-arabic text-xl sm:text-2xl text-[#DFBA7F]">
+                <div dir="rtl" className={`font-arabic text-xl sm:text-2xl ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                   سُورَةُ {selectedSurah.name} (الآيات {fromAyah}–{toAyah})
                 </div>
               </div>
             </div>
 
             {errorMessage && (
-              <div className="p-3 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />
+              <div className={`p-3 rounded-2xl border text-xs flex items-center gap-2 ${
+                isDark ? 'bg-rose-500/10 border-rose-500/30 text-rose-300' : 'bg-rose-50 border-rose-300 text-rose-700'
+              }`}>
+                <AlertCircle className={`w-4 h-4 shrink-0 ${isDark ? 'text-rose-400' : 'text-rose-600'}`} />
                 <span>{errorMessage}</span>
               </div>
             )}
 
-            {/* Start Tasmee3 Button */}
             <div className="pt-1">
               <button
                 id="btn-start-tasmee3-session"
                 onClick={handleStartSession}
                 disabled={isLoadingAyahs}
-                className="w-full py-4 rounded-2xl bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] text-[#090B0E] font-bold text-sm shadow-lg hover:shadow-[0_0_25px_rgba(201,160,99,0.5)] active:scale-98 transition-all flex items-center justify-center gap-2"
+                className={`w-full py-4 rounded-2xl font-bold text-sm shadow-sm active:scale-98 transition-all flex items-center justify-center gap-2 ${
+                  isDark ? 'bg-white hover:bg-stone-200 text-[#111214]' : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                }`}
               >
                 <Mic className="w-4 h-4" />
                 <span>{isArabic ? `بدء التسميع (الآيات ${fromAyah} ← ${toAyah})` : `Start Tasme3 (Ayah ${fromAyah} → ${toAyah})`}</span>
@@ -544,24 +545,23 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
           </div>
         )}
 
-        {/* ========================================================================= */}
-        {/* VIEW 2: PERMISSION REQUEST INFO                                           */}
-        {/* ========================================================================= */}
         {viewMode === 'permission_info' && (
           <div className="space-y-4 py-4 text-center">
-            <div className="w-14 h-14 rounded-3xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center mx-auto text-amber-400">
+            <div className={`w-14 h-14 rounded-3xl border flex items-center justify-center mx-auto ${
+              isDark ? 'bg-[#1B1D23] border-white/[0.12] text-white' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+            }`}>
               <MicOff className="w-7 h-7" />
             </div>
-            <h3 className="text-base font-serif-heading font-bold text-[#DFBA7F]">
+            <h3 className={`text-base font-serif-heading font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
               {isArabic ? 'إذن استخدام الميكروفون مطلوب' : 'Microphone Access Required'}
             </h3>
-            <div className="max-w-md mx-auto text-xs text-stone-300 leading-relaxed space-y-2">
+            <div className={`max-w-md mx-auto text-xs leading-relaxed space-y-2 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
               <p>
                 {isArabic
                   ? 'يستمع نظام التسميع لتلاوتك الكريمة بشكل متواصل لتتبع الآيات ورصد أي كلمة ساقطة أو مكررة بدقة.'
                   : 'Tasme3 continuously listens as you recite to detect each verse progression and identify skipped or repeated words in authentic Qur\'anic Arabic.'}
               </p>
-              <p className="text-[11px] text-stone-400">
+              <p className={`text-[11px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 {isArabic
                   ? '• تتم معالجة الصوت أثناء الجلسة فقط ولا يتم تخزينه أو مشاركته إطلاقاً.'
                   : '• Audio is processed strictly in your session and is never permanently stored or shared.'}
@@ -571,13 +571,17 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
             <div className="flex items-center justify-center gap-3 pt-3">
               <button
                 onClick={() => setViewMode('setup')}
-                className="px-4 py-2 rounded-xl border border-stone-700 text-xs font-semibold text-stone-300 hover:bg-stone-800 active:scale-95 transition-all"
+                className={`px-4 py-2 rounded-xl border text-xs font-semibold active:scale-95 transition-all ${
+                  isDark ? 'border-white/[0.1] text-stone-300 hover:bg-white/[0.06]' : 'border-black/[0.1] text-[#3F4248] hover:bg-black/[0.04]'
+                }`}
               >
                 {isArabic ? 'رجوع' : 'Back'}
               </button>
               <button
                 onClick={handleStartSession}
-                className="px-5 py-2 rounded-xl bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] text-[#090B0E] font-bold text-xs shadow-md active:scale-95 transition-all flex items-center gap-1.5"
+                className={`px-5 py-2 rounded-xl font-bold text-xs shadow-sm active:scale-95 transition-all flex items-center gap-1.5 ${
+                  isDark ? 'bg-white hover:bg-stone-200 text-[#111214]' : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                }`}
               >
                 <Mic className="w-3.5 h-3.5" />
                 <span>{isArabic ? 'السماح بالميكروفون والبدء' : 'Allow Microphone & Recite'}</span>
@@ -591,56 +595,52 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
         {/* ========================================================================= */}
         {viewMode === 'active' && (
           <div className="space-y-4">
-            {/* Live Status Header & Progress: "Ayah 7 / 10" */}
             <div
               className={`p-4 rounded-3xl border flex flex-col gap-2.5 ${
-                isDark ? 'bg-[#141A22]/90 border-[#C9A063]/30' : 'bg-amber-50/80 border-[#C9A063]/30'
+                isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
               }`}
             >
               <div className="flex items-center justify-between">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm sm:text-base font-mono font-bold text-[#DFBA7F]">
+                    <span className={`text-sm sm:text-base font-mono font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                       {isArabic ? `الآية ${currentVerse} من ${toAyah}` : `Ayah ${currentVerse} / ${toAyah}`}
                     </span>
-                    <span className="text-[10px] text-stone-400">
+                    <span className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                       ({isArabic ? `النطاق: ${fromAyah}–${toAyah}` : `Range: ${fromAyah}–${toAyah}`})
                     </span>
                   </div>
-                  <div className="text-[11px] text-stone-400 mt-0.5">
+                  <div className={`text-[11px] mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     {isArabic ? `سورة ${selectedSurah.name}` : `Surah ${selectedSurah.englishName} (${selectedSurah.name})`}
                   </div>
                 </div>
 
-                {/* Status indicator: 🟢 Listening... / Waiting / Paused */}
                 <div className="flex items-center gap-2">
                   <div
                     className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-semibold transition-all ${
                       status === 'listening'
                         ? isSilenceWaiting
-                          ? 'bg-amber-500/15 border-amber-500/40 text-amber-300'
-                          : 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.3)]'
+                          ? isDark ? 'bg-white/[0.08] border-white/[0.15] text-stone-300' : 'bg-white border-black/[0.12] text-[#3F4248]'
+                          : isDark ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.3)]' : 'bg-emerald-50 border-emerald-300 text-emerald-800 shadow-xs'
                         : status === 'paused'
-                        ? 'bg-amber-500/15 border-amber-500/40 text-amber-300'
-                        : 'bg-stone-800 border-stone-700 text-stone-400'
+                        ? isDark ? 'bg-white/[0.08] border-white/[0.15] text-stone-300' : 'bg-white border-black/[0.12] text-[#3F4248]'
+                        : isDark ? 'bg-[#0B0C0E] border-white/[0.08] text-stone-400' : 'bg-white border-black/[0.08] text-[#5A5D63]'
                     }`}
                   >
                     <span
                       className={`w-2 h-2 rounded-full ${
                         status === 'listening'
                           ? isSilenceWaiting
-                            ? 'bg-amber-400'
-                            : 'bg-emerald-400 animate-ping'
-                          : status === 'paused'
-                          ? 'bg-amber-400'
-                          : 'bg-stone-500'
+                            ? isDark ? 'bg-stone-400' : 'bg-[#5A5D63]'
+                            : 'bg-emerald-500 animate-ping'
+                          : isDark ? 'bg-stone-500' : 'bg-[#6B6F76]'
                       }`}
                     />
                     <span>
                       {status === 'listening'
                         ? isSilenceWaiting
                           ? (isArabic ? 'يستمع... خذ وقتك بالسكينة' : 'Listening… Take your time')
-                          : (isArabic ? '🟢 يستمع لتلاوتك...' : '🟢 Listening...')
+                          : (isArabic ? 'يستمع لتلاوتك...' : 'Listening...')
                         : status === 'paused'
                         ? (isArabic ? 'متوقف مؤقتاً' : 'Paused')
                         : (isArabic ? 'متوقف' : 'Stopped')}
@@ -649,16 +649,14 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
                 </div>
               </div>
 
-              {/* Progress bar across selected range */}
-              <div className="w-full bg-stone-700/40 rounded-full h-1.5 overflow-hidden">
+              <div className={`w-full rounded-full h-1.5 overflow-hidden ${isDark ? 'bg-white/[0.08]' : 'bg-black/[0.08]'}`}>
                 <div
-                  className="h-full bg-gradient-to-r from-[#C9A063] to-emerald-400 rounded-full transition-all duration-300"
+                  className="h-full bg-emerald-500 rounded-full transition-all duration-300"
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
             </div>
 
-            {/* Audio-Reactive Voice Waveform Canvas */}
             <Tasmee3Waveform
               audioLevel={audioLevel}
               isListening={status === 'listening'}
@@ -667,59 +665,61 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
               height={52}
             />
 
-            {/* Detected Recitation Preview in Arabic */}
             <div
               className={`px-4 py-2 rounded-2xl border flex items-center justify-between gap-2 text-xs ${
-                isDark ? 'bg-[#0B0E14]/70 border-[#C9A063]/20' : 'bg-stone-100/80 border-stone-300'
+                isDark ? 'bg-[#0B0C0E] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
               }`}
             >
               <div className="flex items-center gap-2 truncate">
-                <Volume2 className="w-3.5 h-3.5 text-[#DFBA7F] shrink-0" />
-                <span className="text-stone-400 text-[10px] shrink-0">{isArabic ? 'ما تم رصده:' : 'Detected:'}</span>
-                <span dir="rtl" className="font-arabic text-sm text-[#DFBA7F] truncate">
+                <Volume2 className={`w-3.5 h-3.5 shrink-0 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
+                <span className={`text-[10px] shrink-0 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{isArabic ? 'ما تم رصده:' : 'Detected:'}</span>
+                <span dir="rtl" className={`font-arabic text-sm truncate ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                   {spokenTextPreview || (isArabic ? 'في انتظار تلاوتك الكريمة... اتلُ بوضوح' : 'Waiting for recitation... recite clearly')}
                 </span>
               </div>
-              <span className="text-[10px] text-stone-400 shrink-0 font-mono">
+              <span className={`text-[10px] shrink-0 font-mono ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                 {isArabic ? 'انتقال تلقائي مع التلاوة' : 'No next button required'}
               </span>
             </div>
 
-            {/* Highlighted Ayah Currently Being Recited (Majestic Arabic Typography) */}
             <div
               className={`p-5 sm:p-6 rounded-3xl border text-center transition-all ${
                 isDark
-                  ? 'bg-gradient-to-b from-[#141A22] to-[#0A0D11] border-[#C9A063]/40 shadow-inner'
-                  : 'bg-gradient-to-b from-amber-50/50 to-white border-[#C9A063]/30 shadow-sm'
+                  ? 'bg-[#0B0C0E] border-white/[0.08]'
+                  : 'bg-[#FCFCFA] border-black/[0.08] shadow-xs'
               }`}
             >
-              <div className="flex items-center justify-between text-xs text-stone-400 mb-3 pb-2 border-b border-[#C9A063]/15">
-                <span className="text-[#DFBA7F]">
+              <div className={`flex items-center justify-between text-xs mb-3 pb-2 border-b ${
+                isDark ? 'border-white/[0.08] text-stone-400' : 'border-black/[0.08] text-[#5A5D63]'
+              }`}>
+                <span className={`font-semibold ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                   {isArabic ? `الآية الحالية المطلوبة [الآية ${currentVerse}]` : `Currently Reciting [Ayah ${currentVerse}]`}
                 </span>
-                <span className="font-arabic text-[#DFBA7F] text-sm">
+                <span className={`font-arabic text-sm ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                   {selectedSurah.name} : {currentVerse}
                 </span>
               </div>
 
               {currentAyahObj ? (
                 <div className="space-y-4">
-                  {/* Majestic Arabic Text with Verse End Symbol */}
                   <div
                     dir="rtl"
-                    className="font-arabic text-2xl sm:text-3xl leading-[2.5] text-[#DFBA7F] font-normal tracking-wide px-2 select-text"
+                    className={`font-arabic text-2xl sm:text-3xl leading-[2.5] font-normal tracking-wide px-2 select-text ${
+                      isDark ? 'text-white' : 'text-[#111214]'
+                    }`}
                   >
                     {currentAyahObj.text}
-                    <span className="font-sans text-xs px-2.5 py-0.5 rounded-full border border-[#C9A063]/40 text-[#DFBA7F] mr-2 inline-block">
+                    <span className={`font-sans text-xs px-2.5 py-0.5 rounded-full border mr-2 inline-block ${
+                      isDark ? 'border-white/[0.2] text-[#F3F4F6]' : 'border-black/[0.15] text-[#111214]'
+                    }`}>
                       ۝{currentVerse}
                     </span>
                   </div>
 
-                  {/* Translation */}
                   {!isArabic && currentAyahObj.translation && (
                     <div
                       className={`text-xs sm:text-sm leading-relaxed max-w-xl mx-auto pt-3 border-t ${
-                        isDark ? 'border-[#C9A063]/15 text-stone-300' : 'border-stone-200 text-stone-700'
+                        isDark ? 'border-white/[0.08] text-stone-300' : 'border-black/[0.08] text-[#3F4248]'
                       }`}
                     >
                       {currentAyahObj.translation}
@@ -727,29 +727,33 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
                   )}
                 </div>
               ) : (
-                <div className="py-6 text-stone-400 text-xs">
+                <div className={`py-6 text-xs ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                   {isArabic ? 'جاري تحميل نص الآية الكريمة...' : 'Loading verse text...'}
                 </div>
               )}
 
-              {/* Upcoming Verse Queue Preview */}
               {nextAyahObj && currentVerse < toAyah && (
-                <div className="mt-4 pt-3 border-t border-[#C9A063]/15 flex items-center justify-between text-[11px] text-stone-400">
+                <div className={`mt-4 pt-3 border-t flex items-center justify-between text-[11px] ${
+                  isDark ? 'border-white/[0.08] text-stone-400' : 'border-black/[0.08] text-[#5A5D63]'
+                }`}>
                   <span>{isArabic ? `الآية التالية (${currentVerse + 1}):` : `Upcoming Ayah ${currentVerse + 1}:`}</span>
-                  <span dir="rtl" className="font-arabic text-[#DFBA7F]/80 truncate max-w-[280px]">
+                  <span dir="rtl" className={`font-arabic truncate max-w-[280px] ${isDark ? 'text-stone-300' : 'text-[#111214]'}`}>
                     {nextAyahObj.text}
                   </span>
                 </div>
               )}
             </div>
 
-            {/* Session Controls: Pause / Resume / Stop / Finish Review */}
             <div className="flex items-center justify-center gap-2 sm:gap-3 pt-1">
               {status === 'listening' ? (
                 <button
                   id="btn-tasmee3-pause"
                   onClick={handlePause}
-                  className="flex-1 sm:flex-initial px-5 py-2.5 rounded-2xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 font-semibold text-xs active:scale-95 transition-all flex items-center justify-center gap-1.5"
+                  className={`flex-1 sm:flex-initial px-5 py-2.5 rounded-2xl border font-semibold text-xs active:scale-95 transition-all flex items-center justify-center gap-1.5 ${
+                    isDark
+                      ? 'bg-[#1B1D23] hover:bg-white/[0.1] text-white border-white/[0.12]'
+                      : 'bg-[#F3F3F1] hover:bg-black/[0.06] text-[#111214] border-black/[0.1]'
+                  }`}
                 >
                   <Pause className="w-4 h-4" />
                   <span>{isArabic ? 'إيقاف مؤقت' : 'Pause'}</span>
@@ -758,7 +762,11 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
                 <button
                   id="btn-tasmee3-resume"
                   onClick={handleResume}
-                  className="flex-1 sm:flex-initial px-5 py-2.5 rounded-2xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 font-semibold text-xs active:scale-95 transition-all flex items-center justify-center gap-1.5"
+                  className={`flex-1 sm:flex-initial px-5 py-2.5 rounded-2xl border font-semibold text-xs active:scale-95 transition-all flex items-center justify-center gap-1.5 ${
+                    isDark
+                      ? 'bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border-emerald-500/40'
+                      : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-emerald-300'
+                  }`}
                 >
                   <Play className="w-4 h-4" />
                   <span>{isArabic ? 'متابعة' : 'Resume'}</span>
@@ -768,7 +776,11 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
               <button
                 id="btn-tasmee3-stop"
                 onClick={handleStop}
-                className="flex-1 sm:flex-initial px-4 py-2.5 rounded-2xl bg-stone-800/80 hover:bg-stone-700 text-stone-300 border border-stone-600 font-semibold text-xs active:scale-95 transition-all flex items-center justify-center gap-1.5"
+                className={`flex-1 sm:flex-initial px-4 py-2.5 rounded-2xl border font-semibold text-xs active:scale-95 transition-all flex items-center justify-center gap-1.5 ${
+                  isDark
+                    ? 'bg-[#1B1D23] hover:bg-white/[0.1] text-stone-300 border-white/[0.1]'
+                    : 'bg-[#F3F3F1] hover:bg-black/[0.06] text-[#3F4248] border-black/[0.1]'
+                }`}
               >
                 <Square className="w-3.5 h-3.5" />
                 <span>{isArabic ? 'إيقاف' : 'Stop'}</span>
@@ -777,14 +789,16 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
               <button
                 id="btn-tasmee3-finish"
                 onClick={handleFinish}
-                className="flex-1 sm:flex-initial px-6 py-2.5 rounded-2xl bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] text-[#090B0E] font-bold text-xs shadow-md hover:shadow-[0_0_20px_rgba(201,160,99,0.4)] active:scale-95 transition-all flex items-center justify-center gap-1.5"
+                className={`flex-1 sm:flex-initial px-6 py-2.5 rounded-2xl font-bold text-xs shadow-sm active:scale-95 transition-all flex items-center justify-center gap-1.5 ${
+                  isDark ? 'bg-white hover:bg-stone-200 text-[#111214]' : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                }`}
               >
                 <Check className="w-4 h-4" />
                 <span>{isArabic ? 'إنهاء ومراجعة' : 'Finish & Review'}</span>
               </button>
             </div>
 
-            <p className="text-[10px] text-stone-400 text-center">
+            <p className={`text-[10px] text-center ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
               {isArabic
                 ? 'اتلُ بتمهل وطمأنينة، وسينتقل تطبيق نور تلقائياً عند إتمام كل آية.'
                 : 'Recite naturally at your own pace. Noor moves forward automatically when you finish each ayah.'}
@@ -797,18 +811,17 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
         {/* ========================================================================= */}
         {viewMode === 'review' && rangeResult && (
           <div className="space-y-5">
-            {/* Header: تَسْمِيع مُكْتَمِل */}
             <div className="text-center space-y-1">
-              <div dir="rtl" className="font-arabic text-3xl sm:text-4xl font-bold text-[#DFBA7F]">
+              <div dir="rtl" className={`font-arabic text-3xl sm:text-4xl font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                 تَسْمِيع مُكْتَمِل
               </div>
-              <div className="text-sm sm:text-base font-serif-heading font-bold text-stone-200">
+              <div className={`text-sm sm:text-base font-serif-heading font-bold ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                 {isArabic
                   ? `سورة ${rangeResult.surahName} · الآيات ${rangeResult.fromAyah}–${rangeResult.toAyah}`
                   : `Surah ${rangeResult.surahEnglishName} (${rangeResult.surahName}) · Ayah ${rangeResult.fromAyah}–${rangeResult.toAyah}`}
               </div>
-              <div className="text-xs text-stone-400">
-                <span className="font-bold text-emerald-400 font-mono text-sm">
+              <div className={`text-xs ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
+                <span className={`font-bold font-mono text-sm ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>
                   {rangeResult.completedAyahsCount} / {rangeResult.totalRangeAyahs}
                 </span>{' '}
                 {isArabic
@@ -817,14 +830,13 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
               </div>
             </div>
 
-            {/* Legend & Filter Bar: 🟢 Correct, 🟡 Possible issue, 🔴 Missing/incorrect */}
             <div className="flex items-center justify-center gap-2 flex-wrap">
               <button
                 onClick={() => setFilterStatus('all')}
                 className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all ${
                   filterStatus === 'all'
-                    ? 'bg-[#C9A063]/25 text-[#DFBA7F] border-[#C9A063]'
-                    : 'bg-stone-900/50 text-stone-400 border-white/10'
+                    ? isDark ? 'bg-white text-[#111214] border-white' : 'bg-[#111214] text-white border-[#111214]'
+                    : isDark ? 'bg-[#1B1D23] text-stone-300 border-white/[0.08]' : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.08]'
                 }`}
               >
                 {isArabic ? 'الكل' : 'All'} ({rangeResult.ayahReviews.length})
@@ -834,11 +846,11 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
                 onClick={() => setFilterStatus('correct')}
                 className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all flex items-center gap-1.5 ${
                   filterStatus === 'correct'
-                    ? 'bg-emerald-500/25 text-emerald-300 border-emerald-500'
-                    : 'bg-stone-900/50 text-stone-400 border-white/10'
+                    ? isDark ? 'bg-emerald-500/25 text-emerald-300 border-emerald-500' : 'bg-emerald-50 text-emerald-800 border-emerald-400'
+                    : isDark ? 'bg-[#1B1D23] text-stone-300 border-white/[0.08]' : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.08]'
                 }`}
               >
-                <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                <span className="w-2 h-2 rounded-full bg-emerald-500" />
                 <span>{isArabic ? 'متقنة' : 'Correct'} ({rangeResult.ayahReviews.filter((r) => r.status === 'correct').length})</span>
               </button>
 
@@ -846,11 +858,11 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
                 onClick={() => setFilterStatus('warning')}
                 className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all flex items-center gap-1.5 ${
                   filterStatus === 'warning'
-                    ? 'bg-amber-500/25 text-amber-300 border-amber-500'
-                    : 'bg-stone-900/50 text-stone-400 border-white/10'
+                    ? isDark ? 'bg-sky-500/25 text-sky-300 border-sky-500' : 'bg-sky-50 text-sky-800 border-sky-400'
+                    : isDark ? 'bg-[#1B1D23] text-stone-300 border-white/[0.08]' : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.08]'
                 }`}
               >
-                <span className="w-2 h-2 rounded-full bg-amber-400" />
+                <span className="w-2 h-2 rounded-full bg-sky-500" />
                 <span>{isArabic ? 'تنبيه' : 'Possible issue'} ({rangeResult.ayahReviews.filter((r) => r.status === 'warning').length})</span>
               </button>
 
@@ -858,23 +870,22 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
                 onClick={() => setFilterStatus('missing')}
                 className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all flex items-center gap-1.5 ${
                   filterStatus === 'missing'
-                    ? 'bg-rose-500/25 text-rose-300 border-rose-500'
-                    : 'bg-stone-900/50 text-stone-400 border-white/10'
+                    ? isDark ? 'bg-rose-500/25 text-rose-300 border-rose-500' : 'bg-rose-50 text-rose-800 border-rose-400'
+                    : isDark ? 'bg-[#1B1D23] text-stone-300 border-white/[0.08]' : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.08]'
                 }`}
               >
-                <span className="w-2 h-2 rounded-full bg-rose-400" />
+                <span className="w-2 h-2 rounded-full bg-rose-500" />
                 <span>{isArabic ? 'مفقودة / غير مطابقة' : 'Missing/incorrect'} ({rangeResult.ayahReviews.filter((r) => r.status === 'missing').length})</span>
               </button>
             </div>
 
-            {/* Underneath: "Your recitation" Ayah Badges List */}
             <div
               className={`p-3.5 rounded-2xl border space-y-2 ${
-                isDark ? 'bg-[#12161D]/80 border-[#C9A063]/25' : 'bg-stone-50 border-stone-200'
+                isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
               }`}
             >
-              <div className="flex items-center justify-between text-xs text-stone-400">
-                <span className="font-semibold text-stone-300">{isArabic ? 'تفصيل نتيجة التسميع:' : 'Your Recitation Breakdown:'}</span>
+              <div className={`flex items-center justify-between text-xs ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
+                <span className={`font-semibold ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>{isArabic ? 'تفصيل نتيجة التسميع:' : 'Your Recitation Breakdown:'}</span>
                 <span className="text-[10px]">{isArabic ? 'انقر على الآية للمعاينة' : 'Tap an ayah to inspect'}</span>
               </div>
 
@@ -890,23 +901,23 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
                       onClick={() => handleJumpToReviewAyah(rev.ayahNumber)}
                       className={`px-3 py-1 rounded-xl text-xs font-semibold border transition-all active:scale-95 flex items-center gap-1.5 ${
                         isSelected
-                          ? 'ring-2 ring-[#DFBA7F] scale-105'
+                          ? isDark ? 'ring-2 ring-white/50 scale-105' : 'ring-2 ring-[#111214]/40 scale-105'
                           : ''
                       } ${
                         isCorrect
-                          ? 'bg-emerald-500/15 border-emerald-500/35 text-emerald-300'
+                          ? isDark ? 'bg-emerald-500/15 border-emerald-500/35 text-emerald-300' : 'bg-emerald-50 border-emerald-300 text-emerald-800'
                           : isWarning
-                          ? 'bg-amber-500/15 border-amber-500/35 text-amber-300'
-                          : 'bg-rose-500/15 border-rose-500/35 text-rose-300'
+                          ? isDark ? 'bg-sky-500/15 border-sky-500/35 text-sky-300' : 'bg-sky-50 border-sky-300 text-sky-800'
+                          : isDark ? 'bg-rose-500/15 border-rose-500/35 text-rose-300' : 'bg-rose-50 border-rose-300 text-rose-800'
                       }`}
                     >
                       <span>{isArabic ? `الآية ${rev.ayahNumber}` : `Ayah ${rev.ayahNumber}`}</span>
                       {isCorrect ? (
-                        <Check className="w-3.5 h-3.5 text-emerald-400" />
+                        <Check className={`w-3.5 h-3.5 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`} />
                       ) : isWarning ? (
-                        <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
+                        <AlertTriangle className={`w-3.5 h-3.5 ${isDark ? 'text-sky-400' : 'text-sky-700'}`} />
                       ) : (
-                        <X className="w-3.5 h-3.5 text-rose-400" />
+                        <X className={`w-3.5 h-3.5 ${isDark ? 'text-rose-400' : 'text-rose-700'}`} />
                       )}
                     </button>
                   );
@@ -914,7 +925,6 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
               </div>
             </div>
 
-            {/* Qur’an passage with subtle markings */}
             <div
               ref={passageContainerRef}
               className="space-y-3 max-h-[340px] overflow-y-auto pr-1"
@@ -934,51 +944,51 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
                       className={`p-4 rounded-2xl border transition-all cursor-pointer ${
                         isSelected
                           ? isDark
-                            ? 'bg-[#141A22] border-[#DFBA7F] shadow-[0_0_20px_rgba(201,160,99,0.25)]'
-                            : 'bg-amber-50/90 border-[#DFBA7F] shadow-sm'
+                            ? 'bg-white/[0.1] border-white/35'
+                            : 'bg-[#111214]/[0.06] border-[#111214]/40 shadow-sm'
                           : isDark
-                          ? 'bg-[#10141B]/70 border-white/10 hover:border-[#C9A063]/30'
-                          : 'bg-white border-stone-200 hover:border-[#C9A063]/30'
+                          ? 'bg-[#0B0C0E] border-white/[0.08] hover:border-white/25'
+                          : 'bg-white border-black/[0.08] hover:border-black/25'
                       } ${
                         isCorrect
                           ? 'border-l-4 border-l-emerald-500'
                           : isWarning
-                          ? 'border-l-4 border-l-amber-500'
+                          ? 'border-l-4 border-l-sky-500'
                           : 'border-l-4 border-l-rose-500'
                       }`}
                     >
-                      {/* Card Header: Ayah number + Status pill */}
-                      <div className="flex items-center justify-between pb-2 border-b border-[#C9A063]/15 mb-2.5">
+                      <div className={`flex items-center justify-between pb-2 border-b mb-2.5 ${
+                        isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+                      }`}>
                         <div className="flex items-center gap-2">
-                          <span className="text-xs font-mono font-bold text-[#DFBA7F]">
+                          <span className={`text-xs font-mono font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                             {isArabic ? `الآية ${rev.ayahNumber}` : `Ayah ${rev.ayahNumber}`}
                           </span>
                           <span
                             className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${
                               isCorrect
-                                ? 'bg-emerald-500/20 text-emerald-300'
+                                ? isDark ? 'bg-emerald-500/20 text-emerald-300' : 'bg-emerald-50 text-emerald-800 border border-emerald-200'
                                 : isWarning
-                                ? 'bg-amber-500/20 text-amber-300'
-                                : 'bg-rose-500/20 text-rose-300'
+                                ? isDark ? 'bg-sky-500/20 text-sky-300' : 'bg-sky-50 text-sky-800 border border-sky-200'
+                                : isDark ? 'bg-rose-500/20 text-rose-300' : 'bg-rose-50 text-rose-800 border border-rose-200'
                             }`}
                           >
                             {isCorrect
-                              ? (isArabic ? '🟢 متقنة' : '🟢 Correct')
+                              ? (isArabic ? 'متقنة' : 'Correct')
                               : isWarning
-                              ? (isArabic ? '🟡 تنبيه' : '🟡 Possible issue')
-                              : (isArabic ? '🔴 مفقودة / غير مطابقة' : '🔴 Missing/incorrect')}
+                              ? (isArabic ? 'تنبيه' : 'Possible issue')
+                              : (isArabic ? 'مفقودة / غير مطابقة' : 'Missing/incorrect')}
                           </span>
                         </div>
 
-                        <span className="text-[11px] text-stone-400 font-arabic">
+                        <span className={`text-[11px] font-arabic ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                           {selectedSurah.name} : {rev.ayahNumber}
                         </span>
                       </div>
 
-                      {/* Arabic Verse Text with subtle word status highlighting */}
                       <div
                         dir="rtl"
-                        className="font-arabic text-xl sm:text-2xl leading-[2.3] text-[#DFBA7F] font-normal"
+                        className={`font-arabic text-xl sm:text-2xl leading-[2.3] font-normal ${isDark ? 'text-white' : 'text-[#111214]'}`}
                       >
                         {rev.words.map((w, wIdx) => {
                           const isWordCorrect = w.status === 'correct';
@@ -993,11 +1003,11 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
                                 isWordCorrect
                                   ? 'hover:bg-emerald-500/10'
                                   : isWordSkipped
-                                  ? 'text-rose-400 bg-rose-500/10 underline decoration-rose-500/60'
+                                  ? isDark ? 'text-rose-400 bg-rose-500/10 underline decoration-rose-500/60' : 'text-rose-700 bg-rose-50 underline decoration-rose-500/60'
                                   : isWordRepeated
-                                  ? 'text-amber-400 bg-amber-500/15'
+                                  ? isDark ? 'text-sky-300 bg-sky-500/15' : 'text-sky-800 bg-sky-100'
                                   : isWordWrong
-                                  ? 'text-amber-300 bg-amber-500/20'
+                                  ? isDark ? 'text-sky-300 bg-sky-500/20' : 'text-sky-800 bg-sky-100'
                                   : ''
                               }`}
                               title={w.explanation || w.canonicalWord}
@@ -1006,22 +1016,23 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
                             </span>
                           );
                         })}
-                        <span className="font-sans text-xs px-2 py-0.5 rounded-full border border-[#C9A063]/30 text-[#DFBA7F] mr-1.5 inline-block">
+                        <span className={`font-sans text-xs px-2 py-0.5 rounded-full border mr-1.5 inline-block ${
+                          isDark ? 'border-white/[0.15] text-[#F3F4F6]' : 'border-black/[0.12] text-[#111214]'
+                        }`}>
                           ۝{rev.ayahNumber}
                         </span>
                       </div>
 
-                      {/* Detected Spoken Transcript & Issues list */}
-                      <div className="mt-3 pt-2 border-t border-white/5 space-y-1 text-xs">
+                      <div className={`mt-3 pt-2 border-t space-y-1 text-xs ${isDark ? 'border-white/[0.06]' : 'border-black/[0.06]'}`}>
                         {rev.spokenTextSnippet ? (
-                          <div className="flex items-center gap-2 text-stone-400 text-[11px]">
-                            <span className="text-[#DFBA7F] shrink-0 font-semibold">{isArabic ? 'المقروء:' : 'Recited:'}</span>
-                            <span dir="rtl" className="font-arabic text-stone-300 truncate">
+                          <div className={`flex items-center gap-2 text-[11px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
+                            <span className={`shrink-0 font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>{isArabic ? 'المقروء:' : 'Recited:'}</span>
+                            <span dir="rtl" className={`font-arabic truncate ${isDark ? 'text-stone-300' : 'text-[#111214]'}`}>
                               "{rev.spokenTextSnippet}"
                             </span>
                           </div>
                         ) : (
-                          <div className="text-[11px] text-rose-400 italic">
+                          <div className={`text-[11px] italic ${isDark ? 'text-rose-400' : 'text-rose-700'}`}>
                             {isArabic ? 'لم يُرصد صوت تلاوة لهذه الآية الكريمة.' : 'No recitation detected for this verse.'}
                           </div>
                         )}
@@ -1033,10 +1044,10 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
                                 key={nIdx}
                                 className={`text-[10px] px-2 py-0.5 rounded-md ${
                                   isCorrect
-                                    ? 'bg-emerald-500/10 text-emerald-300'
+                                    ? isDark ? 'bg-emerald-500/10 text-emerald-300' : 'bg-emerald-50 text-emerald-800'
                                     : isWarning
-                                    ? 'bg-amber-500/10 text-amber-300'
-                                    : 'bg-rose-500/10 text-rose-300'
+                                    ? isDark ? 'bg-sky-500/10 text-sky-300' : 'bg-sky-50 text-sky-800'
+                                    : isDark ? 'bg-rose-500/10 text-rose-300' : 'bg-rose-50 text-rose-800'
                                 }`}
                               >
                                 • {note}
@@ -1050,12 +1061,13 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
                 })}
             </div>
 
-            {/* Tajweed Honest Transparency Note (Requirement 4) */}
-            <div className="p-3 rounded-2xl bg-[#C9A063]/10 border border-[#C9A063]/25 text-[11px] text-stone-300 flex items-start gap-2">
-              <Info className="w-4 h-4 text-[#DFBA7F] shrink-0 mt-0.5" />
+            <div className={`p-3 rounded-2xl border text-[11px] flex items-start gap-2 ${
+              isDark ? 'bg-[#1B1D23] border-white/[0.08] text-stone-300' : 'bg-[#F3F3F1] border-black/[0.08] text-[#3F4248]'
+            }`}>
+              <Info className={`w-4 h-4 shrink-0 mt-0.5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
               <div>
-                <span className="font-semibold text-[#DFBA7F]">{isArabic ? 'تنويه إتقان التجويد:' : 'Tajweed Transparency Note:'}</span>
-                <p className="text-[10px] text-stone-400 mt-0.5">
+                <span className={`font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>{isArabic ? 'تنويه إتقان التجويد:' : 'Tajweed Transparency Note:'}</span>
+                <p className={`text-[10px] mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                   {isArabic
                     ? 'يقوم نظام التسميع بالتحقق الدقيق من توالي الكلمات والآيات المباركة وفق النص القرآني المعتمد. أما مخارج الحروف وأحكام المدود والغُنن فمستحب عرضها على شيخٍ متقن.'
                     : 'Tasme3 2.0 performs genuine word and ayah sequence alignment against authoritative Qur’anic Arabic text. Vocalized Tajweed articulation (madd lengths, ghunnah, qalqalah) requires human Shaykh verification.'}
@@ -1063,7 +1075,6 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
               </div>
             </div>
 
-            {/* Bottom Actions */}
             <div className="flex items-center justify-center gap-2.5 flex-wrap pt-2">
               {onJumpToVerseInReader && (
                 <button
@@ -1071,7 +1082,9 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
                     onJumpToVerseInReader(selectedSurah, rangeResult.fromAyah);
                     handleClose();
                   }}
-                  className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] text-[#090B0E] font-bold text-xs shadow-md active:scale-95 transition-all flex items-center gap-1.5"
+                  className={`px-5 py-2.5 rounded-2xl font-bold text-xs shadow-sm active:scale-95 transition-all flex items-center gap-1.5 ${
+                    isDark ? 'bg-white hover:bg-stone-200 text-[#111214]' : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                  }`}
                 >
                   <BookOpen className="w-3.5 h-3.5" />
                   <span>{isArabic ? 'قراءة في المصحف' : 'Read in Quran Reader'}</span>
@@ -1083,7 +1096,9 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
                   setViewMode('active');
                   handleStartSession();
                 }}
-                className="px-4 py-2.5 rounded-2xl border border-[#C9A063]/40 text-[#DFBA7F] hover:bg-[#C9A063]/15 font-semibold text-xs active:scale-95 transition-all flex items-center gap-1.5"
+                className={`px-4 py-2.5 rounded-2xl border font-semibold text-xs active:scale-95 transition-all flex items-center gap-1.5 ${
+                  isDark ? 'border-white/[0.12] bg-[#1B1D23] text-white hover:bg-white/[0.08]' : 'border-black/[0.1] bg-[#F3F3F1] text-[#111214] hover:bg-black/[0.06]'
+                }`}
               >
                 <RefreshCw className="w-3.5 h-3.5" />
                 <span>{isArabic ? 'إعادة التسميع' : 'Recite Again'}</span>
@@ -1093,14 +1108,18 @@ export const Tasmee3Modal: React.FC<Tasmee3ModalProps> = ({
                 onClick={() => {
                   setViewMode('setup');
                 }}
-                className="px-4 py-2.5 rounded-2xl border border-stone-700 text-stone-300 hover:bg-stone-800 text-xs active:scale-95 transition-all"
+                className={`px-4 py-2.5 rounded-2xl border text-xs active:scale-95 transition-all ${
+                  isDark ? 'border-white/[0.1] text-stone-300 hover:bg-white/[0.06]' : 'border-black/[0.1] text-[#3F4248] hover:bg-black/[0.04]'
+                }`}
               >
                 {isArabic ? 'تغيير النطاق' : 'Change Range'}
               </button>
 
               <button
                 onClick={handleClose}
-                className="px-4 py-2.5 rounded-2xl border border-stone-700 text-stone-300 hover:bg-stone-800 text-xs active:scale-95 transition-all"
+                className={`px-4 py-2.5 rounded-2xl border text-xs active:scale-95 transition-all ${
+                  isDark ? 'border-white/[0.1] text-stone-300 hover:bg-white/[0.06]' : 'border-black/[0.1] text-[#3F4248] hover:bg-black/[0.04]'
+                }`}
               >
                 {isArabic ? 'تم' : 'Done'}
               </button>

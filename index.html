@@ -3,7 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#090B0E" />
+    <meta name="theme-color" content="#0B0C0E" />
+    <script>
+      (function () {
+        try {
+          var mode = localStorage.getItem('noor_theme_mode');
+          var legacy = localStorage.getItem('noor_theme');
+          var isDark = mode === 'system'
+            ? (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+            : (mode ? mode === 'dark' : (legacy ? legacy === 'dark' : true));
+          if (isDark) {
+            document.documentElement.classList.add('dark');
+            document.documentElement.style.colorScheme = 'dark';
+          } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.style.colorScheme = 'light';
+            var meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute('content', '#FCFCFA');
+          }
+        } catch (e) {}
+      })();
+    </script>
     <title>NOOR — Peaceful Islamic Companion by ALNOORGROUP</title>
     <meta name="description" content="Peaceful Islamic companion by ALNOORGROUP" />
     
@@ -55,7 +75,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="NOOR" />
     <meta name="application-name" content="NOOR" />
-    <meta name="msapplication-TileColor" content="#090B0E" />
+    <meta name="msapplication-TileColor" content="#0B0C0E" />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
@@ -66,7 +86,7 @@
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap">
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-[#090B0E] text-stone-100 antialiased selection:bg-[#C9A063]/30 selection:text-[#DFBA7F]">
+  <body class="antialiased selection:bg-black/15 dark:selection:bg-white/20">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script>

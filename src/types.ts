@@ -117,6 +117,25 @@ export interface NoorAIMessage {
   isSaved?: boolean;
   isError?: boolean;
   isLoading?: boolean;
+  messageType?: 'text' | 'voice';
+  audioUrl?: string;
+  audioMimeType?: string;
+  audioDuration?: number;
+  audioWaveform?: number[];
+  attachedImage?: string;
+  savedMemories?: string[];
+  forgotMemories?: string[];
+}
+
+export type NoorMemoryCategory = 'preference' | 'personal' | 'learning' | 'goal' | 'context';
+
+export interface NoorMemoryItem {
+  id: string;
+  content: string;
+  category?: NoorMemoryCategory;
+  createdAt: string;
+  updatedAt: string;
+  sourceSessionId?: string;
 }
 
 export interface NoorAIConversationSession {
@@ -275,6 +294,8 @@ export interface UserStats {
   noorAiSessions?: NoorAIConversationSession[];
   activeNoorSessionId?: string;
   savedNoorMessages?: NoorAIMessage[];
+  noorAiMemories?: NoorMemoryItem[];
+  noorAiMemoryEnabled?: boolean;
 }
 
 export interface Achievement {

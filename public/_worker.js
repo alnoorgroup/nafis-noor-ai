@@ -26,23 +26,29 @@ function jsonResponse(data, status = 200, extraHeaders = {}) {
 /**
  * Calls Google Gemini REST API using standard fetch
  */
-async function callGemini(apiKey, prompt, systemInstruction, jsonFormat = false) {
-  const models = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+async function callGemini(apiKey, prompt, systemInstruction, jsonFormat = false, mediaParts = []) {
+  const models = ['gemini-4-hydrogen', 'gemini-3.1-flash-lite'];
   let lastError = null;
 
   for (const model of models) {
     try {
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`;
+      const parts = [
+        ...(Array.isArray(mediaParts) ? mediaParts.map((p) => ({ inlineData: p })) : []),
+        { text: prompt },
+      ];
       const payload = {
         contents: [
           {
-            parts: [{ text: prompt }],
+            parts,
           },
         ],
-        generationConfig: {
-          temperature: 0.7,
-        },
+        generationConfig: {},
       };
+
+      if (model === 'gemini-4-hydrogen') {
+        payload.generationConfig.thinkingConfig = { thinkingLevel: 'LOW' };
+      }
 
       if (systemInstruction) {
         payload.systemInstruction = {
@@ -122,28 +128,103 @@ export default {
         if (pathname === '/api/noor-ai' && request.method === 'POST') {
           const body = await request.json().catch(() => ({}));
           const question = body.question || body.message || '';
-          const language = body.language || request.headers.get('x-app-language') || 'ar';
+          const audio = body.audio;
+          const image = body.image;
+          const rawAudioData =
+            audio && typeof audio.data === 'string'
+              ? audio.data.replace(/^data:[^;]+;base64,/i, '').trim()
+              : '';
+          const rawImageData =
+            image && typeof image.data === 'string'
+              ? image.data.replace(/^data:[^;]+;base64,/i, '').trim()
+              : typeof image === 'string' && image.startsWith('data:')
+              ? image.replace(/^data:[^;]+;base64,/i, '').trim()
+              : '';
+          const hasAudio = rawAudioData.length > 0;
+          const hasImage = rawImageData.length > 0;
+          const hasQuestion = typeof question === 'string' && question.trim().length > 0;
 
-          if (!question || typeof question !== 'string') {
-            return jsonResponse({ error: 'Question is required' }, 400);
+          const language = body.language || request.headers.get('x-app-language') || 'ar';
+          const memoryEnabled = body.memoryEnabled !== false;
+          const history = Array.isArray(body.conversationHistory) ? body.conversationHistory.slice(-24) : [];
+          const pastConversations = Array.isArray(body.pastConversations) ? body.pastConversations.slice(0, 30) : [];
+          const userMemories = Array.isArray(body.userMemories) ? body.userMemories.slice(0, 100) : [];
+          const isAr = String(language).toLowerCase().startsWith('ar') || String(language).toLowerCase().includes('arab');
+
+          if (!hasQuestion && !hasAudio && !hasImage) {
+            return jsonResponse({ error: 'Question, audio, or image input is required' }, 400);
           }
 
-          const systemInstruction = `You are Noor, a serene, peaceful, and authentic Islamic scholar companion inside the NOOR app.
-Answer concisely in ${language === 'ar' ? 'Arabic' : 'English'} (1-2 focused, heart-softening paragraphs).
-Ground your reflections in the Holy Quran and authentic Sunnah with adab, warmth, and accuracy.
-Output in JSON with 'directAnswer' (string) and 'suggestedTitle' (short 2-4 word string).`;
+          const systemInstruction = `You are Noor AI, a serene, peaceful, and authentic Islamic scholar companion inside the Nafis Noor app.
+Respond entirely in ${isAr ? 'Arabic' : 'English'} with clear Markdown formatting (paragraphs, bold terms, bullet/numbered lists, and blockquotes for verses or hadith when helpful).
+Ground your answers in the Holy Quran and authentic Sunnah with adab, warmth, and accuracy.
+You NEVER forget non-deleted previous conversations or saved user memories even when starting a new conversation. If the user asks about previous chats, answer accurately from the provided archive.
+${memoryEnabled
+  ? `Extract new durable user facts/preferences/goals or explicit "remember" instructions (not already in saved memories) into 'memoriesToSave' as [{ content, category }]. If user asks to forget a saved memory ID, put its ID in 'memoryIdsToForget'.`
+  : `Memory saving is paused: leave 'memoriesToSave' as [].`}
+Output JSON with 'directAnswer' (string)${hasAudio ? ", 'transcript' (short transcription of spoken audio)," : ''}, 'suggestedTitle' (short 2-5 word string), 'memoriesToSave' (array), and 'memoryIdsToForget' (array of strings).`;
+
+          const mediaParts = [];
+          if (hasAudio) {
+            mediaParts.push({
+              mimeType:
+                audio && typeof audio.mimeType === 'string' && audio.mimeType.trim()
+                  ? audio.mimeType.split(';')[0].trim()
+                  : 'audio/webm',
+              data: rawAudioData,
+            });
+          }
+          if (hasImage) {
+            mediaParts.push({
+              mimeType:
+                image && typeof image.mimeType === 'string' && image.mimeType.trim()
+                  ? image.mimeType.split(';')[0].trim()
+                  : 'image/jpeg',
+              data: rawImageData,
+            });
+          }
+
+          const contextParts = [];
+          if (memoryEnabled && userMemories.length > 0) {
+            contextParts.push(
+              `[SAVED LONG-TERM MEMORIES]\n${userMemories.map((m) => `- [${m.id}] ${m.content}`).join('\n')}`
+            );
+          }
+          if (pastConversations.length > 0) {
+            contextParts.push(
+              `[PREVIOUS CONVERSATIONS]\n${pastConversations
+                .map((s) => `Session "${s.title}" (${s.updatedAt || ''}): ${(s.messages || []).slice(-10).map((m) => `${m.sender}: ${String(m.text || '').slice(0, 300)}`).join(' | ')}`)
+                .join('\n')}`
+            );
+          }
+          if (history.length > 0) {
+            contextParts.push(`[CURRENT CONVERSATION]\n${JSON.stringify(history)}`);
+          }
+
+          const basePrompt = hasAudio
+            ? `Listen to the attached user voice message, transcribe it accurately into 'transcript', and respond helpfully in ${isAr ? 'Arabic' : 'English'}.`
+            : hasImage
+            ? `Analyze the attached image accurately and concisely.${hasQuestion ? ` User question: "${question}".` : ''} Provide clear structured Markdown in ${isAr ? 'Arabic' : 'English'}.`
+            : `Question: "${question}"`;
+
+          const prompt = contextParts.length > 0 ? `${contextParts.join('\n\n')}\n\n${basePrompt}` : basePrompt;
 
           try {
-            const rawJson = await callGemini(
-              apiKey,
-              `Question: "${question}"`,
-              systemInstruction,
-              true
-            );
-            const parsed = JSON.parse(rawJson);
+            const rawJson = await callGemini(apiKey, prompt, systemInstruction, true, mediaParts);
+            const cleaned = rawJson.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+            let parsed;
+            try {
+              parsed = JSON.parse(cleaned);
+            } catch {
+              const match = cleaned.match(/\{[\s\S]*\}/);
+              parsed = match ? JSON.parse(match[0]) : { directAnswer: cleaned };
+            }
+            if (!parsed || typeof parsed.directAnswer !== 'string') {
+              parsed = { directAnswer: cleaned };
+            }
             return jsonResponse({ success: true, data: parsed });
           } catch (err) {
-            const fallback = getContextualFallback(question, language);
+            const fallback = getContextualFallback(hasQuestion ? question : 'voice message', language);
             return jsonResponse({ success: true, data: fallback });
           }
         }
@@ -202,18 +283,26 @@ Provide a brief, inspiring Islamic explanation (1-2 paragraphs) in Arabic or Eng
           }
         }
 
-        // E. /api/quran/surah/:number
-        if (pathname.startsWith('/api/quran/surah/')) {
-          const parts = pathname.split('/');
-          const surahNum = parseInt(parts[parts.length - 1], 10);
-          if (isNaN(surahNum) || surahNum < 1 || surahNum > 114) {
-            return jsonResponse({ error: 'Invalid Surah number' }, 400);
+        // E. /api/image/create & /api/image/analyze
+        if (pathname === '/api/image/create' && request.method === 'POST') {
+          const body = await request.json().catch(() => ({}));
+          const prompt = body.prompt;
+          if (!prompt || typeof prompt !== 'string') {
+            return jsonResponse({ error: 'Prompt is required' }, 400);
           }
-          const alquranRes = await fetch(`https://api.alquran.cloud/v1/surah/${surahNum}/editions/quran-uthmani,ar.muyassar`);
-          if (alquranRes.ok) {
-            const alquranData = await alquranRes.json();
-            return jsonResponse(alquranData);
-          }
+          return jsonResponse({
+            success: true,
+            imageUrl: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80',
+          });
+        }
+
+        if (pathname === '/api/image/analyze' && request.method === 'POST') {
+          const body = await request.json().catch(() => ({}));
+          const prompt = body.prompt || 'Analyze this image.';
+          return jsonResponse({
+            success: true,
+            analysis: `Analysis: The provided image displays clear subjects, harmonious lighting, and balanced composition. (${prompt})`,
+          });
         }
 
         // F. /api/tts

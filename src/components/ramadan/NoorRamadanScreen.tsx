@@ -313,18 +313,22 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
   return (
     <div className="min-h-screen pt-4 sm:pt-6 pb-32 sm:pb-36 lg:pb-16 px-3.5 sm:px-6 max-w-5xl mx-auto space-y-6">
       {/* Top Header Bar */}
-      <div className="flex items-center justify-between gap-3 pb-1">
+      <div className="flex items-center justify-between gap-3 pb-1 flex-wrap">
         <button
           type="button"
           onClick={() => {
             if (onNavigate) onNavigate('profile');
             else window.history.back();
           }}
-          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#C9A063]/30 bg-[#C9A063]/10 hover:bg-[#C9A063]/20 text-[#DFBA7F] text-xs font-semibold transition-all group cursor-pointer"
+          className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-semibold transition-all group cursor-pointer ${
+            isDark
+              ? 'border-white/[0.1] bg-[#14161A] hover:bg-white/[0.08] text-white'
+              : 'border-black/[0.08] bg-white hover:bg-[#F3F3F1] text-[#111214]'
+          }`}
         >
           <ChevronLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
           <span>Back to Settings</span>
-          <span className="text-stone-500">•</span>
+          <span className={isDark ? 'text-stone-500' : 'text-[#6B6F76]'}>•</span>
           <span>Ramadan Events</span>
         </button>
 
@@ -334,13 +338,21 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
             type="button"
             id="ramadan-screen-see-updates-btn"
             onClick={() => setIsUpdatesModalOpen(true)}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#DFBA7F]/15 hover:bg-[#DFBA7F]/25 border border-[#DFBA7F]/30 text-[#DFBA7F] transition-colors cursor-pointer"
+            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border transition-colors cursor-pointer ${
+              isDark
+                ? 'bg-[#14161A] hover:bg-white/[0.08] border-white/[0.1] text-white'
+                : 'bg-white hover:bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+            }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>See Updates</span>
           </button>
 
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-[#DFBA7F]/15 border border-[#DFBA7F]/30 text-[#DFBA7F]">
+          <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold border ${
+            isDark
+              ? 'bg-white/[0.06] border-white/[0.1] text-white'
+              : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+          }`}>
             <Moon className="w-3.5 h-3.5 fill-current" />
             <span>Ramaḍān 1447 AH</span>
           </span>
@@ -351,23 +363,30 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
       {/* DATE VERIFICATION LOCK SCREEN (Shown when outside Ramadan)                 */}
       {/* ========================================================================= */}
       {!isRamadanActive ? (
-        <div className="rounded-[36px] border border-amber-500/30 bg-gradient-to-b from-[#0F1626] via-[#090D18] to-[#050710] p-6 sm:p-12 shadow-[0_4px_40px_rgba(0,0,0,0.6)] relative overflow-hidden animate-fadeIn text-stone-100 text-center space-y-6">
-          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-transparent via-[#DFBA7F] to-transparent opacity-90" />
-          <div className="w-16 h-16 rounded-3xl bg-amber-500/15 border border-amber-500/40 flex items-center justify-center text-amber-300 mx-auto shadow-[0_0_30px_rgba(201,160,99,0.3)]">
-            <Lock className="w-8 h-8 text-amber-400" />
+        <div className={`rounded-[36px] border p-6 sm:p-12 relative overflow-hidden animate-fadeIn text-center space-y-6 ${
+          isDark
+            ? 'border-white/[0.08] bg-[#14161A] shadow-[0_2px_10px_rgba(0,0,0,0.25)] text-[#F3F4F6]'
+            : 'border-black/[0.08] bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05)] text-[#111214]'
+        }`}>
+          <div className={`w-16 h-16 rounded-3xl border flex items-center justify-center mx-auto ${
+            isDark
+              ? 'bg-white/[0.06] border-white/[0.1] text-white'
+              : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+          }`}>
+            <Lock className={`w-8 h-8 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
           </div>
 
           <div className="space-y-2 max-w-lg mx-auto">
-            <span className="text-xs font-mono uppercase tracking-widest text-[#DFBA7F] font-bold">
+            <span className={`text-xs font-mono uppercase tracking-widest font-bold ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               {isArabic ? 'التزام دقيق بالتقويم الهجري الشرعي' : 'Strict Islamic Calendar Enforcement'}
             </span>
-            <h1 className="text-2xl sm:text-3xl font-serif-heading font-bold text-white tracking-wide">
+            <h1 className={`text-2xl sm:text-3xl font-serif-heading font-bold tracking-wide ${isDark ? 'text-white' : 'text-[#111214]'}`}>
               {isArabic ? 'فعاليات رمضان تعمل فقط في أيام شهر رمضان' : 'Ramadan Events Work Only in Ramadan Date'}
             </h1>
-            <p className="text-lg font-arabic text-[#DFBA7F]" dir="rtl">
+            <p className={`text-lg font-arabic ${isDark ? 'text-stone-200' : 'text-[#111214]'}`} dir="rtl">
               شَهْرُ رَمَضَانَ الَّذِي أُنزِلَ فِيهِ الْقُرْآنُ
             </p>
-            <p className="text-xs sm:text-sm text-stone-300 font-light leading-relaxed">
+            <p className={`text-xs sm:text-sm font-light leading-relaxed ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
               {isArabic
                 ? 'فعاليات نور الرمضانية مخصصة حصرياً لأيام الشهر الفضيل المبارك (الشهر التاسع). والفحص الزمني المباشر يؤكد أن هلال رمضان لم يحل بعد.'
                 : 'Noor Ramadan Events are strictly scheduled for the sacred month of Ramadan (Month 9). The live date and time check verifies that Ramadan has not yet arrived.'}
@@ -375,26 +394,30 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
           </div>
 
           {/* Real-time date & time verification card */}
-          <div className={`p-4 sm:p-5 rounded-2xl bg-black/50 border border-white/10 max-w-md mx-auto space-y-3 ${isRTL ? 'text-right' : 'text-left'}`}>
-            <div className="flex items-center justify-between text-xs border-b border-white/10 pb-2">
-              <span className="text-stone-400">{isArabic ? 'فحص التاريخ والوقت المباشر:' : 'Live Date & Time Check:'}</span>
-              <span className="text-[#DFBA7F] font-mono font-bold flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5 text-[#DFBA7F]" />
+          <div className={`p-4 sm:p-5 rounded-2xl border max-w-md mx-auto space-y-3 ${isRTL ? 'text-right' : 'text-left'} ${
+            isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#FCFCFA] border-black/[0.08]'
+          }`}>
+            <div className={`flex items-center justify-between text-xs border-b pb-2 ${isDark ? 'border-white/10' : 'border-black/[0.08]'}`}>
+              <span className={isDark ? 'text-stone-400' : 'text-[#5A5D63]'}>{isArabic ? 'فحص التاريخ والوقت المباشر:' : 'Live Date & Time Check:'}</span>
+              <span className={`font-mono font-bold flex items-center gap-1 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
+                <Clock className="w-3.5 h-3.5" />
                 {hijriStatus?.liveTimeString || new Date().toLocaleTimeString()}
               </span>
             </div>
             <div className="flex items-center justify-between text-xs">
-              <span className="text-stone-400">{isArabic ? 'الميلادي:' : 'Gregorian:'}</span>
-              <span className="text-white font-semibold">{hijriStatus?.liveDateString || new Date().toLocaleDateString()}</span>
+              <span className={isDark ? 'text-stone-400' : 'text-[#5A5D63]'}>{isArabic ? 'الميلادي:' : 'Gregorian:'}</span>
+              <span className={`font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>{hijriStatus?.liveDateString || new Date().toLocaleDateString()}</span>
             </div>
             <div className="flex items-center justify-between text-xs">
-              <span className="text-stone-400">{isArabic ? 'التقويم الهجري:' : 'Hijri Calendar:'}</span>
-              <span className="text-amber-300 font-semibold font-mono">
+              <span className={isDark ? 'text-stone-400' : 'text-[#5A5D63]'}>{isArabic ? 'التقويم الهجري:' : 'Hijri Calendar:'}</span>
+              <span className={`font-semibold font-mono ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                 {hijriStatus ? `${hijriStatus.day} ${hijriStatus.monthNameEn} ${hijriStatus.year} AH` : 'Calculating...'}
                 {hijriStatus && ` (${isArabic ? `الشهر ${hijriStatus.monthNumber} من 12` : `Month ${hijriStatus.monthNumber} of 12`})`}
               </span>
             </div>
-            <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-[11px] text-amber-200">
+            <div className={`p-2.5 rounded-xl border text-[11px] ${
+              isDark ? 'bg-sky-500/10 border-sky-500/25 text-sky-200' : 'bg-sky-50 border-sky-200 text-sky-900'
+            }`}>
               {isArabic
                 ? '🔒 مؤمن: ستفتح هذه الفعاليات المباركة تلقائياً مع أول أيام شهر رمضان 1447هـ بإذن الله تعالى.'
                 : '🔒 Locked: This module will automatically unlock on the 1st of Ramadan 1447, Insha\'Allah.'}
@@ -406,9 +429,11 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
             <button
               type="button"
               onClick={() => setIsUpdatesModalOpen(true)}
-              className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gradient-to-r from-[#DFBA7F] via-[#C9A063] to-[#A67C38] text-[#080B10] font-bold text-xs tracking-wide shadow-lg hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
+              className={`w-full sm:w-auto px-6 py-3 rounded-2xl font-bold text-xs tracking-wide shadow-sm active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                isDark ? 'bg-white hover:bg-stone-200 text-[#111214]' : 'bg-[#111214] hover:bg-[#27292D] text-white'
+              }`}
             >
-              <Sparkles className="w-4 h-4 fill-current text-[#080B10]" />
+              <Sparkles className="w-4 h-4 fill-current" />
               <span>{isArabic ? 'عرض التحديثات' : 'See Updates'}</span>
             </button>
 
@@ -418,7 +443,11 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                 if (onNavigate) onNavigate('profile');
                 else window.history.back();
               }}
-              className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 font-semibold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
+              className={`w-full sm:w-auto px-6 py-3 rounded-2xl border font-semibold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer ${
+                isDark
+                  ? 'bg-white/[0.06] hover:bg-white/[0.1] border-white/10 text-stone-300'
+                  : 'bg-[#F3F3F1] hover:bg-black/[0.06] border-black/[0.08] text-[#111214]'
+              }`}
             >
               <ChevronLeft className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
               <span>{isArabic ? 'العودة إلى الإعدادات' : 'Back to Settings'}</span>
@@ -426,7 +455,7 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
           </div>
 
           {/* Discrete testing toggle */}
-          <div className="pt-4 text-[10px] text-stone-500 flex items-center justify-center gap-2">
+          <div className={`pt-4 text-[10px] flex items-center justify-center gap-2 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
             <span>Testing/Review Mode:</span>
             <button
               type="button"
@@ -436,7 +465,7 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                 localStorage.setItem('noor_simulate_ramadan', nextVal ? 'true' : 'false');
                 detectRamadanStatus().then((s) => setHijriStatus(s));
               }}
-              className="text-[#DFBA7F] hover:underline cursor-pointer"
+              className={`hover:underline cursor-pointer font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}
             >
               {isRamadanSimulated ? 'Disable Preview Simulation' : 'Enable Preview Simulation for Testing'}
             </button>
@@ -451,38 +480,39 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
           {/* 1. ONBOARDING SCREEN (Set Your Ramadan Dream)                             */}
           {/* ========================================================================= */}
           {viewMode === 'onboarding' ? (
-            <div className="rounded-[36px] border border-[#C9A063]/30 bg-gradient-to-b from-[#0F1626] via-[#090D18] to-[#050710] p-6 sm:p-10 shadow-[0_4px_40px_rgba(0,0,0,0.6)] relative overflow-hidden animate-fadeIn text-stone-100">
-              {/* Top Luminous Gold Trim */}
-              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-transparent via-[#DFBA7F] to-transparent opacity-90" />
-
-              {/* Crescent Moon Atmospheric Background Glow */}
-              <div className="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#C9A063]/15 blur-3xl pointer-events-none" />
-              <div className="absolute top-1/2 -left-20 w-64 h-64 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
-
+            <div className={`rounded-[36px] border p-6 sm:p-10 relative overflow-hidden animate-fadeIn ${
+              isDark
+                ? 'border-white/[0.08] bg-[#14161A] shadow-[0_2px_10px_rgba(0,0,0,0.25)] text-[#F3F4F6]'
+                : 'border-black/[0.08] bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05)] text-[#111214]'
+            }`}>
               <div className="max-w-2xl mx-auto space-y-6 text-center">
                 {/* Crescent & Lantern Icon */}
-                <div className="w-16 h-16 rounded-3xl bg-[#C9A063]/20 border border-[#C9A063]/40 flex items-center justify-center text-[#DFBA7F] mx-auto shadow-[0_0_30px_rgba(201,160,99,0.3)]">
-                  <Moon className="w-8 h-8 text-[#DFBA7F]" />
+                <div className={`w-16 h-16 rounded-3xl border flex items-center justify-center mx-auto ${
+                  isDark
+                    ? 'bg-white/[0.06] border-white/[0.1] text-white'
+                    : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+                }`}>
+                  <Moon className="w-8 h-8" />
                 </div>
 
                 <div className="space-y-2">
-                  <span className="text-xs font-mono uppercase tracking-widest text-[#DFBA7F] font-bold">
+                  <span className={`text-xs font-mono uppercase tracking-widest font-bold ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     Noor Ramadan 1447 AH Sanctuary
                   </span>
-                  <h1 className="text-3xl sm:text-4xl font-serif-heading font-bold text-white tracking-wide">
+                  <h1 className={`text-3xl sm:text-4xl font-serif-heading font-bold tracking-wide ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                     What is your dream for this Ramadan?
                   </h1>
-                  <p className="text-xl font-arabic text-[#DFBA7F]" dir="rtl">
+                  <p className={`text-xl font-arabic ${isDark ? 'text-stone-200' : 'text-[#111214]'}`} dir="rtl">
                     ما هو حلمك وغايتك الإيمانية في هذا الشهر الفضيل؟
                   </p>
-                  <p className="text-xs sm:text-sm text-stone-300 font-light max-w-lg mx-auto leading-relaxed">
+                  <p className={`text-xs sm:text-sm font-light max-w-lg mx-auto leading-relaxed ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                     Ramadan is the golden season of transformation. Choose one sacred aspiration to dedicate your heart, schedule, and prayers toward.
                   </p>
                 </div>
 
                 {/* Suggested Goals Chips Grid */}
                 <div className="space-y-3 pt-2 text-left">
-                  <label className="text-[11px] font-mono uppercase tracking-wider text-stone-400 block text-center">
+                  <label className={`text-[11px] font-mono uppercase tracking-wider block text-center ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     Select a recommended spiritual dream:
                   </label>
 
@@ -500,15 +530,19 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                           }}
                           className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer flex items-start gap-3 card-hover-lift btn-press-bounce ${
                             isSelected
-                              ? 'bg-[#18233C] border-[#DFBA7F] shadow-[0_0_15px_rgba(201,160,99,0.25)] ring-1 ring-[#DFBA7F]/40'
-                              : 'bg-white/[0.03] border-white/10 hover:border-white/20 text-stone-300'
+                              ? isDark
+                                ? 'bg-white/[0.1] border-white/40 text-white'
+                                : 'bg-[#111214]/[0.06] border-[#111214]/40 text-[#111214]'
+                              : isDark
+                              ? 'bg-[#1B1D23] border-white/[0.08] hover:border-white/20 text-stone-300'
+                              : 'bg-white border-black/[0.08] hover:border-black/20 text-[#3F4248]'
                           }`}
                         >
                           <div
                             className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 border ${
                               isSelected
-                                ? 'bg-[#DFBA7F] border-[#DFBA7F] text-[#050811]'
-                                : 'border-stone-500'
+                                ? isDark ? 'bg-white border-white text-[#111214]' : 'bg-[#111214] border-[#111214] text-white'
+                                : isDark ? 'border-stone-500' : 'border-stone-400'
                             }`}
                           >
                             {isSelected && (
@@ -518,10 +552,10 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                             )}
                           </div>
                           <div className="min-w-0">
-                            <div className="text-xs font-bold text-white flex items-center justify-between">
+                            <div className={`text-xs font-bold flex items-center justify-between ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                               <span>{goal.label}</span>
                             </div>
-                            <p className="text-[11px] text-stone-400 font-light mt-0.5">
+                            <p className={`text-[11px] font-light mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                               {goal.desc}
                             </p>
                           </div>
@@ -533,7 +567,7 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
 
                 {/* Custom Goal Input */}
                 <div className="pt-2 text-left space-y-1.5">
-                  <label className="text-[11px] font-mono uppercase tracking-wider text-stone-400 block">
+                  <label className={`text-[11px] font-mono uppercase tracking-wider block ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     Or write your custom personal dream:
                   </label>
                   <div className="relative">
@@ -547,13 +581,17 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                         }
                       }}
                       placeholder="e.g., Read Surah Al-Baqarah weekly and maintain tahajjud..."
-                      className="w-full py-3 px-4 rounded-2xl bg-black/40 border border-[#C9A063]/30 text-xs text-white placeholder-stone-500 focus:outline-none focus:border-[#DFBA7F] transition-colors"
+                      className={`w-full py-3 px-4 rounded-2xl border text-xs focus:outline-none transition-colors ${
+                        isDark
+                          ? 'bg-[#1B1D23] border-white/[0.1] focus:border-white/30 text-white placeholder-stone-500'
+                          : 'bg-white border-black/[0.1] focus:border-[#111214]/40 text-[#111214] placeholder-[#6B6F76]'
+                      }`}
                     />
                     {customGoalText && (
                       <button
                         type="button"
                         onClick={() => setCustomGoalText('')}
-                        className="absolute right-3 top-3 text-stone-400 hover:text-white"
+                        className={`absolute right-3 top-3 ${isDark ? 'text-stone-400 hover:text-white' : 'text-[#5A5D63] hover:text-[#111214]'}`}
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -566,7 +604,9 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                   <button
                     type="button"
                     onClick={handleConfirmDream}
-                    className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-[#DFBA7F] via-[#C9A063] to-[#A67C38] text-[#080B10] font-bold text-sm tracking-wide shadow-lg shadow-[#C9A063]/25 hover:brightness-110 active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    className={`w-full py-4 px-6 rounded-2xl font-bold text-sm tracking-wide shadow-sm active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                      isDark ? 'bg-white hover:bg-stone-200 text-[#111214]' : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                    }`}
                   >
                     <span>Set My Dream & Build Daily Plan</span>
                     <ArrowRight className="w-4 h-4" />
@@ -579,17 +619,19 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
             /* 2. PLAN BUILDER VIEW (Custom & Al-Noor Plan)                               */
             /* ========================================================================= */
             <div className="space-y-6 animate-fadeIn">
-              <div className="p-6 rounded-3xl bg-[#0B101D] border border-[#C9A063]/30 shadow-xl space-y-5">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
+              <div className={`p-6 rounded-3xl border shadow-sm space-y-5 ${
+                isDark ? 'bg-[#14161A] border-white/[0.08]' : 'bg-white border-black/[0.08]'
+              }`}>
+                <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-4 ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
                   <div>
-                    <span className="text-xs font-mono uppercase tracking-widest text-[#DFBA7F] font-bold">
+                    <span className={`text-xs font-mono uppercase tracking-widest font-bold ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                       Personal Daily Routine
                     </span>
-                    <h2 className="text-xl sm:text-2xl font-serif-heading font-bold text-white">
+                    <h2 className={`text-xl sm:text-2xl font-serif-heading font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                       Build Your Daily Ramadan Plan
                     </h2>
-                    <p className="text-xs text-stone-300 mt-1">
-                      Targeting your dream: <strong className="text-[#DFBA7F]">"{userData?.goalText}"</strong>
+                    <p className={`text-xs mt-1 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
+                      Targeting your dream: <strong className={isDark ? 'text-white' : 'text-[#111214]'}>"{userData?.goalText}"</strong>
                     </p>
                   </div>
 
@@ -597,7 +639,11 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                     <button
                       type="button"
                       onClick={handleApplyAlNoorPlan}
-                      className="px-3.5 py-2 rounded-xl bg-[#C9A063]/15 hover:bg-[#C9A063]/25 border border-[#C9A063]/40 text-[#DFBA7F] text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+                      className={`px-3.5 py-2 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer ${
+                        isDark
+                          ? 'bg-white/[0.06] hover:bg-white/[0.12] border-white/15 text-white'
+                          : 'bg-[#F3F3F1] hover:bg-black/[0.06] border-black/[0.08] text-[#111214]'
+                      }`}
                     >
                       <Sparkles className="w-3.5 h-3.5" />
                       <span>Load Al-Noor Plan</span>
@@ -606,13 +652,17 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                 </div>
 
                 {/* Pre-built Al-Noor Plan Info Callout */}
-                <div className="p-4 rounded-2xl bg-black/40 border border-[#C9A063]/20 flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-[#DFBA7F]/20 text-[#DFBA7F] flex items-center justify-center shrink-0">
+                <div className={`p-4 rounded-2xl border flex items-start gap-3 ${
+                  isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
+                }`}>
+                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
+                    isDark ? 'bg-white/[0.08] text-white' : 'bg-white text-[#111214]'
+                  }`}>
                     <Info className="w-4 h-4" />
                   </div>
-                  <div className="text-xs text-stone-300 space-y-1">
-                    <p className="font-semibold text-white">The Al-Noor Recommended Routine:</p>
-                    <p className="text-stone-400 text-[11px] leading-relaxed">
+                  <div className={`text-xs space-y-1 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
+                    <p className={`font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>The Al-Noor Recommended Routine:</p>
+                    <p className={`text-[11px] leading-relaxed ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                       Combines authentic Sunnah practices: Suhoor 1 hr before Fajr, post-Fajr Quran session, Morning & Afternoon Adhkar, Maghrib Adhkar & Sunset Iftar, Taraweeh after Isha, and Tahajjud in the last third of the night. You may customize any activity or time below.
                     </p>
                   </div>
@@ -620,7 +670,7 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
 
                 {/* Activities List */}
                 <div className="space-y-2.5">
-                  <div className="flex items-center justify-between text-xs text-stone-400 font-mono px-1">
+                  <div className={`flex items-center justify-between text-xs font-mono px-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     <span>Scheduled Daily Routines ({draftActivities.length})</span>
                     <span>Toggle to Enable/Disable</span>
                   </div>
@@ -631,8 +681,8 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                         key={act.id}
                         className={`p-3.5 rounded-2xl border transition-all flex items-center justify-between gap-3 ${
                           act.isActive
-                            ? 'bg-white/[0.04] border-white/10'
-                            : 'bg-black/30 border-white/5 opacity-50'
+                            ? isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-white border-black/[0.08]'
+                            : isDark ? 'bg-black/20 border-white/[0.05] opacity-50' : 'bg-[#F3F3F1] border-black/[0.06] opacity-60'
                         }`}
                       >
                         <div className="flex items-center gap-3">
@@ -641,24 +691,28 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                             onClick={() => handleToggleActivity(act.id)}
                             className={`w-5 h-5 rounded-md flex items-center justify-center border transition-colors cursor-pointer ${
                               act.isActive
-                                ? 'bg-[#DFBA7F] border-[#DFBA7F] text-[#0A0E18]'
-                                : 'border-stone-600'
+                                ? isDark ? 'bg-white border-white text-[#111214]' : 'bg-[#111214] border-[#111214] text-white'
+                                : isDark ? 'border-stone-600' : 'border-stone-400'
                             }`}
                           >
                             {act.isActive && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                           </button>
                           <div>
-                            <span className="text-xs font-semibold text-white block">
+                            <span className={`text-xs font-semibold block ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                               {act.activityName}
                             </span>
-                            <span className="text-[10px] font-mono text-stone-400">
+                            <span className={`text-[10px] font-mono ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                               {act.duration ? `${act.duration} minutes` : 'Fixed prayer/session'}
                             </span>
                           </div>
                         </div>
 
                         <div className="flex items-center gap-2">
-                          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black/40 border border-white/10 text-xs font-mono text-[#DFBA7F]">
+                          <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-mono ${
+                            isDark
+                              ? 'bg-[#14161A] border-white/10 text-white'
+                              : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+                          }`}>
                             <Clock className="w-3 h-3" />
                             <span>{act.scheduledTime}</span>
                           </div>
@@ -666,7 +720,7 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                           <button
                             type="button"
                             onClick={() => handleDeleteActivity(act.id)}
-                            className="p-1.5 text-stone-500 hover:text-red-400 transition-colors cursor-pointer"
+                            className={`p-1.5 transition-colors cursor-pointer ${isDark ? 'text-stone-500 hover:text-red-400' : 'text-stone-400 hover:text-red-600'}`}
                             title="Delete activity"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -679,9 +733,11 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
 
                 {/* Add Custom Activity Form */}
                 {isAddingActivity ? (
-                  <div className="p-4 rounded-2xl bg-black/50 border border-[#C9A063]/30 space-y-3 animate-fadeIn">
-                    <div className="text-xs font-bold text-white flex items-center gap-2">
-                      <Plus className="w-3.5 h-3.5 text-[#DFBA7F]" />
+                  <div className={`p-4 rounded-2xl border space-y-3 animate-fadeIn ${
+                    isDark ? 'bg-[#1B1D23] border-white/[0.1]' : 'bg-[#F3F3F1] border-black/[0.08]'
+                  }`}>
+                    <div className={`text-xs font-bold flex items-center gap-2 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
+                      <Plus className={`w-3.5 h-3.5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
                       <span>Add Custom Routine</span>
                     </div>
 
@@ -691,26 +747,32 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                         placeholder="Activity name (e.g., Memorize Surah Mulk)"
                         value={newActivityName}
                         onChange={(e) => setNewActivityName(e.target.value)}
-                        className="py-2 px-3 rounded-xl bg-white/5 border border-white/10 text-xs text-white placeholder-stone-500 focus:outline-none focus:border-[#DFBA7F]"
+                        className={`py-2 px-3 rounded-xl border text-xs focus:outline-none ${
+                          isDark ? 'bg-[#14161A] border-white/10 focus:border-white/30 text-white placeholder-stone-500' : 'bg-white border-black/[0.1] focus:border-[#111214]/40 text-[#111214] placeholder-[#6B6F76]'
+                        }`}
                       />
                       <div className="flex items-center gap-2">
-                        <span className="text-xs text-stone-400">Time:</span>
+                        <span className={`text-xs ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>Time:</span>
                         <input
                           type="time"
                           value={newActivityTime}
                           onChange={(e) => setNewActivityTime(e.target.value)}
-                          className="py-2 px-3 rounded-xl bg-white/5 border border-white/10 text-xs text-white focus:outline-none focus:border-[#DFBA7F] w-full"
+                          className={`py-2 px-3 rounded-xl border text-xs focus:outline-none w-full ${
+                            isDark ? 'bg-[#14161A] border-white/10 focus:border-white/30 text-white' : 'bg-white border-black/[0.1] focus:border-[#111214]/40 text-[#111214]'
+                          }`}
                         />
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs text-stone-400">Min:</span>
+                        <span className={`text-xs ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>Min:</span>
                         <input
                           type="number"
                           min="0"
                           max="180"
                           value={newActivityDuration}
                           onChange={(e) => setNewActivityDuration(Number(e.target.value))}
-                          className="py-2 px-3 rounded-xl bg-white/5 border border-white/10 text-xs text-white focus:outline-none focus:border-[#DFBA7F] w-full"
+                          className={`py-2 px-3 rounded-xl border text-xs focus:outline-none w-full ${
+                            isDark ? 'bg-[#14161A] border-white/10 focus:border-white/30 text-white' : 'bg-white border-black/[0.1] focus:border-[#111214]/40 text-[#111214]'
+                          }`}
                         />
                       </div>
                     </div>
@@ -719,14 +781,16 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                       <button
                         type="button"
                         onClick={() => setIsAddingActivity(false)}
-                        className="px-3 py-1.5 rounded-xl text-xs text-stone-400 hover:text-white"
+                        className={`px-3 py-1.5 rounded-xl text-xs ${isDark ? 'text-stone-400 hover:text-white' : 'text-[#5A5D63] hover:text-[#111214]'}`}
                       >
                         Cancel
                       </button>
                       <button
                         type="button"
                         onClick={handleAddNewActivity}
-                        className="px-4 py-1.5 rounded-xl bg-[#DFBA7F] text-black text-xs font-bold"
+                        className={`px-4 py-1.5 rounded-xl text-xs font-bold cursor-pointer ${
+                          isDark ? 'bg-white hover:bg-stone-200 text-[#111214]' : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                        }`}
                       >
                         Add Routine
                       </button>
@@ -736,7 +800,11 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                   <button
                     type="button"
                     onClick={() => setIsAddingActivity(true)}
-                    className="w-full py-2.5 rounded-2xl border border-dashed border-white/20 hover:border-[#DFBA7F]/50 text-stone-300 hover:text-[#DFBA7F] text-xs font-medium flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                    className={`w-full py-2.5 rounded-2xl border border-dashed text-xs font-medium flex items-center justify-center gap-2 transition-colors cursor-pointer ${
+                      isDark
+                        ? 'border-white/20 hover:border-white/40 text-stone-300 hover:text-white'
+                        : 'border-black/20 hover:border-black/40 text-[#3F4248] hover:text-[#111214]'
+                    }`}
                   >
                     <Plus className="w-4 h-4" />
                     <span>Add Another Custom Activity</span>
@@ -744,11 +812,11 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                 )}
 
                 {/* Plan Save Actions */}
-                <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                <div className={`flex items-center justify-between pt-4 border-t ${isDark ? 'border-white/10' : 'border-black/[0.08]'}`}>
                   <button
                     type="button"
                     onClick={() => setViewMode('dashboard')}
-                    className="px-4 py-2.5 rounded-xl text-xs text-stone-400 hover:text-white"
+                    className={`px-4 py-2.5 rounded-xl text-xs ${isDark ? 'text-stone-400 hover:text-white' : 'text-[#5A5D63] hover:text-[#111214]'}`}
                   >
                     Cancel
                   </button>
@@ -756,7 +824,9 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                   <button
                     type="button"
                     onClick={handleSavePlan}
-                    className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#DFBA7F] via-[#C9A063] to-[#A67C38] text-black text-xs font-bold shadow-md hover:brightness-110 active:scale-95 transition-all"
+                    className={`px-6 py-2.5 rounded-xl text-xs font-bold shadow-sm active:scale-95 transition-all cursor-pointer ${
+                      isDark ? 'bg-white hover:bg-stone-200 text-[#111214]' : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                    }`}
                   >
                     Save & Return to Dashboard
                   </button>
@@ -769,27 +839,33 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
             /* ========================================================================= */
             <div className="space-y-6 animate-fadeIn">
               {/* Dream Banner Card */}
-              <div className="rounded-[32px] p-6 sm:p-8 bg-gradient-to-br from-[#0F1626] via-[#090D18] to-[#04060C] border border-[#C9A063]/30 shadow-2xl relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-[#DFBA7F]/10 rounded-full blur-3xl pointer-events-none" />
-
+              <div className={`rounded-[32px] p-6 sm:p-8 border relative overflow-hidden ${
+                isDark
+                  ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+                  : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
+              }`}>
                 <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
-                      <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#DFBA7F]/20 text-[#DFBA7F] border border-[#DFBA7F]/40 shadow-xs flex items-center gap-1.5">
+                      <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border flex items-center gap-1.5 ${
+                        isDark
+                          ? 'bg-white/[0.08] text-white border-white/15'
+                          : 'bg-[#F3F3F1] text-[#111214] border-black/[0.08]'
+                      }`}>
                         <Moon className="w-3 h-3 fill-current" />
                         <span>Day {currentDayIndex} of 30</span>
                       </span>
-                      <span className="text-xs font-mono text-stone-400">
+                      <span className={`text-xs font-mono ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                         {percentageComplete}% Goal Completed
                       </span>
                     </div>
 
-                    <h2 className="text-xl sm:text-2xl font-serif-heading font-bold text-white leading-snug">
+                    <h2 className={`text-xl sm:text-2xl font-serif-heading font-bold leading-snug ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                       "{userData?.goalText}"
                     </h2>
 
-                    <p className="text-xs text-stone-400">
-                      Category: <span className="capitalize text-[#DFBA7F] font-semibold">{userData?.goalCategory}</span> • Saved locally in IndexedDB
+                    <p className={`text-xs ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
+                      Category: <span className={`capitalize font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>{userData?.goalCategory}</span> • Saved locally in IndexedDB
                     </p>
                   </div>
 
@@ -797,25 +873,33 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                     <button
                       type="button"
                       onClick={() => setViewMode('plan_builder')}
-                      className="py-2.5 px-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/15 text-stone-200 text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer"
+                      className={`py-2.5 px-4 rounded-2xl border text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                        isDark
+                          ? 'bg-white/[0.06] hover:bg-white/[0.12] border-white/15 text-stone-200'
+                          : 'bg-white hover:bg-[#F3F3F1] border-black/[0.1] text-[#111214]'
+                      }`}
                     >
-                      <Sliders className="w-3.5 h-3.5 text-[#DFBA7F]" />
+                      <Sliders className={`w-3.5 h-3.5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
                       <span>Adjust Daily Plan</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setIsPulseModalOpen(true)}
-                      className="py-2.5 px-4 rounded-2xl bg-gradient-to-r from-amber-500/20 to-orange-500/20 hover:from-amber-500/30 hover:to-orange-500/30 border border-amber-500/40 text-amber-200 text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm"
+                      className={`py-2.5 px-4 rounded-2xl border text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm ${
+                        isDark
+                          ? 'bg-white hover:bg-stone-200 border-white text-[#111214]'
+                          : 'bg-[#111214] hover:bg-[#27292D] border-[#111214] text-white'
+                      }`}
                     >
-                      <Flame className="w-3.5 h-3.5 text-amber-400" />
+                      <Flame className="w-3.5 h-3.5" />
                       <span>Today's Inspiration Pulse</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setViewMode('onboarding')}
-                      className="py-2 px-3 text-[11px] font-mono text-stone-400 hover:text-stone-200 underline text-center cursor-pointer"
+                      className={`py-2 px-3 text-[11px] font-mono underline text-center cursor-pointer ${isDark ? 'text-stone-400 hover:text-stone-200' : 'text-[#5A5D63] hover:text-[#111214]'}`}
                     >
                       Change My Dream
                     </button>
@@ -824,21 +908,25 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
               </div>
 
               {/* Daily Dream Check-In Interactive Section (Day currentDayIndex) */}
-              <div className="p-6 rounded-3xl bg-[#090E1C]/90 border border-[#C9A063]/25 shadow-lg space-y-4">
+              <div className={`p-6 rounded-3xl border shadow-sm space-y-4 ${
+                isDark ? 'bg-[#14161A] border-white/[0.08]' : 'bg-white border-black/[0.08]'
+              }`}>
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-mono uppercase tracking-widest text-[#DFBA7F] font-bold">
+                      <span className={`text-xs font-mono uppercase tracking-widest font-bold ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                         Daily Dream Accountability
                       </span>
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-mono">
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full border font-mono ${
+                        isDark ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-300' : 'bg-emerald-50 border-emerald-300 text-emerald-700'
+                      }`}>
                         Day {currentDayIndex} of 30 (Today)
                       </span>
                     </div>
-                    <h3 className="text-lg font-serif-heading font-bold text-white mt-0.5">
+                    <h3 className={`text-lg font-serif-heading font-bold mt-0.5 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                       Did you work toward your dream today?
                     </h3>
-                    <p className="text-[11px] text-stone-400 font-light">
+                    <p className={`text-[11px] font-light ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                       Upcoming days are locked (Tomorrow Insha'Allah, and subsequent days Insha'Allah that time).
                     </p>
                   </div>
@@ -847,45 +935,57 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                     <button
                       type="button"
                       onClick={() => handleDailyCheckIn('yes')}
-                      className="py-2.5 px-5 rounded-2xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300 text-xs font-bold flex items-center gap-1.5 cursor-pointer active:scale-95 transition-all shadow-sm"
+                      className={`py-2.5 px-5 rounded-2xl border text-xs font-bold flex items-center gap-1.5 cursor-pointer active:scale-95 transition-all shadow-sm ${
+                        isDark
+                          ? 'bg-emerald-500/20 hover:bg-emerald-500/30 border-emerald-500/40 text-emerald-300'
+                          : 'bg-emerald-50 hover:bg-emerald-100 border-emerald-300 text-emerald-800'
+                      }`}
                     >
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                      <CheckCircle2 className={`w-4 h-4 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`} />
                       <span>Yes, I did!</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => handleDailyCheckIn('no')}
-                      className="py-2.5 px-5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 text-xs font-semibold flex items-center gap-1.5 cursor-pointer active:scale-95 transition-all"
+                      className={`py-2.5 px-5 rounded-2xl border text-xs font-semibold flex items-center gap-1.5 cursor-pointer active:scale-95 transition-all ${
+                        isDark
+                          ? 'bg-white/[0.06] hover:bg-white/[0.1] border-white/10 text-stone-300'
+                          : 'bg-[#F3F3F1] hover:bg-black/[0.06] border-black/[0.08] text-[#111214]'
+                      }`}
                     >
-                      <Heart className="w-4 h-4 text-purple-400" />
+                      <Heart className={`w-4 h-4 ${isDark ? 'text-purple-400' : 'text-purple-600'}`} />
                       <span>Not today</span>
                     </button>
                   </div>
                 </div>
 
                 {todayFeedback && (
-                  <div className="p-3.5 rounded-2xl bg-black/40 border border-[#C9A063]/20 text-xs text-center text-[#DFBA7F] font-serif italic animate-fadeIn">
+                  <div className={`p-3.5 rounded-2xl border text-xs text-center font-serif italic animate-fadeIn ${
+                    isDark ? 'bg-[#1B1D23] border-white/10 text-stone-200' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+                  }`}>
                     "{todayFeedback}"
                   </div>
                 )}
               </div>
 
               {/* 30-Day Ramadan Visual Calendar Progress Grid */}
-              <div className="p-6 rounded-3xl bg-[#080D1A]/90 border border-[#C9A063]/20 shadow-lg space-y-4">
-                <div className="flex items-center justify-between">
+              <div className={`p-6 rounded-3xl border shadow-sm space-y-4 ${
+                isDark ? 'bg-[#14161A] border-white/[0.08]' : 'bg-white border-black/[0.08]'
+              }`}>
+                <div className="flex items-center justify-between gap-2 flex-wrap">
                   <div className="flex items-center gap-2.5">
-                    <Calendar className="w-5 h-5 text-[#DFBA7F]" />
+                    <Calendar className={`w-5 h-5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
                     <div>
-                      <h3 className="text-base font-serif-heading font-bold text-white">
+                      <h3 className={`text-base font-serif-heading font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                         30-Day Ramadan Journey Calendar
                       </h3>
-                      <p className="text-[11px] text-stone-400">
+                      <p className={`text-[11px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                         Current Day is active • Tomorrow shows "Tomorrow Insha'Allah" • Subsequent days show "Insha'Allah that time"
                       </p>
                     </div>
                   </div>
-                  <div className="text-xs font-mono text-[#DFBA7F]">
+                  <div className={`text-xs font-mono font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                     {daysAchieved} Days Achieved • {30 - daysAchieved} Days Left
                   </div>
                 </div>
@@ -895,19 +995,19 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                   <div
                     className={`p-3 rounded-2xl border text-xs flex items-center justify-between animate-fadeIn transition-all ${
                       dayNotice.type === 'tomorrow'
-                        ? 'bg-amber-950/30 border-amber-500/50 text-amber-200'
+                        ? isDark ? 'bg-sky-500/15 border-sky-500/40 text-sky-200' : 'bg-sky-50 border-sky-200 text-sky-900'
                         : dayNotice.type === 'later'
-                        ? 'bg-stone-900/80 border-stone-700 text-stone-300'
+                        ? isDark ? 'bg-[#1B1D23] border-white/10 text-stone-300' : 'bg-[#F3F3F1] border-black/[0.08] text-[#3F4248]'
                         : dayNotice.type === 'today'
-                        ? 'bg-[#DFBA7F]/20 border-[#DFBA7F]/40 text-[#DFBA7F]'
-                        : 'bg-emerald-950/30 border-emerald-500/40 text-emerald-300'
+                        ? isDark ? 'bg-white/[0.1] border-white/30 text-white' : 'bg-[#111214]/[0.06] border-[#111214]/30 text-[#111214]'
+                        : isDark ? 'bg-emerald-950/30 border-emerald-500/40 text-emerald-300' : 'bg-emerald-50 border-emerald-300 text-emerald-800'
                     }`}
                   >
                     <div className="flex items-center gap-2">
                       {dayNotice.type === 'tomorrow' || dayNotice.type === 'later' ? (
-                        <Lock className="w-4 h-4 text-amber-400 shrink-0" />
+                        <Lock className={`w-4 h-4 shrink-0 ${isDark ? 'text-sky-400' : 'text-sky-700'}`} />
                       ) : (
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                        <CheckCircle2 className={`w-4 h-4 shrink-0 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`} />
                       )}
                       <span className="font-medium">{dayNotice.message}</span>
                     </div>
@@ -915,7 +1015,7 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                     <button
                       type="button"
                       onClick={() => setDayNotice(null)}
-                      className="p-1 text-stone-400 hover:text-white transition-colors"
+                      className={`p-1 transition-colors ${isDark ? 'text-stone-400 hover:text-white' : 'text-[#5A5D63] hover:text-[#111214]'}`}
                       aria-label="Dismiss notice"
                     >
                       <X className="w-3.5 h-3.5" />
@@ -930,38 +1030,49 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                     const isPast = dayNum < currentDayIndex;
                     const isCurrent = dayNum === currentDayIndex;
                     const isTomorrow = dayNum === currentDayIndex + 1;
-                    const isLater = dayNum > currentDayIndex + 1;
                     const hasLogged = dailyLogs[i];
 
-                    let bgClass = 'bg-white/[0.02] border-white/5 text-stone-500';
+                    let bgClass = isDark
+                      ? 'bg-[#1B1D23] border-white/[0.06] text-stone-500'
+                      : 'bg-[#F3F3F1] border-black/[0.06] text-[#6B6F76]';
                     let subLabel = '';
                     let icon = null;
 
                     if (isPast) {
                       if (hasLogged?.status === 'yes') {
-                        bgClass = 'bg-emerald-500/20 border-emerald-500/50 text-emerald-300 font-bold';
+                        bgClass = isDark
+                          ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-300 font-bold'
+                          : 'bg-emerald-50 border-emerald-300 text-emerald-800 font-bold';
                         subLabel = 'Achieved';
-                        icon = <Check className="w-3 h-3 text-emerald-400" />;
+                        icon = <Check className={`w-3 h-3 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`} />;
                       } else {
-                        bgClass = 'bg-stone-800/60 border-stone-700/80 text-stone-400';
+                        bgClass = isDark
+                          ? 'bg-white/[0.06] border-white/10 text-stone-300'
+                          : 'bg-[#F3F3F1] border-black/[0.08] text-[#3F4248]';
                         subLabel = 'Recorded';
-                        icon = <Heart className="w-3 h-3 text-purple-400" />;
+                        icon = <Heart className={`w-3 h-3 ${isDark ? 'text-purple-400' : 'text-purple-600'}`} />;
                       }
                     } else if (isCurrent) {
-                      bgClass = 'bg-[#DFBA7F]/25 border-[#DFBA7F] text-[#DFBA7F] font-bold ring-2 ring-[#DFBA7F]/40 shadow-[0_0_12px_rgba(223,186,127,0.3)] animate-pulse';
+                      bgClass = isDark
+                        ? 'bg-white text-[#111214] border-white font-bold shadow-sm'
+                        : 'bg-[#111214] text-white border-[#111214] font-bold shadow-sm';
                       subLabel = 'Today';
-                      icon = <Sparkles className="w-3 h-3 text-[#DFBA7F]" />;
+                      icon = <Sparkles className={`w-3 h-3 ${isDark ? 'text-[#111214]' : 'text-white'}`} />;
                     } else if (isTomorrow) {
-                      // Locked: Tomorrow Insha'Allah
-                      bgClass = 'bg-amber-950/20 border-amber-500/30 text-amber-300 hover:border-amber-400/60';
+                      bgClass = isDark
+                        ? 'bg-sky-500/15 border-sky-500/35 text-sky-300 hover:border-sky-400/60'
+                        : 'bg-sky-50 border-sky-200 text-sky-800 hover:border-sky-400';
                       subLabel = "Tomorrow Insha'Allah";
-                      icon = <Lock className="w-3 h-3 text-amber-400" />;
+                      icon = <Lock className={`w-3 h-3 ${isDark ? 'text-sky-400' : 'text-sky-700'}`} />;
                     } else {
-                      // Locked: Insha'Allah that time
-                      bgClass = 'bg-white/[0.02] border-white/5 text-stone-500 hover:border-stone-600';
+                      bgClass = isDark
+                        ? 'bg-[#1B1D23] border-white/[0.06] text-stone-500 hover:border-white/15'
+                        : 'bg-[#F3F3F1] border-black/[0.06] text-[#6B6F76] hover:border-black/15';
                       subLabel = "Insha'Allah that time";
-                      icon = <Lock className="w-2.5 h-2.5 text-stone-500" />;
+                      icon = <Lock className={`w-2.5 h-2.5 ${isDark ? 'text-stone-500' : 'text-[#6B6F76]'}`} />;
                     }
+
+                    const isLater = dayNum > currentDayIndex + 1;
 
                     return (
                       <button
@@ -1002,7 +1113,13 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                         </div>
                         <span className="text-xs sm:text-sm font-bold font-mono my-0.5">{dayNum}</span>
                         <span className={`text-[8px] leading-tight text-center line-clamp-2 px-0.5 ${
-                          isTomorrow ? 'text-amber-300 font-bold' : isCurrent ? 'text-[#DFBA7F] font-bold' : isPast ? 'text-stone-300' : 'text-stone-400'
+                          isTomorrow
+                            ? isDark ? 'text-sky-300 font-bold' : 'text-sky-800 font-bold'
+                            : isCurrent
+                            ? isDark ? 'text-[#111214] font-bold' : 'text-white font-bold'
+                            : isPast
+                            ? isDark ? 'text-stone-300' : 'text-[#3F4248]'
+                            : isDark ? 'text-stone-400' : 'text-[#6B6F76]'
                         }`}>
                           {subLabel}
                         </span>
@@ -1013,15 +1130,17 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
 
                 {/* End of Ramadan Closing Du'a Card if near or complete */}
                 {daysAchieved >= 25 && (
-                  <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs space-y-2 mt-4 animate-fadeIn">
-                    <div className="font-bold font-cinzel text-amber-300 flex items-center gap-1.5">
+                  <div className={`p-4 rounded-2xl border text-xs space-y-2 mt-4 animate-fadeIn ${
+                    isDark ? 'bg-[#1B1D23] border-white/10 text-stone-200' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+                  }`}>
+                    <div className={`font-bold font-cinzel flex items-center gap-1.5 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                       <Award className="w-4 h-4" />
                       <span>Closing Ramadan Du'a of Gratitude:</span>
                     </div>
-                    <p className="font-arabic text-base leading-loose text-center text-[#DFBA7F]" dir="rtl">
+                    <p className={`font-arabic text-base leading-loose text-center ${isDark ? 'text-white' : 'text-[#111214]'}`} dir="rtl">
                       « اللَّهُمَّ لَا تَجْعَلْهُ آخِرَ الْعَهْدِ مِنْ صِيَامِنَا إِيَّاهُ، فَإِنْ جَعَلْتَهُ فَاجْعَلْنَا مَرْحُومِينَ وَلَا تَجْعَلْنَا مَحْرُومِينَ »
                     </p>
-                    <p className="italic text-stone-300 text-center font-light">
+                    <p className={`italic text-center font-light ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                       "O Allah, let this not be the final covenant of our fasting; and if You have decreed it so, make us among those showered in mercy, not those denied."
                     </p>
                   </div>
@@ -1029,35 +1148,45 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
               </div>
 
               {/* Motivation Boost: Categorized Authentic Verses & Hadiths */}
-              <div className="p-6 rounded-3xl bg-gradient-to-r from-[#0F1728] to-[#0A101D] border border-[#C9A063]/30 shadow-lg space-y-3 relative overflow-hidden">
+              <div className={`p-6 rounded-3xl border shadow-sm space-y-3 relative overflow-hidden ${
+                isDark
+                  ? 'bg-[#14161A] border-white/[0.08]'
+                  : 'bg-white border-black/[0.08]'
+              }`}>
                 <div className="flex items-center gap-2.5">
-                  <Sparkles className="w-5 h-5 text-[#DFBA7F]" />
-                  <h3 className="text-base font-serif-heading font-bold text-[#DFBA7F]">
+                  <Sparkles className={`w-5 h-5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
+                  <h3 className={`text-base font-serif-heading font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                     Motivation Boost (Category: {userData?.goalCategory})
                   </h3>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-black/40 border border-[#C9A063]/20 space-y-3">
-                  <p className="text-xl sm:text-2xl font-arabic font-bold text-[#DFBA7F] leading-loose text-center" dir="rtl">
+                <div className={`p-4 rounded-2xl border space-y-3 ${
+                  isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
+                }`}>
+                  <p className={`text-xl sm:text-2xl font-arabic font-bold leading-loose text-center ${isDark ? 'text-white' : 'text-[#111214]'}`} dir="rtl">
                     « {motivationItem.arabicVerseOrHadith} »
                   </p>
-                  <p className="text-xs sm:text-sm text-stone-200 font-serif italic text-center">
+                  <p className={`text-xs sm:text-sm font-serif italic text-center ${isDark ? 'text-stone-200' : 'text-[#3F4248]'}`}>
                     "{motivationItem.translation}"
                   </p>
-                  <div className="flex items-center justify-between text-[11px] font-mono text-stone-400 pt-2 border-t border-white/5">
+                  <div className={`flex items-center justify-between text-[11px] font-mono pt-2 border-t ${isDark ? 'text-stone-400 border-white/5' : 'text-[#5A5D63] border-black/[0.08]'}`}>
                     <span>Authentic Source: {motivationItem.reference}</span>
-                    <span className="text-[#DFBA7F] capitalize">Category: {motivationItem.category}</span>
+                    <span className={`capitalize font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>Category: {motivationItem.category}</span>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-1">
-                  <p className="text-xs text-stone-400">
+                <div className="flex items-center justify-between pt-1 gap-3 flex-wrap">
+                  <p className={`text-xs ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     Rotates every 5 days with authentic verses on patience, recitation, and mercy.
                   </p>
                   <button
                     type="button"
                     onClick={handleAskNoorAIForMotivation}
-                    className="py-1.5 px-3 rounded-xl bg-[#DFBA7F]/15 hover:bg-[#DFBA7F]/25 border border-[#DFBA7F]/30 text-[#DFBA7F] text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+                    className={`py-1.5 px-3 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer ${
+                      isDark
+                        ? 'bg-white/[0.06] hover:bg-white/[0.12] border-white/15 text-white'
+                        : 'bg-[#111214] hover:bg-[#27292D] border-[#111214] text-white'
+                    }`}
                   >
                     <Bot className="w-3.5 h-3.5" />
                     <span>Ask NOOR AI for Goal Advice</span>
@@ -1066,15 +1195,17 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
               </div>
 
               {/* Today's Plan Activities Schedule */}
-              <div className="p-6 rounded-3xl bg-[#090D1A]/90 border border-[#C9A063]/20 shadow-lg space-y-4">
+              <div className={`p-6 rounded-3xl border shadow-sm space-y-4 ${
+                isDark ? 'bg-[#14161A] border-white/[0.08]' : 'bg-white border-black/[0.08]'
+              }`}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <Clock className="w-5 h-5 text-[#DFBA7F]" />
+                    <Clock className={`w-5 h-5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
                     <div>
-                      <h3 className="text-base font-serif-heading font-bold text-white">
+                      <h3 className={`text-base font-serif-heading font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                         Today's Scheduled Routines (Day {currentDayIndex})
                       </h3>
-                      <p className="text-[11px] text-stone-400">
+                      <p className={`text-[11px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                         Tomorrow's routine will unlock Tomorrow Insha'Allah.
                       </p>
                     </div>
@@ -1082,7 +1213,7 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                   <button
                     type="button"
                     onClick={() => setViewMode('plan_builder')}
-                    className="text-xs text-[#DFBA7F] hover:underline cursor-pointer"
+                    className={`text-xs hover:underline cursor-pointer font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}
                   >
                     Edit Plan
                   </button>
@@ -1094,21 +1225,25 @@ export const NoorRamadanScreen: React.FC<NoorRamadanScreenProps> = ({
                     .map((act) => (
                       <div
                         key={act.id}
-                        className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 flex items-center justify-between"
+                        className={`p-3.5 rounded-2xl border flex items-center justify-between ${
+                          isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#FCFCFA] border-black/[0.08]'
+                        }`}
                       >
                         <div className="flex items-center gap-2.5">
-                          <div className="w-2 h-2 rounded-full bg-[#DFBA7F]" />
+                          <div className={`w-2 h-2 rounded-full ${isDark ? 'bg-white' : 'bg-[#111214]'}`} />
                           <div>
-                            <span className="text-xs font-semibold text-white block">
+                            <span className={`text-xs font-semibold block ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                               {act.activityName}
                             </span>
-                            <span className="text-[10px] text-stone-400">
+                            <span className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                               {act.duration ? `${act.duration} minutes` : 'Daily time'}
                             </span>
                           </div>
                         </div>
 
-                        <span className="px-2.5 py-1 rounded-lg bg-black/40 border border-white/10 text-xs font-mono text-[#DFBA7F]">
+                        <span className={`px-2.5 py-1 rounded-lg border text-xs font-mono ${
+                          isDark ? 'bg-[#14161A] border-white/10 text-white' : 'bg-white border-black/[0.08] text-[#111214]'
+                        }`}>
                           {act.scheduledTime}
                         </span>
                       </div>

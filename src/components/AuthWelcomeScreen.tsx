@@ -516,28 +516,37 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 sm:p-6 bg-[#080A0E] text-[#F5EFE6] selection:bg-[#C9A063]/30">
-      {/* Dynamic Ambient Optical Glows */}
+    <div className={`fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 sm:p-6 selection:bg-black/15 dark:selection:bg-white/20 ${
+      isDark ? 'bg-[#0B0C0E] text-[#F3F4F6]' : 'bg-[#FCFCFA] text-[#111214]'
+    }`}>
+      {/* Subtle Monochrome Ambient Depth */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-15%] left-[-10%] w-[550px] h-[550px] rounded-full bg-[#C9A063]/12 blur-[160px] animate-pulseGlow" />
-        <div className="absolute bottom-[-15%] right-[-10%] w-[550px] h-[550px] rounded-full bg-[#DFBA7F]/10 blur-[170px]" />
-        <div className="absolute top-[45%] right-[25%] w-[320px] h-[320px] rounded-full bg-[#B88E4F]/8 blur-[130px]" />
+        <div className={`absolute top-[-15%] left-[-10%] w-[550px] h-[550px] rounded-full blur-[160px] ${
+          isDark ? 'bg-white/[0.03]' : 'bg-black/[0.02]'
+        }`} />
+        <div className={`absolute bottom-[-15%] right-[-10%] w-[550px] h-[550px] rounded-full blur-[170px] ${
+          isDark ? 'bg-white/[0.02]' : 'bg-black/[0.02]'
+        }`} />
       </div>
 
       <div className="relative z-10 w-full max-w-md mx-auto my-auto">
         {/* User recognition banner */}
         {userStatusBanner && (
           <div
-            className={`mb-4 p-3.5 rounded-2xl border flex items-center gap-2.5 text-xs shadow-lg animate-fadeIn ${
+            className={`mb-4 p-3.5 rounded-2xl border flex items-center gap-2.5 text-xs shadow-sm animate-fadeIn ${
               userStatusBanner.type === 'returning'
-                ? 'bg-emerald-950/70 border-emerald-500/40 text-emerald-200'
-                : 'bg-[#C9A063]/20 border-[#DFBA7F]/50 text-[#DFBA7F]'
+                ? isDark
+                  ? 'bg-emerald-950/70 border-emerald-500/40 text-emerald-200'
+                  : 'bg-emerald-50 border-emerald-300 text-emerald-900'
+                : isDark
+                ? 'bg-[#14161A] border-white/[0.12] text-stone-200'
+                : 'bg-white border-black/[0.1] text-[#111214]'
             }`}
           >
             {userStatusBanner.type === 'returning' ? (
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+              <CheckCircle2 className={`w-4 h-4 shrink-0 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`} />
             ) : (
-              <Sparkles className="w-4 h-4 text-[#DFBA7F] shrink-0" />
+              <Sparkles className={`w-4 h-4 shrink-0 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
             )}
             <span className="font-medium">{userStatusBanner.message}</span>
           </div>
@@ -550,28 +559,28 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
         {view === 'landing' && (
           <div
             id="noor-auth-landing-card"
-            className={`rounded-[36px] p-8 sm:p-10 text-center transition-all animate-fadeIn ${
+            className={`rounded-[32px] p-8 sm:p-10 text-center transition-all animate-fadeIn border ${
               isDark
-                ? 'liquid-glass-hero-dark text-stone-100 shadow-[0_24px_60px_rgba(0,0,0,0.85)]'
-                : 'liquid-glass-hero-light text-stone-900 border-[#C9A063]/35 shadow-xl'
+                ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6] shadow-[0_12px_40px_rgba(0,0,0,0.45)]'
+                : 'bg-white border-black/[0.08] text-[#111214] shadow-[0_4px_24px_rgba(0,0,0,0.06)]'
             }`}
           >
-            {/* Liquid Glass Orb Emblem */}
-            <div className="mx-auto w-24 h-24 rounded-3xl overflow-hidden shadow-[0_8px_32px_rgba(201,160,99,0.35)] mb-6">
+            {/* App Logo Emblem */}
+            <div className="mx-auto w-24 h-24 rounded-3xl overflow-hidden shadow-md mb-6">
               <AppLogoIcon className="w-full h-full" withContainer={true} />
             </div>
 
             <h1
-              className={`text-3xl sm:text-4xl font-cinzel font-bold tracking-[0.25em] mb-2 ${
-                isDark ? 'text-[#F5EFE6]' : 'text-stone-900'
+              className={`text-3xl sm:text-4xl font-bold tracking-[0.25em] mb-2 ${
+                isDark ? 'text-white' : 'text-[#111214]'
               }`}
             >
               {isArabic ? 'نور' : 'NOOR'}
             </h1>
 
             <p
-              className={`font-serif-heading italic text-xl font-medium mb-3 ${
-                isDark ? 'text-[#DFBA7F]' : 'text-[#8E6527]'
+              className={`italic text-lg font-medium mb-3 ${
+                isDark ? 'text-stone-300' : 'text-[#3F4248]'
               }`}
             >
               "{t(lang, 'authWelcomeSubtitle')}"
@@ -579,7 +588,7 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
 
             <p
               className={`text-xs leading-relaxed max-w-xs mx-auto mb-6 font-light ${
-                isDark ? 'text-stone-300' : 'text-stone-600'
+                isDark ? 'text-stone-400' : 'text-[#5A5D63]'
               }`}
             >
               {t(lang, 'homeDesc')}
@@ -630,13 +639,13 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
               <div
                 className={`mb-4 p-3.5 rounded-2xl border text-xs text-left flex items-start gap-2.5 ${
                   isDark
-                    ? 'bg-amber-500/10 border-amber-500/30 text-stone-200'
-                    : 'bg-amber-50/90 border-[#A67C38]/30 text-stone-800'
+                    ? 'bg-sky-500/10 border-sky-500/30 text-stone-200'
+                    : 'bg-sky-50 border-sky-200 text-[#111214]'
                 }`}
               >
-                <Sparkles className="w-4 h-4 shrink-0 text-amber-400 mt-0.5" />
+                <Sparkles className={`w-4 h-4 shrink-0 mt-0.5 ${isDark ? 'text-sky-400' : 'text-sky-700'}`} />
                 <div className="flex-1">
-                  <div className="font-semibold text-xs text-[#DFBA7F]">
+                  <div className={`font-semibold text-xs ${isDark ? 'text-sky-300' : 'text-sky-900'}`}>
                     {isArabic ? 'أهلاً بعودتك إلى نور' : 'Welcome back to Noor'}
                   </div>
                   <div className="text-[11px] mt-0.5 opacity-90 leading-relaxed">
@@ -661,7 +670,7 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                   }
                   setView('login');
                 }}
-                className="w-full py-3.5 px-6 rounded-2xl font-bold font-cinzel tracking-wider text-xs bg-gradient-to-r from-[#C9A063] via-[#DFBA7F] to-[#C9A063] text-[#080A0E] shadow-[0_8px_28px_rgba(201,160,99,0.4)] hover:opacity-95 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className={`w-full py-3.5 px-6 rounded-2xl font-bold tracking-wide text-xs shadow-sm active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] hover:opacity-95`}
               >
                 <span>
                   {hasUsedAppBefore
@@ -679,10 +688,10 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                   setInlinePasswordError(null);
                   setView('signup');
                 }}
-                className={`w-full py-3 px-6 rounded-2xl font-bold font-cinzel tracking-wider text-[11px] active:scale-[0.98] transition-all flex items-center justify-center gap-2 border cursor-pointer ${
+                className={`w-full py-3 px-6 rounded-2xl font-bold tracking-wide text-[11px] active:scale-[0.98] transition-all flex items-center justify-center gap-2 border cursor-pointer ${
                   isDark
-                    ? 'bg-[#131923]/70 hover:bg-[#1A2230] border-[#C9A063]/30 text-[#DFBA7F]'
-                    : 'bg-amber-50/70 hover:bg-amber-100/80 border-[#A67C38]/40 text-[#8E6527]'
+                    ? 'bg-[#1B1D23] hover:bg-white/[0.08] border-white/[0.1] text-white'
+                    : 'bg-[#F3F3F1] hover:bg-black/[0.06] border-black/[0.1] text-[#111214]'
                 }`}
               >
                 <span>{t(lang, 'createAccount')}</span>
@@ -692,10 +701,10 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                 id="landing-guest-btn"
                 type="button"
                 onClick={handleContinueAsGuest}
-                className={`w-full py-3 px-6 rounded-2xl font-bold font-cinzel tracking-wider text-[11px] border active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                className={`w-full py-3 px-6 rounded-2xl font-bold tracking-wide text-[11px] border active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer ${
                   isDark
-                    ? 'bg-white/5 hover:bg-white/10 border-white/10 text-stone-300 hover:text-[#DFBA7F]'
-                    : 'bg-stone-100 hover:bg-stone-200/70 border-stone-300 text-stone-700 hover:text-stone-900'
+                    ? 'bg-white/[0.04] hover:bg-white/[0.08] border-white/[0.08] text-stone-300 hover:text-white'
+                    : 'bg-white hover:bg-[#F3F3F1] border-black/[0.08] text-[#3F4248] hover:text-[#111214]'
                 }`}
               >
                 <span>{t(lang, 'continueAsGuest')}</span>
@@ -703,8 +712,8 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
               </button>
             </div>
 
-            <div className={`mt-6 flex items-center justify-center gap-2 text-[11px] font-light ${isDark ? 'text-stone-400' : 'text-stone-600'}`}>
-              <ShieldCheck className={`w-3.5 h-3.5 ${isDark ? 'text-[#DFBA7F]' : 'text-[#8E6527]'}`} />
+            <div className={`mt-6 flex items-center justify-center gap-2 text-[11px] font-light ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
+              <ShieldCheck className={`w-3.5 h-3.5 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`} />
               <span>{isArabic ? 'حفظ آمن وخاص ومزامن بين أجهزتك' : 'Private, secure & synced across your devices'}</span>
             </div>
           </div>
@@ -716,32 +725,32 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
         {view === 'login' && (
           <div
             id="noor-auth-login-card"
-            className={`rounded-[36px] p-8 sm:p-10 transition-all animate-fadeIn ${
+            className={`rounded-[32px] p-8 sm:p-10 transition-all animate-fadeIn border ${
               isDark
-                ? 'liquid-glass-hero-dark text-stone-100 shadow-[0_24px_60px_rgba(0,0,0,0.85)]'
-                : 'liquid-glass-hero-light text-stone-900 border-[#C9A063]/35 shadow-xl'
+                ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6] shadow-[0_12px_40px_rgba(0,0,0,0.45)]'
+                : 'bg-white border-black/[0.08] text-[#111214] shadow-[0_4px_24px_rgba(0,0,0,0.06)]'
             }`}
           >
             {/* Top Branding */}
             <div className="text-center mb-5">
-              <div className="mx-auto w-16 h-16 rounded-2xl overflow-hidden shadow-[0_6px_25px_rgba(201,160,99,0.3)] mb-3">
+              <div className="mx-auto w-16 h-16 rounded-2xl overflow-hidden shadow-md mb-3">
                 <AppLogoIcon className="w-full h-full" withContainer={true} />
               </div>
               <h1
-                className={`text-2xl font-cinzel font-bold tracking-[0.2em] ${
-                  isDark ? 'text-[#F5EFE6]' : 'text-stone-900'
+                className={`text-2xl font-bold tracking-[0.2em] ${
+                  isDark ? 'text-white' : 'text-[#111214]'
                 }`}
               >
                 NOOR
               </h1>
               <h2
-                className={`text-xl font-serif-heading font-bold mt-1.5 ${
-                  isDark ? 'text-[#DFBA7F]' : 'text-[#8E6527]'
+                className={`text-xl font-bold mt-1.5 ${
+                  isDark ? 'text-stone-200' : 'text-[#111214]'
                 }`}
               >
                 Sign In to Noor
               </h2>
-              <p className={`text-xs font-light mt-0.5 ${isDark ? 'text-stone-300' : 'text-stone-600'}`}>
+              <p className={`text-xs font-light mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 Sign in with Google or Email to access your sanctuary and cloud progress.
               </p>
             </div>
@@ -784,8 +793,12 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
 
             {/* General Error */}
             {generalError && (
-              <div className="p-3 mb-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center gap-2 text-xs">
-                <AlertCircle className="w-4 h-4 shrink-0 text-amber-400" />
+              <div className={`p-3 mb-4 rounded-2xl border flex items-center gap-2 text-xs ${
+                isDark
+                  ? 'bg-sky-500/10 border-sky-500/30 text-sky-300'
+                  : 'bg-sky-50 border-sky-200 text-sky-900'
+              }`}>
+                <AlertCircle className={`w-4 h-4 shrink-0 ${isDark ? 'text-sky-400' : 'text-sky-700'}`} />
                 <span>{generalError}</span>
               </div>
             )}
@@ -795,13 +808,13 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
               <div>
                 <label
                   className={`block text-[11px] font-semibold mb-1 pl-1 ${
-                    isDark ? 'text-stone-300' : 'text-stone-700'
+                    isDark ? 'text-stone-300' : 'text-[#3F4248]'
                   }`}
                 >
                   Email Address
                 </label>
                 <div className="relative">
-                  <Mail className={`absolute left-4 top-3.5 w-4 h-4 ${isDark ? 'text-[#DFBA7F]/70' : 'text-[#8E6527]'}`} />
+                  <Mail className={`absolute left-4 top-3.5 w-4 h-4 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`} />
                   <input
                     id="login-email-input"
                     type="email"
@@ -809,10 +822,10 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                     placeholder="Email address"
                     value={loginEmail}
                     onChange={(e) => setLoginEmail(e.target.value)}
-                    className={`w-full pl-11 pr-4 py-3 rounded-2xl text-xs focus:outline-none transition-all ${
+                    className={`w-full pl-11 pr-4 py-3 rounded-2xl text-xs border focus:outline-none transition-all ${
                       isDark
-                        ? 'liquid-glass-input-dark text-stone-100 placeholder-stone-500 focus:border-[#DFBA7F]'
-                        : 'liquid-glass-input-light text-stone-900 placeholder-stone-400 bg-white/95 border-stone-300 focus:border-[#A67C38]'
+                        ? 'bg-[#1B1D23] border-white/[0.1] text-stone-100 placeholder-stone-500 focus:border-white/35'
+                        : 'bg-[#F3F3F1] border-black/[0.1] text-[#111214] placeholder-[#6B6F76] focus:border-[#111214]/40'
                     }`}
                   />
                 </div>
@@ -823,7 +836,7 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                 <div className="flex items-center justify-between mb-1 pl-1 pr-1">
                   <label
                     className={`text-[11px] font-semibold ${
-                      isDark ? 'text-stone-300' : 'text-stone-700'
+                      isDark ? 'text-stone-300' : 'text-[#3F4248]'
                     }`}
                   >
                     Password
@@ -835,14 +848,14 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                       setShowForgotModal(true);
                     }}
                     className={`text-[11px] hover:underline transition-colors font-medium ${
-                      isDark ? 'text-[#DFBA7F]' : 'text-[#8E6527]'
+                      isDark ? 'text-stone-300 hover:text-white' : 'text-[#3F4248] hover:text-[#111214]'
                     }`}
                   >
                     Forgot password?
                   </button>
                 </div>
                 <div className="relative">
-                  <Lock className={`absolute left-4 top-3.5 w-4 h-4 ${isDark ? 'text-[#DFBA7F]/70' : 'text-[#8E6527]'}`} />
+                  <Lock className={`absolute left-4 top-3.5 w-4 h-4 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`} />
                   <input
                     id="login-password-input"
                     type={showLoginPassword ? 'text' : 'password'}
@@ -853,31 +866,33 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                       setLoginPassword(e.target.value);
                       if (inlinePasswordError) setInlinePasswordError(null);
                     }}
-                    className={`w-full pl-11 pr-11 py-3 rounded-2xl text-xs focus:outline-none transition-all ${
+                    className={`w-full pl-11 pr-11 py-3 rounded-2xl text-xs border focus:outline-none transition-all ${
                       isDark
-                        ? 'liquid-glass-input-dark text-stone-100 placeholder-stone-500 focus:border-[#DFBA7F]'
-                        : 'liquid-glass-input-light text-stone-900 placeholder-stone-400 bg-white/95 border-stone-300 focus:border-[#A67C38]'
+                        ? 'bg-[#1B1D23] border-white/[0.1] text-stone-100 placeholder-stone-500 focus:border-white/35'
+                        : 'bg-[#F3F3F1] border-black/[0.1] text-[#111214] placeholder-[#6B6F76] focus:border-[#111214]/40'
                     } ${inlinePasswordError ? 'border-red-400/60 focus:border-red-400' : ''}`}
                   />
                   <button
                     type="button"
                     onClick={() => setShowLoginPassword(!showLoginPassword)}
                     className={`absolute right-4 top-3.5 transition-colors ${
-                      isDark ? 'text-stone-400 hover:text-stone-200' : 'text-stone-400 hover:text-stone-800'
+                      isDark ? 'text-stone-400 hover:text-white' : 'text-[#5A5D63] hover:text-[#111214]'
                     }`}
                     aria-label="Toggle password visibility"
                   >
                     {showLoginPassword ? (
                       <EyeOff className="w-4 h-4" />
                     ) : (
-                      <Eye className={`w-4 h-4 ${isDark ? 'text-[#DFBA7F]/70' : 'text-[#8E6527]'}`} />
+                      <Eye className="w-4 h-4" />
                     )}
                   </button>
                 </div>
 
                 {inlinePasswordError && (
-                  <p className="text-[11px] text-red-400 mt-1 pl-1 flex items-center gap-1.5 animate-fadeIn">
-                    <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
+                  <p className={`text-[11px] mt-1 pl-1 flex items-center gap-1.5 animate-fadeIn ${
+                    isDark ? 'text-red-400' : 'text-red-700'
+                  }`}>
+                    <span className={`w-1.5 h-1.5 rounded-full ${isDark ? 'bg-red-400' : 'bg-red-600'}`} />
                     <span>{inlinePasswordError}</span>
                   </p>
                 )}
@@ -888,7 +903,7 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                 id="login-continue-btn"
                 type="submit"
                 disabled={isLoading}
-                className="w-full mt-2 py-3.5 px-6 rounded-2xl font-bold font-cinzel tracking-wider text-xs bg-gradient-to-r from-[#C9A063] via-[#DFBA7F] to-[#C9A063] text-[#080A0E] shadow-[0_8px_28px_rgba(201,160,99,0.4)] hover:opacity-95 disabled:opacity-50 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                className={`w-full mt-2 py-3.5 px-6 rounded-2xl font-bold tracking-wide text-xs shadow-sm disabled:opacity-50 active:scale-[0.98] transition-all flex items-center justify-center gap-2 bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] hover:opacity-95`}
               >
                 <span>{isLoading ? 'Signing In...' : 'Sign In →'}</span>
               </button>
@@ -901,8 +916,8 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                   onClick={handleContinueAsGuest}
                   className={`w-full py-3 px-4 rounded-2xl font-semibold text-xs border active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer ${
                     isDark
-                      ? 'bg-white/5 hover:bg-white/10 border-white/10 text-stone-300 hover:text-[#DFBA7F]'
-                      : 'bg-stone-100 hover:bg-stone-200/70 border-stone-300 text-stone-700 hover:text-stone-900'
+                      ? 'bg-white/[0.04] hover:bg-white/[0.08] border-white/[0.08] text-stone-300 hover:text-white'
+                      : 'bg-[#F3F3F1] hover:bg-black/[0.06] border-black/[0.08] text-[#3F4248] hover:text-[#111214]'
                   }`}
                 >
                   <span>Continue as Guest</span>
@@ -912,7 +927,7 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
             </form>
 
             {/* Secondary: "New to Noor? Sign up" */}
-            <div className={`pt-5 text-center text-xs border-t mt-5 ${isDark ? 'text-stone-400 border-[#C9A063]/15' : 'text-stone-600 border-stone-200'}`}>
+            <div className={`pt-5 text-center text-xs border-t mt-5 ${isDark ? 'text-stone-400 border-white/[0.08]' : 'text-[#5A5D63] border-black/[0.08]'}`}>
               <span>New to Noor? </span>
               <button
                 id="login-to-signup-btn"
@@ -923,7 +938,7 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                   setView('signup');
                 }}
                 className={`font-semibold hover:underline transition-opacity ${
-                  isDark ? 'text-[#DFBA7F]' : 'text-[#8E6527]'
+                  isDark ? 'text-white' : 'text-[#111214]'
                 }`}
               >
                 Create Account
@@ -938,10 +953,10 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
         {view === 'signup' && (
           <div
             id="noor-auth-signup-card"
-            className={`rounded-[36px] p-8 sm:p-10 transition-all animate-fadeIn ${
+            className={`rounded-[32px] p-8 sm:p-10 transition-all animate-fadeIn border ${
               isDark
-                ? 'liquid-glass-hero-dark text-stone-100 shadow-[0_24px_60px_rgba(0,0,0,0.85)]'
-                : 'liquid-glass-hero-light text-stone-900 border-[#C9A063]/35 shadow-xl'
+                ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6] shadow-[0_12px_40px_rgba(0,0,0,0.45)]'
+                : 'bg-white border-black/[0.08] text-[#111214] shadow-[0_4px_24px_rgba(0,0,0,0.06)]'
             }`}
           >
             {/* Top Header */}
@@ -954,22 +969,22 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                   setView('landing');
                 }}
                 className={`text-xs transition-colors ${
-                  isDark ? 'text-stone-400 hover:text-stone-200' : 'text-stone-500 hover:text-stone-800'
+                  isDark ? 'text-stone-400 hover:text-white' : 'text-[#5A5D63] hover:text-[#111214]'
                 }`}
               >
                 ← Back
               </button>
               <div className="flex items-center gap-1.5">
-                <span className={`font-arabic text-lg ${isDark ? 'text-[#DFBA7F]' : 'text-[#8E6527]'}`}>نُور</span>
-                <span className={`text-xs font-cinzel font-bold tracking-widest ${isDark ? 'text-[#DFBA7F]' : 'text-[#8E6527]'}`}>NOOR</span>
+                <span className={`font-arabic text-lg ${isDark ? 'text-white' : 'text-[#111214]'}`}>نُور</span>
+                <span className={`text-xs font-bold tracking-widest ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>NOOR</span>
               </div>
             </div>
 
             <div className="mb-4">
-              <h2 className={`text-2xl font-serif-heading font-bold ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+              <h2 className={`text-2xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                 Create Your Account
               </h2>
-              <p className={`text-xs mt-0.5 font-light ${isDark ? 'text-stone-300' : 'text-stone-600'}`}>
+              <p className={`text-xs mt-0.5 font-light ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 {isArabic
                   ? 'احفظ وردك اليومي وقراءاتك بأمان لتتابع من أي جهاز.'
                   : 'Keep your reading progress, daily prayers, and bookmarks safe wherever you go.'}
@@ -1013,8 +1028,12 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
             </div>
 
             {generalError && (
-              <div className="p-3 mb-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center gap-2 text-xs">
-                <AlertCircle className="w-4 h-4 shrink-0 text-amber-400" />
+              <div className={`p-3 mb-3 rounded-2xl border flex items-center gap-2 text-xs ${
+                isDark
+                  ? 'bg-sky-500/10 border-sky-500/30 text-sky-300'
+                  : 'bg-sky-50 border-sky-200 text-sky-900'
+              }`}>
+                <AlertCircle className={`w-4 h-4 shrink-0 ${isDark ? 'text-sky-400' : 'text-sky-700'}`} />
                 <span>{generalError}</span>
               </div>
             )}
@@ -1023,13 +1042,13 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
               <div>
                 <label
                   className={`block text-[11px] font-semibold mb-1 pl-1 ${
-                    isDark ? 'text-stone-300' : 'text-stone-700'
+                    isDark ? 'text-stone-300' : 'text-[#3F4248]'
                   }`}
                 >
                   Your Name
                 </label>
                 <div className="relative">
-                  <User className={`absolute left-4 top-3.5 w-4 h-4 ${isDark ? 'text-[#DFBA7F]/70' : 'text-[#8E6527]'}`} />
+                  <User className={`absolute left-4 top-3.5 w-4 h-4 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`} />
                   <input
                     id="signup-name-input"
                     type="text"
@@ -1037,10 +1056,10 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                     placeholder="e.g. Abdullah or Fatima"
                     value={signUpName}
                     onChange={(e) => setSignUpName(e.target.value)}
-                    className={`w-full pl-11 pr-4 py-3 rounded-2xl text-xs focus:outline-none transition-all ${
+                    className={`w-full pl-11 pr-4 py-3 rounded-2xl text-xs border focus:outline-none transition-all ${
                       isDark
-                        ? 'liquid-glass-input-dark text-stone-100 placeholder-stone-500 focus:border-[#DFBA7F]'
-                        : 'liquid-glass-input-light text-stone-900 placeholder-stone-400 bg-white/95 border-stone-300 focus:border-[#A67C38]'
+                        ? 'bg-[#1B1D23] border-white/[0.1] text-stone-100 placeholder-stone-500 focus:border-white/35'
+                        : 'bg-[#F3F3F1] border-black/[0.1] text-[#111214] placeholder-[#6B6F76] focus:border-[#111214]/40'
                     }`}
                   />
                 </div>
@@ -1049,13 +1068,13 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
               <div>
                 <label
                   className={`block text-[11px] font-semibold mb-1 pl-1 ${
-                    isDark ? 'text-stone-300' : 'text-stone-700'
+                    isDark ? 'text-stone-300' : 'text-[#3F4248]'
                   }`}
                 >
                   Email Address
                 </label>
                 <div className="relative">
-                  <Mail className={`absolute left-4 top-3.5 w-4 h-4 ${isDark ? 'text-[#DFBA7F]/70' : 'text-[#8E6527]'}`} />
+                  <Mail className={`absolute left-4 top-3.5 w-4 h-4 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`} />
                   <input
                     id="signup-email-input"
                     type="email"
@@ -1078,10 +1097,10 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                         );
                       }
                     }}
-                    className={`w-full pl-11 pr-4 py-3 rounded-2xl text-xs focus:outline-none transition-all ${
+                    className={`w-full pl-11 pr-4 py-3 rounded-2xl text-xs border focus:outline-none transition-all ${
                       isDark
-                        ? 'liquid-glass-input-dark text-stone-100 placeholder-stone-500 focus:border-[#DFBA7F]'
-                        : 'liquid-glass-input-light text-stone-900 placeholder-stone-400 bg-white/95 border-stone-300 focus:border-[#A67C38]'
+                        ? 'bg-[#1B1D23] border-white/[0.1] text-stone-100 placeholder-stone-500 focus:border-white/35'
+                        : 'bg-[#F3F3F1] border-black/[0.1] text-[#111214] placeholder-[#6B6F76] focus:border-[#111214]/40'
                     }`}
                   />
                 </div>
@@ -1090,13 +1109,13 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
               <div>
                 <label
                   className={`block text-[11px] font-semibold mb-1 pl-1 ${
-                    isDark ? 'text-stone-300' : 'text-stone-700'
+                    isDark ? 'text-stone-300' : 'text-[#3F4248]'
                   }`}
                 >
                   Password (min. 6 characters)
                 </label>
                 <div className="relative">
-                  <Lock className={`absolute left-4 top-3.5 w-4 h-4 ${isDark ? 'text-[#DFBA7F]/70' : 'text-[#8E6527]'}`} />
+                  <Lock className={`absolute left-4 top-3.5 w-4 h-4 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`} />
                   <input
                     id="signup-password-input"
                     type={showSignUpPassword ? 'text' : 'password'}
@@ -1105,23 +1124,23 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                     placeholder="Create a secure password"
                     value={signUpPassword}
                     onChange={(e) => setSignUpPassword(e.target.value)}
-                    className={`w-full pl-11 pr-11 py-3 rounded-2xl text-xs focus:outline-none transition-all ${
+                    className={`w-full pl-11 pr-11 py-3 rounded-2xl text-xs border focus:outline-none transition-all ${
                       isDark
-                        ? 'liquid-glass-input-dark text-stone-100 placeholder-stone-500 focus:border-[#DFBA7F]'
-                        : 'liquid-glass-input-light text-stone-900 placeholder-stone-400 bg-white/95 border-stone-300 focus:border-[#A67C38]'
+                        ? 'bg-[#1B1D23] border-white/[0.1] text-stone-100 placeholder-stone-500 focus:border-white/35'
+                        : 'bg-[#F3F3F1] border-black/[0.1] text-[#111214] placeholder-[#6B6F76] focus:border-[#111214]/40'
                     }`}
                   />
                   <button
                     type="button"
                     onClick={() => setShowSignUpPassword(!showSignUpPassword)}
                     className={`absolute right-4 top-3.5 transition-colors ${
-                      isDark ? 'text-stone-400 hover:text-stone-200' : 'text-stone-400 hover:text-stone-800'
+                      isDark ? 'text-stone-400 hover:text-white' : 'text-[#5A5D63] hover:text-[#111214]'
                     }`}
                   >
                     {showSignUpPassword ? (
                       <EyeOff className="w-4 h-4" />
                     ) : (
-                      <Eye className={`w-4 h-4 ${isDark ? 'text-[#DFBA7F]/70' : 'text-[#8E6527]'}`} />
+                      <Eye className="w-4 h-4" />
                     )}
                   </button>
                 </div>
@@ -1131,13 +1150,17 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                 id="signup-submit-btn"
                 type="submit"
                 disabled={isLoading}
-                className="w-full mt-2 py-3.5 px-6 rounded-2xl font-bold font-cinzel tracking-wider text-xs bg-gradient-to-r from-[#C9A063] via-[#DFBA7F] to-[#C9A063] text-[#080A0E] shadow-[0_8px_28px_rgba(201,160,99,0.4)] hover:opacity-95 disabled:opacity-50 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                className={`w-full mt-2 py-3.5 px-6 rounded-2xl font-bold tracking-wide text-xs shadow-sm disabled:opacity-50 active:scale-[0.98] transition-all flex items-center justify-center gap-2 ${
+                  isDark
+                    ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                    : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                }`}
               >
                 <span>{isLoading ? 'Creating...' : 'Create Account →'}</span>
               </button>
             </form>
 
-            <div className={`pt-5 text-center text-xs border-t mt-5 ${isDark ? 'text-stone-400 border-[#C9A063]/15' : 'text-stone-600 border-stone-200'}`}>
+            <div className={`pt-5 text-center text-xs border-t mt-5 ${isDark ? 'text-stone-400 border-white/[0.08]' : 'text-[#5A5D63] border-black/[0.08]'}`}>
               <span>Already have an account? </span>
               <button
                 id="signup-to-login-btn"
@@ -1148,7 +1171,7 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                   setView('login');
                 }}
                 className={`font-semibold hover:underline transition-opacity ${
-                  isDark ? 'text-[#DFBA7F]' : 'text-[#8E6527]'
+                  isDark ? 'text-white' : 'text-[#111214]'
                 }`}
               >
                 Log In
@@ -1167,7 +1190,9 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                   setView('admin_login');
                 }}
                 aria-label="Administration"
-                className="text-stone-700 hover:text-stone-400 opacity-20 hover:opacity-60 transition-opacity p-1 cursor-pointer"
+                className={`opacity-20 hover:opacity-60 transition-opacity p-1 cursor-pointer ${
+                  isDark ? 'text-stone-600 hover:text-stone-400' : 'text-stone-400 hover:text-[#111214]'
+                }`}
                 title="System Administration"
               >
                 <Lock className="w-3 h-3" />
@@ -1182,17 +1207,17 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
         {view === 'onboarding' && (
           <div
             id="noor-auth-onboarding-card"
-            className={`rounded-[36px] p-7 sm:p-9 transition-all animate-fadeIn ${
+            className={`rounded-[32px] p-7 sm:p-9 transition-all animate-fadeIn border ${
               isDark
-                ? 'liquid-glass-hero-dark text-stone-100 shadow-[0_24px_60px_rgba(0,0,0,0.85)]'
-                : 'liquid-glass-hero-light text-stone-900 border-[#C9A063]/35 shadow-xl'
+                ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6] shadow-[0_12px_40px_rgba(0,0,0,0.45)]'
+                : 'bg-white border-black/[0.08] text-[#111214] shadow-[0_4px_24px_rgba(0,0,0,0.06)]'
             }`}
           >
             {/* Step Indicators */}
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-1.5">
-                <span className={`font-arabic text-lg ${isDark ? 'text-[#DFBA7F]' : 'text-[#8E6527]'}`}>نُور</span>
-                <span className={`text-xs font-cinzel font-bold tracking-widest ${isDark ? 'text-[#DFBA7F]' : 'text-[#8E6527]'}`}>NOOR</span>
+                <span className={`font-arabic text-lg ${isDark ? 'text-white' : 'text-[#111214]'}`}>نُور</span>
+                <span className={`text-xs font-bold tracking-widest ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>NOOR</span>
               </div>
               <div className="flex items-center gap-1.5">
                 {[0, 1, 2].map((i) => (
@@ -1200,10 +1225,10 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                     key={i}
                     className={`h-1.5 rounded-full transition-all duration-300 ${
                       onboardingStep === i
-                        ? 'w-6 bg-[#DFBA7F]'
+                        ? isDark ? 'w-6 bg-white' : 'w-6 bg-[#111214]'
                         : isDark
-                        ? 'w-2 bg-stone-700'
-                        : 'w-2 bg-stone-300'
+                        ? 'w-2 bg-white/20'
+                        : 'w-2 bg-black/15'
                     }`}
                   />
                 ))}
@@ -1214,10 +1239,10 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
             {onboardingStep === 0 && (
               <div className="space-y-4 animate-fadeIn">
                 <div>
-                  <h3 className={`text-xl font-serif-heading font-bold ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+                  <h3 className={`text-xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                     Select Your Language
                   </h3>
-                  <p className={`text-xs font-light mt-1 ${isDark ? 'text-stone-300' : 'text-stone-600'}`}>
+                  <p className={`text-xs font-light mt-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     Choose your primary reading and application language.
                   </p>
                 </div>
@@ -1232,16 +1257,18 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                         onClick={() => setSelectedLanguage(lang.name)}
                         className={`p-3.5 rounded-2xl text-left border transition-all ${
                           isSelected
-                            ? 'bg-[#C9A063]/20 border-[#DFBA7F] shadow-[0_4px_16px_rgba(201,160,99,0.25)]'
+                            ? isDark
+                              ? 'bg-white/[0.1] border-white/40 text-white'
+                              : 'bg-[#111214]/[0.06] border-[#111214]/40 text-[#111214]'
                             : isDark
-                            ? 'bg-[#131923]/60 border-stone-800 hover:border-stone-700'
-                            : 'bg-white/80 border-stone-200 hover:border-[#C9A063]/40'
+                            ? 'bg-[#1B1D23] border-white/[0.08] hover:border-white/20'
+                            : 'bg-[#F3F3F1] border-black/[0.08] hover:border-black/20'
                         }`}
                       >
-                        <div className={`text-xs font-semibold ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+                        <div className={`text-xs font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                           {lang.name}
                         </div>
-                        <div className={`text-[11px] mt-0.5 ${isDark ? 'text-[#DFBA7F]' : 'text-[#8E6527]'}`}>
+                        <div className={`text-[11px] mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                           {lang.native}
                         </div>
                       </button>
@@ -1252,7 +1279,11 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                 <button
                   type="button"
                   onClick={() => setOnboardingStep(1)}
-                  className="w-full mt-4 py-3.5 px-6 rounded-2xl font-bold font-cinzel tracking-wider text-xs bg-gradient-to-r from-[#C9A063] via-[#DFBA7F] to-[#C9A063] text-[#080A0E] shadow-[0_6px_20px_rgba(201,160,99,0.35)] hover:opacity-95 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                  className={`w-full mt-4 py-3.5 px-6 rounded-2xl font-bold tracking-wide text-xs shadow-sm active:scale-[0.98] transition-all flex items-center justify-center gap-2 ${
+                    isDark
+                      ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                      : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                  }`}
                 >
                   <span>Next Step</span>
                   <ChevronRight className="w-4 h-4" />
@@ -1264,10 +1295,10 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
             {onboardingStep === 1 && (
               <div className="space-y-4 animate-fadeIn">
                 <div>
-                  <h3 className={`text-xl font-serif-heading font-bold ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+                  <h3 className={`text-xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                     Your Islamic Priorities
                   </h3>
-                  <p className={`text-xs font-light mt-1 ${isDark ? 'text-stone-300' : 'text-stone-600'}`}>
+                  <p className={`text-xs font-light mt-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     Select what you'd like to focus on in Noor.
                   </p>
                 </div>
@@ -1282,27 +1313,31 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                         onClick={() => toggleGoal(goal.id)}
                         className={`w-full p-3 rounded-2xl text-left border flex items-center justify-between transition-all ${
                           isSelected
-                            ? 'bg-[#C9A063]/20 border-[#DFBA7F] shadow-[0_4px_16px_rgba(201,160,99,0.2)]'
+                            ? isDark
+                              ? 'bg-white/[0.1] border-white/40 text-white'
+                              : 'bg-[#111214]/[0.06] border-[#111214]/40 text-[#111214]'
                             : isDark
-                            ? 'bg-[#131923]/60 border-stone-800 hover:border-stone-700'
-                            : 'bg-white/80 border-stone-200 hover:border-[#C9A063]/40'
+                            ? 'bg-[#1B1D23] border-white/[0.08] hover:border-white/20'
+                            : 'bg-[#F3F3F1] border-black/[0.08] hover:border-black/20'
                         }`}
                       >
                         <div>
-                          <div className={`text-xs font-semibold ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+                          <div className={`text-xs font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                             {goal.label}
                           </div>
-                          <div className={`text-[10px] mt-0.5 ${isDark ? 'text-stone-400' : 'text-stone-500'}`}>
+                          <div className={`text-[10px] mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                             {goal.desc}
                           </div>
                         </div>
                         <div
                           className={`w-5 h-5 rounded-full border flex items-center justify-center ${
                             isSelected
-                              ? 'bg-[#DFBA7F] border-[#DFBA7F] text-[#080A0E]'
+                              ? isDark
+                                ? 'bg-white border-white text-[#111214]'
+                                : 'bg-[#111214] border-[#111214] text-white'
                               : isDark
-                              ? 'border-stone-600'
-                              : 'border-stone-300'
+                              ? 'border-white/25'
+                              : 'border-black/25'
                           }`}
                         >
                           {isSelected && <Check className="w-3.5 h-3.5" />}
@@ -1318,8 +1353,8 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                     onClick={() => setOnboardingStep(0)}
                     className={`py-3.5 px-5 rounded-2xl border text-xs font-semibold transition-colors ${
                       isDark
-                        ? 'border-stone-700 bg-stone-800/60 text-stone-300 hover:bg-stone-800'
-                        : 'border-stone-300 bg-stone-100 text-stone-700 hover:bg-stone-200'
+                        ? 'border-white/[0.1] bg-[#1B1D23] text-stone-300 hover:bg-white/[0.08]'
+                        : 'border-black/[0.1] bg-[#F3F3F1] text-[#3F4248] hover:bg-black/[0.06]'
                     }`}
                   >
                     Back
@@ -1327,7 +1362,11 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                   <button
                     type="button"
                     onClick={() => setOnboardingStep(2)}
-                    className="flex-1 py-3.5 px-6 rounded-2xl font-bold font-cinzel tracking-wider text-xs bg-gradient-to-r from-[#C9A063] via-[#DFBA7F] to-[#C9A063] text-[#080A0E] shadow-[0_6px_20px_rgba(201,160,99,0.35)] hover:opacity-95 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                    className={`flex-1 py-3.5 px-6 rounded-2xl font-bold tracking-wide text-xs shadow-sm active:scale-[0.98] transition-all flex items-center justify-center gap-2 ${
+                      isDark
+                        ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                        : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                    }`}
                   >
                     <span>Next Step</span>
                     <ChevronRight className="w-4 h-4" />
@@ -1340,10 +1379,10 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
             {onboardingStep === 2 && (
               <div className="space-y-4 animate-fadeIn">
                 <div>
-                  <h3 className={`text-xl font-serif-heading font-bold ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+                  <h3 className={`text-xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                     Prayer Times Location
                   </h3>
-                  <p className={`text-xs font-light mt-1 ${isDark ? 'text-stone-300' : 'text-stone-600'}`}>
+                  <p className={`text-xs font-light mt-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     Select your region for astronomical prayer times calculations.
                   </p>
                 </div>
@@ -1354,8 +1393,8 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                   disabled={isDetectingLocation}
                   className={`w-full py-3 px-4 rounded-2xl border text-xs font-semibold flex items-center justify-center gap-2 transition-all ${
                     isDark
-                      ? 'border-[#DFBA7F]/40 bg-[#C9A063]/15 text-[#DFBA7F] hover:bg-[#C9A063]/25'
-                      : 'border-[#A67C38]/40 bg-amber-50/80 text-[#8E6527] hover:bg-amber-100/90'
+                      ? 'border-white/[0.12] bg-white/[0.08] text-white hover:bg-white/[0.12]'
+                      : 'border-black/[0.12] bg-[#F3F3F1] text-[#111214] hover:bg-black/[0.08]'
                   }`}
                 >
                   <Compass className={`w-4 h-4 ${isDetectingLocation ? 'animate-spin' : ''}`} />
@@ -1370,18 +1409,18 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                         key={loc}
                         type="button"
                         onClick={() => setSelectedLocation(loc)}
-                        className={`w-full p-2.5 rounded-xl text-left text-xs transition-all flex items-center justify-between ${
+                        className={`w-full p-2.5 rounded-xl text-left text-xs transition-all flex items-center justify-between border ${
                           isSelected
                             ? isDark
-                              ? 'bg-[#C9A063]/20 text-[#DFBA7F] font-semibold border border-[#DFBA7F]/40'
-                              : 'bg-amber-50 text-[#8E6527] font-semibold border border-[#A67C38]/40'
+                              ? 'bg-white/[0.1] text-white font-semibold border-white/35'
+                              : 'bg-[#111214]/[0.06] text-[#111214] font-semibold border-[#111214]/40'
                             : isDark
-                            ? 'text-stone-300 hover:bg-stone-800/50'
-                            : 'text-stone-700 hover:bg-stone-100'
+                            ? 'border-transparent text-stone-300 hover:bg-white/[0.05]'
+                            : 'border-transparent text-[#3F4248] hover:bg-black/[0.04]'
                         }`}
                       >
                         <span>{loc}</span>
-                        {isSelected && <Check className={`w-3.5 h-3.5 ${isDark ? 'text-[#DFBA7F]' : 'text-[#8E6527]'}`} />}
+                        {isSelected && <Check className={`w-3.5 h-3.5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />}
                       </button>
                     );
                   })}
@@ -1389,8 +1428,8 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
 
                 {/* Prayer Notification Frequency */}
                 <div className="pt-2">
-                  <label className={`text-[11px] font-semibold font-cinzel tracking-wider block mb-1.5 ${
-                    isDark ? 'text-[#DFBA7F]' : 'text-[#8E6527]'
+                  <label className={`text-[11px] font-semibold tracking-wider uppercase block mb-1.5 ${
+                    isDark ? 'text-stone-300' : 'text-[#3F4248]'
                   }`}>
                     Prayer Reminder Style
                   </label>
@@ -1404,14 +1443,16 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                           onClick={() => setReminderFrequency(freq)}
                           className={`p-2.5 rounded-xl border text-center transition-all ${
                             isSelected
-                              ? 'bg-[#C9A063]/25 border-[#DFBA7F] text-[#DFBA7F] shadow-[0_2px_12px_rgba(201,160,99,0.25)]'
+                              ? isDark
+                                ? 'bg-white/[0.1] border-white/40 text-white'
+                                : 'bg-[#111214] border-[#111214] text-white'
                               : isDark
-                              ? 'bg-[#131923]/60 border-stone-800 text-stone-300 hover:border-stone-700'
-                              : 'bg-white/80 border-stone-200 text-stone-700 hover:border-[#C9A063]/40'
+                              ? 'bg-[#1B1D23] border-white/[0.08] text-stone-300 hover:border-white/20'
+                              : 'bg-[#F3F3F1] border-black/[0.08] text-[#3F4248] hover:border-black/20'
                           }`}
                         >
-                          <div className="text-xs font-bold font-cinzel">{freq}</div>
-                          <div className={`text-[9px] mt-0.5 ${isDark ? 'text-stone-400' : 'text-stone-500'}`}>
+                          <div className="text-xs font-bold">{freq}</div>
+                          <div className={`text-[9px] mt-0.5 ${isSelected && !isDark ? 'text-stone-300' : isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                             {freq === 'Minimal' && '1m before'}
                             {freq === 'Normal' && '5m before'}
                             {freq === 'Frequent' && '15m before'}
@@ -1428,8 +1469,8 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                     onClick={() => setOnboardingStep(1)}
                     className={`py-3.5 px-5 rounded-2xl border text-xs font-semibold transition-colors ${
                       isDark
-                        ? 'border-stone-700 bg-stone-800/60 text-stone-300 hover:bg-stone-800'
-                        : 'border-stone-300 bg-stone-100 text-stone-700 hover:bg-stone-200'
+                        ? 'border-white/[0.1] bg-[#1B1D23] text-stone-300 hover:bg-white/[0.08]'
+                        : 'border-black/[0.1] bg-[#F3F3F1] text-[#3F4248] hover:bg-black/[0.06]'
                     }`}
                   >
                     Back
@@ -1438,7 +1479,11 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                     id="finish-onboarding-btn"
                     type="button"
                     onClick={handleFinishOnboarding}
-                    className="flex-1 py-3.5 px-6 rounded-2xl font-bold font-cinzel tracking-wider text-xs bg-gradient-to-r from-[#C9A063] via-[#DFBA7F] to-[#C9A063] text-[#080A0E] shadow-[0_8px_25px_rgba(201,160,99,0.4)] hover:opacity-95 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                    className={`flex-1 py-3.5 px-6 rounded-2xl font-bold tracking-wide text-xs shadow-sm active:scale-[0.98] transition-all flex items-center justify-center gap-2 ${
+                      isDark
+                        ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                        : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                    }`}
                   >
                     <span>Continue to Sanctuary</span>
                     <ArrowRight className="w-4 h-4" />
@@ -1455,10 +1500,10 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
         {view === 'admin_login' && (
           <div
             id="noor-admin-login-card"
-            className={`rounded-[36px] p-8 sm:p-10 transition-all animate-fadeIn ${
+            className={`rounded-[32px] p-8 sm:p-10 transition-all animate-fadeIn border ${
               isDark
-                ? 'liquid-glass-hero-dark text-stone-100 shadow-[0_24px_60px_rgba(0,0,0,0.85)]'
-                : 'liquid-glass-hero-light text-stone-900 border-[#C9A063]/35 shadow-xl'
+                ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6] shadow-[0_12px_40px_rgba(0,0,0,0.45)]'
+                : 'bg-white border-black/[0.08] text-[#111214] shadow-[0_4px_24px_rgba(0,0,0,0.06)]'
             }`}
           >
             <div className="flex items-center justify-between mb-4">
@@ -1471,31 +1516,43 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                   setView('signup');
                 }}
                 className={`text-xs flex items-center gap-1 transition-colors cursor-pointer ${
-                  isDark ? 'text-stone-400 hover:text-stone-200' : 'text-stone-500 hover:text-stone-800'
+                  isDark ? 'text-stone-400 hover:text-white' : 'text-[#5A5D63] hover:text-[#111214]'
                 }`}
               >
                 <span>← Back to Sign Up</span>
               </button>
-              <span className="text-[10px] font-mono uppercase tracking-widest text-amber-500 bg-amber-500/10 border border-amber-500/25 px-2.5 py-0.5 rounded-full">
+              <span className={`text-[10px] font-mono uppercase tracking-widest border px-2.5 py-0.5 rounded-full ${
+                isDark
+                  ? 'text-sky-300 bg-sky-500/10 border-sky-500/25'
+                  : 'text-sky-800 bg-sky-50 border-sky-200'
+              }`}>
                 Restricted System
               </span>
             </div>
 
             <div className="text-center mb-6">
-              <div className="mx-auto w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-3 shadow-[0_4px_20px_rgba(245,158,11,0.2)]">
+              <div className={`mx-auto w-14 h-14 rounded-2xl border flex items-center justify-center mb-3 ${
+                isDark
+                  ? 'bg-white/[0.08] border-white/[0.12] text-white'
+                  : 'bg-[#F3F3F1] border-black/[0.1] text-[#111214]'
+              }`}>
                 <Lock className="w-6 h-6" />
               </div>
-              <h1 className={`text-2xl font-serif-heading font-bold ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+              <h1 className={`text-2xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                 Administration Access
               </h1>
-              <p className={`text-xs font-light mt-1 ${isDark ? 'text-stone-400' : 'text-stone-600'}`}>
+              <p className={`text-xs font-light mt-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 Please authenticate to access the Nafis Noor administration area.
               </p>
             </div>
 
             {adminError && (
-              <div className="p-3 mb-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-400 flex items-center gap-2 text-xs">
-                <AlertCircle className="w-4 h-4 shrink-0 text-red-400" />
+              <div className={`p-3 mb-4 rounded-2xl border flex items-center gap-2 text-xs ${
+                isDark
+                  ? 'bg-red-500/10 border-red-500/30 text-red-400'
+                  : 'bg-red-50 border-red-300 text-red-700'
+              }`}>
+                <AlertCircle className={`w-4 h-4 shrink-0 ${isDark ? 'text-red-400' : 'text-red-600'}`} />
                 <span>{adminError}</span>
               </div>
             )}
@@ -1503,7 +1560,7 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
             <form onSubmit={handleAdminSubmit} className="space-y-4">
               <div>
                 <label className={`block text-[11px] font-semibold uppercase tracking-wider mb-1.5 pl-1 ${
-                  isDark ? 'text-stone-300' : 'text-stone-700'
+                  isDark ? 'text-stone-300' : 'text-[#3F4248]'
                 }`}>
                   Administration Password
                 </label>
@@ -1520,19 +1577,21 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                       setAdminPassword(e.target.value);
                       if (adminError) setAdminError(null);
                     }}
-                    className={`w-full pl-11 pr-11 py-3 rounded-2xl text-xs focus:outline-none transition-all font-mono ${
+                    className={`w-full pl-11 pr-11 py-3 rounded-2xl text-xs border focus:outline-none transition-all font-mono ${
                       isDark
-                        ? 'liquid-glass-input-dark text-stone-100 placeholder-stone-500'
-                        : 'liquid-glass-input-light text-stone-900 placeholder-stone-400 bg-white/95 border-stone-300'
+                        ? 'bg-[#1B1D23] border-white/[0.1] text-stone-100 placeholder-stone-500 focus:border-white/35'
+                        : 'bg-[#F3F3F1] border-black/[0.1] text-[#111214] placeholder-[#6B6F76] focus:border-[#111214]/40'
                     }`}
                   />
                   <button
                     type="button"
                     onClick={() => setShowAdminPassword(!showAdminPassword)}
-                    className="absolute right-4 top-3.5 text-stone-400 hover:text-stone-200 transition-colors cursor-pointer"
+                    className={`absolute right-4 top-3.5 transition-colors cursor-pointer ${
+                      isDark ? 'text-stone-400 hover:text-white' : 'text-[#5A5D63] hover:text-[#111214]'
+                    }`}
                     aria-label="Toggle password visibility"
                   >
-                    {showAdminPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4 text-amber-500" />}
+                    {showAdminPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
@@ -1541,7 +1600,11 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
                 id="admin-authenticate-btn"
                 type="submit"
                 disabled={isAdminAuthenticating}
-                className="w-full py-3.5 px-6 rounded-2xl font-bold tracking-wider text-xs bg-gradient-to-r from-amber-500 via-[#DFBA7F] to-amber-600 text-[#080A0E] shadow-[0_8px_25px_rgba(245,158,11,0.35)] hover:opacity-95 disabled:opacity-50 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className={`w-full py-3.5 px-6 rounded-2xl font-bold tracking-wider text-xs shadow-sm disabled:opacity-50 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                  isDark
+                    ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                    : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                }`}
               >
                 <span>{isAdminAuthenticating ? 'Authenticating with Backend...' : 'Authenticate →'}</span>
               </button>
@@ -1555,49 +1618,57 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
         {view === 'admin_welcome' && (
           <div
             id="noor-admin-welcome-card"
-            className={`rounded-[36px] p-8 sm:p-12 transition-all animate-fadeIn text-center ${
+            className={`rounded-[32px] p-8 sm:p-12 transition-all animate-fadeIn text-center border ${
               isDark
-                ? 'liquid-glass-hero-dark text-stone-100 shadow-[0_24px_60px_rgba(0,0,0,0.85)]'
-                : 'liquid-glass-hero-light text-stone-900 border-[#C9A063]/35 shadow-xl'
+                ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6] shadow-[0_12px_40px_rgba(0,0,0,0.45)]'
+                : 'bg-white border-black/[0.08] text-[#111214] shadow-[0_4px_24px_rgba(0,0,0,0.06)]'
             }`}
           >
-            <div className="mx-auto w-20 h-20 rounded-3xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/40 flex items-center justify-center text-amber-300 mb-5 shadow-[0_8px_30px_rgba(245,158,11,0.3)]">
-              <Sparkles className="w-9 h-9 text-[#DFBA7F]" />
+            <div className={`mx-auto w-20 h-20 rounded-3xl border flex items-center justify-center mb-5 ${
+              isDark
+                ? 'bg-white/[0.08] border-white/[0.12] text-white'
+                : 'bg-[#F3F3F1] border-black/[0.1] text-[#111214]'
+            }`}>
+              <Sparkles className={`w-9 h-9 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
             </div>
 
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold tracking-wider uppercase bg-amber-500/15 text-amber-400 border border-amber-500/30 mb-4">
+            <div className={`inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold tracking-wider uppercase border mb-4 ${
+              isDark
+                ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+                : 'bg-emerald-50 text-emerald-800 border-emerald-200'
+            }`}>
               <ShieldCheck className="w-3.5 h-3.5" />
               <span>Administrator Session Verified</span>
             </div>
 
-            <h1 className={`text-2xl sm:text-3xl font-serif-heading font-bold ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+            <h1 className={`text-2xl sm:text-3xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-[#111214]'}`}>
               Welcome, Everyone 👋
             </h1>
 
             <div className={`p-5 my-6 rounded-2xl border text-left text-xs leading-relaxed space-y-2.5 ${
               isDark
-                ? 'bg-white/5 border-white/10 text-stone-200'
-                : 'bg-stone-50 border-stone-200 text-stone-800'
+                ? 'bg-[#1B1D23] border-white/[0.08] text-stone-200'
+                : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
             }`}>
-              <p className={`font-medium ${isDark ? 'text-[#DFBA7F]' : 'text-[#8E6527]'}`}>
+              <p className={`font-medium ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                 You’re now in the Nafis Noor administration area.
               </p>
-              <p className={isDark ? 'text-stone-300' : 'text-stone-600'}>
+              <p className={isDark ? 'text-stone-300' : 'text-[#3F4248]'}>
                 Manage the platform carefully and securely.
               </p>
               <div className="pt-2 flex flex-wrap gap-2 text-[11px] font-mono">
                 <span className={`px-2.5 py-1 rounded-lg border ${
-                  isDark ? 'bg-black/40 border-white/10 text-stone-400' : 'bg-white border-stone-200 text-stone-600'
+                  isDark ? 'bg-[#14161A] border-white/[0.08] text-stone-300' : 'bg-white border-black/[0.08] text-[#3F4248]'
                 }`}>
                   Nickname: Everyone
                 </span>
                 <span className={`px-2.5 py-1 rounded-lg border ${
-                  isDark ? 'bg-black/40 border-white/10 text-stone-400' : 'bg-white border-stone-200 text-stone-600'
+                  isDark ? 'bg-[#14161A] border-white/[0.08] text-stone-300' : 'bg-white border-black/[0.08] text-[#3F4248]'
                 }`}>
                   Role: Administrator
                 </span>
                 <span className={`px-2.5 py-1 rounded-lg border ${
-                  isDark ? 'bg-black/40 border-white/10 text-stone-400' : 'bg-white border-stone-200 text-stone-600'
+                  isDark ? 'bg-[#14161A] border-white/[0.08] text-stone-300' : 'bg-white border-black/[0.08] text-[#3F4248]'
                 }`}>
                   Access: Full
                 </span>
@@ -1608,7 +1679,11 @@ export const AuthWelcomeScreen: React.FC<AuthWelcomeScreenProps> = ({
               id="admin-welcome-next-btn"
               type="button"
               onClick={handleAdminNext}
-              className="w-full sm:w-auto px-10 py-3.5 rounded-2xl font-bold text-xs sm:text-sm bg-gradient-to-r from-[#C9A063] via-[#DFBA7F] to-[#C9A063] text-[#080A0E] shadow-[0_8px_28px_rgba(201,160,99,0.4)] hover:opacity-95 active:scale-[0.98] transition-all flex items-center justify-center gap-2 mx-auto cursor-pointer"
+              className={`w-full sm:w-auto px-10 py-3.5 rounded-2xl font-bold text-xs sm:text-sm shadow-sm active:scale-[0.98] transition-all flex items-center justify-center gap-2 mx-auto cursor-pointer ${
+                isDark
+                  ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                  : 'bg-[#111214] hover:bg-[#27292D] text-white'
+              }`}
             >
               <span>Next</span>
               <ArrowRight className="w-4 h-4" />

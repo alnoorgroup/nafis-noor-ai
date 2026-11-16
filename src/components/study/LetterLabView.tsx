@@ -80,10 +80,10 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
         ctx.lineWidth = 10;
-        ctx.strokeStyle = '#DFBA7F';
+        ctx.strokeStyle = isDark ? '#FFFFFF' : '#111214';
       }
     }
-  }, [activeTab, selectedLetter]);
+  }, [activeTab, selectedLetter, isDark]);
 
   const clearCanvas = () => {
     if (canvasRef.current) {
@@ -269,24 +269,28 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
       <div
         className={`p-6 rounded-2xl border transition-all ${
           isDark
-            ? 'bg-[#101318]/90 border-white/5 shadow-xl'
-            : 'bg-white border-stone-200/80 shadow-md'
+            ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+            : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
         }`}
       >
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="px-2.5 py-0.5 text-[11px] font-semibold tracking-wider uppercase rounded-full bg-[#C9A063]/15 text-[#DFBA7F] border border-[#C9A063]/30">
+              <span className={`px-2.5 py-0.5 text-[11px] font-semibold tracking-wider uppercase rounded-full border ${
+                isDark
+                  ? 'bg-white/[0.08] text-white border-white/15'
+                  : 'bg-[#F3F3F1] text-[#111214] border-black/[0.08]'
+              }`}>
                 {isArabic ? 'معمل الحروف الهجائية' : 'Alphabet Laboratory'}
               </span>
-              <span className="text-xs text-stone-500">
+              <span className={`text-xs ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                 {isArabic ? '٢٨ حرفاً عربياً فصيحاً' : '28 Classical Letters'}
               </span>
             </div>
-            <h2 className="text-2xl font-bold font-serif tracking-tight text-stone-900 dark:text-stone-100">
+            <h2 className={`text-2xl font-bold font-serif tracking-tight ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
               {isArabic ? 'معمل الحروف العربية التفاعلي' : 'Interactive Arabic Letter Lab'}
             </h2>
-            <p className="text-sm text-stone-500 dark:text-stone-400 mt-0.5">
+            <p className={`text-sm mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               {isArabic
                 ? 'استكشف أصوات الحروف ومخارجها وأشكالها مع الحركات ولوحة رسم المسار والتحديات التفاعلية.'
                 : 'Explore letter recognition, pronunciation points (Makhārij), positional shapes, Harakat, and write with stroke practice.'}
@@ -296,15 +300,19 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
           {/* Mode Switcher Tabs */}
           <div
             className={`flex items-center p-1 rounded-xl border ${
-              isDark ? 'bg-black/30 border-white/10' : 'bg-stone-100 border-stone-200'
+              isDark ? 'bg-[#1B1D23] border-white/10' : 'bg-[#F3F3F1] border-black/[0.08]'
             }`}
           >
             <button
               onClick={() => setActiveTab('details')}
               className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 activeTab === 'details'
-                  ? 'bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] shadow-xs'
-                  : 'text-stone-400 hover:text-stone-200'
+                  ? isDark
+                    ? 'bg-white text-[#111214] shadow-xs'
+                    : 'bg-[#111214] text-white shadow-xs'
+                  : isDark
+                  ? 'text-stone-400 hover:text-white'
+                  : 'text-[#5A5D63] hover:text-[#111214]'
               }`}
             >
               {isArabic ? 'تشريح الحرف والمخرج' : 'Letter Anatomy'}
@@ -313,8 +321,12 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
               onClick={() => setActiveTab('writing')}
               className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
                 activeTab === 'writing'
-                  ? 'bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] shadow-xs'
-                  : 'text-stone-400 hover:text-stone-200'
+                  ? isDark
+                    ? 'bg-white text-[#111214] shadow-xs'
+                    : 'bg-[#111214] text-white shadow-xs'
+                  : isDark
+                  ? 'text-stone-400 hover:text-white'
+                  : 'text-[#5A5D63] hover:text-[#111214]'
               }`}
             >
               <PenTool className="w-3.5 h-3.5" />
@@ -324,19 +336,23 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
               onClick={() => setActiveTab('challenges')}
               className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
                 activeTab === 'challenges'
-                  ? 'bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] shadow-xs'
-                  : 'text-stone-400 hover:text-stone-200'
+                  ? isDark
+                    ? 'bg-white text-[#111214] shadow-xs'
+                    : 'bg-[#111214] text-white shadow-xs'
+                  : isDark
+                  ? 'text-stone-400 hover:text-white'
+                  : 'text-[#5A5D63] hover:text-[#111214]'
               }`}
             >
-              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <Sparkles className="w-3.5 h-3.5" />
               <span>{isArabic ? 'التحديات التفاعلية' : 'Interactive Challenges'}</span>
             </button>
           </div>
         </div>
 
         {/* 28 Letters Ribbon */}
-        <div className="mt-6 pt-5 border-t border-stone-200/50 dark:border-white/5">
-          <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
+        <div className={`mt-6 pt-5 border-t ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
+          <div className={`flex items-center justify-between text-xs mb-2 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
             <span>
               {isArabic ? 'اختر أي حرف للمدارسة والتمرين:' : 'Select any letter to inspect or practice:'}
             </span>
@@ -356,15 +372,21 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
                   }}
                   className={`flex-shrink-0 w-11 h-12 rounded-xl flex flex-col items-center justify-center font-serif text-lg transition-all border ${
                     isSelected
-                      ? 'border-[#C9A063] bg-[#C9A063]/20 text-[#DFBA7F] shadow-sm scale-105'
+                      ? isDark
+                        ? 'border-white bg-white text-[#111214] shadow-sm scale-105'
+                        : 'border-[#111214] bg-[#111214] text-white shadow-sm scale-105'
                       : isDark
-                      ? 'border-white/5 bg-white/5 text-stone-300 hover:bg-white/10 hover:border-white/10'
-                      : 'border-stone-200 bg-stone-50 text-stone-800 hover:bg-stone-100'
+                      ? 'border-white/[0.08] bg-[#1B1D23] text-stone-200 hover:bg-white/10'
+                      : 'border-black/[0.08] bg-[#F3F3F1] text-[#111214] hover:bg-black/[0.08]'
                   }`}
                   title={`${letter.name} (${letter.arabicName})`}
                 >
                   <span className="leading-none text-xl font-bold">{letter.letter}</span>
-                  <span className="text-[9px] font-sans font-medium text-stone-400">
+                  <span className={`text-[9px] font-sans font-medium ${
+                    isSelected
+                      ? isDark ? 'text-[#111214]/70' : 'text-white/80'
+                      : isDark ? 'text-stone-400' : 'text-[#5A5D63]'
+                  }`}>
                     {isArabic ? letter.arabicName : letter.transliteration}
                   </span>
                 </button>
@@ -375,7 +397,11 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
       </div>
 
       {speechError && (
-        <div className="px-4 py-2.5 rounded-xl border border-amber-500/20 bg-amber-500/10 text-amber-300 text-xs flex items-center gap-2">
+        <div className={`px-4 py-2.5 rounded-xl border text-xs flex items-center gap-2 ${
+          isDark
+            ? 'border-sky-500/20 bg-sky-500/10 text-sky-300'
+            : 'border-sky-300 bg-sky-50 text-sky-800'
+        }`}>
           <VolumeX className="w-4 h-4 flex-shrink-0" />
           <span>{isArabic ? 'التشغيل الصوتي غير متاح في هذا المتصفح' : speechError}</span>
         </div>
@@ -387,35 +413,45 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
           {/* Main Letter Card */}
           <div
             className={`lg:col-span-5 p-6 rounded-2xl border flex flex-col items-center justify-center text-center relative overflow-hidden ${
-              isDark ? 'bg-[#101318] border-white/5' : 'bg-white border-stone-200 shadow-sm'
+              isDark ? 'bg-[#14161A] border-white/[0.08]' : 'bg-white border-black/[0.08] shadow-sm'
             }`}
           >
             <div className="absolute top-4 right-4 flex items-center gap-1.5">
               {!selectedLetter.isConnector && (
-                <span className="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-rose-500/15 text-rose-300 border border-rose-500/30">
+                <span className={`px-2 py-0.5 text-[10px] font-semibold rounded-md border ${
+                  isDark
+                    ? 'bg-rose-500/15 text-rose-300 border-rose-500/30'
+                    : 'bg-rose-50 text-rose-700 border-rose-300'
+                }`}>
                   {isArabic ? 'حرف غير متصل' : 'Non-Connector'}
                 </span>
               )}
-              <span className="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-stone-500/15 text-stone-300 border border-stone-500/30">
+              <span className={`px-2 py-0.5 text-[10px] font-semibold rounded-md border ${
+                isDark
+                  ? 'bg-white/[0.06] text-stone-300 border-white/10'
+                  : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.08]'
+              }`}>
                 {isArabic ? `المخرج: ${selectedLetter.makhraj}` : `Makhraj: ${selectedLetter.makhraj}`}
               </span>
             </div>
 
             {/* Giant Letter Display */}
             <div className="my-6 relative">
-              <div className="text-8xl md:text-9xl font-serif text-[#DFBA7F] font-bold select-none drop-shadow-md">
+              <div className={`text-8xl md:text-9xl font-serif font-bold select-none ${
+                isDark ? 'text-white' : 'text-[#111214]'
+              }`}>
                 {selectedLetter.letter}
               </div>
             </div>
 
             <div className="space-y-1 mb-5">
-              <div className="text-2xl font-bold font-serif text-stone-900 dark:text-stone-100 flex items-center justify-center gap-2">
+              <div className={`text-2xl font-bold font-serif flex items-center justify-center gap-2 ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                 <span>{isArabic ? selectedLetter.arabicName : selectedLetter.name}</span>
                 {!isArabic && (
-                  <span className="text-[#C9A063] font-normal">({selectedLetter.arabicName})</span>
+                  <span className={`${isDark ? 'text-stone-400' : 'text-[#5A5D63]'} font-normal`}>({selectedLetter.arabicName})</span>
                 )}
               </div>
-              <p className="text-xs text-stone-500 dark:text-stone-400 max-w-sm">
+              <p className={`text-xs max-w-sm ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 {isArabic
                   ? `المخرج الفصيح: ${selectedLetter.makhrajDescription}`
                   : `Sound: ${selectedLetter.transliteration} — ${selectedLetter.phoneticSound}`}
@@ -427,7 +463,11 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
               <button
                 onClick={() => handlePlayAudio(selectedLetter.arabicName)}
                 disabled={isPlayingAudio}
-                className="py-3 px-3 rounded-xl bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] font-semibold text-xs flex items-center justify-center gap-1.5 shadow-md hover:opacity-95 transition-opacity active:scale-95 cursor-pointer"
+                className={`py-3 px-3 rounded-xl font-semibold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-colors active:scale-95 cursor-pointer ${
+                  isDark
+                    ? 'bg-white text-[#111214] hover:bg-stone-200'
+                    : 'bg-[#111214] text-white hover:bg-[#27292D]'
+                }`}
                 title={isArabic ? 'استماع لاسم الحرف العربي' : 'Hear Arabic letter name'}
               >
                 <Volume2 className="w-4 h-4 flex-shrink-0" />
@@ -440,10 +480,14 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
               <button
                 onClick={() => handlePlayAudio(selectedLetter.harakat.fatha.text)}
                 disabled={isPlayingAudio}
-                className="py-3 px-3 rounded-xl border border-[#DFBA7F]/40 hover:border-[#DFBA7F] bg-stone-500/10 text-stone-900 dark:text-stone-100 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors active:scale-95 cursor-pointer"
+                className={`py-3 px-3 rounded-xl border font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors active:scale-95 cursor-pointer ${
+                  isDark
+                    ? 'border-white/15 hover:border-white/30 bg-white/[0.06] text-white'
+                    : 'border-black/[0.1] hover:border-black/30 bg-[#F3F3F1] text-[#111214]'
+                }`}
                 title={isArabic ? 'استماع لنطق الحرف بالحركة' : 'Hear phonetic consonant reading'}
               >
-                <Volume2 className="w-4 h-4 text-[#DFBA7F] flex-shrink-0" />
+                <Volume2 className="w-4 h-4 flex-shrink-0" />
                 <span className="truncate">
                   {isArabic
                     ? `النطق الفصيح ("${selectedLetter.harakat.fatha.text}")`
@@ -458,9 +502,11 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
                 markLetterLearned(selectedLetter.id);
                 onLetterLearned?.(selectedLetter.id);
               }}
-              className="mt-2.5 text-xs text-stone-400 hover:text-[#DFBA7F] transition-colors flex items-center gap-1.5 cursor-pointer"
+              className={`mt-2.5 text-xs transition-colors flex items-center gap-1.5 cursor-pointer ${
+                isDark ? 'text-stone-400 hover:text-white' : 'text-[#5A5D63] hover:text-[#111214]'
+              }`}
             >
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
               <span>{isArabic ? 'تعليم الحرف كمُتقَن' : 'Mark Letter as Mastered'}</span>
             </button>
           </div>
@@ -470,19 +516,19 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
             {/* 4 Positional Forms */}
             <div
               className={`p-5 rounded-2xl border ${
-                isDark ? 'bg-[#101318] border-white/5' : 'bg-white border-stone-200 shadow-xs'
+                isDark ? 'bg-[#14161A] border-white/[0.08]' : 'bg-white border-black/[0.08] shadow-xs'
               }`}
             >
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-semibold text-stone-900 dark:text-stone-100 flex items-center gap-2">
-                  <Layers className="w-4 h-4 text-[#C9A063]" />
+                <h3 className={`text-sm font-semibold flex items-center gap-2 ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
+                  <Layers className="w-4 h-4" />
                   <span>
                     {isArabic
                       ? 'الأشكال الموضعية الأربعة (المس للاستماع)'
                       : 'The 4 Positional Shapes (Tap to Listen)'}
                   </span>
                 </h3>
-                <span className="text-[11px] text-stone-500">
+                <span className={`text-[11px] ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                   {isArabic ? 'من اليمين إلى اليسار' : 'Right to Left'}
                 </span>
               </div>
@@ -490,69 +536,81 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
               <div className="grid grid-cols-4 gap-3 text-center">
                 <button
                   onClick={() => handlePlayAudio(selectedLetter.forms.isolated || selectedLetter.arabicName)}
-                  className="p-3 rounded-xl bg-stone-500/5 border border-stone-200/40 dark:border-white/5 hover:border-[#DFBA7F]/50 transition-all group cursor-pointer"
+                  className={`p-3 rounded-xl border transition-all group cursor-pointer ${
+                    isDark ? 'bg-[#1B1D23] border-white/[0.08] hover:border-white/25' : 'bg-[#F3F3F1] border-black/[0.08] hover:border-black/25'
+                  }`}
                   title={isArabic ? 'استماع للشكل المنفصل' : 'Listen to isolated form'}
                 >
-                  <span className="text-[11px] text-stone-500 block mb-1">
+                  <span className={`text-[11px] block mb-1 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                     {isArabic ? 'مُنْفَصِل' : 'Isolated'}
                   </span>
-                  <span className="text-3xl font-serif text-[#DFBA7F] block mb-1 group-hover:scale-110 transition-transform">
+                  <span className={`text-3xl font-serif block mb-1 group-hover:scale-110 transition-transform ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                     {selectedLetter.forms.isolated}
                   </span>
-                  <span className="text-[10px] text-stone-400">
+                  <span className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     {isArabic ? 'في حالة الانفراد' : 'مُنْفَصِل'}
                   </span>
                 </button>
                 <button
                   onClick={() => handlePlayAudio(selectedLetter.harakat.fatha.text)}
-                  className="p-3 rounded-xl bg-stone-500/5 border border-stone-200/40 dark:border-white/5 hover:border-[#DFBA7F]/50 transition-all group cursor-pointer"
+                  className={`p-3 rounded-xl border transition-all group cursor-pointer ${
+                    isDark ? 'bg-[#1B1D23] border-white/[0.08] hover:border-white/25' : 'bg-[#F3F3F1] border-black/[0.08] hover:border-black/25'
+                  }`}
                   title={isArabic ? 'استماع لشكل البداية' : 'Listen to initial form'}
                 >
-                  <span className="text-[11px] text-stone-500 block mb-1">
+                  <span className={`text-[11px] block mb-1 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                     {isArabic ? 'فِي البِدَايَةِ' : 'Initial (Start)'}
                   </span>
-                  <span className="text-3xl font-serif text-[#DFBA7F] block mb-1 group-hover:scale-110 transition-transform">
+                  <span className={`text-3xl font-serif block mb-1 group-hover:scale-110 transition-transform ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                     {selectedLetter.forms.initial}
                   </span>
-                  <span className="text-[10px] text-stone-400">
+                  <span className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     {isArabic ? 'أول الكلمة' : 'فِي البِدَايَةِ'}
                   </span>
                 </button>
                 <button
                   onClick={() => handlePlayAudio(selectedLetter.harakat.fatha.text)}
-                  className="p-3 rounded-xl bg-stone-500/5 border border-stone-200/40 dark:border-white/5 hover:border-[#DFBA7F]/50 transition-all group cursor-pointer"
+                  className={`p-3 rounded-xl border transition-all group cursor-pointer ${
+                    isDark ? 'bg-[#1B1D23] border-white/[0.08] hover:border-white/25' : 'bg-[#F3F3F1] border-black/[0.08] hover:border-black/25'
+                  }`}
                   title={isArabic ? 'استماع لشكل الوسط' : 'Listen to medial form'}
                 >
-                  <span className="text-[11px] text-stone-500 block mb-1">
+                  <span className={`text-[11px] block mb-1 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                     {isArabic ? 'فِي الوَسَطِ' : 'Medial (Middle)'}
                   </span>
-                  <span className="text-3xl font-serif text-[#DFBA7F] block mb-1 group-hover:scale-110 transition-transform">
+                  <span className={`text-3xl font-serif block mb-1 group-hover:scale-110 transition-transform ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                     {selectedLetter.forms.medial}
                   </span>
-                  <span className="text-[10px] text-stone-400">
+                  <span className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     {isArabic ? 'وسط الكلمة' : 'فِي الوَسَطِ'}
                   </span>
                 </button>
                 <button
                   onClick={() => handlePlayAudio(selectedLetter.harakat.fatha.text)}
-                  className="p-3 rounded-xl bg-stone-500/5 border border-stone-200/40 dark:border-white/5 hover:border-[#DFBA7F]/50 transition-all group cursor-pointer"
+                  className={`p-3 rounded-xl border transition-all group cursor-pointer ${
+                    isDark ? 'bg-[#1B1D23] border-white/[0.08] hover:border-white/25' : 'bg-[#F3F3F1] border-black/[0.08] hover:border-black/25'
+                  }`}
                   title={isArabic ? 'استماع لشكل النهاية' : 'Listen to final form'}
                 >
-                  <span className="text-[11px] text-stone-500 block mb-1">
+                  <span className={`text-[11px] block mb-1 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                     {isArabic ? 'فِي النِّهَايَةِ' : 'Final (Ending)'}
                   </span>
-                  <span className="text-3xl font-serif text-[#DFBA7F] block mb-1 group-hover:scale-110 transition-transform">
+                  <span className={`text-3xl font-serif block mb-1 group-hover:scale-110 transition-transform ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                     {selectedLetter.forms.final}
                   </span>
-                  <span className="text-[10px] text-stone-400">
+                  <span className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     {isArabic ? 'آخر الكلمة' : 'فِي النِّهَايَةِ'}
                   </span>
                 </button>
               </div>
 
               {selectedLetter.commonMistakes && (
-                <div className="mt-4 p-3 rounded-xl bg-amber-500/5 border border-amber-500/20 text-xs text-amber-300/90 flex items-start gap-2">
-                  <HelpCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-amber-400" />
+                <div className={`mt-4 p-3 rounded-xl border text-xs flex items-start gap-2 ${
+                  isDark
+                    ? 'bg-sky-500/10 border-sky-500/20 text-sky-300'
+                    : 'bg-sky-50 border-sky-200 text-sky-900'
+                }`}>
+                  <HelpCircle className={`w-4 h-4 flex-shrink-0 mt-0.5 ${isDark ? 'text-sky-400' : 'text-sky-600'}`} />
                   <span>{selectedLetter.commonMistakes}</span>
                 </div>
               )}
@@ -561,11 +619,11 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
             {/* Harakat Soundboard */}
             <div
               className={`p-5 rounded-2xl border ${
-                isDark ? 'bg-[#101318] border-white/5' : 'bg-white border-stone-200 shadow-xs'
+                isDark ? 'bg-[#14161A] border-white/[0.08]' : 'bg-white border-black/[0.08] shadow-xs'
               }`}
             >
-              <h3 className="text-sm font-semibold text-stone-900 dark:text-stone-100 mb-3 flex items-center gap-2">
-                <Volume2 className="w-4 h-4 text-[#C9A063]" />
+              <h3 className={`text-sm font-semibold mb-3 flex items-center gap-2 ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
+                <Volume2 className="w-4 h-4" />
                 <span>
                   {isArabic
                     ? 'لوحة أصوات الحركات والتشكيل'
@@ -577,15 +635,17 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
                 {/* Fatha */}
                 <button
                   onClick={() => handlePlayAudio(selectedLetter.harakat.fatha.audioText)}
-                  className="p-2.5 rounded-xl border border-stone-200/60 dark:border-white/5 bg-stone-500/5 hover:border-[#C9A063]/50 transition-all text-center group cursor-pointer"
+                  className={`p-2.5 rounded-xl border transition-all text-center group cursor-pointer ${
+                    isDark ? 'border-white/[0.08] bg-[#1B1D23] hover:border-white/25' : 'border-black/[0.08] bg-[#F3F3F1] hover:border-black/25'
+                  }`}
                 >
-                  <span className="text-2xl font-serif text-[#DFBA7F] block group-hover:scale-110 transition-transform">
+                  <span className={`text-2xl font-serif block group-hover:scale-110 transition-transform ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                     {selectedLetter.harakat.fatha.text}
                   </span>
-                  <span className="text-[11px] font-semibold text-stone-800 dark:text-stone-200 block mt-1">
+                  <span className={`text-[11px] font-semibold block mt-1 ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>
                     {isArabic ? 'فَتْحَة' : 'Fatḥah'}
                   </span>
-                  <span className="text-[10px] text-stone-400">
+                  <span className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     {isArabic ? selectedLetter.harakat.fatha.text : `"${selectedLetter.harakat.fatha.transliteration}"`}
                   </span>
                 </button>
@@ -593,15 +653,17 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
                 {/* Damma */}
                 <button
                   onClick={() => handlePlayAudio(selectedLetter.harakat.damma.audioText)}
-                  className="p-2.5 rounded-xl border border-stone-200/60 dark:border-white/5 bg-stone-500/5 hover:border-[#C9A063]/50 transition-all text-center group cursor-pointer"
+                  className={`p-2.5 rounded-xl border transition-all text-center group cursor-pointer ${
+                    isDark ? 'border-white/[0.08] bg-[#1B1D23] hover:border-white/25' : 'border-black/[0.08] bg-[#F3F3F1] hover:border-black/25'
+                  }`}
                 >
-                  <span className="text-2xl font-serif text-[#DFBA7F] block group-hover:scale-110 transition-transform">
+                  <span className={`text-2xl font-serif block group-hover:scale-110 transition-transform ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                     {selectedLetter.harakat.damma.text}
                   </span>
-                  <span className="text-[11px] font-semibold text-stone-800 dark:text-stone-200 block mt-1">
+                  <span className={`text-[11px] font-semibold block mt-1 ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>
                     {isArabic ? 'ضَمَّة' : 'Ḍammah'}
                   </span>
-                  <span className="text-[10px] text-stone-400">
+                  <span className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     {isArabic ? selectedLetter.harakat.damma.text : `"${selectedLetter.harakat.damma.transliteration}"`}
                   </span>
                 </button>
@@ -609,15 +671,17 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
                 {/* Kasra */}
                 <button
                   onClick={() => handlePlayAudio(selectedLetter.harakat.kasra.audioText)}
-                  className="p-2.5 rounded-xl border border-stone-200/60 dark:border-white/5 bg-stone-500/5 hover:border-[#C9A063]/50 transition-all text-center group cursor-pointer"
+                  className={`p-2.5 rounded-xl border transition-all text-center group cursor-pointer ${
+                    isDark ? 'border-white/[0.08] bg-[#1B1D23] hover:border-white/25' : 'border-black/[0.08] bg-[#F3F3F1] hover:border-black/25'
+                  }`}
                 >
-                  <span className="text-2xl font-serif text-[#DFBA7F] block group-hover:scale-110 transition-transform">
+                  <span className={`text-2xl font-serif block group-hover:scale-110 transition-transform ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                     {selectedLetter.harakat.kasra.text}
                   </span>
-                  <span className="text-[11px] font-semibold text-stone-800 dark:text-stone-200 block mt-1">
+                  <span className={`text-[11px] font-semibold block mt-1 ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>
                     {isArabic ? 'كَسْرَة' : 'Kasrah'}
                   </span>
-                  <span className="text-[10px] text-stone-400">
+                  <span className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     {isArabic ? selectedLetter.harakat.kasra.text : `"${selectedLetter.harakat.kasra.transliteration}"`}
                   </span>
                 </button>
@@ -625,15 +689,17 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
                 {/* Sukoon */}
                 <button
                   onClick={() => handlePlayAudio(selectedLetter.harakat.sukoon.audioText)}
-                  className="p-2.5 rounded-xl border border-stone-200/60 dark:border-white/5 bg-stone-500/5 hover:border-[#C9A063]/50 transition-all text-center group cursor-pointer"
+                  className={`p-2.5 rounded-xl border transition-all text-center group cursor-pointer ${
+                    isDark ? 'border-white/[0.08] bg-[#1B1D23] hover:border-white/25' : 'border-black/[0.08] bg-[#F3F3F1] hover:border-black/25'
+                  }`}
                 >
-                  <span className="text-2xl font-serif text-[#DFBA7F] block group-hover:scale-110 transition-transform">
+                  <span className={`text-2xl font-serif block group-hover:scale-110 transition-transform ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                     {selectedLetter.harakat.sukoon.text}
                   </span>
-                  <span className="text-[11px] font-semibold text-stone-800 dark:text-stone-200 block mt-1">
+                  <span className={`text-[11px] font-semibold block mt-1 ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>
                     {isArabic ? 'سُكُون' : 'Sukūn'}
                   </span>
-                  <span className="text-[10px] text-stone-400">
+                  <span className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     {isArabic ? selectedLetter.harakat.sukoon.text : `"${selectedLetter.harakat.sukoon.transliteration}"`}
                   </span>
                 </button>
@@ -642,15 +708,17 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
                 {selectedLetter.harakat.shadda && (
                   <button
                     onClick={() => handlePlayAudio(selectedLetter.harakat.shadda!.audioText)}
-                    className="p-2.5 rounded-xl border border-stone-200/60 dark:border-white/5 bg-stone-500/5 hover:border-[#C9A063]/50 transition-all text-center group cursor-pointer"
+                    className={`p-2.5 rounded-xl border transition-all text-center group cursor-pointer ${
+                      isDark ? 'border-white/[0.08] bg-[#1B1D23] hover:border-white/25' : 'border-black/[0.08] bg-[#F3F3F1] hover:border-black/25'
+                    }`}
                   >
-                    <span className="text-2xl font-serif text-[#DFBA7F] block group-hover:scale-110 transition-transform">
+                    <span className={`text-2xl font-serif block group-hover:scale-110 transition-transform ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                       {selectedLetter.harakat.shadda.text}
                     </span>
-                    <span className="text-[11px] font-semibold text-stone-800 dark:text-stone-200 block mt-1">
+                    <span className={`text-[11px] font-semibold block mt-1 ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>
                       {isArabic ? 'شَدَّة' : 'Shaddah'}
                     </span>
-                    <span className="text-[10px] text-stone-400">
+                    <span className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                       {isArabic ? 'تشديد' : 'Doubled'}
                     </span>
                   </button>
@@ -660,15 +728,17 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
                 {selectedLetter.harakat.tanween && (
                   <button
                     onClick={() => handlePlayAudio(selectedLetter.harakat.tanween!.audioText)}
-                    className="p-2.5 rounded-xl border border-stone-200/60 dark:border-white/5 bg-stone-500/5 hover:border-[#C9A063]/50 transition-all text-center group cursor-pointer"
+                    className={`p-2.5 rounded-xl border transition-all text-center group cursor-pointer ${
+                      isDark ? 'border-white/[0.08] bg-[#1B1D23] hover:border-white/25' : 'border-black/[0.08] bg-[#F3F3F1] hover:border-black/25'
+                    }`}
                   >
-                    <span className="text-2xl font-serif text-[#DFBA7F] block group-hover:scale-110 transition-transform">
+                    <span className={`text-2xl font-serif block group-hover:scale-110 transition-transform ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                       {selectedLetter.harakat.tanween.text}
                     </span>
-                    <span className="text-[11px] font-semibold text-stone-800 dark:text-stone-200 block mt-1">
+                    <span className={`text-[11px] font-semibold block mt-1 ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>
                       {isArabic ? 'تَنْوِين' : 'Tanwīn'}
                     </span>
-                    <span className="text-[10px] text-stone-400">
+                    <span className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                       {isArabic ? 'ـاً' : '"-an"'}
                     </span>
                   </button>
@@ -679,11 +749,11 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
             {/* Example Words in Positions */}
             <div
               className={`p-5 rounded-2xl border ${
-                isDark ? 'bg-[#101318] border-white/5' : 'bg-white border-stone-200 shadow-xs'
+                isDark ? 'bg-[#14161A] border-white/[0.08]' : 'bg-white border-black/[0.08] shadow-xs'
               }`}
             >
-              <h3 className="text-sm font-semibold text-stone-900 dark:text-stone-100 mb-3 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#C9A063]" />
+              <h3 className={`text-sm font-semibold mb-3 flex items-center gap-2 ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
+                <Sparkles className="w-4 h-4" />
                 <span>
                   {isArabic
                     ? `شواهد وأمثلة لحرف "${selectedLetter.arabicName}"`
@@ -695,20 +765,22 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
                 {selectedLetter.sampleWords.initial && (
                   <button
                     onClick={() => handlePlayAudio(selectedLetter.sampleWords.initial.arabic)}
-                    className="p-3 rounded-xl border border-stone-200/60 dark:border-white/5 bg-stone-500/5 hover:border-[#C9A063]/50 transition-all text-right group cursor-pointer"
+                    className={`p-3 rounded-xl border transition-all text-right group cursor-pointer ${
+                      isDark ? 'border-white/[0.08] bg-[#1B1D23] hover:border-white/25' : 'border-black/[0.08] bg-[#F3F3F1] hover:border-black/25'
+                    }`}
                   >
-                    <span className="text-[10px] text-stone-400 block text-right">
+                    <span className={`text-[10px] block text-right ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                       {isArabic ? 'أول الكلمة:' : 'Beginning:'}
                     </span>
-                    <span className="text-xl font-serif text-[#DFBA7F] block my-0.5">
+                    <span className={`text-xl font-serif block my-0.5 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                       {selectedLetter.sampleWords.initial.arabic}
                     </span>
                     {!isArabic && (
                       <>
-                        <span className="text-xs text-stone-700 dark:text-stone-300 block text-right">
+                        <span className={`text-xs block text-right ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                           {selectedLetter.sampleWords.initial.transliteration}
                         </span>
-                        <span className="text-[11px] text-stone-400 block text-left">
+                        <span className={`text-[11px] block text-left ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                           {selectedLetter.sampleWords.initial.english}
                         </span>
                       </>
@@ -719,20 +791,22 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
                 {selectedLetter.sampleWords.medial && (
                   <button
                     onClick={() => handlePlayAudio(selectedLetter.sampleWords.medial.arabic)}
-                    className="p-3 rounded-xl border border-stone-200/60 dark:border-white/5 bg-stone-500/5 hover:border-[#C9A063]/50 transition-all text-right group cursor-pointer"
+                    className={`p-3 rounded-xl border transition-all text-right group cursor-pointer ${
+                      isDark ? 'border-white/[0.08] bg-[#1B1D23] hover:border-white/25' : 'border-black/[0.08] bg-[#F3F3F1] hover:border-black/25'
+                    }`}
                   >
-                    <span className="text-[10px] text-stone-400 block text-right">
+                    <span className={`text-[10px] block text-right ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                       {isArabic ? 'وسط الكلمة:' : 'Middle:'}
                     </span>
-                    <span className="text-xl font-serif text-[#DFBA7F] block my-0.5">
+                    <span className={`text-xl font-serif block my-0.5 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                       {selectedLetter.sampleWords.medial.arabic}
                     </span>
                     {!isArabic && (
                       <>
-                        <span className="text-xs text-stone-700 dark:text-stone-300 block text-right">
+                        <span className={`text-xs block text-right ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                           {selectedLetter.sampleWords.medial.transliteration}
                         </span>
-                        <span className="text-[11px] text-stone-400 block text-left">
+                        <span className={`text-[11px] block text-left ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                           {selectedLetter.sampleWords.medial.english}
                         </span>
                       </>
@@ -743,20 +817,22 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
                 {selectedLetter.sampleWords.final && (
                   <button
                     onClick={() => handlePlayAudio(selectedLetter.sampleWords.final.arabic)}
-                    className="p-3 rounded-xl border border-stone-200/60 dark:border-white/5 bg-stone-500/5 hover:border-[#C9A063]/50 transition-all text-right group cursor-pointer"
+                    className={`p-3 rounded-xl border transition-all text-right group cursor-pointer ${
+                      isDark ? 'border-white/[0.08] bg-[#1B1D23] hover:border-white/25' : 'border-black/[0.08] bg-[#F3F3F1] hover:border-black/25'
+                    }`}
                   >
-                    <span className="text-[10px] text-stone-400 block text-right">
+                    <span className={`text-[10px] block text-right ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                       {isArabic ? 'آخر الكلمة:' : 'Ending:'}
                     </span>
-                    <span className="text-xl font-serif text-[#DFBA7F] block my-0.5">
+                    <span className={`text-xl font-serif block my-0.5 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                       {selectedLetter.sampleWords.final.arabic}
                     </span>
                     {!isArabic && (
                       <>
-                        <span className="text-xs text-stone-700 dark:text-stone-300 block text-right">
+                        <span className={`text-xs block text-right ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                           {selectedLetter.sampleWords.final.transliteration}
                         </span>
-                        <span className="text-[11px] text-stone-400 block text-left">
+                        <span className={`text-[11px] block text-left ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                           {selectedLetter.sampleWords.final.english}
                         </span>
                       </>
@@ -773,20 +849,20 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
       {activeTab === 'writing' && (
         <div
           className={`p-6 rounded-2xl border ${
-            isDark ? 'bg-[#101318] border-white/5' : 'bg-white border-stone-200 shadow-sm'
+            isDark ? 'bg-[#14161A] border-white/[0.08]' : 'bg-white border-black/[0.08] shadow-sm'
           }`}
         >
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div>
-              <h3 className="text-base font-bold text-stone-900 dark:text-stone-100 flex items-center gap-2">
-                <PenTool className="w-4 h-4 text-[#C9A063]" />
+              <h3 className={`text-base font-bold flex items-center gap-2 ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
+                <PenTool className="w-4 h-4" />
                 <span>
                   {isArabic
                     ? `رسم وكتابة حرف "${selectedLetter.arabicName}" (${selectedLetter.letter})`
                     : `Write "${selectedLetter.name}" (${selectedLetter.letter})`}
                 </span>
               </h3>
-              <p className="text-xs text-stone-500 dark:text-stone-400">
+              <p className={`text-xs ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 {isArabic
                   ? 'تتبّع مسار الحرف العربي من اليمين إلى اليسار باتباع خط القالب الإرشادي.'
                   : 'Trace and draw the Arabic letter from right to left following the guideline template.'}
@@ -798,8 +874,8 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
                 onClick={clearCanvas}
                 className={`px-3 py-1.5 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer ${
                   isDark
-                    ? 'border-white/10 bg-white/5 text-stone-300 hover:bg-white/10'
-                    : 'border-stone-200 bg-stone-100 text-stone-700 hover:bg-stone-200'
+                    ? 'border-white/10 bg-[#1B1D23] text-stone-300 hover:bg-white/10'
+                    : 'border-black/[0.08] bg-[#F3F3F1] text-[#3F4248] hover:bg-black/[0.08]'
                 }`}
               >
                 <Eraser className="w-3.5 h-3.5" />
@@ -810,7 +886,11 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
                   markLetterLearned(selectedLetter.id);
                   onLetterLearned?.(selectedLetter.id);
                 }}
-                className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] text-xs font-semibold flex items-center gap-1.5 cursor-pointer"
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 cursor-pointer transition-colors ${
+                  isDark
+                    ? 'bg-white text-[#111214] hover:bg-stone-200'
+                    : 'bg-[#111214] text-white hover:bg-[#27292D]'
+                }`}
               >
                 <CheckCircle2 className="w-3.5 h-3.5" />
                 <span>{isArabic ? 'حفظ التمرين' : 'Save Practice'}</span>
@@ -818,16 +898,18 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
             </div>
           </div>
 
-          <div className="relative w-full max-w-xl mx-auto aspect-video rounded-2xl border border-dashed border-stone-300 dark:border-stone-700 bg-stone-950/40 flex items-center justify-center overflow-hidden">
+          <div className={`relative w-full max-w-xl mx-auto aspect-video rounded-2xl border border-dashed flex items-center justify-center overflow-hidden ${
+            isDark ? 'border-white/15 bg-[#0B0C0E]' : 'border-black/20 bg-[#F3F3F1]'
+          }`}>
             {/* Template Ghost Letter in Background */}
             <div className="absolute inset-0 flex items-center justify-center select-none pointer-events-none opacity-25">
-              <span className="text-[170px] font-serif text-white/50">
+              <span className={`text-[170px] font-serif ${isDark ? 'text-white/50' : 'text-[#111214]/30'}`}>
                 {selectedLetter.letter}
               </span>
             </div>
 
             {/* Baseline Guide */}
-            <div className="absolute inset-x-8 top-[60%] border-b border-[#C9A063]/30 pointer-events-none" />
+            <div className={`absolute inset-x-8 top-[60%] border-b pointer-events-none ${isDark ? 'border-white/15' : 'border-black/15'}`} />
 
             {/* Interactive Drawing Canvas */}
             <canvas
@@ -841,10 +923,10 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
             />
           </div>
 
-          <div className="flex items-center justify-between text-xs text-stone-500 max-w-xl mx-auto mt-3">
+          <div className={`flex items-center justify-between text-xs max-w-xl mx-auto mt-3 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
             <span>{isArabic ? 'ارسم باللمس أو القلم أو الفأرة' : 'Draw with touch, stylus or mouse'}</span>
             {hasDrawn && (
-              <span className="text-emerald-400">
+              <span className="text-emerald-500 font-medium">
                 {isArabic ? 'أحسنت! رسم دقيق وموفق.' : 'Great stroke effort!'}
               </span>
             )}
@@ -856,7 +938,7 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
       {activeTab === 'challenges' && (
         <div
           className={`p-6 rounded-2xl border ${
-            isDark ? 'bg-[#101318] border-white/5' : 'bg-white border-stone-200 shadow-sm'
+            isDark ? 'bg-[#14161A] border-white/[0.08]' : 'bg-white border-black/[0.08] shadow-sm'
           }`}
         >
           {/* Challenge Switcher Sub-nav */}
@@ -879,8 +961,12 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
                 }}
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
                   challengeType === ch.id
-                    ? 'border-[#C9A063] bg-[#C9A063]/20 text-[#DFBA7F]'
-                    : 'border-transparent text-stone-400 hover:text-stone-200'
+                    ? isDark
+                      ? 'border-white bg-white text-[#111214]'
+                      : 'border-[#111214] bg-[#111214] text-white'
+                    : isDark
+                    ? 'border-white/[0.08] bg-[#1B1D23] text-stone-300 hover:text-white'
+                    : 'border-black/[0.08] bg-[#F3F3F1] text-[#3F4248] hover:bg-black/[0.08]'
                 }`}
               >
                 {ch.label}
@@ -891,17 +977,21 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
           {/* Current Challenge Container */}
           <div className="max-w-xl mx-auto text-center space-y-6">
             <div className="space-y-2">
-              <span className="text-xs text-stone-500 uppercase tracking-wider">
+              <span className={`text-xs uppercase tracking-wider ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                 {isArabic ? `سؤال التحدي رقم ${currentChallengeIndex + 1}` : `Challenge Question #${currentChallengeIndex + 1}`}
               </span>
-              <h3 className="text-lg font-bold text-stone-900 dark:text-stone-100">
+              <h3 className={`text-lg font-bold ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                 {currentChallenge.prompt}
               </h3>
 
               {currentChallenge.audioPlay && (
                 <button
                   onClick={() => handlePlayAudio(currentChallenge.audioPlay!)}
-                  className="inline-flex items-center gap-2 px-4 py-2 mt-2 rounded-xl bg-[#C9A063]/15 text-[#DFBA7F] border border-[#C9A063]/30 hover:bg-[#C9A063]/25 transition-all text-xs font-semibold cursor-pointer"
+                  className={`inline-flex items-center gap-2 px-4 py-2 mt-2 rounded-xl border transition-all text-xs font-semibold cursor-pointer ${
+                    isDark
+                      ? 'bg-white/[0.06] text-white border-white/15 hover:bg-white/10'
+                      : 'bg-[#F3F3F1] text-[#111214] border-black/[0.08] hover:bg-black/[0.08]'
+                  }`}
                 >
                   <Volume2 className="w-4 h-4" />
                   <span>{isArabic ? 'تشغيل الصوت' : 'Play Sound'}</span>
@@ -909,7 +999,7 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
               )}
 
               {currentChallenge.arabicPrompt && (
-                <div className="text-4xl font-serif text-[#DFBA7F] py-3">
+                <div className={`text-4xl font-serif py-3 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                   {currentChallenge.arabicPrompt}
                 </div>
               )}
@@ -921,14 +1011,18 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
                 const isSelected = selectedOption === opt;
                 const isCorrect = opt === currentChallenge.correctAnswer;
                 let optStyle = isDark
-                  ? 'bg-white/5 border-white/10 text-stone-200 hover:bg-white/10'
-                  : 'bg-stone-50 border-stone-200 text-stone-800 hover:bg-stone-100';
+                  ? 'bg-[#1B1D23] border-white/[0.08] text-stone-200 hover:bg-white/10'
+                  : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214] hover:bg-black/[0.08]';
 
                 if (challengeFeedback) {
                   if (isCorrect) {
-                    optStyle = 'bg-emerald-500/20 border-emerald-500/60 text-emerald-400 font-bold';
+                    optStyle = isDark
+                      ? 'bg-emerald-500/20 border-emerald-500/60 text-emerald-400 font-bold'
+                      : 'bg-emerald-50 border-emerald-500 text-emerald-800 font-bold';
                   } else if (isSelected) {
-                    optStyle = 'bg-rose-500/20 border-rose-500/60 text-rose-400';
+                    optStyle = isDark
+                      ? 'bg-rose-500/20 border-rose-500/60 text-rose-400'
+                      : 'bg-rose-50 border-rose-500 text-rose-700';
                   }
                 }
 
@@ -941,10 +1035,10 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
                   >
                     <span>{opt}</span>
                     {challengeFeedback && isCorrect && (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                      <CheckCircle2 className={`w-4 h-4 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`} />
                     )}
                     {challengeFeedback && isSelected && !isCorrect && (
-                      <XCircle className="w-4 h-4 text-rose-400" />
+                      <XCircle className={`w-4 h-4 ${isDark ? 'text-rose-400' : 'text-rose-600'}`} />
                     )}
                   </button>
                 );
@@ -956,8 +1050,12 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
               <div
                 className={`p-4 rounded-2xl border text-left text-xs space-y-3 ${
                   challengeFeedback.isCorrect
-                    ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
-                    : 'border-rose-500/30 bg-rose-500/10 text-rose-300'
+                    ? isDark
+                      ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
+                      : 'border-emerald-300 bg-emerald-50 text-emerald-800'
+                    : isDark
+                    ? 'border-rose-500/30 bg-rose-500/10 text-rose-300'
+                    : 'border-rose-300 bg-rose-50 text-rose-800'
                 }`}
                 dir={isArabic ? 'rtl' : 'ltr'}
               >
@@ -974,10 +1072,14 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
                     </>
                   )}
                 </div>
-                <p className="text-stone-300 leading-relaxed">{challengeFeedback.explanation}</p>
+                <p className={`${isDark ? 'text-stone-300' : 'text-[#3F4248]'} leading-relaxed`}>{challengeFeedback.explanation}</p>
                 <button
                   onClick={handleNextChallenge}
-                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] font-semibold text-xs flex items-center gap-1.5 ml-auto cursor-pointer"
+                  className={`px-4 py-2 rounded-xl font-semibold text-xs flex items-center gap-1.5 ml-auto cursor-pointer transition-colors ${
+                    isDark
+                      ? 'bg-white text-[#111214] hover:bg-stone-200'
+                      : 'bg-[#111214] text-white hover:bg-[#27292D]'
+                  }`}
                 >
                   <span>{isArabic ? 'التحدي التالي' : 'Next Challenge'}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -985,7 +1087,7 @@ export const LetterLabView: React.FC<LetterLabViewProps> = ({ isDark, language, 
               </div>
             )}
 
-            <div className="text-xs text-stone-500 pt-2">
+            <div className={`text-xs pt-2 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
               {isArabic
                 ? `نتيجتك في هذه الجلسة: ${challengeScore.correct} صحيحة من أصل ${challengeScore.total} محاولات`
                 : `Performance in this session: ${challengeScore.correct} correct of ${challengeScore.total} attempts`}

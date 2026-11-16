@@ -83,7 +83,7 @@ export const ArabicLearningView: React.FC<ArabicLearningViewProps> = ({
       description: st.modules.alphabet.description,
       badge: st.modules.alphabet.badge,
       icon: Layers,
-      accentColor: '#DFBA7F',
+      accentColor: '#111214',
     },
     {
       id: 'speaking',
@@ -119,7 +119,7 @@ export const ArabicLearningView: React.FC<ArabicLearningViewProps> = ({
       description: st.modules.reading.description,
       badge: st.modules.reading.badge,
       icon: BookOpen,
-      accentColor: '#F59E0B',
+      accentColor: '#0EA5E9',
     },
     {
       id: 'vocabulary',
@@ -137,7 +137,7 @@ export const ArabicLearningView: React.FC<ArabicLearningViewProps> = ({
       description: st.modules.iq_memory.description,
       badge: st.modules.iq_memory.badge,
       icon: Brain,
-      accentColor: '#EC4899',
+      accentColor: '#38BDF8',
     },
     {
       id: 'test',
@@ -155,7 +155,7 @@ export const ArabicLearningView: React.FC<ArabicLearningViewProps> = ({
       description: st.modules.teacher.description,
       badge: st.modules.teacher.badge,
       icon: GraduationCap,
-      accentColor: '#C9A063',
+      accentColor: '#111214',
     },
     {
       id: 'progress',
@@ -214,8 +214,8 @@ export const ArabicLearningView: React.FC<ArabicLearningViewProps> = ({
       <div
         className={`p-4 rounded-2xl border flex items-center justify-between gap-4 overflow-x-auto scrollbar-none transition-all ${
           isDark
-            ? 'bg-[#101318]/95 border-white/5 shadow-lg'
-            : 'bg-white border-stone-200 shadow-sm'
+            ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+            : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
         }`}
       >
         <div className="flex items-center gap-2">
@@ -224,8 +224,8 @@ export const ArabicLearningView: React.FC<ArabicLearningViewProps> = ({
               onClick={() => setActiveModule('overview')}
               className={`p-2 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition-all mr-1 ${
                 isDark
-                  ? 'border-white/10 bg-white/5 text-stone-300 hover:bg-white/10'
-                  : 'border-stone-200 bg-stone-100 text-stone-700 hover:bg-stone-200'
+                  ? 'border-white/10 bg-white/[0.06] text-stone-300 hover:bg-white/10'
+                  : 'border-black/[0.08] bg-[#F3F3F1] text-[#3F4248] hover:bg-black/[0.08]'
               }`}
               title="Return to Arabic Curriculum Hub"
             >
@@ -235,8 +235,8 @@ export const ArabicLearningView: React.FC<ArabicLearningViewProps> = ({
           )}
 
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#DFBA7F]" />
-            <span className="text-xs font-bold font-serif text-stone-900 dark:text-stone-100 whitespace-nowrap">
+            <span className={`w-2.5 h-2.5 rounded-full ${isDark ? 'bg-white' : 'bg-[#111214]'}`} />
+            <span className={`text-xs font-bold font-serif whitespace-nowrap ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
               {st.academyTitle}
             </span>
             <span className="hidden md:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 whitespace-nowrap">
@@ -251,8 +251,12 @@ export const ArabicLearningView: React.FC<ArabicLearningViewProps> = ({
             onClick={() => setActiveModule('overview')}
             className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
               activeModule === 'overview'
-                ? 'bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] shadow-xs'
-                : 'text-stone-400 hover:text-stone-200'
+                ? isDark
+                  ? 'bg-white text-[#111214] shadow-xs'
+                  : 'bg-[#111214] text-white shadow-xs'
+                : isDark
+                ? 'text-stone-400 hover:text-white'
+                : 'text-[#5A5D63] hover:text-[#111214]'
             }`}
           >
             {st.curriculum}
@@ -263,10 +267,12 @@ export const ArabicLearningView: React.FC<ArabicLearningViewProps> = ({
               onClick={() => setActiveModule(m.id)}
               className={`px-2.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
                 activeModule === m.id
-                  ? 'bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] shadow-xs'
+                  ? isDark
+                    ? 'bg-white text-[#111214] shadow-xs'
+                    : 'bg-[#111214] text-white shadow-xs'
                   : isDark
-                  ? 'text-stone-400 hover:text-stone-200'
-                  : 'text-stone-600 hover:text-stone-900'
+                  ? 'text-stone-400 hover:text-white'
+                  : 'text-[#5A5D63] hover:text-[#111214]'
               }`}
             >
               {m.title}
@@ -278,12 +284,12 @@ export const ArabicLearningView: React.FC<ArabicLearningViewProps> = ({
             onClick={() => setReviewOnboarding(true)}
             className={`px-2.5 py-1.5 rounded-xl text-[11px] font-semibold whitespace-nowrap transition-all border flex items-center gap-1 cursor-pointer ${
               isDark
-                ? 'border-white/10 bg-white/5 text-stone-400 hover:text-stone-200 hover:bg-white/10'
-                : 'border-stone-200 bg-stone-50 text-stone-600 hover:text-stone-900 hover:bg-stone-100'
+                ? 'border-white/10 bg-white/[0.06] text-stone-300 hover:text-white hover:bg-white/10'
+                : 'border-black/[0.08] bg-[#F3F3F1] text-[#3F4248] hover:text-[#111214] hover:bg-black/[0.08]'
             }`}
             title="Review Lifetime Free Reveal, Terms & Pre-Release Notice"
           >
-            <ShieldCheck className="w-3 h-3 text-[#DFBA7F]" />
+            <ShieldCheck className={`w-3 h-3 ${isDark ? 'text-stone-200' : 'text-[#111214]'}`} />
             <span>{st.termsAndNotice}</span>
           </button>
         </div>
@@ -296,44 +302,50 @@ export const ArabicLearningView: React.FC<ArabicLearningViewProps> = ({
           <div
             className={`p-8 rounded-3xl border relative overflow-hidden ${
               isDark
-                ? 'bg-gradient-to-br from-[#101318] via-[#151921] to-[#101318] border-white/5 shadow-2xl'
-                : 'bg-gradient-to-br from-white via-stone-50 to-stone-100 border-stone-200 shadow-xl'
+                ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+                : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
             }`}
           >
             <div className="max-w-2xl space-y-3 relative z-10">
               <div className="flex items-center gap-2">
-                <span className="px-3 py-0.5 text-xs font-semibold tracking-wider uppercase rounded-full bg-[#C9A063]/20 text-[#DFBA7F] border border-[#C9A063]/30">
+                <span
+                  className={`px-3 py-0.5 text-xs font-semibold tracking-wider uppercase rounded-full border ${
+                    isDark
+                      ? 'bg-white/[0.08] text-white border-white/15'
+                      : 'bg-[#F3F3F1] text-[#111214] border-black/[0.08]'
+                  }`}
+                >
                   {st.heroBadge}
                 </span>
-                <span className="text-xs text-stone-500">{st.heroSubBadge}</span>
+                <span className={`text-xs ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{st.heroSubBadge}</span>
               </div>
 
-              <h1 className="text-3xl md:text-4xl font-bold font-serif tracking-tight text-stone-900 dark:text-stone-100">
+              <h1 className={`text-3xl md:text-4xl font-bold font-serif tracking-tight ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                 {st.heroTitle}
               </h1>
 
-              <p className="text-sm text-stone-500 dark:text-stone-400 leading-relaxed">
+              <p className={`text-sm leading-relaxed ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 {st.heroDesc}
               </p>
 
               {/* Real Performance Snapshot */}
               <div className="flex flex-wrap gap-4 pt-2 text-xs">
-                <div className="flex items-center gap-1.5 text-stone-300">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                <div className={`flex items-center gap-1.5 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
+                  <CheckCircle2 className={`w-4 h-4 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`} />
                   <span>
-                    {st.lettersMastered}: <strong className="text-[#DFBA7F]">{progress.lettersLearned.length}/28</strong>
+                    {st.lettersMastered}: <strong className={isDark ? 'text-white' : 'text-[#111214]'}>{progress.lettersLearned.length}/28</strong>
                   </span>
                 </div>
-                <div className="flex items-center gap-1.5 text-stone-300">
-                  <Brain className="w-4 h-4 text-purple-400" />
+                <div className={`flex items-center gap-1.5 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
+                  <Brain className={`w-4 h-4 ${isDark ? 'text-sky-400' : 'text-sky-600'}`} />
                   <span>
-                    {st.arabicIq}: <strong className="text-[#DFBA7F]">{progress.arabicIQScore}</strong>
+                    {st.arabicIq}: <strong className={isDark ? 'text-white' : 'text-[#111214]'}>{progress.arabicIQScore}</strong>
                   </span>
                 </div>
-                <div className="flex items-center gap-1.5 text-stone-300">
-                  <GraduationCap className="w-4 h-4 text-[#DFBA7F]" />
+                <div className={`flex items-center gap-1.5 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
+                  <GraduationCap className={`w-4 h-4 ${isDark ? 'text-stone-300' : 'text-[#111214]'}`} />
                   <span>
-                    {st.readingLevel}: <strong className="text-stone-200 capitalize">{localizedReadingLevel}</strong>
+                    {st.readingLevel}: <strong className={`capitalize ${isDark ? 'text-white' : 'text-[#111214]'}`}>{localizedReadingLevel}</strong>
                   </span>
                 </div>
               </div>
@@ -350,39 +362,46 @@ export const ArabicLearningView: React.FC<ArabicLearningViewProps> = ({
                   onClick={() => setActiveModule(m.id)}
                   className={`p-6 rounded-2xl border flex flex-col justify-between cursor-pointer transition-all duration-200 group ${
                     isDark
-                      ? 'bg-[#101318] border-white/5 hover:border-[#C9A063]/50 hover:bg-[#141820]'
-                      : 'bg-white border-stone-200 hover:border-[#C9A063]/50 hover:shadow-md'
+                      ? 'bg-[#14161A] border-white/[0.08] hover:border-white/25 hover:bg-[#1B1D23]'
+                      : 'bg-white border-black/[0.08] hover:border-black/25 hover:shadow-md'
                   }`}
                 >
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <div
-                        className="w-10 h-10 rounded-xl flex items-center justify-center transition-transform group-hover:scale-105"
-                        style={{ backgroundColor: `${m.accentColor}18`, color: m.accentColor }}
+                        className={`w-10 h-10 rounded-xl flex items-center justify-center transition-transform group-hover:scale-105 ${
+                          isDark ? 'bg-white/[0.06] text-white' : 'bg-[#F3F3F1] text-[#111214]'
+                        }`}
                       >
                         <Icon className="w-5 h-5" />
                       </div>
-                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-white/5 text-stone-400 border border-white/5">
+                      <span
+                        className={`px-2.5 py-0.5 rounded-full text-[10px] font-semibold border ${
+                          isDark
+                            ? 'bg-white/[0.06] text-stone-300 border-white/[0.08]'
+                            : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.08]'
+                        }`}
+                      >
                         {m.badge}
                       </span>
                     </div>
 
                     <div>
-                      <div className="flex items-baseline justify-between">
-                        <h3 className="text-base font-bold text-stone-900 dark:text-stone-100 group-hover:text-[#DFBA7F] transition-colors">
+                      <div className="flex items-baseline justify-between gap-2">
+                        <h3 className={`text-base font-bold transition-colors ${isDark ? 'text-[#F3F4F6] group-hover:text-white' : 'text-[#111214]'}`}>
                           {m.title}
                         </h3>
-                        <span className="text-xs font-serif text-[#DFBA7F]/80">
+                        <span className={`text-xs font-serif ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                           {m.arabicTitle}
                         </span>
                       </div>
-                      <p className="text-xs text-stone-500 dark:text-stone-400 mt-1 leading-relaxed">
+                      <p className={`text-xs mt-1 leading-relaxed ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                         {m.description}
                       </p>
                     </div>
                   </div>
 
-                  <div className="mt-4 pt-3 border-t border-stone-200/40 dark:border-white/5 flex items-center justify-between text-xs text-[#DFBA7F] font-semibold">
+                  <div className={`mt-4 pt-3 border-t flex items-center justify-between text-xs font-semibold ${isDark ? 'border-white/[0.08] text-white' : 'border-black/[0.08] text-[#111214]'}`}>
                     <span>{st.enterModule}</span>
                     <span className="group-hover:translate-x-1 transition-transform">→</span>
                   </div>

@@ -81,14 +81,14 @@ export const NoorAIAvatar: React.FC<NoorAIAvatarProps> = ({
 
   return (
     <div
-      className={`relative rounded-full flex items-center justify-center shrink-0 select-none shadow-md transition-all ${sizeClasses} ${
+      className={`relative rounded-full flex items-center justify-center shrink-0 select-none shadow-xs transition-all ${sizeClasses} ${
         isDark
-          ? 'bg-gradient-to-tr from-[#C9A063] via-[#DFBA7F] to-[#B88E4F] text-[#090B0E] shadow-[0_2px_10px_rgba(201,160,99,0.35)]'
-          : 'bg-gradient-to-tr from-[#C9A063] via-[#DFBA7F] to-[#B88E4F] text-[#090B0E] shadow-sm'
+          ? 'bg-white text-[#111214]'
+          : 'bg-[#111214] text-white'
       } ${animate ? 'animate-pulse' : ''} ${className}`}
       aria-label="Noor AI Avatar"
     >
-      <NoorAIIcon className={iconSizes} color="#090B0E" />
+      <NoorAIIcon className={iconSizes} color={isDark ? '#111214' : '#FFFFFF'} />
     </div>
   );
 };

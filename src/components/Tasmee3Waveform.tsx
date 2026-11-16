@@ -121,17 +121,17 @@ export const Tasmee3Waveform: React.FC<Tasmee3WaveformProps> = ({
           // Vertical gradient for mirrored bars
           const barGrad = ctx.createLinearGradient(0, centerY - bh, 0, centerY + bh);
           if (isDark) {
-            barGrad.addColorStop(0, 'rgba(201, 160, 99, 0.0)');
-            barGrad.addColorStop(0.3, isVoiceActive ? 'rgba(16, 185, 129, 0.25)' : 'rgba(201, 160, 99, 0.18)');
-            barGrad.addColorStop(0.5, isVoiceActive ? 'rgba(223, 186, 127, 0.4)' : 'rgba(201, 160, 99, 0.25)');
-            barGrad.addColorStop(0.7, isVoiceActive ? 'rgba(16, 185, 129, 0.25)' : 'rgba(201, 160, 99, 0.18)');
-            barGrad.addColorStop(1, 'rgba(201, 160, 99, 0.0)');
+            barGrad.addColorStop(0, 'rgba(255, 255, 255, 0.0)');
+            barGrad.addColorStop(0.3, isVoiceActive ? 'rgba(16, 185, 129, 0.28)' : 'rgba(255, 255, 255, 0.14)');
+            barGrad.addColorStop(0.5, isVoiceActive ? 'rgba(52, 211, 153, 0.42)' : 'rgba(255, 255, 255, 0.24)');
+            barGrad.addColorStop(0.7, isVoiceActive ? 'rgba(16, 185, 129, 0.28)' : 'rgba(255, 255, 255, 0.14)');
+            barGrad.addColorStop(1, 'rgba(255, 255, 255, 0.0)');
           } else {
-            barGrad.addColorStop(0, 'rgba(180, 130, 60, 0.0)');
-            barGrad.addColorStop(0.3, isVoiceActive ? 'rgba(5, 150, 105, 0.22)' : 'rgba(180, 130, 60, 0.16)');
-            barGrad.addColorStop(0.5, isVoiceActive ? 'rgba(201, 160, 99, 0.35)' : 'rgba(180, 130, 60, 0.22)');
-            barGrad.addColorStop(0.7, isVoiceActive ? 'rgba(5, 150, 105, 0.22)' : 'rgba(180, 130, 60, 0.16)');
-            barGrad.addColorStop(1, 'rgba(180, 130, 60, 0.0)');
+            barGrad.addColorStop(0, 'rgba(17, 18, 20, 0.0)');
+            barGrad.addColorStop(0.3, isVoiceActive ? 'rgba(5, 150, 105, 0.24)' : 'rgba(17, 18, 20, 0.12)');
+            barGrad.addColorStop(0.5, isVoiceActive ? 'rgba(5, 150, 105, 0.36)' : 'rgba(17, 18, 20, 0.20)');
+            barGrad.addColorStop(0.7, isVoiceActive ? 'rgba(5, 150, 105, 0.24)' : 'rgba(17, 18, 20, 0.12)');
+            barGrad.addColorStop(1, 'rgba(17, 18, 20, 0.0)');
           }
 
           ctx.fillStyle = barGrad;
@@ -150,10 +150,10 @@ export const Tasmee3Waveform: React.FC<Tasmee3WaveformProps> = ({
 
         if (isVoiceActive) {
           glowGrad.addColorStop(0, isDark ? 'rgba(16, 185, 129, 0.16)' : 'rgba(5, 150, 105, 0.14)');
-          glowGrad.addColorStop(0.6, isDark ? 'rgba(201, 160, 99, 0.08)' : 'rgba(201, 160, 99, 0.06)');
+          glowGrad.addColorStop(0.6, isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(17, 18, 20, 0.05)');
           glowGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
         } else {
-          glowGrad.addColorStop(0, isDark ? 'rgba(201, 160, 99, 0.1)' : 'rgba(201, 160, 99, 0.07)');
+          glowGrad.addColorStop(0, isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(17, 18, 20, 0.06)');
           glowGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
         }
 
@@ -165,15 +165,15 @@ export const Tasmee3Waveform: React.FC<Tasmee3WaveformProps> = ({
       // 3. LAYERED HARMONIC SINE CURVES WITH GRADIENTS & SILK REFLECTIONS
       // =========================================================================
       const waves = [
-        // Primary golden Noor ribbon
+        // Primary crisp monochrome Noor ribbon
         {
-          color: isDark ? 'rgba(223, 186, 127, 0.92)' : 'rgba(190, 140, 65, 0.95)',
-          glow: isDark ? 'rgba(223, 186, 127, 0.55)' : 'rgba(190, 140, 65, 0.35)',
+          color: isDark ? 'rgba(243, 244, 246, 0.90)' : 'rgba(17, 18, 20, 0.88)',
+          glow: isDark ? 'rgba(255, 255, 255, 0.35)' : 'rgba(17, 18, 20, 0.18)',
           amplitudeMult: compact ? 0.7 : 0.88,
           frequency: compact ? 0.035 : 0.022,
           phaseOffset: 0,
           lineWidth: compact ? 1.8 : 2.4,
-          fill: isDark ? 'rgba(201, 160, 99, 0.06)' : 'rgba(201, 160, 99, 0.05)',
+          fill: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(17, 18, 20, 0.04)',
         },
         // Secondary emerald tajweed accent wave
         {
@@ -185,10 +185,10 @@ export const Tasmee3Waveform: React.FC<Tasmee3WaveformProps> = ({
           lineWidth: compact ? 1.4 : 1.9,
           fill: null,
         },
-        // Tertiary subtle warm harmonic filament
+        // Tertiary subtle muted harmonic filament
         {
-          color: isDark ? 'rgba(201, 160, 99, 0.65)' : 'rgba(160, 110, 45, 0.7)',
-          glow: isDark ? 'rgba(201, 160, 99, 0.3)' : 'rgba(160, 110, 45, 0.15)',
+          color: isDark ? 'rgba(161, 161, 170, 0.55)' : 'rgba(90, 93, 99, 0.55)',
+          glow: isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(17, 18, 20, 0.12)',
           amplitudeMult: compact ? 0.4 : 0.48,
           frequency: compact ? 0.055 : 0.036,
           phaseOffset: Math.PI / 1.3,
@@ -239,15 +239,15 @@ export const Tasmee3Waveform: React.FC<Tasmee3WaveformProps> = ({
       });
 
       // =========================================================================
-      // 4. CENTRAL EQUILIBRIUM BASELINE AXIS (Subtle golden hairline)
+      // 4. CENTRAL EQUILIBRIUM BASELINE AXIS
       // =========================================================================
       ctx.save();
       const axisGrad = ctx.createLinearGradient(0, centerY, w, centerY);
-      axisGrad.addColorStop(0, 'rgba(201, 160, 99, 0)');
-      axisGrad.addColorStop(0.2, isDark ? 'rgba(201, 160, 99, 0.15)' : 'rgba(180, 130, 60, 0.15)');
-      axisGrad.addColorStop(0.5, isDark ? 'rgba(201, 160, 99, 0.28)' : 'rgba(180, 130, 60, 0.28)');
-      axisGrad.addColorStop(0.8, isDark ? 'rgba(201, 160, 99, 0.15)' : 'rgba(180, 130, 60, 0.15)');
-      axisGrad.addColorStop(1, 'rgba(201, 160, 99, 0)');
+      axisGrad.addColorStop(0, 'rgba(128, 128, 128, 0)');
+      axisGrad.addColorStop(0.2, isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(17, 18, 20, 0.12)');
+      axisGrad.addColorStop(0.5, isDark ? 'rgba(255, 255, 255, 0.24)' : 'rgba(17, 18, 20, 0.24)');
+      axisGrad.addColorStop(0.8, isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(17, 18, 20, 0.12)');
+      axisGrad.addColorStop(1, 'rgba(128, 128, 128, 0)');
 
       ctx.strokeStyle = axisGrad;
       ctx.lineWidth = 1;
@@ -278,15 +278,17 @@ export const Tasmee3Waveform: React.FC<Tasmee3WaveformProps> = ({
       id="tasmee3-waveform-container"
       className={`relative w-full overflow-hidden rounded-2xl border transition-all ${
         isDark
-          ? 'bg-[#090C10]/95 border-[#C9A063]/30 shadow-xs'
-          : 'bg-amber-50/90 border-[#C9A063]/30 shadow-xs'
+          ? 'bg-[#14161A] border-white/[0.08] shadow-xs'
+          : 'bg-[#FCFCFA] border-black/[0.08] shadow-xs'
       } ${compact ? 'p-1.5' : 'p-3'}`}
     >
       {/* ========================================================================= */}
       {/* STATUS HUD: ACTIVE MICROPHONE BEACON + VOICE LEVEL METER                  */}
       {/* ========================================================================= */}
       {showStatusHeader && !compact && (
-        <div className="flex items-center justify-between gap-2 pb-2 mb-1 border-b border-[#C9A063]/15 text-[11px]">
+        <div className={`flex items-center justify-between gap-2 pb-2 mb-1 border-b text-[11px] ${
+          isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+        }`}>
           {/* Left: Active Microphone Status with animated beacon */}
           <div className="flex items-center gap-2">
             <div className="relative flex items-center justify-center">
@@ -295,12 +297,12 @@ export const Tasmee3Waveform: React.FC<Tasmee3WaveformProps> = ({
                 <>
                   <span
                     className={`absolute w-4 h-4 rounded-full opacity-75 animate-ping ${
-                      voiceDetected ? 'bg-emerald-400' : 'bg-[#DFBA7F]'
+                      voiceDetected ? 'bg-emerald-400' : isDark ? 'bg-white' : 'bg-[#111214]'
                     }`}
                   />
                   <span
                     className={`absolute w-3 h-3 rounded-full opacity-50 animate-pulse ${
-                      voiceDetected ? 'bg-emerald-300' : 'bg-[#C9A063]'
+                      voiceDetected ? 'bg-emerald-300' : isDark ? 'bg-stone-300' : 'bg-[#3F4248]'
                     }`}
                   />
                 </>
@@ -309,12 +311,12 @@ export const Tasmee3Waveform: React.FC<Tasmee3WaveformProps> = ({
               <div
                 className={`relative w-5 h-5 rounded-full flex items-center justify-center transition-all ${
                   isPaused
-                    ? 'bg-amber-500/20 text-amber-300'
+                    ? isDark ? 'bg-white/[0.08] text-stone-300' : 'bg-black/[0.08] text-[#3F4248]'
                     : isListening
                     ? voiceDetected
-                      ? 'bg-emerald-500/25 text-emerald-300 shadow-[0_0_10px_rgba(16,185,129,0.5)]'
-                      : 'bg-[#C9A063]/25 text-[#DFBA7F]'
-                    : 'bg-stone-800 text-stone-400'
+                      ? isDark ? 'bg-emerald-500/25 text-emerald-300 shadow-[0_0_10px_rgba(16,185,129,0.5)]' : 'bg-emerald-100 text-emerald-700'
+                      : isDark ? 'bg-white/[0.12] text-white' : 'bg-[#111214] text-white'
+                    : isDark ? 'bg-white/[0.06] text-stone-400' : 'bg-[#F3F3F1] text-[#5A5D63]'
                 }`}
               >
                 {isPaused ? <MicOff className="w-2.5 h-2.5" /> : <Mic className="w-2.5 h-2.5" />}
@@ -326,12 +328,12 @@ export const Tasmee3Waveform: React.FC<Tasmee3WaveformProps> = ({
               <span
                 className={`text-[11px] font-semibold tracking-wider ${
                   isPaused
-                    ? 'text-amber-400'
+                    ? isDark ? 'text-stone-300' : 'text-[#3F4248]'
                     : isListening
                     ? voiceDetected
-                      ? 'text-emerald-400 font-bold'
-                      : 'text-[#DFBA7F]'
-                    : 'text-stone-400'
+                      ? isDark ? 'text-emerald-400 font-bold' : 'text-emerald-700 font-bold'
+                      : isDark ? 'text-white' : 'text-[#111214]'
+                    : isDark ? 'text-stone-400' : 'text-[#5A5D63]'
                 }`}
               >
                 {isPaused
@@ -347,8 +349,8 @@ export const Tasmee3Waveform: React.FC<Tasmee3WaveformProps> = ({
 
           {/* Right: Live VU Voice Activity Gain Meter */}
           <div className="flex items-center gap-1.5">
-            <Volume2 className={`w-3 h-3 ${voiceDetected ? 'text-emerald-400' : 'text-stone-400'}`} />
-            <span className="text-[10px] text-stone-400 font-mono hidden sm:inline">Gain:</span>
+            <Volume2 className={`w-3 h-3 ${voiceDetected ? (isDark ? 'text-emerald-400' : 'text-emerald-700') : (isDark ? 'text-stone-400' : 'text-[#5A5D63]')}`} />
+            <span className={`text-[10px] font-mono hidden sm:inline ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>Gain:</span>
             <div className="flex items-center gap-0.5">
               {[1, 2, 3, 4, 5].map((seg) => {
                 const isLit = seg <= activeSegments;
@@ -359,9 +361,9 @@ export const Tasmee3Waveform: React.FC<Tasmee3WaveformProps> = ({
                     className={`w-1 rounded-full transition-all duration-100 ${
                       isLit
                         ? isEmerald
-                          ? 'h-3 bg-emerald-400 shadow-[0_0_6px_rgba(16,185,129,0.6)]'
-                          : 'h-2.5 bg-[#DFBA7F] shadow-[0_0_4px_rgba(223,186,127,0.5)]'
-                        : 'h-1.5 bg-stone-700/40'
+                          ? 'h-3 bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.6)]'
+                          : isDark ? 'h-2.5 bg-white' : 'h-2.5 bg-[#111214]'
+                        : `h-1.5 ${isDark ? 'bg-white/[0.15]' : 'bg-black/[0.15]'}`
                     }`}
                   />
                 );
@@ -386,7 +388,7 @@ export const Tasmee3Waveform: React.FC<Tasmee3WaveformProps> = ({
           <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none flex items-center gap-1">
             <span
               className={`w-1.5 h-1.5 rounded-full ${
-                voiceDetected ? 'bg-emerald-400 animate-ping' : 'bg-[#DFBA7F] animate-pulse'
+                voiceDetected ? 'bg-emerald-400 animate-ping' : isDark ? 'bg-white animate-pulse' : 'bg-[#111214] animate-pulse'
               }`}
             />
           </div>

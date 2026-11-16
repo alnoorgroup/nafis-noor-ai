@@ -196,29 +196,34 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
         dir={isArabic ? 'rtl' : 'ltr'}
         className={`w-full max-w-2xl rounded-[32px] border shadow-2xl overflow-hidden transition-all duration-300 max-h-[92vh] flex flex-col overscroll-contain ${
           isDark
-            ? 'bg-gradient-to-b from-[#0C1017] via-[#090C12] to-[#06080B] border-[#C9A063]/30 text-stone-100 shadow-[0_24px_70px_rgba(0,0,0,0.9)]'
-            : 'bg-gradient-to-b from-[#FFFDF9] via-stone-50 to-stone-100 border-[#C9A063]/40 text-stone-900 shadow-2xl'
+            ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6] shadow-[0_24px_70px_rgba(0,0,0,0.7)]'
+            : 'bg-white border-black/[0.08] text-[#111214] shadow-2xl'
         }`}
       >
-        {/* Luminous Top Gold Trim */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#DFBA7F] to-transparent opacity-85" />
-
         {/* Modal Header */}
-        <div className="p-4 sm:p-5 border-b border-[#C9A063]/15 flex items-center justify-between shrink-0">
+        <div className={`p-4 sm:p-5 border-b flex items-center justify-between shrink-0 ${
+          isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+        }`}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#C9A063]/25 via-[#DFBA7F]/20 to-[#997334]/15 border border-[#C9A063]/40 flex items-center justify-center text-[#DFBA7F] shadow-[0_0_15px_rgba(201,160,99,0.3)]">
-              <Moon className="w-5 h-5 text-[#DFBA7F]" />
+            <div className={`w-10 h-10 rounded-2xl border flex items-center justify-center ${
+              isDark
+                ? 'bg-[#1B1D23] border-white/[0.1] text-white'
+                : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+            }`}>
+              <Moon className={`w-5 h-5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 id="dream-modal-title" className="text-sm sm:text-base font-cinzel font-bold text-[#F5EFE6] tracking-wider">
+                <h2 id="dream-modal-title" className={`text-sm sm:text-base font-cinzel font-bold tracking-wider ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                   {isArabic ? 'تفسير الرؤى والأحلام' : 'TAFSIR AL-AHLAM'}
                 </h2>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold">
+                <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border font-semibold ${
+                  isDark ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' : 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                }`}>
                   {isArabic ? 'منهج الإمام ابن سيرين' : 'Ibn Sirin Methodology'}
                 </span>
               </div>
-              <p className="text-[11px] text-[#DFBA7F] font-arabic mt-0.5" dir="rtl">
+              <p className={`text-[11px] font-arabic mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`} dir="rtl">
                 تفسير الأحلام وفق منهج الإمام ابن سيرين والعلماء الأجلاء
               </p>
             </div>
@@ -227,7 +232,11 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
           <button
             type="button"
             onClick={onClose}
-            className="w-8 h-8 rounded-full flex items-center justify-center text-stone-400 hover:text-stone-100 bg-stone-800/40 hover:bg-stone-800/80 transition-colors cursor-pointer"
+            className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors cursor-pointer ${
+              isDark
+                ? 'text-stone-400 hover:text-white bg-[#1B1D23] hover:bg-white/[0.1]'
+                : 'text-[#6B6F76] hover:text-[#111214] bg-[#F3F3F1] hover:bg-black/[0.08]'
+            }`}
             aria-label="Close Dream Interpreter"
           >
             <X className="w-4 h-4" />
@@ -240,13 +249,13 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
           <div
             className={`p-3.5 rounded-2xl border flex items-start gap-3 text-xs leading-relaxed ${
               isDark
-                ? 'bg-[#101520]/80 border-[#C9A063]/20 text-stone-300'
-                : 'bg-amber-50/80 border-[#C9A063]/30 text-amber-950'
+                ? 'bg-[#1B1D23] border-white/[0.08] text-stone-300'
+                : 'bg-[#F3F3F1] border-black/[0.08] text-[#3F4248]'
             }`}
           >
-            <Sparkles className="w-4 h-4 text-[#DFBA7F] shrink-0 mt-0.5" />
+            <Sparkles className={`w-4 h-4 shrink-0 mt-0.5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
             <div>
-              <span className="font-bold text-[#DFBA7F]">
+              <span className={`font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                 {isArabic ? 'المنهج العلمي الاستقرائي: ' : 'Classical Analytical Process: '}
               </span>
               {isArabic
@@ -259,7 +268,7 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
           <div className="space-y-4">
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="text-xs font-semibold text-[#DFBA7F] flex items-center gap-1.5">
+                <label className={`text-xs font-semibold flex items-center gap-1.5 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                   <BookOpen className="w-3.5 h-3.5" />
                   {isArabic ? 'صِف ما رأيت في منامك بالتفصيل:' : 'Describe Your Dream (ماذا رأيت في المنام؟)'}
                 </label>
@@ -267,7 +276,9 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
                   <button
                     type="button"
                     onClick={handleReset}
-                    className="text-[11px] text-stone-400 hover:text-stone-200 transition-colors cursor-pointer"
+                    className={`text-[11px] transition-colors cursor-pointer ${
+                      isDark ? 'text-stone-400 hover:text-stone-200' : 'text-[#6B6F76] hover:text-[#111214]'
+                    }`}
                   >
                     {isArabic ? 'مسح' : 'Clear'}
                   </button>
@@ -282,8 +293,8 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
                   : 'Describe what you saw in your dream: people, objects, animals, places, colors, actions, and what stood out most...'}
                 className={`w-full p-3.5 rounded-2xl text-xs sm:text-sm border transition-all resize-none focus:outline-hidden ${
                   isDark
-                    ? 'bg-[#0A0D14] border-[#C9A063]/30 text-stone-100 placeholder-stone-500 focus:border-[#DFBA7F] focus:ring-1 focus:ring-[#DFBA7F]/40'
-                    : 'bg-white border-[#C9A063]/40 text-stone-900 placeholder-stone-400 focus:border-[#DFBA7F] focus:ring-1 focus:ring-[#DFBA7F]/40'
+                    ? 'bg-[#0B0C0E] border-white/[0.1] text-[#F3F4F6] placeholder-stone-500 focus:border-white/30'
+                    : 'bg-[#FCFCFA] border-black/[0.1] text-[#111214] placeholder-[#6B6F76] focus:border-black/30'
                 }`}
               />
             </div>
@@ -291,7 +302,7 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
             {/* Quick Sample Prompts */}
             {!result && (
               <div className="space-y-1.5">
-                <div className="text-[11px] font-medium text-stone-400 flex items-center gap-1">
+                <div className={`text-[11px] font-medium flex items-center gap-1 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                   <span>{isArabic ? 'استكشف نماذج لرؤى شائعة:' : 'Explore sample visions:'}</span>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
@@ -300,7 +311,11 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
                       key={idx}
                       type="button"
                       onClick={() => handleSelectSample(sample)}
-                      className="px-2.5 py-1 rounded-xl text-[11px] font-medium bg-[#C9A063]/10 hover:bg-[#C9A063]/20 border border-[#C9A063]/30 text-[#DFBA7F] transition-all cursor-pointer"
+                      className={`px-2.5 py-1 rounded-xl text-[11px] font-medium border transition-all cursor-pointer ${
+                        isDark
+                          ? 'bg-[#1B1D23] hover:bg-white/[0.1] border-white/[0.1] text-white'
+                          : 'bg-[#F3F3F1] hover:bg-black/[0.06] border-black/[0.08] text-[#111214]'
+                      }`}
                     >
                       {isArabic ? sample.titleAr : sample.title}
                     </button>
@@ -313,7 +328,7 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
               {/* Emotion Selector */}
               <div>
-                <label className="text-[11px] font-semibold text-stone-300 block mb-1.5">
+                <label className={`text-[11px] font-semibold block mb-1.5 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                   {isArabic ? 'ما هو شعورك أثناء الرؤيا؟' : 'How did you feel? (الشعور أثناء الرؤيا)'}
                 </label>
                 <select
@@ -321,8 +336,8 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
                   onChange={(e) => setSelectedEmotion(e.target.value)}
                   className={`w-full p-2.5 rounded-xl text-xs border focus:outline-hidden ${
                     isDark
-                      ? 'bg-[#0E1218] border-[#C9A063]/30 text-stone-200'
-                      : 'bg-white border-[#C9A063]/40 text-stone-800'
+                      ? 'bg-[#0B0C0E] border-white/[0.1] text-stone-200'
+                      : 'bg-[#FCFCFA] border-black/[0.1] text-[#111214]'
                   }`}
                 >
                   <option value="peaceful">{isArabic ? 'سكينة وطمأنينة وراحة' : 'Peaceful & Calm (سكينة وطمأنينة)'}</option>
@@ -335,7 +350,7 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
 
               {/* Timing Selector */}
               <div>
-                <label className="text-[11px] font-semibold text-stone-300 block mb-1.5">
+                <label className={`text-[11px] font-semibold block mb-1.5 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                   {isArabic ? 'متى رأيت المنام؟' : 'When did the dream occur? (وقت الرؤيا)'}
                 </label>
                 <select
@@ -343,8 +358,8 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
                   onChange={(e) => setSelectedTiming(e.target.value)}
                   className={`w-full p-2.5 rounded-xl text-xs border focus:outline-hidden ${
                     isDark
-                      ? 'bg-[#0E1218] border-[#C9A063]/30 text-stone-200'
-                      : 'bg-white border-[#C9A063]/40 text-stone-800'
+                      ? 'bg-[#0B0C0E] border-white/[0.1] text-stone-200'
+                      : 'bg-[#FCFCFA] border-black/[0.1] text-[#111214]'
                   }`}
                 >
                   <option value="sahar">{isArabic ? 'وقت السحر وقبيل الفجر (أصدق الرؤى)' : 'Pre-Dawn / Before Fajr (وقت السحر - Best)'}</option>
@@ -357,8 +372,10 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
 
             {/* Error Message if any */}
             {errorMessage && (
-              <div className="p-3 rounded-xl bg-red-500/15 border border-red-500/30 text-red-300 text-xs flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 shrink-0 text-red-400" />
+              <div className={`p-3 rounded-xl border text-xs flex items-center gap-2 ${
+                isDark ? 'bg-red-500/15 border-red-500/30 text-red-300' : 'bg-red-50 border-red-300 text-red-700'
+              }`}>
+                <AlertTriangle className={`w-4 h-4 shrink-0 ${isDark ? 'text-red-400' : 'text-red-600'}`} />
                 <span>{errorMessage}</span>
               </div>
             )}
@@ -369,16 +386,20 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
                 type="button"
                 onClick={handleInterpret}
                 disabled={isLoading}
-                className="flex-1 py-3 rounded-2xl bg-gradient-to-r from-[#C9A063] via-[#DFBA7F] to-[#C9A063] hover:brightness-110 active:scale-98 text-[#080A0E] text-xs font-bold font-cinzel tracking-wider shadow-[0_4px_18px_rgba(201,160,99,0.35)] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+                className={`flex-1 py-3 rounded-2xl active:scale-98 text-xs font-bold font-cinzel tracking-wider shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 ${
+                  isDark
+                    ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                    : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                }`}
               >
                 {isLoading ? (
                   <>
-                    <RefreshCw className="w-4 h-4 animate-spin text-[#080A0E]" />
+                    <RefreshCw className="w-4 h-4 animate-spin" />
                     <span>{isArabic ? 'جاري استنباط الدلالات وتأصيل الرؤيا...' : 'Analyzing Ibn Sirin Hermeneutics...'}</span>
                   </>
                 ) : (
                   <>
-                    <Sparkles className="w-4 h-4 text-[#080A0E]" />
+                    <Sparkles className="w-4 h-4" />
                     <span>{isArabic ? 'تأويل الرؤيا المباركة' : 'Interpret Dream (تأويل الرؤيا)'}</span>
                   </>
                 )}
@@ -388,10 +409,14 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
                 <button
                   type="button"
                   onClick={handleCopy}
-                  className="px-4 py-3 rounded-2xl border border-[#C9A063]/40 bg-[#C9A063]/15 hover:bg-[#C9A063]/25 text-[#DFBA7F] text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+                  className={`px-4 py-3 rounded-2xl border text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer ${
+                    isDark
+                      ? 'border-white/[0.12] bg-[#1B1D23] hover:bg-white/[0.1] text-white'
+                      : 'border-black/[0.1] bg-[#F3F3F1] hover:bg-black/[0.06] text-[#111214]'
+                  }`}
                   title={isArabic ? 'نسخ التحليل كاملاً' : 'Copy complete analysis'}
                 >
-                  {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                  {copied ? <Check className={`w-4 h-4 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`} /> : <Copy className="w-4 h-4" />}
                   <span>{copied ? (isArabic ? 'تم النسخ' : 'Copied') : (isArabic ? 'نسخ' : 'Copy')}</span>
                 </button>
               )}
@@ -400,17 +425,23 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
 
           {/* RESULTS VIEW */}
           {result && (
-            <div className="space-y-4 pt-3 border-t border-[#C9A063]/20 animate-fadeIn">
+            <div className={`space-y-4 pt-3 border-t animate-fadeIn ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
               {/* Tab Selector between Visual & Full Text */}
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1 bg-[#0E1218] p-1 rounded-xl border border-white/5 text-xs">
+                <div className={`flex items-center gap-1 p-1 rounded-xl border text-xs ${
+                  isDark ? 'bg-[#0B0C0E] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
+                }`}>
                   <button
                     type="button"
                     onClick={() => setActiveTab('structured')}
                     className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
                       activeTab === 'structured'
-                        ? 'bg-[#C9A063]/20 text-[#DFBA7F] font-bold'
-                        : 'text-stone-400 hover:text-stone-200'
+                        ? isDark
+                          ? 'bg-white text-[#111214] font-bold'
+                          : 'bg-[#111214] text-white font-bold shadow-2xs'
+                        : isDark
+                        ? 'text-stone-400 hover:text-stone-200'
+                        : 'text-[#5A5D63] hover:text-[#111214]'
                     }`}
                   >
                     {isArabic ? 'عرض تحليلي مفصل' : 'Structured View'}
@@ -420,16 +451,20 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
                     onClick={() => setActiveTab('raw')}
                     className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
                       activeTab === 'raw'
-                        ? 'bg-[#C9A063]/20 text-[#DFBA7F] font-bold'
-                        : 'text-stone-400 hover:text-stone-200'
+                        ? isDark
+                          ? 'bg-white text-[#111214] font-bold'
+                          : 'bg-[#111214] text-white font-bold shadow-2xs'
+                        : isDark
+                        ? 'text-stone-400 hover:text-stone-200'
+                        : 'text-[#5A5D63] hover:text-[#111214]'
                     }`}
                   >
                     {isArabic ? 'النص التراثي الكامل' : 'Classical Text Layout'}
                   </button>
                 </div>
 
-                <div className="text-[11px] text-stone-400">
-                  {isArabic ? 'الموضوع: ' : 'Topic: '}<strong className="text-[#DFBA7F]">{result.topic}</strong>
+                <div className={`text-[11px] ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
+                  {isArabic ? 'الموضوع: ' : 'Topic: '}<strong className={isDark ? 'text-white' : 'text-[#111214]'}>{result.topic}</strong>
                 </div>
               </div>
 
@@ -438,12 +473,12 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
                   {/* Step 1 & 2: Symbols & Key Elements */}
                   <div
                     className={`p-4 rounded-2xl border ${
-                      isDark ? 'bg-[#0E1218] border-[#C9A063]/25' : 'bg-white border-stone-200'
+                      isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
                     }`}
                   >
                     <div className="flex items-center gap-2 mb-2">
-                      <Layers className="w-4 h-4 text-[#DFBA7F]" />
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-[#DFBA7F] font-mono">
+                      <Layers className={`w-4 h-4 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
+                      <h4 className={`text-xs font-bold uppercase tracking-wider font-mono ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                         {isArabic ? 'الرموز المستخرجة' : 'Symbols Detected (استخراج الرموز)'}
                       </h4>
                     </div>
@@ -451,13 +486,15 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
                       {result.symbolsDetected.map((sym, i) => (
                         <span
                           key={i}
-                          className="px-2.5 py-1 rounded-xl bg-[#C9A063]/15 text-[#DFBA7F] border border-[#C9A063]/30 text-xs font-semibold"
+                          className={`px-2.5 py-1 rounded-xl border text-xs font-semibold ${
+                            isDark ? 'bg-white/[0.08] text-white border-white/[0.14]' : 'bg-white text-[#111214] border-black/[0.1]'
+                          }`}
                         >
                           ✦ {sym}
                         </span>
                       ))}
                     </div>
-                    <p className="text-xs text-stone-300 leading-relaxed font-light">
+                    <p className={`text-xs leading-relaxed font-light ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                       {result.keyElements}
                     </p>
                   </div>
@@ -465,22 +502,22 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
                   {/* Step 3: Emotional Context Analysis */}
                   <div
                     className={`p-4 rounded-2xl border ${
-                      isDark ? 'bg-[#0E1218] border-white/5' : 'bg-white border-stone-200'
+                      isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
                     }`}
                   >
                     <div className="flex items-center gap-2 mb-2">
-                      <Clock className="w-4 h-4 text-emerald-400" />
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-400 font-mono">
+                      <Clock className={`w-4 h-4 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`} />
+                      <h4 className={`text-xs font-bold uppercase tracking-wider font-mono ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>
                         {isArabic ? 'السياق الوجداني وتأثير الرؤيا' : 'Emotional Context (السياق الوجداني)'}
                       </h4>
                     </div>
-                    <div className="text-xs text-stone-200 space-y-1 leading-relaxed">
+                    <div className={`text-xs space-y-1 leading-relaxed ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>
                       <div>
                         <strong>{isArabic ? 'الحالة الشعورية: ' : 'Tenor: '}</strong>
-                        <span className="text-[#DFBA7F]">{result.emotionalContext.emotion}</span>
+                        <span className={isDark ? 'text-white font-semibold' : 'text-[#111214] font-semibold'}>{result.emotionalContext.emotion}</span>
                       </div>
                       <p>{result.emotionalContext.impact}</p>
-                      <p className="text-stone-400 font-light italic">
+                      <p className={`font-light italic ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                         {result.emotionalContext.psychologicalLayer}
                       </p>
                     </div>
@@ -490,29 +527,33 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
                   <div
                     className={`p-5 rounded-2xl border ${
                       isDark
-                        ? 'bg-gradient-to-br from-[#121824] via-[#0E131C] to-[#0A0D14] border-[#DFBA7F]/40 shadow-lg'
-                        : 'bg-amber-50/90 border-[#DFBA7F]/50 shadow-sm'
+                        ? 'bg-[#1B1D23] border-white/[0.16] shadow-md'
+                        : 'bg-[#F3F3F1] border-black/[0.12] shadow-xs'
                     }`}
                   >
                     <div className="flex items-center gap-2 mb-2.5">
-                      <Sparkles className="w-5 h-5 text-[#DFBA7F]" />
-                      <h3 className="text-sm font-bold font-serif-heading text-[#F5EFE6]">
+                      <Sparkles className={`w-5 h-5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
+                      <h3 className={`text-sm font-bold font-serif-heading ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                         {isArabic ? 'التأويل الراجح عند ابن سيرين' : 'Primary Interpretation (التأويل الراجح عند ابن سيرين)'}
                       </h3>
                     </div>
-                    <p className="text-xs sm:text-sm text-stone-200 font-medium leading-relaxed mb-3">
+                    <p className={`text-xs sm:text-sm font-medium leading-relaxed mb-3 ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>
                       {result.primaryInterpretation.text}
                     </p>
 
-                    <div className="p-3 rounded-xl bg-[#090C10]/80 border border-[#C9A063]/25 text-xs text-stone-300 space-y-1.5">
+                    <div className={`p-3 rounded-xl border text-xs space-y-1.5 ${
+                      isDark ? 'bg-[#0B0C0E] border-white/[0.08] text-stone-300' : 'bg-white border-black/[0.08] text-[#3F4248]'
+                    }`}>
                       <div>
-                        <strong className="text-[#DFBA7F]">
+                        <strong className={isDark ? 'text-white' : 'text-[#111214]'}>
                           {isArabic ? 'العلة والتأصيل التراثي: ' : 'Scholarly Reasoning (العلة والتأصيل): '}
                         </strong>
                         {result.primaryInterpretation.why}
                       </div>
                       {result.primaryInterpretation.supportingEvidence && (
-                        <div className="pt-1 border-t border-white/5 text-[11px] text-[#DFBA7F]">
+                        <div className={`pt-1 border-t text-[11px] ${
+                          isDark ? 'border-white/[0.08] text-stone-200' : 'border-black/[0.08] text-[#111214]'
+                        }`}>
                           <strong>{isArabic ? 'الشاهد والدليل: ' : 'Evidence: '}</strong>
                           {result.primaryInterpretation.supportingEvidence}
                         </div>
@@ -522,7 +563,7 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
 
                   {/* Step 5: Alternative Interpretations */}
                   <div className="space-y-2">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-[#DFBA7F] font-mono flex items-center gap-1.5">
+                    <h4 className={`text-xs font-bold uppercase tracking-wider font-mono flex items-center gap-1.5 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                       <Compass className="w-3.5 h-3.5" />
                       {isArabic ? 'التأويلات والوجوه المحتملة الأخرى' : 'Alternative Interpretations (التأويلات والوجوه الأخرى)'}
                     </h4>
@@ -531,15 +572,17 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
                         <div
                           key={idx}
                           className={`p-3.5 rounded-2xl border text-xs leading-relaxed ${
-                            isDark ? 'bg-[#0E1218] border-white/5' : 'bg-white border-stone-200'
+                            isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
                           }`}
                         >
-                          <div className="font-bold text-[#DFBA7F] text-xs mb-1">
+                          <div className={`font-bold text-xs mb-1 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                             {idx + 1}️⃣ {alt.title}
                           </div>
-                          <div className="text-stone-300 mb-1.5">{alt.why}</div>
-                          <div className="text-[11px] text-stone-400 bg-white/5 p-2 rounded-xl border border-white/5">
-                            <span className="text-[#DFBA7F] font-semibold">
+                          <div className={`mb-1.5 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>{alt.why}</div>
+                          <div className={`text-[11px] p-2 rounded-xl border ${
+                            isDark ? 'text-stone-400 bg-white/[0.05] border-white/[0.08]' : 'text-[#5A5D63] bg-white border-black/[0.08]'
+                          }`}>
+                            <span className={`font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                               {isArabic ? 'أرجح في حال: ' : 'Most likely if: '}
                             </span>
                             {alt.mostLikelyIf}
@@ -552,17 +595,17 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
                   {/* Step 6: Scholarly References */}
                   <div
                     className={`p-4 rounded-2xl border text-xs ${
-                      isDark ? 'bg-[#0E1218] border-white/5' : 'bg-white border-stone-200'
+                      isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
                     }`}
                   >
-                    <div className="font-bold text-[#DFBA7F] mb-2 flex items-center gap-1.5">
+                    <div className={`font-bold mb-2 flex items-center gap-1.5 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                       <BookOpen className="w-3.5 h-3.5" />
                       {isArabic ? 'المراجع والمصادر المعتمدة' : 'Scholarly References (المراجع المعتمدة)'}
                     </div>
-                    <ul className="space-y-1.5 text-stone-300 text-[11px]">
+                    <ul className={`space-y-1.5 text-[11px] ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                       {result.scholarlyReferences.map((ref, idx) => (
                         <li key={idx} className="flex items-start gap-1.5">
-                          <span className="text-[#DFBA7F]">✦</span>
+                          <span className={isDark ? 'text-stone-400' : 'text-[#6B6F76]'}>✦</span>
                           <span>{ref}</span>
                         </li>
                       ))}
@@ -570,12 +613,14 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
                   </div>
 
                   {/* Step 7: Important Notes & Prophetic Adab */}
-                  <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-200 space-y-1.5">
-                    <div className="font-bold flex items-center gap-1.5 text-amber-400">
+                  <div className={`p-4 rounded-2xl border text-xs space-y-1.5 ${
+                    isDark ? 'bg-[#1B1D23] border-white/[0.12] text-stone-200' : 'bg-[#F3F3F1] border-black/[0.1] text-[#111214]'
+                  }`}>
+                    <div className={`font-bold flex items-center gap-1.5 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                       <ShieldCheck className="w-4 h-4" />
                       {isArabic ? 'آداب الرؤى والتوجيه النبوي الشريف' : 'Prophetic Adab & Guidance (آداب الرؤى والأحلام)'}
                     </div>
-                    <ul className="space-y-1 text-[11px] text-stone-300">
+                    <ul className={`space-y-1 text-[11px] ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                       {result.importantNotes.map((note, idx) => (
                         <li key={idx} className="flex items-start gap-1.5">
                           <span>•</span>
@@ -590,7 +635,7 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
                 <div className="relative">
                   <pre
                     className={`p-4 rounded-2xl text-xs font-mono whitespace-pre-wrap leading-relaxed border overflow-x-auto ${
-                      isDark ? 'bg-[#06080B] border-[#C9A063]/30 text-stone-200' : 'bg-stone-900 border-stone-700 text-stone-100'
+                      isDark ? 'bg-[#0B0C0E] border-white/[0.1] text-stone-200' : 'bg-[#FCFCFA] border-black/[0.1] text-[#111214]'
                     }`}
                   >
                     {result.fullFormattedText}
@@ -602,16 +647,22 @@ export const DreamInterpretationModal: React.FC<DreamInterpretationModalProps> =
         </div>
 
         {/* Modal Bottom Footer */}
-        <div className="px-5 py-3.5 border-t border-[#C9A063]/15 flex items-center justify-between bg-[#080B10]/80 shrink-0">
-          <div className="text-[11px] text-stone-400 flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-[#DFBA7F]" />
+        <div className={`px-5 py-3.5 border-t flex items-center justify-between shrink-0 ${
+          isDark ? 'bg-[#0B0C0E]/80 border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
+        }`}>
+          <div className={`text-[11px] flex items-center gap-1.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
+            <Sparkles className={`w-3.5 h-3.5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
             <span>{isArabic ? 'بواسطة ذكاء نور الاصطناعي · مجموعة النور' : 'Powered by Noor AI · ALNOOR GROUP'}</span>
           </div>
 
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] text-[#080A0E] text-xs font-bold hover:brightness-110 transition-all active:scale-95 shadow-sm cursor-pointer"
+            className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all active:scale-95 shadow-sm cursor-pointer ${
+              isDark
+                ? 'bg-white text-[#111214] hover:bg-stone-200'
+                : 'bg-[#111214] text-white hover:bg-[#27292D]'
+            }`}
           >
             {isArabic ? 'تم' : 'Done'}
           </button>

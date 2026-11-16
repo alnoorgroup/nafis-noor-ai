@@ -195,21 +195,27 @@ Provide a natural, welcoming response in Arabic at a beginner/intermediate level
       {/* Header Card */}
       <div
         className={`p-6 rounded-2xl border ${
-          isDark ? 'bg-[#101318] border-white/5 shadow-xl' : 'bg-white border-stone-200 shadow-md'
+          isDark
+            ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+            : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
         }`}
       >
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="px-2.5 py-0.5 text-[11px] font-semibold tracking-wider uppercase rounded-full bg-[#C9A063]/15 text-[#DFBA7F] border border-[#C9A063]/30">
+              <span className={`px-2.5 py-0.5 text-[11px] font-semibold tracking-wider uppercase rounded-full border ${
+                isDark
+                  ? 'bg-white/[0.08] text-white border-white/15'
+                  : 'bg-[#F3F3F1] text-[#111214] border-black/[0.08]'
+              }`}>
                 Arabic Speaking Studio
               </span>
-              <span className="text-xs text-stone-500">Live Speech & AI Correction</span>
+              <span className={`text-xs ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>Live Speech & AI Correction</span>
             </div>
-            <h2 className="text-2xl font-bold font-serif text-stone-900 dark:text-stone-100">
+            <h2 className={`text-2xl font-bold font-serif ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
               Interactive Arabic Speaking Practice
             </h2>
-            <p className="text-sm text-stone-500 dark:text-stone-400 mt-0.5">
+            <p className={`text-sm mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               Speak naturally in Arabic to Noor AI. Get live pronunciation feedback, vocabulary expansions, and grammatical corrections.
             </p>
           </div>
@@ -227,10 +233,12 @@ Provide a natural, welcoming response in Arabic at a beginner/intermediate level
                 onClick={() => setPracticeTopic(t.id as any)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
                   practiceTopic === t.id
-                    ? 'border-[#C9A063] bg-[#C9A063]/20 text-[#DFBA7F]'
+                    ? isDark
+                      ? 'border-white bg-white text-[#111214]'
+                      : 'border-[#111214] bg-[#111214] text-white'
                     : isDark
-                    ? 'border-white/5 bg-white/5 text-stone-400 hover:text-stone-200'
-                    : 'border-stone-200 bg-stone-50 text-stone-700 hover:bg-stone-100'
+                    ? 'border-white/[0.08] bg-white/[0.06] text-stone-300 hover:text-white'
+                    : 'border-black/[0.08] bg-[#F3F3F1] text-[#3F4248] hover:bg-black/[0.08]'
                 }`}
               >
                 {t.label}
@@ -241,11 +249,15 @@ Provide a natural, welcoming response in Arabic at a beginner/intermediate level
       </div>
 
       {speechError && (
-        <div className="px-4 py-2.5 rounded-xl border border-amber-500/20 bg-amber-500/10 text-amber-300 text-xs flex items-center justify-between">
+        <div className={`px-4 py-2.5 rounded-xl border text-xs flex items-center justify-between ${
+          isDark
+            ? 'border-sky-500/20 bg-sky-500/10 text-sky-300'
+            : 'border-sky-300 bg-sky-50 text-sky-800'
+        }`}>
           <span>{speechError}</span>
           <button
             onClick={() => setSpeechError(null)}
-            className="text-stone-400 hover:text-stone-200"
+            className={isDark ? 'text-stone-300 hover:text-white' : 'text-sky-700 hover:text-sky-900 font-medium'}
           >
             Dismiss
           </button>
@@ -255,7 +267,7 @@ Provide a natural, welcoming response in Arabic at a beginner/intermediate level
       {/* Main Conversation Canvas */}
       <div
         className={`rounded-2xl border flex flex-col h-[520px] overflow-hidden ${
-          isDark ? 'bg-[#101318] border-white/5' : 'bg-white border-stone-200 shadow-sm'
+          isDark ? 'bg-[#14161A] border-white/[0.08]' : 'bg-white border-black/[0.08] shadow-sm'
         }`}
       >
         {/* Messages Scroll Area */}
@@ -268,7 +280,9 @@ Provide a natural, welcoming response in Arabic at a beginner/intermediate level
                 className={`flex gap-3 max-w-2xl ${isNoor ? 'mr-auto' : 'ml-auto flex-row-reverse'}`}
               >
                 {isNoor && (
-                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#DFBA7F] to-[#C9A063] flex items-center justify-center text-[#080A0E] text-xs font-bold flex-shrink-0 mt-1 shadow-xs">
+                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs font-bold flex-shrink-0 mt-1 shadow-xs ${
+                    isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+                  }`}>
                     ن
                   </div>
                 )}
@@ -277,43 +291,63 @@ Provide a natural, welcoming response in Arabic at a beginner/intermediate level
                   className={`p-4 rounded-2xl border text-sm space-y-2 ${
                     isNoor
                       ? isDark
-                        ? 'bg-stone-900/70 border-white/5 text-stone-200'
-                        : 'bg-stone-50 border-stone-200 text-stone-800'
-                      : 'bg-gradient-to-r from-[#DFBA7F]/20 to-[#C9A063]/20 border-[#C9A063]/30 text-stone-100'
+                        ? 'bg-[#1B1D23] border-white/[0.08] text-stone-200'
+                        : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+                      : isDark
+                      ? 'bg-white/[0.1] border-white/20 text-white'
+                      : 'bg-[#111214] border-[#111214] text-white'
                   }`}
                 >
                   <div className="flex items-center justify-between gap-4">
-                    <span className="text-xs font-semibold text-[#DFBA7F]">
+                    <span className={`text-xs font-semibold ${
+                      isNoor ? (isDark ? 'text-white' : 'text-[#111214]') : 'text-white/90'
+                    }`}>
                       {isNoor ? 'Noor AI (Arabic Teacher)' : 'You (Arabic Learner)'}
                     </span>
                     <button
                       onClick={() => speakArabic(msg.arabicText, { rate: speechRate })}
-                      className="text-stone-400 hover:text-[#DFBA7F] transition-colors p-1"
+                      className={`transition-colors p-1 ${
+                        isNoor
+                          ? isDark ? 'text-stone-400 hover:text-white' : 'text-[#5A5D63] hover:text-[#111214]'
+                          : 'text-white/80 hover:text-white'
+                      }`}
                       title="Listen"
                     >
                       <Volume2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
 
-                  <p className="text-2xl font-serif text-right text-stone-100 select-text leading-relaxed">
+                  <p className={`text-2xl font-serif text-right select-text leading-relaxed ${
+                    isNoor ? (isDark ? 'text-[#F3F4F6]' : 'text-[#111214]') : 'text-white'
+                  }`}>
                     {msg.arabicText}
                   </p>
 
                   {msg.transliteration && (
-                    <p className="text-xs text-stone-400 font-sans italic">
+                    <p className={`text-xs font-sans italic ${
+                      isNoor ? (isDark ? 'text-stone-400' : 'text-[#5A5D63]') : 'text-white/80'
+                    }`}>
                       {msg.transliteration}
                     </p>
                   )}
 
                   {msg.englishTranslation && (
-                    <p className="text-xs text-stone-500 dark:text-stone-400 border-t border-stone-500/10 pt-1.5">
+                    <p className={`text-xs border-t pt-1.5 ${
+                      isNoor
+                        ? isDark ? 'text-stone-400 border-white/[0.08]' : 'text-[#5A5D63] border-black/[0.08]'
+                        : 'text-white/80 border-white/15'
+                    }`}>
                       {msg.englishTranslation}
                     </p>
                   )}
 
                   {/* Constructive Error Correction & Grammar Tips */}
                   {msg.corrections && (
-                    <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300 space-y-1">
+                    <div className={`p-2.5 rounded-xl border text-xs space-y-1 ${
+                      isDark
+                        ? 'bg-sky-500/10 border-sky-500/20 text-sky-300'
+                        : 'bg-sky-50 border-sky-200 text-sky-900'
+                    }`}>
                       <div className="flex items-center gap-1.5 font-semibold">
                         <AlertCircle className="w-3.5 h-3.5" />
                         <span>Teacher Correction</span>
@@ -323,7 +357,11 @@ Provide a natural, welcoming response in Arabic at a beginner/intermediate level
                   )}
 
                   {msg.grammarTip && (
-                    <div className="p-2 rounded-xl bg-[#C9A063]/10 border border-[#C9A063]/20 text-xs text-[#DFBA7F]">
+                    <div className={`p-2 rounded-xl border text-xs ${
+                      isDark
+                        ? 'bg-white/[0.06] border-white/10 text-stone-200'
+                        : 'bg-white border-black/[0.08] text-[#111214]'
+                    }`}>
                       💡 <strong>Grammar Tip:</strong> {msg.grammarTip}
                     </div>
                   )}
@@ -334,15 +372,17 @@ Provide a natural, welcoming response in Arabic at a beginner/intermediate level
 
           {isLoadingAi && (
             <div className="flex gap-3 max-w-md mr-auto w-full animate-fadeIn">
-              <div className="w-8 h-8 rounded-xl bg-[#DFBA7F] flex items-center justify-center text-[#080A0E] text-xs font-bold shrink-0">
+              <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs font-bold shrink-0 ${
+                isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+              }`}>
                 ن
               </div>
               <div className={`p-4 rounded-2xl border text-xs flex-1 space-y-2.5 ${
-                isDark ? 'bg-stone-900/80 border-white/10' : 'bg-stone-50 border-stone-200'
+                isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
               }`}>
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#DFBA7F] animate-pulse" />
-                  <span className="text-[11px] text-[#DFBA7F] font-semibold">Noor is analyzing your Arabic...</span>
+                  <span className={`w-2 h-2 rounded-full animate-pulse ${isDark ? 'bg-white' : 'bg-[#111214]'}`} />
+                  <span className={`text-[11px] font-semibold ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>Noor is analyzing your Arabic...</span>
                 </div>
                 <Skeleton className="h-3.5 w-[90%] rounded-md" isDark={isDark} />
                 <Skeleton className="h-3.5 w-[70%] rounded-md" isDark={isDark} />
@@ -354,10 +394,12 @@ Provide a natural, welcoming response in Arabic at a beginner/intermediate level
         </div>
 
         {/* Bottom Speaking Bar */}
-        <div className="p-4 border-t border-stone-200/50 dark:border-white/5 bg-black/20 space-y-3">
+        <div className={`p-4 border-t space-y-3 ${
+          isDark ? 'border-white/[0.08] bg-[#14161A]' : 'border-black/[0.08] bg-[#FCFCFA]'
+        }`}>
           {/* Quick Arabic Starter Phrases */}
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none text-xs">
-            <span className="text-stone-500 flex-shrink-0">Quick starters:</span>
+            <span className={`flex-shrink-0 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>Quick starters:</span>
             {[
               'كَيْفَ حَالُكَ؟',
               'أَنَا بِخَيْرٍ وَالحَمْدُ لِلَّه',
@@ -367,7 +409,11 @@ Provide a natural, welcoming response in Arabic at a beginner/intermediate level
               <button
                 key={phrase}
                 onClick={() => setInputVal(phrase)}
-                className="px-2.5 py-1 rounded-lg bg-stone-500/10 hover:bg-stone-500/20 text-stone-300 flex-shrink-0 text-xs font-serif"
+                className={`px-2.5 py-1 rounded-lg flex-shrink-0 text-xs font-serif border transition-colors ${
+                  isDark
+                    ? 'bg-white/[0.06] hover:bg-white/[0.1] text-stone-200 border-white/[0.08]'
+                    : 'bg-white hover:bg-black/[0.05] text-[#111214] border-black/[0.08]'
+                }`}
               >
                 {phrase}
               </button>
@@ -381,7 +427,9 @@ Provide a natural, welcoming response in Arabic at a beginner/intermediate level
               className={`p-3 rounded-2xl flex items-center justify-center transition-all shadow-md ${
                 isListening
                   ? 'bg-rose-500 text-white animate-pulse'
-                  : 'bg-[#DFBA7F] text-[#080A0E] hover:bg-[#C9A063]'
+                  : isDark
+                  ? 'bg-white text-[#111214] hover:bg-stone-200'
+                  : 'bg-[#111214] text-white hover:bg-[#27292D]'
               }`}
               title={isListening ? 'Stop Speaking' : 'Start Speaking in Arabic'}
             >
@@ -402,8 +450,8 @@ Provide a natural, welcoming response in Arabic at a beginner/intermediate level
               dir="auto"
               className={`flex-1 px-4 py-3 rounded-2xl border text-sm focus:outline-hidden transition-all ${
                 isDark
-                  ? 'bg-stone-900 border-white/10 text-stone-100 placeholder-stone-500 focus:border-[#C9A063]'
-                  : 'bg-stone-50 border-stone-200 text-stone-900 placeholder-stone-400 focus:border-[#C9A063]'
+                  ? 'bg-[#1B1D23] border-white/10 text-[#F3F4F6] placeholder-stone-500 focus:border-white/30'
+                  : 'bg-white border-black/[0.08] text-[#111214] placeholder-[#6B6F76] focus:border-[#111214]'
               }`}
             />
 
@@ -411,7 +459,11 @@ Provide a natural, welcoming response in Arabic at a beginner/intermediate level
             <button
               onClick={() => handleSendMessage()}
               disabled={!inputVal.trim() || isLoadingAi}
-              className="p-3 rounded-2xl bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] hover:opacity-90 disabled:opacity-30 transition-all"
+              className={`p-3 rounded-2xl disabled:opacity-30 transition-all ${
+                isDark
+                  ? 'bg-white text-[#111214] hover:bg-stone-200'
+                  : 'bg-[#111214] text-white hover:bg-[#27292D]'
+              }`}
             >
               <Send className="w-5 h-5" />
             </button>

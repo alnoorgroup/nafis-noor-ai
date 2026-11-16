@@ -47,28 +47,36 @@ export const AuthLifetimeFreeFlow: React.FC<AuthLifetimeFreeFlowProps> = ({
         <button
           type="button"
           onClick={() => setStage('notice')}
-          className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold transition-all cursor-pointer ${
+          className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold transition-all cursor-pointer border ${
             stage === 'notice'
-              ? 'bg-[#C9A063]/25 text-[#DFBA7F] border border-[#DFBA7F]/40'
-              : 'bg-white/5 text-stone-400 hover:text-stone-200 border border-transparent'
+              ? isDark
+                ? 'bg-white text-[#111214] border-white'
+                : 'bg-[#111214] text-white border-[#111214]'
+              : isDark
+              ? 'bg-[#14161A] text-stone-400 hover:text-stone-200 border-white/[0.08]'
+              : 'bg-[#F3F3F1] text-[#5A5D63] hover:text-[#111214] border-black/[0.08]'
           }`}
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-[#DFBA7F]" />
+          <span className={`w-1.5 h-1.5 rounded-full ${stage === 'notice' ? (isDark ? 'bg-[#111214]' : 'bg-white') : 'bg-current opacity-50'}`} />
           <span>1. Development Status</span>
         </button>
 
-        <span className="text-stone-600 text-xs">/</span>
+        <span className={isDark ? 'text-stone-600 text-xs' : 'text-[#6B6F76] text-xs'}>/</span>
 
         <button
           type="button"
           onClick={() => setStage('terms')}
-          className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold transition-all cursor-pointer ${
+          className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold transition-all cursor-pointer border ${
             stage === 'terms'
-              ? 'bg-[#C9A063]/25 text-[#DFBA7F] border border-[#DFBA7F]/40'
-              : 'bg-white/5 text-stone-400 hover:text-stone-200 border border-transparent'
+              ? isDark
+                ? 'bg-white text-[#111214] border-white'
+                : 'bg-[#111214] text-white border-[#111214]'
+              : isDark
+              ? 'bg-[#14161A] text-stone-400 hover:text-stone-200 border-white/[0.08]'
+              : 'bg-[#F3F3F1] text-[#5A5D63] hover:text-[#111214] border-black/[0.08]'
           }`}
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-[#DFBA7F]" />
+          <span className={`w-1.5 h-1.5 rounded-full ${stage === 'terms' ? (isDark ? 'bg-[#111214]' : 'bg-white') : 'bg-current opacity-50'}`} />
           <span>2. Terms &amp; Acceptance</span>
         </button>
       </div>
@@ -79,25 +87,33 @@ export const AuthLifetimeFreeFlow: React.FC<AuthLifetimeFreeFlowProps> = ({
       {stage === 'notice' && (
         <div
           id="auth-prerelease-screen"
-          className="p-6 sm:p-10 rounded-[32px] border relative transition-all shadow-2xl bg-[#101318] border-white/10 text-stone-100"
+          className={`p-6 sm:p-10 rounded-[32px] border relative transition-all ${
+            isDark
+              ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+              : 'bg-white border-black/[0.08] text-[#111214] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
+          }`}
         >
           <div className="max-w-xl mx-auto space-y-5 text-center">
             {/* Logo Emblem */}
-            <div className="mx-auto w-16 h-16 rounded-2xl overflow-hidden shadow-[0_6px_25px_rgba(201,160,99,0.3)] mb-1">
+            <div className="mx-auto w-16 h-16 rounded-2xl overflow-hidden shadow-md mb-1">
               <AppLogoIcon className="w-full h-full" withContainer={true} />
             </div>
 
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold tracking-wider uppercase bg-amber-500/15 text-amber-400 border border-amber-500/30">
+            <div className={`inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold tracking-wider uppercase border ${
+              isDark ? 'bg-sky-500/15 text-sky-400 border-sky-500/30' : 'bg-sky-50 text-sky-700 border-sky-200'
+            }`}>
               <Info className="w-3.5 h-3.5" />
               <span>Pre-Release Notice</span>
             </div>
 
-            <h1 className="text-xl sm:text-2xl font-serif-heading font-bold text-[#F5EFE6]">
+            <h1 className={`text-xl sm:text-2xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-[#111214]'}`}>
               Nafis Noor is still in development
             </h1>
 
-            <div className="p-5 rounded-2xl border text-left text-xs leading-relaxed space-y-3 bg-white/5 border-white/10 text-stone-300">
-              <p className="font-semibold text-stone-100">
+            <div className={`p-5 rounded-2xl border text-left text-xs leading-relaxed space-y-3 ${
+              isDark ? 'bg-[#1B1D23] border-white/[0.08] text-stone-300' : 'bg-[#F3F3F1] border-black/[0.08] text-[#3F4248]'
+            }`}>
+              <p className={`font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                 Thank you for being part of Nafis Noor{userName ? `, ${userName}` : ''}.
               </p>
 
@@ -117,7 +133,7 @@ export const AuthLifetimeFreeFlow: React.FC<AuthLifetimeFreeFlowProps> = ({
                 Your current experience should therefore be considered a preview of an application that is still being actively developed.
               </p>
 
-              <p className="text-stone-400 font-medium pt-1">
+              <p className={`font-medium pt-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 Thank you for your patience and understanding while Nafis Noor continues to grow.
               </p>
             </div>
@@ -127,7 +143,11 @@ export const AuthLifetimeFreeFlow: React.FC<AuthLifetimeFreeFlowProps> = ({
                 type="button"
                 id="auth-notice-continue-btn"
                 onClick={() => setStage('terms')}
-                className="w-full sm:w-auto px-8 py-3.5 rounded-2xl text-xs sm:text-sm font-bold bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] hover:opacity-95 transition-all shadow-lg flex items-center justify-center gap-2 mx-auto cursor-pointer font-cinzel tracking-wider"
+                className={`w-full sm:w-auto px-8 py-3.5 rounded-2xl text-xs sm:text-sm font-bold transition-all shadow-sm flex items-center justify-center gap-2 mx-auto cursor-pointer tracking-wide ${
+                  isDark
+                    ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                    : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                }`}
               >
                 <span>Continue to Terms &amp; Conditions</span>
                 <ArrowRight className="w-4 h-4" />
@@ -143,23 +163,31 @@ export const AuthLifetimeFreeFlow: React.FC<AuthLifetimeFreeFlowProps> = ({
       {stage === 'terms' && (
         <div
           id="auth-terms-screen"
-          className="p-6 sm:p-9 rounded-[32px] border relative transition-all shadow-xl bg-[#101318] border-white/10 text-stone-100"
+          className={`p-6 sm:p-9 rounded-[32px] border relative transition-all ${
+            isDark
+              ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+              : 'bg-white border-black/[0.08] text-[#111214] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
+          }`}
         >
           <div className="max-w-xl mx-auto space-y-5">
-            <div className="border-b pb-4 border-white/10 flex items-center justify-between">
+            <div className={`border-b pb-4 flex items-center justify-between ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
               <div>
-                <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10px] font-semibold tracking-wider uppercase bg-[#DFBA7F]/15 text-[#DFBA7F] mb-1">
+                <div className={`inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10px] font-semibold tracking-wider uppercase mb-1 border ${
+                  isDark ? 'bg-white/[0.06] text-stone-300 border-white/[0.08]' : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.08]'
+                }`}>
                   <ShieldCheck className="w-3.5 h-3.5" />
                   <span>Essential Information</span>
                 </div>
-                <h2 className="text-xl sm:text-2xl font-serif-heading font-bold text-[#F5EFE6]">
+                <h2 className={`text-xl sm:text-2xl font-bold tracking-tight ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                   Terms &amp; Important Information
                 </h2>
               </div>
               <button
                 type="button"
                 onClick={() => setStage('notice')}
-                className="flex items-center gap-1 text-[11px] text-stone-400 hover:text-[#DFBA7F] transition-colors cursor-pointer"
+                className={`flex items-center gap-1 text-[11px] transition-colors cursor-pointer ${
+                  isDark ? 'text-stone-400 hover:text-white' : 'text-[#5A5D63] hover:text-[#111214]'
+                }`}
               >
                 <ArrowLeft className="w-3 h-3" />
                 <span>Notice</span>
@@ -168,52 +196,52 @@ export const AuthLifetimeFreeFlow: React.FC<AuthLifetimeFreeFlowProps> = ({
 
             {/* Scrollable Terms Sections */}
             <div className="space-y-3 max-h-[340px] overflow-y-auto pr-2 scrollbar-thin text-xs leading-relaxed">
-              <div className="p-3.5 rounded-2xl border bg-white/5 border-white/5">
-                <div className="flex items-center gap-2 text-stone-100 font-bold mb-1">
-                  <FileText className="w-3.5 h-3.5 text-[#DFBA7F]" />
+              <div className={`p-3.5 rounded-2xl border ${isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'}`}>
+                <div className={`flex items-center gap-2 font-bold mb-1 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
+                  <FileText className={`w-3.5 h-3.5 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`} />
                   <span>Terms of Use</span>
                 </div>
-                <p className="text-stone-300">
+                <p className={isDark ? 'text-stone-300' : 'text-[#3F4248]'}>
                   Nafis Noor is an Islamic companion designed to assist Muslims with Qur'an reading, accurate prayer times, dhikr counting, authentic supplications, Islamic learning, and interactive knowledge assistance.
                 </p>
               </div>
 
-              <div className="p-3.5 rounded-2xl border bg-white/5 border-white/5">
-                <div className="flex items-center gap-2 text-stone-100 font-bold mb-1">
-                  <Lock className="w-3.5 h-3.5 text-[#DFBA7F]" />
+              <div className={`p-3.5 rounded-2xl border ${isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'}`}>
+                <div className={`flex items-center gap-2 font-bold mb-1 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
+                  <Lock className={`w-3.5 h-3.5 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`} />
                   <span>Privacy &amp; Data Protection</span>
                 </div>
-                <p className="text-stone-300">
+                <p className={isDark ? 'text-stone-300' : 'text-[#3F4248]'}>
                   Your data, bookmarks, and journey progress are protected. When signed in, data syncs safely across your devices. Guest sessions store data strictly within your browser without creating an account.
                 </p>
               </div>
 
-              <div className="p-3.5 rounded-2xl border bg-white/5 border-white/5">
-                <div className="flex items-center gap-2 text-stone-100 font-bold mb-1">
-                  <AlertCircle className="w-3.5 h-3.5 text-amber-400" />
+              <div className={`p-3.5 rounded-2xl border ${isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'}`}>
+                <div className={`flex items-center gap-2 font-bold mb-1 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
+                  <AlertCircle className={`w-3.5 h-3.5 ${isDark ? 'text-sky-400' : 'text-sky-600'}`} />
                   <span>AI Assistance Notice</span>
                 </div>
-                <p className="text-stone-300">
+                <p className={isDark ? 'text-stone-300' : 'text-[#3F4248]'}>
                   Noor AI is an educational assistant grounded in verified Islamic references. While strictly guided, AI responses should not replace formal rulings from qualified scholars.
                 </p>
               </div>
 
-              <div className="p-3.5 rounded-2xl border bg-white/5 border-white/5">
-                <div className="flex items-center gap-2 text-stone-100 font-bold mb-1">
-                  <GraduationCap className="w-3.5 h-3.5 text-[#DFBA7F]" />
+              <div className={`p-3.5 rounded-2xl border ${isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'}`}>
+                <div className={`flex items-center gap-2 font-bold mb-1 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
+                  <GraduationCap className={`w-3.5 h-3.5 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`} />
                   <span>Educational Purpose</span>
                 </div>
-                <p className="text-stone-300">
+                <p className={isDark ? 'text-stone-300' : 'text-[#3F4248]'}>
                   All learning modules and phonetics exercises are intended to enrich your spiritual habit and knowledge in a dignified, accessible manner.
                 </p>
               </div>
 
-              <div className="p-3.5 rounded-2xl border bg-white/5 border-white/5">
-                <div className="flex items-center gap-2 text-stone-100 font-bold mb-1">
-                  <Mic className="w-3.5 h-3.5 text-[#34D399]" />
+              <div className={`p-3.5 rounded-2xl border ${isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'}`}>
+                <div className={`flex items-center gap-2 font-bold mb-1 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
+                  <Mic className="w-3.5 h-3.5 text-emerald-600 dark:text-[#34D399]" />
                   <span>Voice &amp; Audio Features</span>
                 </div>
-                <p className="text-stone-300">
+                <p className={isDark ? 'text-stone-300' : 'text-[#3F4248]'}>
                   Audio features use standard device microphones and speech synthesis for interactive study. No unauthorized voice recording or profiling takes place.
                 </p>
               </div>
@@ -223,8 +251,12 @@ export const AuthLifetimeFreeFlow: React.FC<AuthLifetimeFreeFlowProps> = ({
             <div
               className={`p-3.5 rounded-2xl border flex items-start gap-3 transition-colors ${
                 hasAgreedToTerms
-                  ? 'bg-emerald-950/25 border-emerald-500/40 text-emerald-200'
-                  : 'bg-white/5 border-white/10 text-stone-300'
+                  ? isDark
+                    ? 'bg-emerald-950/25 border-emerald-500/40 text-emerald-200'
+                    : 'bg-emerald-50 border-emerald-300 text-emerald-900'
+                  : isDark
+                  ? 'bg-[#1B1D23] border-white/[0.08] text-stone-300'
+                  : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
               }`}
             >
               <input
@@ -232,7 +264,7 @@ export const AuthLifetimeFreeFlow: React.FC<AuthLifetimeFreeFlowProps> = ({
                 id="agree-auth-terms-checkbox"
                 checked={hasAgreedToTerms}
                 onChange={(e) => setHasAgreedToTerms(e.target.checked)}
-                className="mt-0.5 w-4 h-4 rounded text-[#DFBA7F] focus:ring-[#DFBA7F] cursor-pointer accent-[#C9A063]"
+                className="mt-0.5 w-4 h-4 rounded cursor-pointer accent-emerald-600"
               />
               <label
                 htmlFor="agree-auth-terms-checkbox"
@@ -246,7 +278,9 @@ export const AuthLifetimeFreeFlow: React.FC<AuthLifetimeFreeFlowProps> = ({
               <button
                 type="button"
                 onClick={() => setStage('notice')}
-                className="text-[11px] text-stone-400 hover:text-stone-200 transition-colors flex items-center gap-1 cursor-pointer"
+                className={`text-[11px] transition-colors flex items-center gap-1 cursor-pointer ${
+                  isDark ? 'text-stone-400 hover:text-white' : 'text-[#5A5D63] hover:text-[#111214]'
+                }`}
               >
                 <ArrowLeft className="w-3 h-3" />
                 <span>Back</span>
@@ -257,10 +291,14 @@ export const AuthLifetimeFreeFlow: React.FC<AuthLifetimeFreeFlowProps> = ({
                 id="auth-terms-agree-btn"
                 disabled={!hasAgreedToTerms}
                 onClick={handleFinish}
-                className={`px-6 py-3 rounded-2xl text-xs font-bold transition-all flex items-center justify-center gap-2 font-cinzel tracking-wider ${
+                className={`px-6 py-3 rounded-2xl text-xs font-bold transition-all flex items-center justify-center gap-2 tracking-wide ${
                   hasAgreedToTerms
-                    ? 'bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] hover:opacity-95 shadow-md cursor-pointer'
-                    : 'bg-white/10 text-stone-500 cursor-not-allowed opacity-60'
+                    ? isDark
+                      ? 'bg-white hover:bg-stone-200 text-[#111214] shadow-sm cursor-pointer'
+                      : 'bg-[#111214] hover:bg-[#27292D] text-white shadow-sm cursor-pointer'
+                    : isDark
+                    ? 'bg-white/10 text-stone-500 cursor-not-allowed opacity-60'
+                    : 'bg-[#F3F3F1] text-[#6B6F76] cursor-not-allowed opacity-70'
                 }`}
               >
                 <span>I Agree &amp; Enter Nafis Noor</span>

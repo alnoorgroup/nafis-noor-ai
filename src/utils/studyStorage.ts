@@ -38,10 +38,10 @@ export const DEFAULT_SUBJECTS: Subject[] = [
   { id: 'sub-english', name: 'English', color: '#10B981', createdAt: '2026-01-01' },
   { id: 'sub-science', name: 'Science', color: '#8B5CF6', createdAt: '2026-01-01' },
   { id: 'sub-biology', name: 'Biology', color: '#059669', createdAt: '2026-01-01' },
-  { id: 'sub-chemistry', name: 'Chemistry', color: '#D97706', createdAt: '2026-01-01' },
+  { id: 'sub-chemistry', name: 'Chemistry', color: '#0891B2', createdAt: '2026-01-01' },
   { id: 'sub-physics', name: 'Physics', color: '#6366F1', createdAt: '2026-01-01' },
-  { id: 'sub-arabic', name: 'Arabic', color: '#C9A063', createdAt: '2026-01-01' },
-  { id: 'sub-history', name: 'History', color: '#B45309', createdAt: '2026-01-01' },
+  { id: 'sub-arabic', name: 'Arabic', color: '#111214', createdAt: '2026-01-01' },
+  { id: 'sub-history', name: 'History', color: '#4B5563', createdAt: '2026-01-01' },
   { id: 'sub-geography', name: 'Geography', color: '#0D9488', createdAt: '2026-01-01' },
   { id: 'sub-cs', name: 'Computer Science', color: '#2563EB', createdAt: '2026-01-01' },
 ];

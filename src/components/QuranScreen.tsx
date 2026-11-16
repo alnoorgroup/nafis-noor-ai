@@ -891,7 +891,11 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
       regex.test(part) ? (
         <span
           key={i}
-          className="bg-[#C9A063]/30 text-[#DFBA7F] px-1 py-0.5 rounded font-bold border-b border-[#C9A063]/50 shadow-2xs"
+          className={`px-1 py-0.5 rounded font-bold border-b shadow-2xs ${
+            isDark
+              ? 'bg-white/20 text-white border-white/60'
+              : 'bg-[#111214]/15 text-[#111214] border-[#111214]/50'
+          }`}
         >
           {part}
         </span>
@@ -937,8 +941,8 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
             id="quran-reader-top-header"
             className={`sticky top-1 sm:top-2 z-30 p-2 sm:p-2.5 rounded-2xl sm:rounded-3xl border transition-colors duration-200 shadow-md ${
               isDark
-                ? 'bg-[#0E1217]/95 border-[#C9A063]/30 backdrop-blur-xl'
-                : 'bg-white/95 border-[#C9A063]/30 backdrop-blur-xl'
+                ? 'bg-[#14161A]/95 border-white/[0.08] backdrop-blur-xl'
+                : 'bg-white/95 border-black/[0.08] backdrop-blur-xl'
             }`}
           >
             {/* Main Balanced Row: Back Button (Left), Surah Place (Center), Tasmee3/Spacer (Right) */}
@@ -951,7 +955,11 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                     setIsReadingMode(false);
                     setIsPlaying(false);
                   }}
-                  className="h-9 px-2.5 sm:px-3 rounded-xl border border-[#C9A063]/30 text-xs font-cinzel font-semibold text-[#DFBA7F] hover:bg-[#C9A063]/15 active:scale-95 transition-all flex items-center gap-1 shrink-0"
+                  className={`h-9 px-2.5 sm:px-3 rounded-xl border text-xs font-cinzel font-semibold active:scale-95 transition-all flex items-center gap-1 shrink-0 ${
+                    isDark
+                      ? 'border-white/[0.1] text-white hover:bg-white/[0.08]'
+                      : 'border-black/[0.1] text-[#111214] hover:bg-black/[0.05]'
+                  }`}
                   title={qt.backToSurahs}
                 >
                   <ChevronLeft className="w-4 h-4 rtl:rotate-180" />
@@ -961,32 +969,38 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
 
               {/* Center Column: Surah Place (Symmetrical Navigation + Title Dropdown) */}
               <div className="flex-1 flex items-center justify-center min-w-0 max-w-sm sm:max-w-md mx-auto">
-                <div className="flex items-center gap-1 sm:gap-1.5 bg-[#C9A063]/10 border border-[#C9A063]/25 rounded-2xl p-0.5 sm:p-1 shadow-2xs">
+                <div className={`flex items-center gap-1 sm:gap-1.5 border rounded-2xl p-0.5 sm:p-1 shadow-2xs ${
+                  isDark ? 'bg-white/[0.05] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
+                }`}>
                   <button
                     id="btn-prev-surah"
                     onClick={() => handleNavigateSurah('prev')}
                     disabled={currentSurah.number <= 1}
-                    className="w-8 h-8 rounded-xl flex items-center justify-center text-stone-300 hover:text-[#DFBA7F] hover:bg-[#C9A063]/15 disabled:opacity-20 disabled:pointer-events-none active:scale-90 transition-all shrink-0"
+                    className={`w-8 h-8 rounded-xl flex items-center justify-center disabled:opacity-20 disabled:pointer-events-none active:scale-90 transition-all shrink-0 ${
+                      isDark ? 'text-stone-300 hover:text-white hover:bg-white/[0.08]' : 'text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05]'
+                    }`}
                     title={qt.prevSurah}
                     aria-label={qt.prevSurah}
                   >
-                    <ChevronLeft className="w-4 h-4 text-[#DFBA7F] rtl:rotate-180" />
+                    <ChevronLeft className={`w-4 h-4 rtl:rotate-180 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
                   </button>
 
                   <div className="relative text-center min-w-0">
                     <button
                       id="btn-surah-picker-dropdown"
                       onClick={() => setShowSurahSelectDropdown((prev) => !prev)}
-                      className="flex flex-col items-center justify-center group focus:outline-none px-2 py-0.5 rounded-xl hover:bg-white/5 transition-all max-w-[140px] sm:max-w-[220px]"
+                      className={`flex flex-col items-center justify-center group focus:outline-none px-2 py-0.5 rounded-xl transition-all max-w-[140px] sm:max-w-[220px] ${
+                        isDark ? 'hover:bg-white/[0.06]' : 'hover:bg-black/[0.04]'
+                      }`}
                     >
                       <div className="flex items-center gap-1 truncate w-full justify-center">
-                        <span className="text-xs sm:text-sm font-serif-heading font-bold text-[#DFBA7F] truncate group-hover:underline">
+                        <span className={`text-xs sm:text-sm font-serif-heading font-bold truncate group-hover:underline ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                           {currentSurah.number}. {currentSurah.englishName}
                         </span>
-                        <span className="text-[9px] text-[#DFBA7F]/70 shrink-0">▼</span>
+                        <span className={`text-[9px] shrink-0 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>▼</span>
                       </div>
-                      <div className="text-[9px] sm:text-[10px] text-stone-400 font-medium truncate w-full">
-                        <span className="font-arabic font-bold text-[#DFBA7F] mr-1">{currentSurah.name}</span>
+                      <div className={`text-[9px] sm:text-[10px] font-medium truncate w-full ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
+                        <span className={`font-arabic font-bold mr-1 ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>{currentSurah.name}</span>
                         • {currentSurah.numberOfAyahs} {qt.ayahsCount}
                       </div>
                     </button>
@@ -996,11 +1010,13 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                       <div
                         className={`absolute left-1/2 -translate-x-1/2 top-full mt-2 w-72 sm:w-80 max-h-80 overflow-y-auto rounded-2xl border p-2 z-50 shadow-2xl ${
                           isDark
-                            ? 'bg-[#0E1217] border-[#C9A063]/40 text-stone-200'
-                            : 'bg-white border-stone-300 text-stone-900'
+                            ? 'bg-[#14161A] border-white/[0.12] text-[#F3F4F6]'
+                            : 'bg-white border-black/[0.1] text-[#111214]'
                         }`}
                       >
-                        <div className="text-[11px] font-cinzel font-bold text-[#DFBA7F] px-2 py-1 border-b border-[#C9A063]/20 mb-1">
+                        <div className={`text-[11px] font-cinzel font-bold px-2 py-1 border-b mb-1 ${
+                          isDark ? 'border-white/[0.08] text-stone-300' : 'border-black/[0.08] text-[#3F4248]'
+                        }`}>
                           {qt.backToSurahs}
                         </div>
                         <div className="space-y-1">
@@ -1010,18 +1026,20 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                               onClick={() => handleSelectSurah(s)}
                               className={`w-full p-2 rounded-xl text-left flex items-center justify-between text-xs transition-all ${
                                 s.number === currentSurah.number
-                                  ? 'bg-[#C9A063]/25 text-[#DFBA7F] font-bold border border-[#C9A063]/40'
+                                  ? isDark
+                                    ? 'bg-white/[0.12] text-white font-bold border border-white/30'
+                                    : 'bg-[#111214]/[0.08] text-[#111214] font-bold border border-[#111214]/30'
                                   : isDark
-                                  ? 'hover:bg-stone-800/80 text-stone-300'
-                                  : 'hover:bg-stone-100 text-stone-800'
+                                  ? 'hover:bg-white/[0.06] text-stone-300'
+                                  : 'hover:bg-black/[0.04] text-[#3F4248]'
                               }`}
                             >
                               <span className="font-medium">
                                 {s.number}. {s.englishName}
                               </span>
                               <div className="flex items-center gap-2">
-                                <span className="text-[10px] text-stone-400">{s.numberOfAyahs} {qt.ayahsCount}</span>
-                                <span className="font-arabic font-bold text-[#DFBA7F]">{s.name}</span>
+                                <span className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{s.numberOfAyahs} {qt.ayahsCount}</span>
+                                <span className={`font-arabic font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>{s.name}</span>
                               </div>
                             </button>
                           ))}
@@ -1034,11 +1052,13 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                     id="btn-next-surah"
                     onClick={() => handleNavigateSurah('next')}
                     disabled={currentSurah.number >= 114}
-                    className="w-8 h-8 rounded-xl flex items-center justify-center text-stone-300 hover:text-[#DFBA7F] hover:bg-[#C9A063]/15 disabled:opacity-20 disabled:pointer-events-none active:scale-90 transition-all shrink-0"
+                    className={`w-8 h-8 rounded-xl flex items-center justify-center disabled:opacity-20 disabled:pointer-events-none active:scale-90 transition-all shrink-0 ${
+                      isDark ? 'text-stone-300 hover:text-white hover:bg-white/[0.08]' : 'text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05]'
+                    }`}
                     title={qt.nextSurah}
                     aria-label={qt.nextSurah}
                   >
-                    <ChevronRight className="w-4 h-4 text-[#DFBA7F] rtl:rotate-180" />
+                    <ChevronRight className={`w-4 h-4 rtl:rotate-180 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
                   </button>
                 </div>
               </div>
@@ -1057,12 +1077,16 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                   }}
                   className={`h-9 flex items-center gap-1.5 px-3 rounded-xl text-xs font-semibold border transition-all active:scale-95 shadow-2xs ${
                     tasmee3Active
-                      ? 'bg-emerald-500/25 text-emerald-300 border-emerald-500/50 font-bold animate-pulse'
-                      : 'bg-[#C9A063]/20 hover:bg-[#C9A063]/30 text-[#DFBA7F] border-[#C9A063]/40'
+                      ? isDark
+                        ? 'bg-emerald-500/25 text-emerald-300 border-emerald-500/50 font-bold animate-pulse'
+                        : 'bg-emerald-50 text-emerald-800 border-emerald-400 font-bold animate-pulse'
+                      : isDark
+                        ? 'bg-white/[0.08] hover:bg-white/[0.14] text-white border-white/[0.12]'
+                        : 'bg-[#F3F3F1] hover:bg-black/[0.08] text-[#111214] border-black/[0.1]'
                   }`}
                   title={qt.tasmee3Btn}
                 >
-                  <Mic className={`w-3.5 h-3.5 ${tasmee3Active ? 'text-emerald-400' : 'text-[#DFBA7F]'}`} />
+                  <Mic className={`w-3.5 h-3.5 ${tasmee3Active ? (isDark ? 'text-emerald-400' : 'text-emerald-700') : (isDark ? 'text-white' : 'text-[#111214]')}`} />
                   <span className="font-serif-heading font-bold text-xs">{qt.tasmee3Btn}</span>
                 </button>
 
@@ -1072,12 +1096,20 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                   onClick={() => setShowMushafLayoutModal(true)}
                   className={`h-9 flex items-center gap-1.5 px-3 rounded-xl text-xs font-semibold border transition-all active:scale-95 shadow-2xs ${
                     mushafLayout === 'book'
-                      ? 'bg-gradient-to-tr from-[#C9A063]/25 to-[#DFBA7F]/20 border-[#DFBA7F]/50 text-[#DFBA7F]'
-                      : 'bg-[#C9A063]/15 hover:bg-[#C9A063]/25 border-[#C9A063]/35 text-[#DFBA7F]'
+                      ? isDark
+                        ? 'bg-white text-[#111214] border-white'
+                        : 'bg-[#111214] text-white border-[#111214]'
+                      : isDark
+                        ? 'bg-white/[0.06] hover:bg-white/[0.12] border-white/[0.1] text-stone-200'
+                        : 'bg-[#F3F3F1] hover:bg-black/[0.08] border-black/[0.1] text-[#111214]'
                   }`}
                   title={isArabic ? 'تخطيط المصحف وطريقة القراءة' : 'Mushaf Layout & Edition'}
                 >
-                  <Book className="w-3.5 h-3.5 text-[#DFBA7F]" />
+                  <Book className={`w-3.5 h-3.5 ${
+                    mushafLayout === 'book'
+                      ? isDark ? 'text-[#111214]' : 'text-white'
+                      : isDark ? 'text-white' : 'text-[#111214]'
+                  }`} />
                   <span className="font-serif-heading font-bold text-xs">
                     {mushafLayout === 'book'
                       ? (isArabic ? 'المصحف' : 'Mushaf 1405')
@@ -1092,10 +1124,12 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                   onClick={() => setShowTranslation(!showTranslation)}
                   className={`h-9 px-2.5 rounded-xl text-xs font-semibold border transition-all active:scale-95 ${
                     showTranslation
-                      ? 'bg-[#C9A063]/25 text-[#DFBA7F] border-[#C9A063]/45'
+                      ? isDark
+                        ? 'bg-white text-[#111214] border-white'
+                        : 'bg-[#111214] text-white border-[#111214]'
                       : isDark
-                      ? 'bg-[#12161D] text-stone-400 border-white/10 hover:text-stone-200'
-                      : 'bg-stone-100 text-stone-600 border-stone-200 hover:text-stone-900'
+                      ? 'bg-[#1B1D23] text-stone-400 border-white/[0.08] hover:text-white'
+                      : 'bg-[#F3F3F1] text-[#5A5D63] border-black/[0.08] hover:text-[#111214]'
                   }`}
                   title={qt.translationToggle}
                 >
@@ -1108,14 +1142,16 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                   onClick={() => setShowFontSettings((prev) => !prev)}
                   className={`h-9 w-9 rounded-xl flex items-center justify-center text-xs font-semibold border transition-all active:scale-95 ${
                     showFontSettings
-                      ? 'bg-[#C9A063]/30 text-[#DFBA7F] border-[#C9A063]/60 shadow-sm'
+                      ? isDark
+                        ? 'bg-white text-[#111214] border-white shadow-sm'
+                        : 'bg-[#111214] text-white border-[#111214] shadow-sm'
                       : isDark
-                      ? 'bg-[#12161D] text-stone-300 border-[#C9A063]/25 hover:border-[#C9A063]/50'
-                      : 'bg-stone-100 text-stone-700 border-stone-200'
+                      ? 'bg-[#1B1D23] text-stone-300 border-white/[0.1] hover:border-white/25'
+                      : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.08] hover:border-black/25'
                   }`}
                   title={qt.arabicFontSize}
                 >
-                  <SlidersHorizontal className="w-4 h-4 text-[#DFBA7F]" />
+                  <SlidersHorizontal className="w-4 h-4" />
                 </button>
               </div>
 
@@ -1124,7 +1160,9 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
             </div>
 
             {/* Mobile Tier 2: Dedicated Balanced Bar for Tasmee3 Place + Mushaf Layout + Reading Tools */}
-            <div className="flex sm:hidden items-center justify-between gap-1.5 pt-2 mt-2 border-t border-[#C9A063]/15">
+            <div className={`flex sm:hidden items-center justify-between gap-1.5 pt-2 mt-2 border-t ${
+              isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+            }`}>
               {/* Dedicated Tasmee3 Button (Tasmee3 Place) */}
               <button
                 id="btn-reader-tasmee3-header-mobile"
@@ -1137,12 +1175,16 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                 }}
                 className={`flex-1 h-8.5 flex items-center justify-center gap-1 px-2 rounded-xl text-xs font-semibold border transition-all active:scale-95 shadow-2xs ${
                   tasmee3Active
-                    ? 'bg-emerald-500/25 text-emerald-300 border-emerald-500/50 font-bold animate-pulse'
-                    : 'bg-[#C9A063]/20 hover:bg-[#C9A063]/30 text-[#DFBA7F] border-[#C9A063]/40'
+                    ? isDark
+                      ? 'bg-emerald-500/25 text-emerald-300 border-emerald-500/50 font-bold animate-pulse'
+                      : 'bg-emerald-50 text-emerald-800 border-emerald-400 font-bold animate-pulse'
+                    : isDark
+                      ? 'bg-white/[0.08] hover:bg-white/[0.14] text-white border-white/[0.12]'
+                      : 'bg-[#F3F3F1] hover:bg-black/[0.08] text-[#111214] border-black/[0.1]'
                 }`}
                 title={qt.tasmee3Btn}
               >
-                <Mic className={`w-3.5 h-3.5 ${tasmee3Active ? 'text-emerald-400' : 'text-[#DFBA7F]'}`} />
+                <Mic className={`w-3.5 h-3.5 ${tasmee3Active ? (isDark ? 'text-emerald-400' : 'text-emerald-700') : (isDark ? 'text-white' : 'text-[#111214]')}`} />
                 <span className="font-serif-heading font-bold text-xs">{qt.tasmee3Btn}</span>
               </button>
 
@@ -1152,12 +1194,16 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                 onClick={() => setShowMushafLayoutModal(true)}
                 className={`h-8.5 flex items-center justify-center gap-1 px-2.5 rounded-xl text-xs font-semibold border transition-all active:scale-95 shadow-2xs shrink-0 ${
                   mushafLayout === 'book'
-                    ? 'bg-[#C9A063]/30 border-[#DFBA7F]/60 text-[#DFBA7F]'
-                    : 'bg-[#C9A063]/15 border-[#C9A063]/30 text-[#DFBA7F]'
+                    ? isDark
+                      ? 'bg-white border-white text-[#111214]'
+                      : 'bg-[#111214] border-[#111214] text-white'
+                    : isDark
+                      ? 'bg-white/[0.06] border-white/[0.1] text-stone-200'
+                      : 'bg-[#F3F3F1] border-black/[0.1] text-[#111214]'
                 }`}
                 title={isArabic ? 'تخطيط المصحف' : 'Mushaf Layout'}
               >
-                <Book className="w-3.5 h-3.5 text-[#DFBA7F]" />
+                <Book className="w-3.5 h-3.5" />
                 <span className="font-serif-heading font-bold text-[11px]">
                   {mushafLayout === 'book'
                     ? (isArabic ? 'المصحف' : '1405')
@@ -1172,10 +1218,12 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                 onClick={() => setShowTranslation(!showTranslation)}
                 className={`h-8.5 px-2.5 rounded-xl text-xs font-semibold border transition-all active:scale-95 shrink-0 ${
                   showTranslation
-                    ? 'bg-[#C9A063]/25 text-[#DFBA7F] border-[#C9A063]/45'
+                    ? isDark
+                      ? 'bg-white text-[#111214] border-white'
+                      : 'bg-[#111214] text-white border-[#111214]'
                     : isDark
-                    ? 'bg-[#12161D] text-stone-400 border-white/10'
-                    : 'bg-stone-100 text-stone-600 border-stone-200'
+                    ? 'bg-[#1B1D23] text-stone-400 border-white/[0.08]'
+                    : 'bg-[#F3F3F1] text-[#5A5D63] border-black/[0.08]'
                 }`}
                 title={qt.translationToggle}
               >
@@ -1188,14 +1236,16 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                 onClick={() => setShowFontSettings((prev) => !prev)}
                 className={`h-8.5 w-8.5 rounded-xl flex items-center justify-center text-xs font-semibold border transition-all active:scale-95 shrink-0 ${
                   showFontSettings
-                    ? 'bg-[#C9A063]/30 text-[#DFBA7F] border-[#C9A063]/60 shadow-sm'
+                    ? isDark
+                      ? 'bg-white text-[#111214] border-white shadow-sm'
+                      : 'bg-[#111214] text-white border-[#111214] shadow-sm'
                     : isDark
-                    ? 'bg-[#12161D] text-stone-300 border-[#C9A063]/25'
-                    : 'bg-stone-100 text-stone-700 border-stone-200'
+                    ? 'bg-[#1B1D23] text-stone-300 border-white/[0.1]'
+                    : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.08]'
                 }`}
                 title={qt.arabicFontSize}
               >
-                <SlidersHorizontal className="w-3.5 h-3.5 text-[#DFBA7F]" />
+                <SlidersHorizontal className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>
@@ -1206,31 +1256,37 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
               id="quran-font-settings-panel"
               className={`p-4 sm:p-5 rounded-2xl sm:rounded-3xl border space-y-3 transition-all duration-200 shadow-md ${
                 isDark
-                  ? 'bg-[#0E1217] border-[#C9A063]/35'
-                  : 'bg-white border-[#C9A063]/35'
+                  ? 'bg-[#14161A] border-white/[0.08]'
+                  : 'bg-white border-black/[0.08]'
               }`}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <SlidersHorizontal className="w-4 h-4 text-[#DFBA7F]" />
-                  <span className="text-xs sm:text-sm font-serif-heading font-bold text-[#DFBA7F]">
+                  <SlidersHorizontal className={`w-4 h-4 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
+                  <span className={`text-xs sm:text-sm font-serif-heading font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                     Arabic Font Size Slider
                   </span>
-                  <span className="text-[10px] text-stone-400 font-sans hidden sm:inline">
+                  <span className={`text-[10px] font-sans hidden sm:inline ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     (Instant Zero-Lag Scaling)
                   </span>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-mono font-bold px-2.5 py-0.5 rounded-lg bg-[#C9A063]/15 text-[#DFBA7F] border border-[#C9A063]/30">
+                  <span className={`text-xs font-mono font-bold px-2.5 py-0.5 rounded-lg border ${
+                    isDark ? 'bg-white/[0.08] text-white border-white/[0.12]' : 'bg-[#F3F3F1] text-[#111214] border-black/[0.08]'
+                  }`}>
                     {arabicFontSize} px
                   </span>
                   <button
                     onClick={() => handleFontSizeChange(28)}
-                    className="px-2 py-1 rounded-lg text-stone-400 hover:text-stone-200 hover:bg-[#C9A063]/15 text-[11px] flex items-center gap-1 border border-transparent hover:border-[#C9A063]/30 active:scale-95 transition-all"
+                    className={`px-2 py-1 rounded-lg text-[11px] flex items-center gap-1 border border-transparent active:scale-95 transition-all ${
+                      isDark
+                        ? 'text-stone-400 hover:text-white hover:bg-white/[0.08] hover:border-white/[0.12]'
+                        : 'text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05] hover:border-black/[0.1]'
+                    }`}
                     title="Reset to default 28px"
                   >
-                    <RotateCcw className="w-3 h-3 text-[#DFBA7F]" />
+                    <RotateCcw className={`w-3 h-3 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`} />
                     <span>Reset</span>
                   </button>
                 </div>
@@ -1238,7 +1294,7 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
 
               {/* Continuous Dynamic Range Slider */}
               <div className="flex items-center gap-3 pt-1">
-                <span className="text-xs font-bold text-stone-400 font-sans">18px</span>
+                <span className={`text-xs font-bold font-sans ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>18px</span>
                 <div className="relative flex-1 flex items-center">
                   <input
                     id="quran-font-size-range-slider"
@@ -1249,16 +1305,18 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                     value={arabicFontSize}
                     onInput={handleSliderInput}
                     onChange={handleSliderChange}
-                    className="w-full accent-[#C9A063] cursor-pointer h-2 bg-stone-700/60 rounded-lg"
+                    className={`w-full cursor-pointer h-2 rounded-lg ${isDark ? 'accent-white bg-white/[0.12]' : 'accent-[#111214] bg-black/[0.1]'}`}
                   />
                 </div>
-                <span className="text-sm font-bold text-stone-300 font-sans">48px</span>
+                <span className={`text-sm font-bold font-sans ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>48px</span>
               </div>
 
               {/* Quick Preset Buttons & Live Arabic Calligraphy Preview */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 pt-2 border-t border-[#C9A063]/15">
+              <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 pt-2 border-t ${
+                isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+              }`}>
                 <div className="flex items-center gap-1.5 flex-wrap">
-                  <span className="text-[11px] text-stone-400 mr-1">Presets:</span>
+                  <span className={`text-[11px] mr-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>Presets:</span>
                   {[
                     { label: 'Compact', size: 20 },
                     { label: 'Medium', size: 24 },
@@ -1271,10 +1329,12 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                       onClick={() => handleFontSizeChange(preset.size)}
                       className={`px-2.5 py-1 rounded-xl text-[11px] font-semibold border transition-all active:scale-95 ${
                         arabicFontSize === preset.size
-                          ? 'bg-[#C9A063]/30 text-[#DFBA7F] border-[#C9A063]/60 font-bold'
+                          ? isDark
+                            ? 'bg-white text-[#111214] border-white font-bold'
+                            : 'bg-[#111214] text-white border-[#111214] font-bold'
                           : isDark
-                          ? 'bg-[#12161D] text-stone-400 border-white/10 hover:text-stone-200'
-                          : 'bg-stone-100 text-stone-600 border-stone-200'
+                          ? 'bg-[#1B1D23] text-stone-400 border-white/[0.08] hover:text-white'
+                          : 'bg-[#F3F3F1] text-[#5A5D63] border-black/[0.08] hover:text-[#111214]'
                       }`}
                     >
                       {preset.label}
@@ -1284,7 +1344,9 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
 
                 <div
                   dir="rtl"
-                  className="font-arabic text-[#DFBA7F] select-none text-right px-2 py-0.5 truncate max-w-full sm:max-w-[240px]"
+                  className={`font-arabic select-none text-right px-2 py-0.5 truncate max-w-full sm:max-w-[240px] ${
+                    isDark ? 'text-white' : 'text-[#111214]'
+                  }`}
                   style={{
                     fontSize: 'var(--quran-arabic-size, 28px)',
                     lineHeight: 'var(--quran-arabic-lh, 2.4)',
@@ -1301,21 +1363,21 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
             <>
               <div
                 className={`p-3 rounded-2xl border flex flex-col sm:flex-row items-center justify-between gap-3 text-xs ${
-                  isDark ? 'bg-[#0E1217]/85 border-[#C9A063]/20' : 'bg-white/90 border-stone-200 shadow-2xs'
+                  isDark ? 'bg-[#14161A] border-white/[0.08]' : 'bg-white border-black/[0.08] shadow-2xs'
                 }`}
               >
                 {/* Search within Surah */}
                 <div className="relative w-full sm:w-1/2">
-                  <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <Search className={`w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`} />
                   <input
                     type="text"
                     value={surahSearchQuery}
                     onChange={(e) => setSurahSearchQuery(e.target.value)}
                     placeholder={qt.searchInSurahPlaceholder}
-                    className={`w-full pl-8 pr-3 py-1.5 rounded-xl text-xs border transition-all focus:outline-none focus:ring-1 focus:ring-[#C9A063] ${
+                    className={`w-full pl-8 pr-3 py-1.5 rounded-xl text-xs border transition-all focus:outline-none focus:ring-1 ${
                       isDark
-                        ? 'bg-stone-900/90 border-[#C9A063]/20 text-stone-100 placeholder-stone-500'
-                        : 'bg-stone-50 border-stone-200 text-stone-900 placeholder-stone-400'
+                        ? 'bg-[#1B1D23] border-white/[0.08] text-white placeholder-stone-500 focus:ring-white/30'
+                        : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214] placeholder-[#6B6F76] focus:ring-[#111214]/30'
                     }`}
                   />
                 </div>
@@ -1327,10 +1389,12 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                     onClick={() => setEnableTajweedColors(!enableTajweedColors)}
                     className={`px-2.5 py-1.5 rounded-xl border text-xs font-semibold flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer ${
                       enableTajweedColors
-                        ? 'bg-gradient-to-r from-rose-500/20 via-emerald-500/20 to-sky-500/20 border-[#DFBA7F]/80 text-[#DFBA7F] ring-1 ring-[#DFBA7F]/40'
+                        ? isDark
+                          ? 'bg-white/[0.12] border-white/40 text-white ring-1 ring-white/25'
+                          : 'bg-[#111214]/[0.08] border-[#111214]/40 text-[#111214] ring-1 ring-[#111214]/20'
                         : isDark
-                        ? 'bg-stone-900/90 border-[#C9A063]/25 text-stone-300 hover:text-[#DFBA7F]'
-                        : 'bg-stone-50 border-stone-200 text-stone-700 hover:text-stone-900'
+                        ? 'bg-[#1B1D23] border-white/[0.08] text-stone-300 hover:text-white'
+                        : 'bg-[#F3F3F1] border-black/[0.08] text-[#3F4248] hover:text-[#111214]'
                     }`}
                   >
                     <span className="flex items-center -space-x-0.5" aria-hidden="true">
@@ -1342,7 +1406,7 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                   </button>
 
                   <div className="flex items-center gap-1.5">
-                    <span className="text-stone-400 whitespace-nowrap text-[11px]">{qt.jumpToAyah}:</span>
+                    <span className={`whitespace-nowrap text-[11px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{qt.jumpToAyah}:</span>
                     <input
                       type="number"
                       min="1"
@@ -1356,10 +1420,10 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                         }
                       }}
                       placeholder={`1-${currentSurah.numberOfAyahs}`}
-                      className={`w-20 px-2 py-1.5 rounded-xl text-xs text-center border font-mono font-bold focus:outline-none focus:ring-1 focus:ring-[#C9A063] ${
+                      className={`w-20 px-2 py-1.5 rounded-xl text-xs text-center border font-mono font-bold focus:outline-none focus:ring-1 ${
                         isDark
-                          ? 'bg-stone-900/90 border-[#C9A063]/25 text-[#DFBA7F]'
-                          : 'bg-stone-50 border-stone-200 text-stone-900'
+                          ? 'bg-[#1B1D23] border-white/[0.1] text-white focus:ring-white/30'
+                          : 'bg-[#F3F3F1] border-black/[0.1] text-[#111214] focus:ring-[#111214]/30'
                       }`}
                     />
                     <button
@@ -1367,7 +1431,11 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                         const num = parseInt(jumpToAyahInput, 10);
                         if (!isNaN(num)) handleJumpToAyah(num);
                       }}
-                      className="px-2.5 py-1.5 rounded-xl bg-[#C9A063]/20 hover:bg-[#C9A063]/30 text-[#DFBA7F] border border-[#C9A063]/40 font-bold active:scale-95 transition-all text-xs"
+                      className={`px-2.5 py-1.5 rounded-xl border font-bold active:scale-95 transition-all text-xs ${
+                        isDark
+                          ? 'bg-white text-[#111214] border-white hover:bg-stone-200'
+                          : 'bg-[#111214] text-white border-[#111214] hover:bg-[#27292D]'
+                      }`}
                     >
                       {qt.jumpGo}
                     </button>
@@ -1380,11 +1448,11 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                   dir={isArabic ? 'rtl' : 'ltr'}
                   className={`px-3 py-2 rounded-2xl border flex items-center justify-center flex-wrap gap-x-3 gap-y-1 text-[11px] select-none ${
                     isDark
-                      ? 'bg-[#0B0F16]/90 border-[#DFBA7F]/30 text-stone-200'
-                      : 'bg-[#FFFDF9] border-[#C9A063]/40 text-stone-800'
+                      ? 'bg-[#14161A] border-white/[0.08] text-stone-200'
+                      : 'bg-white border-black/[0.08] text-[#111214]'
                   }`}
                 >
-                  <span className="font-bold text-[#DFBA7F]">
+                  <span className={`font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                     {isArabic ? 'دليل ألوان التجويد:' : 'Tajweed Key:'}
                   </span>
                   {TAJWEED_LEGEND_ITEMS.map((item) => (
@@ -1398,19 +1466,19 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
 
               {/* Surah Decorative Opening Banner */}
               <div
-                className={`rounded-3xl p-6 sm:p-8 text-center border relative overflow-hidden transform-gpu shadow-md ${
+                className={`rounded-3xl p-6 sm:p-8 text-center border relative overflow-hidden transform-gpu shadow-sm ${
                   isDark
-                    ? 'bg-gradient-to-b from-[#141A22] via-[#0B0E13] to-[#181E26] border-[#C9A063]/35 shadow-md'
-                    : 'bg-gradient-to-b from-amber-50/90 to-white border-[#C9A063]/35 shadow-md'
+                    ? 'bg-[#14161A] border-white/[0.08]'
+                    : 'bg-white border-black/[0.08]'
                 }`}
               >
-                <div className="font-arabic text-4xl sm:text-5xl font-bold text-[#DFBA7F] mb-2 drop-shadow-sm">
+                <div className={`font-arabic text-4xl sm:text-5xl font-bold mb-2 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                   {currentSurah.name}
                 </div>
-                <h1 className={`text-lg sm:text-xl font-serif-heading font-bold ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+                <h1 className={`text-lg sm:text-xl font-serif-heading font-bold ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                   {isArabic ? `سورة ${currentSurah.name}` : `Surah ${currentSurah.englishName} (${currentSurah.englishNameTranslation})`}
                 </h1>
-                <div className="text-xs text-stone-400 mt-1 font-medium">
+                <div className={`text-xs mt-1 font-medium ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                   {isArabic
                     ? `السورة رقم ${currentSurah.number} • ${currentSurah.revelationType === 'Meccan' ? 'مكية' : 'مدنية'} • ${currentSurah.numberOfAyahs} آيات`
                     : `Surah #${currentSurah.number} • ${currentSurah.revelationType} Revelation • ${currentSurah.numberOfAyahs} Complete Verses`}
@@ -1418,7 +1486,9 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
 
                 {/* Bismillah Header for all Surahs except At-Tawbah (Surah 9) */}
                 {currentSurah.number !== 9 && (
-                  <div className="mt-5 pt-4 border-t border-[#C9A063]/25 font-arabic text-2xl sm:text-3xl text-[#DFBA7F] tracking-wide">
+                  <div className={`mt-5 pt-4 border-t font-arabic text-2xl sm:text-3xl tracking-wide ${
+                    isDark ? 'border-white/[0.08] text-white' : 'border-black/[0.08] text-[#111214]'
+                  }`}>
                     بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
                   </div>
                 )}
@@ -1434,7 +1504,9 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
           )}
 
           {ayahLoadError && (
-            <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-center text-xs text-amber-200">
+            <div className={`p-4 rounded-2xl border text-center text-xs ${
+              isDark ? 'bg-sky-500/10 border-sky-500/30 text-sky-200' : 'bg-sky-50 border-sky-300 text-sky-800'
+            }`}>
               {ayahLoadError}
             </div>
           )}
@@ -1493,17 +1565,21 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                     }${
                       isPreviousTrail ? 'verse-highlight-trail ' : ''
                     }${
-                      isTasmee3ActiveAyah
+                        isTasmee3ActiveAyah
                         ? 'border-emerald-400 bg-emerald-500/15 ring-2 ring-emerald-400/80 shadow-[0_0_30px_rgba(16,185,129,0.35)]'
                         : isHighlighted
-                        ? 'border-[#DFBA7F] bg-[#C9A063]/25 ring-2 ring-[#DFBA7F] shadow-[0_0_30px_rgba(201,160,99,0.5)]'
+                        ? isDark
+                          ? 'border-white/60 bg-white/[0.08] ring-2 ring-white/40 shadow-lg'
+                          : 'border-[#111214]/50 bg-[#111214]/[0.05] ring-2 ring-[#111214]/25 shadow-md'
                         : isDirectPlayingAyah
                         ? 'border-emerald-400 bg-emerald-500/10 shadow-[0_0_24px_rgba(16,185,129,0.3)] ring-1 ring-emerald-400/50'
                         : isCurrentPlayingAyah
-                        ? 'border-[#C9A063] bg-[#C9A063]/15 shadow-[0_0_24px_rgba(201,160,99,0.3)] ring-1 ring-[#C9A063]/50'
+                        ? isDark
+                          ? 'border-white/45 bg-white/[0.06] shadow-md ring-1 ring-white/25'
+                          : 'border-[#111214]/40 bg-[#111214]/[0.04] shadow-sm ring-1 ring-[#111214]/20'
                         : isDark
-                        ? 'bg-[#0E1217]/85 border-[#C9A063]/20 hover:border-[#C9A063]/45 card-hover-lift'
-                        : 'bg-white/95 border-stone-200 hover:border-[#C9A063]/50 shadow-2xs card-hover-lift'
+                        ? 'bg-[#14161A] border-white/[0.08] hover:border-white/25 card-hover-lift'
+                        : 'bg-white border-black/[0.08] hover:border-black/25 shadow-2xs card-hover-lift'
                     }`}
                   >
                     {/* Top Bar: Verse Number Inside Authentic Ayah Symbol & Quick Actions */}
@@ -1525,30 +1601,34 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                               : 'Touch verse number to listen immediately (Sheikh Yasser Al-Dossari)'
                           }
                         />
-                        <span className="text-xs text-stone-400 font-medium font-cinzel flex items-center gap-1.5">
+                        <span className={`text-xs font-medium font-cinzel flex items-center gap-1.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                           <span>
                             {isArabic ? `سورة ${currentSurah.name}` : currentSurah.englishName}
                           </span>
-                          <span className="font-arabic font-bold text-[#DFBA7F]">
+                          <span className={`font-arabic font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                             ﴿{toEasternArabicNumerals(currentSurah.number)}:{toEasternArabicNumerals(ayahNumInSurah)}﴾
                           </span>
-                          <span className="font-mono text-[10px] opacity-70">
+                          <span className="font-mono text-[10px] opacity-75">
                             [{currentSurah.number}:{ayahNumInSurah}]
                           </span>
                         </span>
 
                         {/* Real-time Tasmee3 recitation tracking badge */}
                         {isTasmee3ActiveAyah && (
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-semibold flex items-center gap-1 font-sans shadow-2xs animate-in fade-in">
-                            <Mic className="w-3 h-3 animate-pulse text-emerald-400" />
+                          <span className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold flex items-center gap-1 font-sans shadow-2xs animate-in fade-in ${
+                            isDark ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' : 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                          }`}>
+                            <Mic className={`w-3 h-3 animate-pulse ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`} />
                             <span>{isArabic ? `تلاوة الآية ${toEasternArabicNumerals(ayahNumInSurah)}` : `Reciting Verse ${ayahNumInSurah}`}</span>
                           </span>
                         )}
 
                         {/* Direct Dossari Recitation Badge */}
                         {isDirectPlayingAyah && (
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-semibold flex items-center gap-1 font-sans shadow-2xs">
-                            <Volume2 className="w-3 h-3 text-emerald-400 animate-pulse" />
+                          <span className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold flex items-center gap-1 font-sans shadow-2xs ${
+                            isDark ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40' : 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                          }`}>
+                            <Volume2 className={`w-3 h-3 animate-pulse ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`} />
                             <span>{isArabic ? 'تلاوة الشيخ ياسر الدوسري' : 'Sheikh Yasser Al-Dossari'}</span>
                           </span>
                         )}
@@ -1565,10 +1645,12 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                           }}
                           className={`p-1.5 sm:p-2 rounded-xl border transition-all active:scale-90 ${
                             isCurrentPlayingAyah
-                              ? 'bg-[#C9A063] text-[#090B0E] border-[#C9A063] shadow-md font-bold'
+                              ? isDark
+                                ? 'bg-white text-[#111214] border-white shadow-md font-bold'
+                                : 'bg-[#111214] text-white border-[#111214] shadow-md font-bold'
                               : isDark
-                              ? 'bg-[#12161D] text-stone-300 border-white/10 hover:text-white'
-                              : 'bg-stone-100 text-stone-600 border-stone-200 hover:text-stone-900'
+                              ? 'bg-[#1B1D23] text-stone-300 border-white/[0.08] hover:text-white'
+                              : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.08] hover:text-[#111214]'
                           }`}
                           title="Play recitation from this verse"
                         >
@@ -1585,10 +1667,12 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                           onClick={() => handleStartTasmee3InReader(ayahNumInSurah)}
                           className={`p-1.5 sm:p-2 rounded-xl border transition-all active:scale-90 ${
                             isTasmee3ActiveAyah
-                              ? 'bg-emerald-500/25 text-emerald-300 border-emerald-500/60 shadow-sm font-bold'
+                              ? isDark
+                                ? 'bg-emerald-500/25 text-emerald-300 border-emerald-500/60 shadow-sm font-bold'
+                                : 'bg-emerald-50 text-emerald-800 border-emerald-400 shadow-sm font-bold'
                               : isDark
-                              ? 'bg-[#12161D] text-stone-400 border-white/10 hover:text-[#DFBA7F]'
-                              : 'bg-stone-100 text-stone-500 border-stone-200 hover:text-[#DFBA7F]'
+                              ? 'bg-[#1B1D23] text-stone-400 border-white/[0.08] hover:text-white'
+                              : 'bg-[#F3F3F1] text-[#5A5D63] border-black/[0.08] hover:text-[#111214]'
                           }`}
                           title="Recite with Tasmee3 from this verse"
                         >
@@ -1601,8 +1685,8 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                           onClick={() => handleOpenQuranTeacher(currentSurah.number, ayahNumInSurah)}
                           className={`p-1.5 sm:p-2 rounded-xl border transition-all active:scale-90 ${
                             isDark
-                              ? 'bg-[#12161D] text-stone-400 border-white/10 hover:text-[#DFBA7F]'
-                              : 'bg-stone-100 text-stone-500 border-stone-200 hover:text-[#DFBA7F]'
+                              ? 'bg-[#1B1D23] text-stone-400 border-white/[0.08] hover:text-white'
+                              : 'bg-[#F3F3F1] text-[#5A5D63] border-black/[0.08] hover:text-[#111214]'
                           }`}
                           title="Practice with Quran Teacher AI"
                         >
@@ -1614,14 +1698,16 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                           onClick={() => handleToggleBookmark(ayahNumInSurah)}
                           className={`p-1.5 sm:p-2 rounded-xl border transition-all active:scale-90 ${
                             bookmarked
-                              ? 'bg-[#C9A063]/25 text-[#DFBA7F] border-[#C9A063]/40'
+                              ? isDark
+                                ? 'bg-white/[0.12] text-white border-white/35'
+                                : 'bg-[#111214]/[0.08] text-[#111214] border-[#111214]/35'
                               : isDark
-                              ? 'bg-[#12161D] text-stone-400 border-white/10 hover:text-[#DFBA7F]'
-                              : 'bg-stone-100 text-stone-500 border-stone-200'
+                              ? 'bg-[#1B1D23] text-stone-400 border-white/[0.08] hover:text-white'
+                              : 'bg-[#F3F3F1] text-[#5A5D63] border-black/[0.08] hover:text-[#111214]'
                           }`}
                           title={bookmarked ? 'Remove Bookmark' : 'Bookmark this Ayah'}
                         >
-                          <Bookmark className={`w-3.5 h-3.5 ${bookmarked ? 'fill-[#DFBA7F] text-[#DFBA7F]' : ''}`} />
+                          <Bookmark className={`w-3.5 h-3.5 ${bookmarked ? (isDark ? 'fill-white text-white' : 'fill-[#111214] text-[#111214]') : ''}`} />
                         </button>
 
                         {/* Copy Ayah */}
@@ -1629,15 +1715,17 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                           onClick={() => handleCopyAyahText(ayah)}
                           className={`p-1.5 sm:p-2 rounded-xl border transition-all active:scale-90 ${
                             copiedAyah === ayahNumInSurah
-                              ? 'bg-[#C9A063]/25 text-[#DFBA7F] border-[#C9A063]/40'
+                              ? isDark
+                                ? 'bg-white/[0.12] text-white border-white/35'
+                                : 'bg-[#111214]/[0.08] text-[#111214] border-[#111214]/35'
                               : isDark
-                              ? 'bg-[#12161D] text-stone-400 border-white/10 hover:text-[#DFBA7F]'
-                              : 'bg-stone-100 text-stone-500 border-stone-200'
+                              ? 'bg-[#1B1D23] text-stone-400 border-white/[0.08] hover:text-white'
+                              : 'bg-[#F3F3F1] text-[#5A5D63] border-black/[0.08] hover:text-[#111214]'
                           }`}
                           title="Copy Arabic and translation"
                         >
                           {copiedAyah === ayahNumInSurah ? (
-                            <Check className="w-3.5 h-3.5 text-[#DFBA7F]" />
+                            <Check className={`w-3.5 h-3.5 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`} />
                           ) : (
                             <Copy className="w-3.5 h-3.5" />
                           )}
@@ -1649,7 +1737,7 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                     <div
                       dir="rtl"
                       className={`font-arabic text-right font-normal tracking-wide my-4 select-text transition-all duration-300 leading-loose ${
-                        isDark ? 'text-white' : 'text-stone-950 font-bold'
+                        isDark ? 'text-white' : 'text-[#111214] font-bold'
                       } ${
                         isCurrentActive ? 'verse-highlight-rtl rounded-2xl px-3 py-1.5' : ''
                       }`}
@@ -1661,7 +1749,7 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                       <span
                         onClick={() => handleAyahTextClick(ayah, currentSurah)}
                         className={`cursor-pointer transition-colors duration-150 rounded px-1 -mx-1 inline select-text ${
-                          isDark ? 'hover:text-[#DFBA7F]' : 'hover:text-amber-800'
+                          isDark ? 'hover:text-stone-300' : 'hover:text-[#3F4248]'
                         }`}
                         title={isArabic ? 'اضغط لعرض التفسير والترجمة ومساعد نور الذكي' : 'Touch verse text for Tafsir, translation & Noor AI'}
                       >
@@ -1686,8 +1774,8 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                                             : 'text-emerald-950 font-extrabold scale-115 -translate-y-1 bg-emerald-300/80 shadow-[0_0_16px_rgba(16,185,129,0.6)] ring-1 ring-emerald-600'
                                           : isAlreadySpokenWord
                                           ? isDark
-                                            ? 'text-[#DFBA7F] font-semibold'
-                                            : 'text-amber-800 font-bold'
+                                            ? 'text-stone-300 underline decoration-white/30 font-semibold'
+                                            : 'text-[#111214] underline decoration-black/25 font-bold'
                                           : ''
                                       }`}
                                     >
@@ -1727,10 +1815,12 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                     {(mushafLayout === 'translation' || showTransliteration) && ayah.transliteration && (
                       <div
                         className={`text-xs italic leading-relaxed mt-2 pt-2 border-t ${
-                          isDark ? 'border-[#C9A063]/10 text-stone-400' : 'border-stone-200 text-stone-600'
+                          isDark ? 'border-white/[0.06] text-stone-400' : 'border-black/[0.06] text-[#5A5D63]'
                         }`}
                       >
-                        <span className="text-[10px] uppercase font-mono not-italic text-[#DFBA7F]/80 mr-1.5 select-none font-semibold">
+                        <span className={`text-[10px] uppercase font-mono not-italic mr-1.5 select-none font-semibold ${
+                          isDark ? 'text-stone-200' : 'text-[#111214]'
+                        }`}>
                           {isArabic ? 'النطق اللاتيني:' : 'Transliteration:'}
                         </span>
                         {ayah.transliteration}
@@ -1742,12 +1832,14 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                       <div
                         className={`text-xs sm:text-sm leading-relaxed mt-3 pt-3 border-t ${
                           isDark
-                            ? 'border-[#C9A063]/15 text-stone-300'
-                            : 'border-stone-200 text-stone-700'
+                            ? 'border-white/[0.08] text-stone-300'
+                            : 'border-black/[0.08] text-[#3F4248]'
                         }`}
                       >
-                        <div className="flex items-center gap-1.5 mb-1 text-[10px] text-stone-400 font-medium select-none">
-                          <span className="font-semibold text-[#DFBA7F]">{qt.activeTranslationSource}:</span>
+                        <div className={`flex items-center gap-1.5 mb-1 text-[10px] font-medium select-none ${
+                          isDark ? 'text-stone-400' : 'text-[#5A5D63]'
+                        }`}>
+                          <span className={`font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>{qt.activeTranslationSource}:</span>
                           <span>{edition.name}</span>
                           <span className="opacity-50">•</span>
                           <span className="opacity-80">{edition.author}</span>
@@ -1760,7 +1852,7 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
               })}
 
               {displayedAyahs.length === 0 && (
-                <div className="text-center py-12 text-stone-400 text-xs">
+                <div className={`text-center py-12 text-xs ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                   {qt.noVerseResults}
                 </div>
               )}
@@ -1768,17 +1860,23 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
           )}
 
           {/* Surah Bottom Navigation: Next / Prev Surah Buttons */}
-          <div className="flex items-center justify-between pt-6 border-t border-[#C9A063]/20">
+          <div className={`flex items-center justify-between pt-6 border-t ${
+            isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+          }`}>
             <button
               onClick={() => handleNavigateSurah('prev')}
               disabled={currentSurah.number <= 1}
-              className="flex items-center gap-2 px-4 py-2 rounded-2xl border border-[#C9A063]/30 bg-[#C9A063]/10 text-xs font-semibold text-[#DFBA7F] disabled:opacity-30 disabled:pointer-events-none hover:bg-[#C9A063]/20 active:scale-95 transition-all"
+              className={`flex items-center gap-2 px-4 py-2 rounded-2xl border text-xs font-semibold disabled:opacity-30 disabled:pointer-events-none active:scale-95 transition-all ${
+                isDark
+                  ? 'border-white/[0.12] bg-[#14161A] text-white hover:bg-white/[0.08]'
+                  : 'border-black/[0.1] bg-white text-[#111214] hover:bg-black/[0.05]'
+              }`}
             >
               <ChevronLeft className="w-4 h-4" />
               <span>{isArabic ? 'السورة السابقة' : 'Previous Surah'}</span>
             </button>
 
-            <div className="text-center text-[11px] text-stone-400 font-cinzel">
+            <div className={`text-center text-[11px] font-cinzel ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               {isArabic
                 ? `نهاية سورة ${currentSurah.name} (${currentSurah.numberOfAyahs} من ${currentSurah.numberOfAyahs} آية)`
                 : `End of Surah ${currentSurah.englishName} (${currentSurah.numberOfAyahs} of ${currentSurah.numberOfAyahs} Ayahs)`}
@@ -1787,7 +1885,11 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
             <button
               onClick={() => handleNavigateSurah('next')}
               disabled={currentSurah.number >= 114}
-              className="flex items-center gap-2 px-4 py-2 rounded-2xl border border-[#C9A063]/30 bg-[#C9A063]/10 text-xs font-semibold text-[#DFBA7F] disabled:opacity-30 disabled:pointer-events-none hover:bg-[#C9A063]/20 active:scale-95 transition-all"
+              className={`flex items-center gap-2 px-4 py-2 rounded-2xl border text-xs font-semibold disabled:opacity-30 disabled:pointer-events-none active:scale-95 transition-all ${
+                isDark
+                  ? 'border-white/[0.12] bg-[#14161A] text-white hover:bg-white/[0.08]'
+                  : 'border-black/[0.1] bg-white text-[#111214] hover:bg-black/[0.05]'
+              }`}
             >
               <span>{isArabic ? 'السورة التالية' : 'Next Surah'}</span>
               <ChevronRight className="w-4 h-4" />
@@ -1802,16 +1904,18 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
             createPortal(
               <div
                 id="quran-audio-player-bar"
-                className={`fixed bottom-0 left-0 right-0 lg:left-64 xl:left-72 rtl:lg:left-0 rtl:xl:left-0 rtl:lg:right-64 rtl:xl:right-72 z-[80] border-t transition-all duration-200 shadow-[0_-8px_36px_rgba(0,0,0,0.75)] backdrop-blur-2xl select-none pb-[env(safe-area-inset-bottom)] ${
+                className={`fixed bottom-0 left-0 right-0 lg:left-64 xl:left-72 rtl:lg:left-0 rtl:xl:left-0 rtl:lg:right-64 rtl:xl:right-72 z-[80] border-t transition-all duration-200 shadow-[0_-8px_36px_rgba(0,0,0,0.4)] backdrop-blur-2xl select-none pb-[env(safe-area-inset-bottom)] ${
                   isDark
-                    ? 'bg-[#090C11]/98 border-[#DFBA7F]/45 text-stone-100'
-                    : 'bg-white/98 border-[#C9A063]/50 text-stone-900 shadow-2xl'
+                    ? 'bg-[#0B0C0E]/95 border-white/[0.1] text-[#F3F4F6]'
+                    : 'bg-white/95 border-black/[0.1] text-[#111214] shadow-2xl'
                 }`}
               >
                 {/* Live Recitation Progress Line */}
-                <div className="w-full h-[2px] bg-white/10 overflow-hidden">
+                <div className={`w-full h-[2px] overflow-hidden ${isDark ? 'bg-white/[0.08]' : 'bg-black/[0.08]'}`}>
                   <div
-                    className="h-full bg-gradient-to-r from-[#C9A063] via-[#DFBA7F] to-emerald-400 transition-all duration-150"
+                    className={`h-full transition-all duration-150 ${
+                      isDark ? 'bg-gradient-to-r from-white/70 to-emerald-400' : 'bg-gradient-to-r from-[#111214] to-emerald-600'
+                    }`}
                     style={{
                       width: `${
                         (((currentAyahIndex + ayahPlaybackProgress) /
@@ -1833,7 +1937,9 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                       className="flex items-center gap-2 group text-left rtl:text-right cursor-pointer active:scale-95 transition-all min-w-0 max-w-full"
                       title={isArabic ? 'تغيير القارئ' : 'Change Reciter'}
                     >
-                      <div className="relative w-8.5 h-8.5 rounded-xl bg-gradient-to-tr from-[#C9A063] to-[#DFBA7F] text-[#090B0E] flex items-center justify-center font-bold shadow-sm shrink-0">
+                      <div className={`relative w-8.5 h-8.5 rounded-xl flex items-center justify-center font-bold shadow-sm shrink-0 ${
+                        isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+                      }`}>
                         {isPlaying ? (
                           <Volume2 className="w-4 h-4 animate-pulse" />
                         ) : (
@@ -1842,14 +1948,20 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-1.5">
-                          <span className="text-xs font-bold text-[#DFBA7F] truncate max-w-[85px] sm:max-w-[150px]">
+                          <span className={`text-xs font-bold truncate max-w-[85px] sm:max-w-[150px] ${
+                            isDark ? 'text-white' : 'text-[#111214]'
+                          }`}>
                             {isArabic ? selectedReciter.arabicName : selectedReciter.name}
                           </span>
-                          <span className="text-[9px] px-1.5 py-0.2 rounded-md bg-[#C9A063]/15 text-[#DFBA7F] border border-[#C9A063]/30 hidden md:inline shrink-0 font-medium group-hover:bg-[#C9A063]/30 transition-colors">
+                          <span className={`text-[9px] px-1.5 py-0.2 rounded-md border hidden md:inline shrink-0 font-medium transition-colors ${
+                            isDark
+                              ? 'bg-white/[0.08] text-stone-200 border-white/[0.12] group-hover:bg-white/[0.14]'
+                              : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.1] group-hover:bg-black/[0.08]'
+                          }`}>
                             {isArabic ? 'تغيير' : 'Change'}
                           </span>
                         </div>
-                        <div className="text-[10px] text-stone-400 truncate flex items-center gap-1">
+                        <div className={`text-[10px] truncate flex items-center gap-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                           <span>
                             {isArabic
                               ? `آية ﴿${toEasternArabicNumerals(currentAyah.numberInSurah)}﴾ / ﴿${toEasternArabicNumerals(currentSurah.numberOfAyahs)}﴾`
@@ -1866,7 +1978,9 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                       type="button"
                       onClick={handlePrevAyah}
                       disabled={currentAyahIndex === 0}
-                      className="w-8.5 h-8.5 rounded-xl flex items-center justify-center text-stone-400 hover:text-[#DFBA7F] hover:bg-white/5 disabled:opacity-20 disabled:pointer-events-none active:scale-90 transition-all cursor-pointer"
+                      className={`w-8.5 h-8.5 rounded-xl flex items-center justify-center disabled:opacity-20 disabled:pointer-events-none active:scale-90 transition-all cursor-pointer ${
+                        isDark ? 'text-stone-400 hover:text-white hover:bg-white/[0.08]' : 'text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05]'
+                      }`}
                       title={qt.prevAyah}
                       aria-label={qt.prevAyah}
                     >
@@ -1877,14 +1991,18 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                       type="button"
                       id="btn-quran-play-pause"
                       onClick={handleTogglePlay}
-                      className="w-10 h-10 sm:w-10.5 sm:h-10.5 rounded-xl bg-gradient-to-tr from-[#C9A063] via-[#DFBA7F] to-[#B88E4F] text-[#090B0E] flex items-center justify-center shadow-[0_2px_12px_rgba(201,160,99,0.35)] active:scale-90 hover:brightness-110 transition-all cursor-pointer shrink-0"
+                      className={`w-10 h-10 sm:w-10.5 sm:h-10.5 rounded-xl flex items-center justify-center shadow-sm active:scale-90 transition-all cursor-pointer shrink-0 ${
+                        isDark
+                          ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                          : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                      }`}
                       title={isPlaying ? qt.pause : qt.playAll}
                       aria-label={isPlaying ? qt.pause : qt.playAll}
                     >
                       {isPlaying ? (
-                        <Pause className="w-4.5 h-4.5 fill-[#090B0E]" />
+                        <Pause className={`w-4.5 h-4.5 ${isDark ? 'fill-[#111214]' : 'fill-white'}`} />
                       ) : (
-                        <Play className="w-4.5 h-4.5 fill-[#090B0E] ml-0.5" />
+                        <Play className={`w-4.5 h-4.5 ml-0.5 ${isDark ? 'fill-[#111214]' : 'fill-white'}`} />
                       )}
                     </button>
 
@@ -1892,7 +2010,9 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                       type="button"
                       onClick={handleNextAyah}
                       disabled={currentAyahIndex >= activeAyahs.length - 1}
-                      className="w-8.5 h-8.5 rounded-xl flex items-center justify-center text-stone-400 hover:text-[#DFBA7F] hover:bg-white/5 disabled:opacity-20 disabled:pointer-events-none active:scale-90 transition-all cursor-pointer"
+                      className={`w-8.5 h-8.5 rounded-xl flex items-center justify-center disabled:opacity-20 disabled:pointer-events-none active:scale-90 transition-all cursor-pointer ${
+                        isDark ? 'text-stone-400 hover:text-white hover:bg-white/[0.08]' : 'text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05]'
+                      }`}
                       title={qt.nextAyah}
                       aria-label={qt.nextAyah}
                     >
@@ -1903,19 +2023,23 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                   {/* Column 3 (End): Mushaf Page Navigation & Speed Control */}
                   <div className="justify-self-end flex items-center gap-1.5 shrink-0">
                     {mushafLayout === 'book' && (
-                      <div className="flex items-center gap-0.5 sm:gap-1 px-1.5 py-0.5 rounded-xl border border-[#C9A063]/30 bg-[#C9A063]/10">
+                      <div className={`flex items-center gap-0.5 sm:gap-1 px-1.5 py-0.5 rounded-xl border ${
+                        isDark ? 'border-white/[0.12] bg-white/[0.06]' : 'border-black/[0.1] bg-[#F3F3F1]'
+                      }`}>
                         <button
                           type="button"
                           onClick={() => {
                             if (currentMushafPage > 1) setCurrentMushafPage((p) => p - 1);
                           }}
                           disabled={currentMushafPage <= 1}
-                          className="p-1 text-[#DFBA7F] hover:text-white disabled:opacity-25 cursor-pointer active:scale-90"
+                          className={`p-1 disabled:opacity-25 cursor-pointer active:scale-90 ${
+                            isDark ? 'text-stone-300 hover:text-white' : 'text-[#3F4248] hover:text-[#111214]'
+                          }`}
                           title={isArabic ? 'الصفحة السابقة' : 'Previous Page'}
                         >
                           <ChevronLeft className="w-3.5 h-3.5" />
                         </button>
-                        <span className="text-[11px] font-arabic font-bold text-[#DFBA7F] px-1">
+                        <span className={`text-[11px] font-arabic font-bold px-1 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                           ص ﴿{toEasternArabicNumerals(currentMushafPage)}﴾
                         </span>
                         <button
@@ -1924,7 +2048,9 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                             if (currentMushafPage < 604) setCurrentMushafPage((p) => p + 1);
                           }}
                           disabled={currentMushafPage >= 604}
-                          className="p-1 text-[#DFBA7F] hover:text-white disabled:opacity-25 cursor-pointer active:scale-90"
+                          className={`p-1 disabled:opacity-25 cursor-pointer active:scale-90 ${
+                            isDark ? 'text-stone-300 hover:text-white' : 'text-[#3F4248] hover:text-[#111214]'
+                          }`}
                           title={isArabic ? 'الصفحة التالية' : 'Next Page'}
                         >
                           <ChevronRight className="w-3.5 h-3.5" />
@@ -1939,7 +2065,11 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                         const nextIdx = (speeds.indexOf(playbackSpeed) + 1) % speeds.length;
                         setPlaybackSpeed(speeds[nextIdx]);
                       }}
-                      className="px-2 py-1 rounded-xl text-[10px] font-mono font-bold border border-[#DFBA7F]/30 bg-[#DFBA7F]/10 text-[#DFBA7F] hover:bg-[#DFBA7F]/20 active:scale-95 transition-all cursor-pointer shadow-2xs"
+                      className={`px-2 py-1 rounded-xl text-[10px] font-mono font-bold border active:scale-95 transition-all cursor-pointer shadow-2xs ${
+                        isDark
+                          ? 'border-white/[0.12] bg-white/[0.08] text-white hover:bg-white/[0.14]'
+                          : 'border-black/[0.1] bg-[#F3F3F1] text-[#111214] hover:bg-black/[0.08]'
+                      }`}
                       title={qt.playbackSpeed}
                     >
                       {playbackSpeed}x
@@ -1959,22 +2089,26 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
               <div
                 className={`w-full max-w-md rounded-t-3xl sm:rounded-3xl p-5 border shadow-2xl max-h-[82vh] flex flex-col ${
                   isDark
-                    ? 'bg-[#0A0D13]/98 border-[#DFBA7F]/30 text-stone-100'
-                    : 'bg-white/98 border-stone-200 text-stone-900'
+                    ? 'bg-[#14161A] border-white/[0.1] text-[#F3F4F6]'
+                    : 'bg-white border-black/[0.1] text-[#111214]'
                 }`}
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Header */}
-                <div className="flex items-center justify-between pb-3 border-b border-[#C9A063]/20 mb-3 shrink-0">
+                <div className={`flex items-center justify-between pb-3 border-b mb-3 shrink-0 ${
+                  isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+                }`}>
                   <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-xl bg-[#C9A063]/15 border border-[#C9A063]/30 flex items-center justify-center text-[#DFBA7F]">
-                      <User className="w-4 h-4 text-[#C9A063]" />
+                    <div className={`w-8 h-8 rounded-xl border flex items-center justify-center ${
+                      isDark ? 'bg-white/[0.08] border-white/[0.12] text-white' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+                    }`}>
+                      <User className="w-4 h-4" />
                     </div>
                     <div>
                       <h3 className="font-serif-heading font-bold text-sm sm:text-base">
                         {isArabic ? 'اختر قارئ القرآن الكريم' : 'Select Quran Reciter'}
                       </h3>
-                      <p className="text-[10px] text-stone-400">
+                      <p className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                         {isArabic ? 'تلاوات خاشعة بأصوات كبار المشايخ والقراء' : 'Authentic recitations by renowned Shuyukh'}
                       </p>
                     </div>
@@ -1982,7 +2116,9 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                   <button
                     type="button"
                     onClick={() => setShowReciterMenu(false)}
-                    className="p-1.5 rounded-xl text-stone-400 hover:text-white hover:bg-white/10 active:scale-90 transition-all cursor-pointer"
+                    className={`p-1.5 rounded-xl active:scale-90 transition-all cursor-pointer ${
+                      isDark ? 'text-stone-400 hover:text-white hover:bg-white/[0.08]' : 'text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05]'
+                    }`}
                     aria-label="Close"
                   >
                     <X className="w-4 h-4" />
@@ -2003,18 +2139,24 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                         }}
                         className={`w-full p-2.5 rounded-2xl text-left flex items-center justify-between transition-all cursor-pointer active:scale-[0.99] ${
                           isSelected
-                            ? 'bg-[#C9A063]/25 text-[#DFBA7F] font-semibold border border-[#C9A063]/40 shadow-xs'
+                            ? isDark
+                              ? 'bg-white/[0.1] text-white font-semibold border border-white/35 shadow-xs'
+                              : 'bg-[#111214]/[0.06] text-[#111214] font-semibold border border-[#111214]/40 shadow-xs'
                             : isDark
-                            ? 'hover:bg-white/5 border border-transparent text-stone-300'
-                            : 'hover:bg-stone-100 border border-transparent text-stone-700'
+                            ? 'hover:bg-white/[0.05] border border-transparent text-stone-300'
+                            : 'hover:bg-black/[0.04] border border-transparent text-[#3F4248]'
                         }`}
                       >
                         <div className="flex items-center gap-3 min-w-0">
                           <div
                             className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 ${
                               isSelected
-                                ? 'bg-gradient-to-tr from-[#C9A063] to-[#DFBA7F] text-[#090B0E] shadow-sm'
-                                : 'bg-stone-800 text-stone-300'
+                                ? isDark
+                                  ? 'bg-white text-[#111214] shadow-sm'
+                                  : 'bg-[#111214] text-white shadow-sm'
+                                : isDark
+                                ? 'bg-[#1B1D23] text-stone-300'
+                                : 'bg-[#F3F3F1] text-[#3F4248]'
                             }`}
                           >
                             {isSelected && isPlaying ? (
@@ -2027,17 +2169,21 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                             <div className="text-xs sm:text-sm font-semibold truncate">
                               {isArabic ? r.arabicName : r.name}
                             </div>
-                            <div className="text-[10px] text-stone-400 truncate">
+                            <div className={`text-[10px] truncate ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                               {isArabic ? r.name : r.arabicName}
                             </div>
                           </div>
                         </div>
 
                         <div className="flex items-center gap-2 shrink-0">
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#C9A063]/10 text-[#DFBA7F] border border-[#C9A063]/20">
+                          <span className={`text-[10px] px-2 py-0.5 rounded-full border ${
+                            isDark
+                              ? 'bg-white/[0.06] text-stone-300 border-white/[0.1]'
+                              : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.08]'
+                          }`}>
                             {r.style}
                           </span>
-                          {isSelected && <Check className="w-4 h-4 text-[#DFBA7F]" />}
+                          {isSelected && <Check className={`w-4 h-4 ${isDark ? 'text-white' : 'text-[#111214]'}`} />}
                         </div>
                       </button>
                     );
@@ -2057,29 +2203,33 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
           {/* ========================================================================= */}
           <div
             id="quran-search-container"
-            className={`rounded-3xl p-4 sm:p-5 border transition-all transform-gpu shadow-xl ${
+            className={`rounded-3xl p-4 sm:p-5 border transition-all transform-gpu ${
               isDark
-                ? 'liquid-glass border-[#C9A063]/35 shadow-[0_12px_36px_rgba(0,0,0,0.6)]'
-                : 'liquid-glass-light border-[#C9A063]/30 shadow-md'
+                ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+                : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
             }`}
           >
             <div className="flex items-center justify-between gap-3 mb-3">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-[#C9A063]/15 border border-[#C9A063]/30 flex items-center justify-center text-[#DFBA7F]">
-                  <Search className="w-4 h-4 text-[#C9A063]" />
+                <div className={`w-8 h-8 rounded-xl border flex items-center justify-center ${
+                  isDark ? 'bg-white/[0.08] border-white/[0.1] text-white' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+                }`}>
+                  <Search className="w-4 h-4" />
                 </div>
                 <div>
-                  <h2 className={`text-sm font-serif-heading font-bold ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+                  <h2 className={`text-sm font-serif-heading font-bold ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                     {qt.quranHeader}
                   </h2>
-                  <p className="text-[11px] text-stone-400">
+                  <p className={`text-[11px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     {qt.quranSubheader}
                   </p>
                 </div>
               </div>
 
               {/* Scope Switcher: Surahs vs Verses */}
-              <div className="flex items-center p-1 rounded-xl bg-stone-800/40 border border-[#C9A063]/20">
+              <div className={`flex items-center p-1 rounded-xl border ${
+                isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
+              }`}>
                 <button
                   type="button"
                   onClick={() => {
@@ -2088,16 +2238,20 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                   }}
                   className={`px-2.5 sm:px-3 py-1 rounded-lg text-xs font-semibold transition-all active:scale-95 flex items-center gap-1.5 ${
                     searchScope === 'surahs' && activeTab === 'surahs'
-                      ? 'bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] text-[#090B0E] font-bold shadow-xs'
+                      ? isDark
+                        ? 'bg-white text-[#111214] font-bold shadow-xs'
+                        : 'bg-[#111214] text-white font-bold shadow-xs'
                       : isDark
-                      ? 'text-stone-300 hover:text-[#DFBA7F]'
-                      : 'text-stone-600 hover:text-stone-900'
+                      ? 'text-stone-300 hover:text-white'
+                      : 'text-[#5A5D63] hover:text-[#111214]'
                   }`}
                 >
                   <BookOpen className="w-3.5 h-3.5" />
                   <span>{qt.tabSurahs}</span>
                   {searchQuery.trim() && searchScope === 'surahs' && (
-                    <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-black/20 font-mono font-bold">
+                    <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono font-bold ${
+                      isDark ? 'bg-black/15' : 'bg-white/20'
+                    }`}>
                       {filteredSurahs.length}
                     </span>
                   )}
@@ -2111,16 +2265,20 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                   }}
                   className={`px-2.5 sm:px-3 py-1 rounded-lg text-xs font-semibold transition-all active:scale-95 flex items-center gap-1.5 ${
                     searchScope === 'verses' || activeTab === 'verses'
-                      ? 'bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] text-[#090B0E] font-bold shadow-xs'
+                      ? isDark
+                        ? 'bg-white text-[#111214] font-bold shadow-xs'
+                        : 'bg-[#111214] text-white font-bold shadow-xs'
                       : isDark
-                      ? 'text-stone-300 hover:text-[#DFBA7F]'
-                      : 'text-stone-600 hover:text-stone-900'
+                      ? 'text-stone-300 hover:text-white'
+                      : 'text-[#5A5D63] hover:text-[#111214]'
                   }`}
                 >
                   <FileText className="w-3.5 h-3.5" />
                   <span>{qt.tabVerses}</span>
                   {verseSearchCount > 0 && (
-                    <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-black/20 font-mono font-bold">
+                    <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono font-bold ${
+                      isDark ? 'bg-black/15' : 'bg-white/20'
+                    }`}>
                       {verseSearchCount}
                     </span>
                   )}
@@ -2130,7 +2288,7 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
 
             {/* Main Search Input */}
             <div className="relative">
-              <Search className="w-4 h-4 text-[#C9A063] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Search className={`w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`} />
               <input
                 type="text"
                 value={searchQuery}
@@ -2141,16 +2299,16 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                   }
                 }}
                 placeholder={searchScope === 'verses' ? qt.searchVersePlaceholder : qt.searchSurahPlaceholder}
-                className={`w-full pl-10 pr-20 py-3 rounded-2xl text-xs font-medium border transition-all focus:outline-none focus:ring-2 focus:ring-[#C9A063]/50 ${
+                className={`w-full pl-10 pr-20 py-3 rounded-2xl text-xs font-medium border transition-all focus:outline-none focus:ring-2 ${
                   isDark
-                    ? 'bg-[#0E1217]/90 border-[#C9A063]/30 text-stone-100 placeholder-stone-500 shadow-inner'
-                    : 'bg-white border-stone-200 text-stone-900 placeholder-stone-400 shadow-xs'
+                    ? 'bg-[#1B1D23] border-white/[0.1] text-white placeholder-stone-500 focus:ring-white/25 shadow-inner'
+                    : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214] placeholder-[#6B6F76] focus:ring-[#111214]/25 shadow-2xs'
                 }`}
               />
 
               <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
                 {isSearchingVerses && (
-                  <div className="w-5 h-2 rounded-full bg-[#C9A063]/50 animate-pulse" />
+                  <div className={`w-5 h-2 rounded-full animate-pulse ${isDark ? 'bg-white/40' : 'bg-[#111214]/40'}`} />
                 )}
 
                 {searchQuery.trim() && (
@@ -2162,7 +2320,11 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                       setVerseSearchCount(0);
                     }}
                     aria-label="Clear search"
-                    className="p-1 rounded-full text-stone-400 hover:text-stone-200 hover:bg-stone-700/50 active:scale-90 transition-all"
+                    className={`p-1 rounded-full active:scale-90 transition-all ${
+                      isDark
+                        ? 'text-stone-400 hover:text-white hover:bg-white/[0.1]'
+                        : 'text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.08]'
+                    }`}
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
@@ -2171,9 +2333,9 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
             </div>
 
             {/* Popular Keyword Inspiration Chips */}
-            <div className="mt-3 pt-3 border-t border-[#C9A063]/15">
-              <div className="flex items-center gap-1.5 mb-2 text-[11px] font-semibold text-[#DFBA7F]">
-                <Flame className="w-3.5 h-3.5 text-[#C9A063]" />
+            <div className={`mt-3 pt-3 border-t ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
+              <div className={`flex items-center gap-1.5 mb-2 text-[11px] font-semibold ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
+                <Flame className={`w-3.5 h-3.5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
                 <span>{isArabic ? 'موضوعات قرآنية وكلمات شائعة:' : 'Popular Themes & Verse Keywords:'}</span>
               </div>
 
@@ -2185,14 +2347,16 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                     onClick={() => handleSelectKeywordChip(kw.query)}
                     className={`px-2.5 py-1 rounded-xl text-[11px] font-medium border transition-all active:scale-95 whitespace-nowrap flex items-center gap-1 ${
                       searchQuery.toLowerCase() === kw.query.toLowerCase()
-                        ? 'bg-[#C9A063]/25 border-[#C9A063] text-[#DFBA7F] font-bold shadow-2xs'
+                        ? isDark
+                          ? 'bg-white text-[#111214] border-white font-bold shadow-2xs'
+                          : 'bg-[#111214] text-white border-[#111214] font-bold shadow-2xs'
                         : isDark
-                        ? 'bg-[#0E1217]/70 border-[#C9A063]/20 text-stone-300 hover:border-[#C9A063]/50 hover:text-[#DFBA7F]'
-                        : 'bg-white border-stone-200 text-stone-700 hover:border-[#C9A063]/50'
+                        ? 'bg-[#1B1D23] border-white/[0.08] text-stone-300 hover:border-white/30 hover:text-white'
+                        : 'bg-white border-black/[0.08] text-[#3F4248] hover:border-black/30 hover:text-[#111214]'
                     }`}
                   >
                     <span>{isArabic ? kw.arabic : kw.label}</span>
-                    {!isArabic && <span className="text-[9px] text-[#C9A063] font-arabic opacity-80">{kw.arabic}</span>}
+                    {!isArabic && <span className="text-[9px] font-arabic opacity-80">{kw.arabic}</span>}
                   </button>
                 ))}
               </div>
@@ -2204,36 +2368,39 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
           {/* ========================================================================= */}
           <div
             id="quran-teacher-ai-flagship-banner"
-            className={`rounded-3xl p-5 sm:p-6 border transition-all transform-gpu shadow-md relative overflow-hidden ${
+            className={`rounded-3xl p-5 sm:p-6 border transition-all transform-gpu relative overflow-hidden ${
               isDark
-                ? 'liquid-glass border-[#C9A063]/40 shadow-md bg-gradient-to-r from-[#0C1017] via-[#10151E] to-[#0A0D12]'
-                : 'liquid-glass-light border-[#C9A063]/40 shadow-sm bg-gradient-to-r from-amber-50/70 via-white to-amber-50/40'
+                ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+                : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
             }`}
           >
-            {/* Subtle background golden glow accent */}
-            <div className="absolute -right-12 -top-12 w-48 h-48 bg-[#C9A063]/10 rounded-full blur-3xl pointer-events-none" />
-
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 relative z-10">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#C9A063] via-[#DFBA7F] to-[#8E6527] flex items-center justify-center text-[#080A0E] shadow-xs shrink-0">
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-xs shrink-0 ${
+                  isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+                }`}>
                   <GraduationCap className="w-6 h-6" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-xs font-bold text-[#DFBA7F] font-cinzel tracking-wider">
+                    <span className={`text-xs font-bold font-cinzel tracking-wider ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                       {isArabic ? 'المعلم القرآني الذكي' : 'Flagship Feature'}
                     </span>
-                    <span className="text-[9px] px-2 py-0.5 rounded-full bg-[#C9A063]/20 text-[#DFBA7F] border border-[#C9A063]/40 font-bold tracking-wide uppercase">
+                    <span className={`text-[9px] px-2 py-0.5 rounded-full border font-bold tracking-wide uppercase ${
+                      isDark ? 'bg-white/[0.08] text-stone-200 border-white/[0.12]' : 'bg-[#F3F3F1] text-[#111214] border-black/[0.1]'
+                    }`}>
                       {isArabic ? 'تسميع صوتي تفاعلي' : 'Interactive Voice Lesson'}
                     </span>
-                    <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-medium">
+                    <span className={`text-[9px] px-2 py-0.5 rounded-full border font-medium ${
+                      isDark ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' : 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                    }`}>
                       {isArabic ? 'انتقال تلقائي ذكي' : 'Hands-Free Auto-Advance'}
                     </span>
                   </div>
-                  <h3 className={`text-lg font-serif-heading font-bold mt-1 ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+                  <h3 className={`text-lg font-serif-heading font-bold mt-1 ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                     {isArabic ? 'المعلم القرآني الصوتي' : 'Quran Teacher AI'}
                   </h3>
-                  <p className="text-xs text-stone-400 mt-1 max-w-xl leading-relaxed">
+                  <p className={`text-xs mt-1 max-w-xl leading-relaxed ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     {isArabic
                       ? 'جلسة تعليمية وتسميع تفاعلية حية. يتحدث المعلم ويستمع إلى تلاوتك ويقيم كل آية بدقة وينتقل تلقائياً دون الحاجة للمس الشاشة.'
                       : 'A real-time Quran teacher session. The AI speaks, listens as you recite, evaluates each ayah accurately, and advances automatically without touching the screen.'}
@@ -2245,7 +2412,11 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                 <button
                   id="btn-launch-quran-teacher-banner"
                   onClick={() => handleOpenQuranTeacher(1, 1, 7)}
-                  className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] text-[#080A0E] font-bold text-xs shadow-sm hover:brightness-105 active:scale-95 transition-all flex items-center justify-center gap-2"
+                  className={`w-full sm:w-auto px-6 py-3 rounded-2xl font-bold text-xs shadow-sm active:scale-95 transition-all flex items-center justify-center gap-2 ${
+                    isDark
+                      ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                      : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                  }`}
                 >
                   <GraduationCap className="w-4 h-4" />
                   <span>{isArabic ? 'بدء درس المعلم' : 'Start Teacher Lesson'}</span>
@@ -2259,28 +2430,34 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
           {/* ========================================================================= */}
           <div
             id="quran-tasmee3-feature-banner"
-            className={`rounded-3xl p-5 sm:p-6 border transition-all transform-gpu shadow-md ${
+            className={`rounded-3xl p-5 sm:p-6 border transition-all transform-gpu ${
               isDark
-                ? 'liquid-glass border-[#C9A063]/35 shadow-md'
-                : 'liquid-glass-light border-[#C9A063]/30 shadow-sm'
+                ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+                : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
             }`}
           >
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="flex items-start gap-3">
-                <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#C9A063]/30 to-[#DFBA7F]/10 border border-[#C9A063]/40 flex items-center justify-center text-[#DFBA7F] shadow-sm shrink-0">
-                  <Mic className="w-5 h-5 text-[#DFBA7F]" />
+                <div className={`w-11 h-11 rounded-2xl border flex items-center justify-center shadow-sm shrink-0 ${
+                  isDark
+                    ? 'bg-white/[0.08] border-white/[0.12] text-white'
+                    : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+                }`}>
+                  <Mic className="w-5 h-5" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-semibold text-[#DFBA7F] font-cinzel">{isArabic ? 'خدمة التسميع الصوتي' : 'Tasmee3'}</span>
-                    <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold tracking-wide uppercase">
+                    <span className={`text-xs font-semibold font-cinzel ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>{isArabic ? 'خدمة التسميع الصوتي' : 'Tasmee3'}</span>
+                    <span className={`text-[9px] px-2 py-0.5 rounded-full border font-bold tracking-wide uppercase ${
+                      isDark ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' : 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                    }`}>
                       {isArabic ? 'متابعة صوتية ذكية' : 'Recitation Listening'}
                     </span>
                   </div>
-                  <h3 className={`text-base font-serif-heading font-bold mt-0.5 ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+                  <h3 className={`text-base font-serif-heading font-bold mt-0.5 ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                     {isArabic ? 'اقرأ ونور يستمع ويتابع معك' : 'Recite & Noor Follows'}
                   </h3>
-                  <p className="text-xs text-stone-400 mt-1 max-w-xl leading-relaxed">
+                  <p className={`text-xs mt-1 max-w-xl leading-relaxed ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     {isArabic
                       ? 'اتلُ القرآن الكريم بصوتك، ونور يستمع عبر الميكروفون ويتابع الآيات آية بآية تلقائياً أثناء تلاوتك.'
                       : 'Recite the Holy Qur\'an aloud. Noor listens through your microphone and automatically tracks your verse progression in real time as you recite.'}
@@ -2292,7 +2469,11 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                 <button
                   id="btn-launch-tasmee3-catalog"
                   onClick={() => handleOpenTasmee3(1)}
-                  className="w-full sm:w-auto px-5 py-2.5 rounded-2xl bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] text-[#090B0E] font-bold text-xs shadow-sm hover:brightness-105 active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0"
+                  className={`w-full sm:w-auto px-5 py-2.5 rounded-2xl font-bold text-xs shadow-sm active:scale-95 transition-all flex items-center justify-center gap-2 shrink-0 ${
+                    isDark
+                      ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                      : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                  }`}
                 >
                   <Mic className="w-3.5 h-3.5" />
                   <span>{isArabic ? 'بدء التسميع' : 'Start Tasmee3'}</span>
@@ -2304,19 +2485,19 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
           {/* Reading Goals & Khatm Progress Banner */}
           <div
             id="quran-goals-banner"
-            className={`rounded-3xl p-6 border transition-all transform-gpu shadow-md ${
+            className={`rounded-3xl p-6 border transition-all transform-gpu ${
               isDark
-                ? 'liquid-glass border-[#C9A063]/30 shadow-md'
-                : 'liquid-glass-light border-[#C9A063]/30 shadow-sm'
+                ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+                : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
             }`}
           >
             <div className="flex items-center justify-between mb-3.5">
               <div>
-                <div className="flex items-center gap-1.5 text-xs font-semibold text-[#DFBA7F]">
-                  <Sparkles className="w-3.5 h-3.5 text-[#C9A063]" />
+                <div className={`flex items-center gap-1.5 text-xs font-semibold ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
+                  <Sparkles className={`w-3.5 h-3.5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
                   <span className="font-cinzel">{isArabic ? 'رحاب القرآن الكريم' : "Qur'an Complete Experience"}</span>
                 </div>
-                <h2 className={`text-base font-serif-heading font-bold mt-0.5 ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+                <h2 className={`text-base font-serif-heading font-bold mt-0.5 ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                   {userStats.quranPagesRead === 0
                     ? (isArabic ? 'تلاوة واستماع لجميع سور القرآن الكريم الـ 114.' : 'Read and Listen to the Complete 114 Surahs.')
                     : (isArabic ? 'تقدم ختمة القرآن الكريم' : "Qur'an Reading Progress")}
@@ -2324,25 +2505,27 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
               </div>
 
               <div className="text-right">
-                <span className="text-xs font-mono font-bold text-[#DFBA7F]">
+                <span className={`text-xs font-mono font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                   {userStats.quranPagesRead} / 604 {isArabic ? 'صفحة' : 'pages'}
                 </span>
-                <div className="text-[10px] text-stone-400 font-medium">
+                <div className={`text-[10px] font-medium ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                   {Math.round((userStats.quranPagesRead / 604) * 100)}% {isArabic ? 'من الختمة المباركة' : 'of Khatm'}
                 </div>
               </div>
             </div>
 
-            <div className="w-full bg-stone-800/60 rounded-full h-2.5 overflow-hidden mb-3.5">
+            <div className={`w-full rounded-full h-2.5 overflow-hidden mb-3.5 ${isDark ? 'bg-white/[0.08]' : 'bg-black/[0.08]'}`}>
               <div
                 className="liquid-wave-bar h-2.5 rounded-full transition-all duration-300 shadow-xs"
                 style={{ width: `${Math.max(userStats.quranPagesRead > 0 ? 2 : 0, (userStats.quranPagesRead / 604) * 100)}%` }}
               />
             </div>
 
-            <div className="flex items-center justify-between text-xs pt-1.5 border-t border-[#C9A063]/15">
-              <div className="flex items-center gap-1.5 text-[#DFBA7F] font-semibold">
-                <Award className="w-4 h-4 text-[#C9A063]" />
+            <div className={`flex items-center justify-between text-xs pt-1.5 border-t ${
+              isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+            }`}>
+              <div className={`flex items-center gap-1.5 font-semibold ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>
+                <Award className={`w-4 h-4 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
                 <span>
                   {isArabic
                     ? `${userStats.quranStreak} يوم التزام متواصل`
@@ -2354,7 +2537,9 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                   const lastSurah = ALL_SURAHS.find((s) => s.number === userStats.lastReadSurah) || ALL_SURAHS[0];
                   handleSelectSurah(lastSurah, userStats.lastReadAyah || 1);
                 }}
-                className="text-[#DFBA7F] hover:underline font-semibold flex items-center gap-1 active:scale-95 transition-transform"
+                className={`hover:underline font-semibold flex items-center gap-1 active:scale-95 transition-transform ${
+                  isDark ? 'text-white' : 'text-[#111214]'
+                }`}
               >
                 <span>
                   {isArabic
@@ -2376,16 +2561,18 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
               }}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all active:scale-95 whitespace-nowrap flex items-center gap-1.5 ${
                 activeTab === 'surahs' && selectedJuz === null
-                  ? 'bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] text-[#090B0E] border-[#C9A063] shadow-sm font-bold'
+                  ? isDark
+                    ? 'bg-white text-[#111214] border-white shadow-sm font-bold'
+                    : 'bg-[#111214] text-white border-[#111214] shadow-sm font-bold'
                   : isDark
-                  ? 'bg-[#0E1217]/85 border-[#C9A063]/20 text-stone-300'
-                  : 'bg-white border-stone-200 text-stone-700'
+                  ? 'bg-[#14161A] border-white/[0.08] text-stone-300 hover:border-white/25'
+                  : 'bg-white border-black/[0.08] text-[#3F4248] hover:border-black/25'
               }`}
             >
               <BookOpen className="w-3.5 h-3.5" />
               <span>{qt.tabSurahs}</span>
               {searchQuery.trim() && searchScope === 'surahs' && (
-                <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-black/20 font-mono">
+                <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${isDark ? 'bg-black/15' : 'bg-white/20'}`}>
                   {filteredSurahs.length}
                 </span>
               )}
@@ -2398,16 +2585,18 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
               }}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all active:scale-95 whitespace-nowrap flex items-center gap-1.5 ${
                 activeTab === 'verses'
-                  ? 'bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] text-[#090B0E] border-[#C9A063] shadow-sm font-bold'
+                  ? isDark
+                    ? 'bg-white text-[#111214] border-white shadow-sm font-bold'
+                    : 'bg-[#111214] text-white border-[#111214] shadow-sm font-bold'
                   : isDark
-                  ? 'bg-[#0E1217]/85 border-[#C9A063]/20 text-stone-300'
-                  : 'bg-white border-stone-200 text-stone-700'
+                  ? 'bg-[#14161A] border-white/[0.08] text-stone-300 hover:border-white/25'
+                  : 'bg-white border-black/[0.08] text-[#3F4248] hover:border-black/25'
               }`}
             >
               <FileText className="w-3.5 h-3.5" />
               <span>{qt.tabVerses}</span>
               {verseSearchCount > 0 && (
-                <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-black/20 font-mono">
+                <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${isDark ? 'bg-black/15' : 'bg-white/20'}`}>
                   {verseSearchCount}
                 </span>
               )}
@@ -2417,10 +2606,12 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
               onClick={() => setActiveTab('bookmarks')}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all flex items-center gap-1.5 active:scale-95 whitespace-nowrap ${
                 activeTab === 'bookmarks'
-                  ? 'bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] text-[#090B0E] border-[#C9A063] shadow-sm font-bold'
+                  ? isDark
+                    ? 'bg-white text-[#111214] border-white shadow-sm font-bold'
+                    : 'bg-[#111214] text-white border-[#111214] shadow-sm font-bold'
                   : isDark
-                  ? 'bg-[#0E1217]/85 border-[#C9A063]/20 text-stone-300'
-                  : 'bg-white border-stone-200 text-stone-700'
+                  ? 'bg-[#14161A] border-white/[0.08] text-stone-300 hover:border-white/25'
+                  : 'bg-white border-black/[0.08] text-[#3F4248] hover:border-black/25'
               }`}
             >
               <Bookmark className="w-3.5 h-3.5" />
@@ -2436,21 +2627,21 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
               {/* Results status banner */}
               {searchQuery.trim().length >= 2 && !isSearchingVerses && (
                 <div className="flex items-center justify-between px-1">
-                  <span className={`text-xs font-medium ${isDark ? 'text-stone-300' : 'text-stone-700'}`}>
+                  <span className={`text-xs font-medium ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                     {isArabic ? (
                       <>
-                        تم العثور على <span className="font-bold text-[#DFBA7F]">{verseSearchCount}</span> آية تطابق{' '}
-                        <span className="font-semibold text-[#DFBA7F]">"{searchQuery}"</span>
+                        تم العثور على <span className={`font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>{verseSearchCount}</span> آية تطابق{' '}
+                        <span className={`font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>"{searchQuery}"</span>
                       </>
                     ) : (
                       <>
-                        Found <span className="font-bold text-[#DFBA7F]">{verseSearchCount}</span> verses matching{' '}
-                        <span className="font-semibold text-[#DFBA7F]">"{searchQuery}"</span>
+                        Found <span className={`font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>{verseSearchCount}</span> verses matching{' '}
+                        <span className={`font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>"{searchQuery}"</span>
                       </>
                     )}
                   </span>
                   {verseSearchResults.length > 0 && (
-                    <span className="text-[11px] text-stone-400">
+                    <span className={`text-[11px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                       {isArabic ? 'انقر على "اقرأ في السورة" للانتقال المباشر للآية' : 'Click "Read in Surah" to jump directly to any verse'}
                     </span>
                   )}
@@ -2466,8 +2657,10 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
 
               {/* Error State */}
               {verseSearchError && !isSearchingVerses && (
-                <div className="p-6 rounded-2xl border border-red-500/30 bg-red-500/10 text-center space-y-2">
-                  <p className="text-xs text-red-300">{verseSearchError}</p>
+                <div className={`p-6 rounded-2xl border text-center space-y-2 ${
+                  isDark ? 'border-red-500/30 bg-red-500/10' : 'border-red-300 bg-red-50'
+                }`}>
+                  <p className={`text-xs ${isDark ? 'text-red-300' : 'text-red-700'}`}>{verseSearchError}</p>
                   <button
                     type="button"
                     onClick={() => {
@@ -2475,7 +2668,9 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                         handleSelectKeywordChip(searchQuery.trim());
                       }
                     }}
-                    className="px-3 py-1 rounded-xl bg-red-500/20 text-red-200 text-xs font-semibold hover:bg-red-500/30"
+                    className={`px-3 py-1 rounded-xl text-xs font-semibold ${
+                      isDark ? 'bg-red-500/20 text-red-200 hover:bg-red-500/30' : 'bg-red-100 text-red-800 hover:bg-red-200'
+                    }`}
                   >
                     Retry Search
                   </button>
@@ -2485,28 +2680,30 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
               {/* Empty Initial Search Prompt */}
               {searchQuery.trim().length < 2 && !isSearchingVerses && (
                 <div className={`p-8 rounded-3xl border text-center space-y-4 ${
-                  isDark ? 'bg-[#0E1217]/85 border-[#C9A063]/25' : 'bg-white border-stone-200 shadow-sm'
+                  isDark ? 'bg-[#14161A] border-white/[0.08]' : 'bg-white border-black/[0.08] shadow-sm'
                 }`}>
-                  <div className="w-12 h-12 rounded-2xl bg-[#C9A063]/15 border border-[#C9A063]/30 flex items-center justify-center text-[#DFBA7F] mx-auto">
-                    <Search className="w-6 h-6 text-[#C9A063]" />
+                  <div className={`w-12 h-12 rounded-2xl border flex items-center justify-center mx-auto ${
+                    isDark ? 'bg-white/[0.08] border-white/[0.1] text-white' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+                  }`}>
+                    <Search className="w-6 h-6" />
                   </div>
                   <div className="max-w-md mx-auto">
-                    <h3 className={`text-sm font-serif-heading font-bold ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+                    <h3 className={`text-sm font-serif-heading font-bold ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                       {isArabic ? 'البحث الموضوعي في آيات القرآن الكريم' : "Search Inside Qur'an Verses"}
                     </h3>
-                    <p className="text-xs text-stone-400 mt-1">
+                    <p className={`text-xs mt-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                       {isArabic ? (
                         <>
-                          اكتب أي كلمة أو معنى (مثل: <span className="text-[#DFBA7F]">رحمة</span>،{' '}
-                          <span className="text-[#DFBA7F]">نور</span>، <span className="text-[#DFBA7F]">صبر</span>،{' '}
-                          <span className="text-[#DFBA7F]">جنة</span>، <span className="text-[#DFBA7F]">مغفرة</span>) لاستخراج جميع الآيات الشريفة من سور القرآن الـ 114.
+                          اكتب أي كلمة أو معنى (مثل: <span className={isDark ? 'text-white font-semibold' : 'text-[#111214] font-semibold'}>رحمة</span>،{' '}
+                          <span className={isDark ? 'text-white font-semibold' : 'text-[#111214] font-semibold'}>نور</span>، <span className={isDark ? 'text-white font-semibold' : 'text-[#111214] font-semibold'}>صبر</span>،{' '}
+                          <span className={isDark ? 'text-white font-semibold' : 'text-[#111214] font-semibold'}>جنة</span>، <span className={isDark ? 'text-white font-semibold' : 'text-[#111214] font-semibold'}>مغفرة</span>) لاستخراج جميع الآيات الشريفة من سور القرآن الـ 114.
                         </>
                       ) : (
                         <>
-                          Type any keyword in English or Arabic (e.g., <span className="text-[#DFBA7F]">mercy</span>,{' '}
-                          <span className="text-[#DFBA7F]">light</span>, <span className="text-[#DFBA7F]">patience</span>,{' '}
-                          <span className="text-[#DFBA7F]">paradise</span>, <span className="text-[#DFBA7F]">صبر</span>,{' '}
-                          <span className="text-[#DFBA7F]">نور</span>) to find all matching ayahs across all 114 Surahs.
+                          Type any keyword in English or Arabic (e.g., <span className={isDark ? 'text-white font-semibold' : 'text-[#111214] font-semibold'}>mercy</span>,{' '}
+                          <span className={isDark ? 'text-white font-semibold' : 'text-[#111214] font-semibold'}>light</span>, <span className={isDark ? 'text-white font-semibold' : 'text-[#111214] font-semibold'}>patience</span>,{' '}
+                          <span className={isDark ? 'text-white font-semibold' : 'text-[#111214] font-semibold'}>paradise</span>, <span className={isDark ? 'text-white font-semibold' : 'text-[#111214] font-semibold'}>صبر</span>,{' '}
+                          <span className={isDark ? 'text-white font-semibold' : 'text-[#111214] font-semibold'}>نور</span>) to find all matching ayahs across all 114 Surahs.
                         </>
                       )}
                     </p>
@@ -2520,8 +2717,8 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                         onClick={() => handleSelectKeywordChip(kw.query)}
                         className={`px-3 py-1.5 rounded-xl text-xs font-medium border transition-all active:scale-95 ${
                           isDark
-                            ? 'bg-[#0E1217] border-[#C9A063]/30 text-stone-200 hover:border-[#C9A063] hover:text-[#DFBA7F]'
-                            : 'bg-stone-50 border-stone-200 text-stone-700 hover:border-[#C9A063]'
+                            ? 'bg-[#1B1D23] border-white/[0.1] text-stone-200 hover:border-white/35 hover:text-white'
+                            : 'bg-[#F3F3F1] border-black/[0.08] text-[#3F4248] hover:border-black/30 hover:text-[#111214]'
                         }`}
                       >
                         {kw.label}
@@ -2534,12 +2731,12 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
               {/* No Results Found */}
               {searchQuery.trim().length >= 2 && !isSearchingVerses && verseSearchResults.length === 0 && !verseSearchError && (
                 <div className={`p-8 rounded-3xl border text-center space-y-3 ${
-                  isDark ? 'bg-[#0E1217]/85 border-[#C9A063]/20' : 'bg-white border-stone-200'
+                  isDark ? 'bg-[#14161A] border-white/[0.08]' : 'bg-white border-black/[0.08]'
                 }`}>
-                  <p className="text-xs text-stone-400">
-                    No verses found matching <span className="text-[#DFBA7F] font-semibold">"{searchQuery}"</span>.
+                  <p className={`text-xs ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
+                    No verses found matching <span className={`font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>"{searchQuery}"</span>.
                   </p>
-                  <p className="text-[11px] text-stone-500">
+                  <p className={`text-[11px] ${isDark ? 'text-stone-500' : 'text-[#6B6F76]'}`}>
                     Try searching for common themes like "mercy", "light", "patience", "parents", or "forgive".
                   </p>
                 </div>
@@ -2553,12 +2750,14 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                       key={`${match.surah.number}-${match.numberInSurah}-${idx}`}
                       className={`rounded-2xl p-4 sm:p-5 border transition-all duration-150 transform-gpu ${
                         isDark
-                          ? 'bg-[#0E1217]/90 border-[#C9A063]/25 hover:border-[#C9A063]/60 shadow-lg'
-                          : 'bg-white border-stone-200 hover:border-[#C9A063]/60 shadow-xs'
+                          ? 'bg-[#14161A] border-white/[0.08] hover:border-white/25 shadow-md'
+                          : 'bg-white border-black/[0.08] hover:border-black/25 shadow-xs'
                       }`}
                     >
                       {/* Verse Header Info */}
-                      <div className="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-[#C9A063]/15">
+                      <div className={`flex items-center justify-between gap-2 mb-3 pb-2.5 border-b ${
+                        isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+                      }`}>
                         <div className="flex items-center gap-2.5">
                           <MadaniAyahOrnament
                             ayahNumber={match.numberInSurah}
@@ -2570,25 +2769,25 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                           />
                           <div>
                             <div className="flex items-center gap-2">
-                              <h4 className={`text-xs sm:text-sm font-serif-heading font-bold ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+                              <h4 className={`text-xs sm:text-sm font-serif-heading font-bold ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                                 {isArabic ? `سورة ${match.surah.name}` : `Surah ${match.surah.englishName}`}
                               </h4>
                               {!isArabic && (
-                                <span className="text-[10px] text-stone-400">
+                                <span className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                                   ({match.surah.englishNameTranslation})
                                 </span>
                               )}
                               {match.surah.revelationType && (
                                 <span className={`text-[9px] px-1.5 py-0.2 rounded-md ${
                                   match.surah.revelationType === 'Meccan'
-                                    ? isDark ? 'bg-[#C9A063]/15 text-[#DFBA7F]' : 'bg-amber-50 text-amber-800'
-                                    : isDark ? 'bg-amber-600/15 text-amber-300' : 'bg-stone-100 text-stone-700'
+                                    ? isDark ? 'bg-white/[0.08] text-stone-200' : 'bg-[#F3F3F1] text-[#111214]'
+                                    : isDark ? 'bg-white/[0.05] text-stone-300' : 'bg-black/[0.05] text-[#3F4248]'
                                 }`}>
                                   {isArabic ? (match.surah.revelationType === 'Meccan' ? 'مكية' : 'مدنية') : match.surah.revelationType}
                                 </span>
                               )}
                             </div>
-                            <div className="text-[10px] text-stone-400">
+                            <div className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                               {isArabic
                                 ? `الجزء ${match.juz || 1} • الصفحة ${match.page || 1}`
                                 : `Juz ${match.juz || 1} • Page ${match.page || 1}`}
@@ -2596,29 +2795,35 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                           </div>
                         </div>
 
-                        <div className="font-arabic text-lg font-bold text-[#DFBA7F]">
+                        <div className={`font-arabic text-lg font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                           {match.surah.name}
                         </div>
                       </div>
 
                       {/* Verse Text with Keyword Highlighting */}
                       <div className="space-y-2.5 my-3">
-                        <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? 'text-stone-200' : 'text-stone-800'}`}>
+                        <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>
                           {renderHighlightedText(match.text, searchQuery)}
                         </p>
                       </div>
 
                       {/* Action Buttons */}
-                      <div className="flex items-center justify-between pt-2.5 border-t border-[#C9A063]/10">
+                      <div className={`flex items-center justify-between pt-2.5 border-t ${
+                        isDark ? 'border-white/[0.06]' : 'border-black/[0.06]'
+                      }`}>
                         <button
                           type="button"
                           onClick={() => handleCopySearchResult(match, idx)}
-                          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-[#C9A063]/25 text-xs text-stone-400 hover:text-[#DFBA7F] hover:bg-[#C9A063]/10 active:scale-95 transition-all"
+                          className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border text-xs active:scale-95 transition-all ${
+                            isDark
+                              ? 'border-white/[0.1] text-stone-400 hover:text-white hover:bg-white/[0.06]'
+                              : 'border-black/[0.08] text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.04]'
+                          }`}
                         >
                           {copiedSearchResultIndex === idx ? (
                             <>
-                              <Check className="w-3.5 h-3.5 text-emerald-400" />
-                              <span className="text-emerald-400 font-semibold">Copied</span>
+                              <Check className={`w-3.5 h-3.5 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`} />
+                              <span className={`font-semibold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>Copied</span>
                             </>
                           ) : (
                             <>
@@ -2631,7 +2836,11 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                         <button
                           type="button"
                           onClick={() => handleOpenSearchResult(match)}
-                          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] hover:from-[#DFBA7F] hover:to-[#C9A063] text-[#090B0E] text-xs font-bold shadow-xs active:scale-95 transition-all"
+                          className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold shadow-xs active:scale-95 transition-all ${
+                            isDark
+                              ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                              : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                          }`}
                         >
                           <span>{qt.readInSurah}</span>
                           <ArrowUpRight className="w-3.5 h-3.5" />
@@ -2655,7 +2864,7 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                   <div
                     key={`${bm.surahNumber}-${bm.ayahNumber}-${i}`}
                     className={`rounded-2xl p-4 border flex items-center justify-between transition-all ${
-                      isDark ? 'bg-[#0E1217]/85 border-[#C9A063]/25' : 'bg-white border-stone-200'
+                      isDark ? 'bg-[#14161A] border-white/[0.08]' : 'bg-white border-black/[0.08]'
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -2671,10 +2880,10 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                         }}
                       />
                       <div>
-                        <h4 className={`text-xs font-serif-heading font-bold ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+                        <h4 className={`text-xs font-serif-heading font-bold ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                           {qt.surahSingular} {bm.surahName} : {qt.ayahSingular} {bm.ayahNumber}
                         </h4>
-                        <div className="text-[11px] text-stone-400">
+                        <div className={`text-[11px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                           {bm.surahArabicName} • Bookmarked on {new Date(bm.timestamp).toLocaleDateString()}
                         </div>
                       </div>
@@ -2686,7 +2895,11 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                           handleSelectSurah(surahObj, bm.ayahNumber);
                         }
                       }}
-                      className="px-3 py-1.5 rounded-xl bg-[#C9A063]/20 hover:bg-[#C9A063]/30 text-[#DFBA7F] border border-[#C9A063]/40 text-xs font-semibold active:scale-95 transition-all"
+                      className={`px-3 py-1.5 rounded-xl border text-xs font-semibold active:scale-95 transition-all ${
+                        isDark
+                          ? 'bg-white/[0.08] hover:bg-white/[0.14] text-white border-white/[0.12]'
+                          : 'bg-[#F3F3F1] hover:bg-black/[0.08] text-[#111214] border-black/[0.1]'
+                      }`}
                     >
                       {qt.readInSurah}
                     </button>
@@ -2695,8 +2908,8 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
               })}
 
               {detailedBookmarks.length === 0 && (
-                <div className="text-center py-12 text-stone-400 text-xs space-y-1">
-                  <div className="font-bold text-[#DFBA7F]">{qt.noBookmarksTitle}</div>
+                <div className={`text-center py-12 text-xs space-y-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
+                  <div className={`font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>{qt.noBookmarksTitle}</div>
                   <div>{qt.noBookmarksDesc}</div>
                 </div>
               )}
@@ -2715,40 +2928,44 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                   onClick={() => handleSelectSurah(surah)}
                   className={`cursor-pointer rounded-2xl p-4 border transition-all duration-150 active:scale-[0.98] flex items-center justify-between transform-gpu ${
                     userStats.lastReadSurah === surah.number
-                      ? 'border-[#C9A063]/70 bg-[#C9A063]/12 shadow-[0_0_20px_rgba(201,160,99,0.2)]'
+                      ? isDark
+                        ? 'border-white/35 bg-white/[0.08] shadow-sm'
+                        : 'border-[#111214]/40 bg-[#111214]/[0.05] shadow-2xs'
                       : isDark
-                      ? 'bg-[#0E1217]/85 border-[#C9A063]/20 hover:border-[#C9A063]/50'
-                      : 'bg-white/90 border-stone-200 hover:border-[#C9A063]/50 shadow-2xs'
+                      ? 'bg-[#14161A] border-white/[0.08] hover:border-white/25'
+                      : 'bg-white border-black/[0.08] hover:border-black/25 shadow-2xs'
                   }`}
                 >
                   <div className="flex items-center gap-3.5">
-                    <div className="w-10 h-10 rounded-xl bg-[#C9A063]/15 border border-[#C9A063]/30 flex items-center justify-center font-bold text-xs text-[#DFBA7F] font-mono shadow-2xs">
+                    <div className={`w-10 h-10 rounded-xl border flex items-center justify-center font-bold text-xs font-mono shadow-2xs ${
+                      isDark ? 'bg-white/[0.08] border-white/[0.1] text-white' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+                    }`}>
                       {surah.number}
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <h3 className={`text-sm font-serif-heading font-bold ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+                        <h3 className={`text-sm font-serif-heading font-bold ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                           {isArabic ? `سورة ${surah.name}` : surah.englishName}
                         </h3>
                         <span className={`text-[10px] px-2 py-0.5 rounded-full ${
                           surah.revelationType === 'Meccan'
-                            ? isDark ? 'bg-[#C9A063]/15 text-[#DFBA7F] border border-[#C9A063]/30' : 'bg-amber-50 text-amber-800'
-                            : isDark ? 'bg-amber-600/15 text-amber-300 border border-amber-500/25' : 'bg-stone-100 text-stone-700'
+                            ? isDark ? 'bg-white/[0.08] text-stone-200 border border-white/[0.1]' : 'bg-[#F3F3F1] text-[#111214]'
+                            : isDark ? 'bg-white/[0.05] text-stone-300 border border-white/[0.08]' : 'bg-black/[0.05] text-[#3F4248]'
                         }`}>
                           {surah.revelationType === 'Meccan' ? qt.mecca : qt.medina}
                         </span>
                       </div>
-                      <div className="text-xs text-stone-400 mt-0.5 font-medium">
+                      <div className={`text-xs mt-0.5 font-medium ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                         {isArabic ? `${surah.numberOfAyahs} ${qt.ayahsCount}` : `${surah.englishNameTranslation} • ${surah.numberOfAyahs} ${qt.ayahsCount}`}
                       </div>
                     </div>
                   </div>
 
                   <div className="text-right">
-                    <div className="font-arabic text-2xl font-bold text-[#DFBA7F]">
+                    <div className={`font-arabic text-2xl font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                       {surah.name}
                     </div>
-                    <div className="text-[10px] text-stone-400">
+                    <div className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                       {qt.juzLabel} {surah.juzNumber} • {qt.pageLabel} {surah.pageNumber}
                     </div>
                   </div>
@@ -2756,7 +2973,7 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
               ))}
 
               {filteredSurahs.length === 0 && (
-                <div className="text-center py-12 text-stone-400 text-xs col-span-full">
+                <div className={`text-center py-12 text-xs col-span-full ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                   {isArabic ? `لم يتم العثور على سور تطابق "${searchQuery}".` : `No Surahs found matching "${searchQuery}".`}
                 </div>
               )}
@@ -2808,24 +3025,26 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
           <div
             className={`w-full max-w-md rounded-3xl p-6 border shadow-md text-center space-y-4 ${
               isDark
-                ? 'bg-[#0E1217]/98 border-[#C9A063]/40 text-stone-100 shadow-[0_2px_8px_rgba(0,0,0,0.25)]'
-                : 'bg-white/98 border-[#C9A063]/30 text-stone-900 shadow-md'
+                ? 'bg-[#14161A] border-white/[0.1] text-[#F3F4F6] shadow-[0_2px_8px_rgba(0,0,0,0.25)]'
+                : 'bg-white border-black/[0.08] text-[#111214] shadow-md'
             }`}
           >
-            <div className="w-12 h-12 rounded-2xl bg-[#C9A063]/20 border border-[#C9A063]/40 flex items-center justify-center mx-auto text-[#DFBA7F]">
+            <div className={`w-12 h-12 rounded-2xl border flex items-center justify-center mx-auto ${
+              isDark ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400' : 'bg-emerald-50 border-emerald-200 text-emerald-700'
+            }`}>
               <Check className="w-6 h-6" />
             </div>
 
             <div>
-              <div className="text-xs font-bold text-[#DFBA7F] tracking-wider uppercase">
+              <div className={`text-xs font-bold tracking-wider uppercase ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                 {isArabic ? 'اكتملت جلسة التسميع الصوتي' : 'Tasmee3 Recitation Finished'}
               </div>
-              <h3 className="text-lg font-serif-heading font-bold text-[#F5EFE6] mt-1">
+              <h3 className={`text-lg font-serif-heading font-bold mt-1 ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                 {isArabic
                   ? `وصلت إلى: سورة ${ALL_SURAHS.find(s => s.englishName === tasmee3Summary.surahEnglishName)?.name || tasmee3Summary.surahEnglishName} — الآية ${tasmee3Summary.finalVerse}`
                   : `You reached: Surah ${tasmee3Summary.surahEnglishName} — Verse ${tasmee3Summary.finalVerse}`}
               </h3>
-              <p className="text-xs text-stone-400 mt-1">
+              <p className={`text-xs mt-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 {isArabic
                   ? `البدء من الآية ${tasmee3Summary.startingVerse} • تلوت ${tasmee3Summary.totalVersesCovered} آيات مباركة`
                   : `Starting from Verse ${tasmee3Summary.startingVerse} • ${tasmee3Summary.totalVersesCovered} Verses recited`}
@@ -2834,24 +3053,24 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
 
             <div
               className={`rounded-2xl p-3 border grid grid-cols-2 gap-3 text-center ${
-                isDark ? 'bg-[#141A22] border-[#C9A063]/25' : 'bg-stone-50 border-stone-200'
+                isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
               }`}
             >
               <div>
-                <span className="text-[10px] text-stone-400 block">{isArabic ? 'الموضع النهائي' : 'Final Position'}</span>
-                <span className="font-mono text-base font-bold text-emerald-400">
+                <span className={`text-[10px] block ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{isArabic ? 'الموضع النهائي' : 'Final Position'}</span>
+                <span className={`font-mono text-base font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>
                   {isArabic ? `الآية ${tasmee3Summary.finalVerse}` : `Verse ${tasmee3Summary.finalVerse}`}
                 </span>
               </div>
               <div>
-                <span className="text-[10px] text-stone-400 block">{isArabic ? 'المدة' : 'Duration'}</span>
-                <span className="font-mono text-base font-bold text-stone-200">
+                <span className={`text-[10px] block ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{isArabic ? 'المدة' : 'Duration'}</span>
+                <span className={`font-mono text-base font-bold ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>
                   {Math.floor(tasmee3Summary.durationSeconds / 60)}{isArabic ? ' د ' : 'm '}{tasmee3Summary.durationSeconds % 60}{isArabic ? ' ث' : 's'}
                 </span>
               </div>
             </div>
 
-            <p className="text-xs text-stone-400 leading-relaxed">
+            <p className={`text-xs leading-relaxed ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               {isArabic
                 ? 'تحديد الموضع وتثبيت الحفظ تلقائياً وفق التلاوة.'
                 : 'Detected position only. Tajweed rules and pronunciation correctness are not graded.'}
@@ -2863,14 +3082,22 @@ export const QuranScreen: React.FC<QuranScreenProps> = React.memo(({
                   setShowTasmee3SummaryModal(false);
                   handleJumpToAyah(tasmee3Summary.finalVerse);
                 }}
-                className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] text-[#090B0E] font-bold text-xs shadow-md active:scale-95 transition-all flex items-center gap-1.5"
+                className={`px-5 py-2.5 rounded-2xl font-bold text-xs shadow-md active:scale-95 transition-all flex items-center gap-1.5 ${
+                  isDark
+                    ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                    : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                }`}
               >
                 <BookOpen className="w-3.5 h-3.5" />
                 <span>{isArabic ? 'قراءة في المصحف' : 'Read in Quran'}</span>
               </button>
               <button
                 onClick={() => setShowTasmee3SummaryModal(false)}
-                className="px-4 py-2.5 rounded-2xl border border-stone-700 text-stone-300 hover:bg-stone-800 text-xs active:scale-95 transition-all"
+                className={`px-4 py-2.5 rounded-2xl border text-xs active:scale-95 transition-all ${
+                  isDark
+                    ? 'border-white/[0.12] text-stone-300 hover:bg-white/[0.08]'
+                    : 'border-black/[0.12] text-[#3F4248] hover:bg-black/[0.05]'
+                }`}
               >
                 {isArabic ? 'إغلاق' : 'Close'}
               </button>

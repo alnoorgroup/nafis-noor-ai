@@ -46,34 +46,36 @@ export const QuranTeacherCompletion: React.FC<QuranTeacherCompletionProps> = ({
     <div
       className={`w-full max-w-3xl mx-auto rounded-[36px] p-6 sm:p-8 border shadow-md transition-all duration-200 ${
         isDark
-          ? 'bg-[#080B10]/98 border-[#C9A063]/30 text-stone-100'
-          : 'bg-white/98 border-[#C9A063]/35 text-stone-900 shadow-[0_2px_8px_rgba(45,35,20,0.06)]'
+          ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+          : 'bg-white border-black/[0.08] text-[#111214] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
       }`}
     >
       {/* Top Trophy Header */}
-      <div className="relative text-center pb-6 border-b border-[#C9A063]/20">
+      <div className={`relative text-center pb-6 border-b ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
         <button
           type="button"
           onClick={onClose}
           className={`absolute top-0 right-0 p-2 rounded-xl transition-colors ${
-            isDark ? 'text-stone-400 hover:text-white hover:bg-white/10' : 'text-stone-500 hover:text-stone-900 hover:bg-stone-100'
+            isDark ? 'text-stone-400 hover:text-white hover:bg-white/[0.08]' : 'text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.04]'
           }`}
           title={isArabic ? 'إغلاق' : 'Close'}
         >
           <X className="w-5 h-5" />
         </button>
 
-        <div className="w-16 h-16 rounded-3xl bg-gradient-to-tr from-[#C9A063] via-[#DFBA7F] to-[#8E6527] flex items-center justify-center text-[#080A0E] shadow-sm mx-auto mb-4">
+        <div className={`w-16 h-16 rounded-3xl flex items-center justify-center shadow-sm mx-auto mb-4 ${
+          isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+        }`}>
           <Award className="w-8 h-8" />
         </div>
 
-        <span className="text-[11px] font-cinzel font-bold tracking-widest text-[#DFBA7F] uppercase">
+        <span className={`text-[11px] font-cinzel font-bold tracking-widest uppercase ${isDark ? 'text-stone-300' : 'text-[#5A5D63]'}`}>
           {isArabic ? 'اكتمل الدرس بنجاح' : 'Lesson Complete'}
         </span>
         <h2 className="text-2xl sm:text-3xl font-bold font-serif-heading mt-1">
           {isArabic ? `سورة ${surahArabicName}` : `Surah ${stats.surahEnglishName}`}
         </h2>
-        <p className={`text-xs sm:text-sm mt-1 ${isDark ? 'text-stone-300' : 'text-stone-600'}`}>
+        <p className={`text-xs sm:text-sm mt-1 ${isDark ? 'text-stone-300' : 'text-[#5A5D63]'}`}>
           {isArabic
             ? `الآيات من ${stats.startAyah} إلى ${stats.endAyah} • تلوت ${stats.totalAyahs} من ${stats.totalAyahs} آية`
             : `Ayahs ${stats.startAyah} to ${stats.endAyah} • ${stats.totalAyahs} / ${stats.totalAyahs} Recited`}
@@ -84,24 +86,26 @@ export const QuranTeacherCompletion: React.FC<QuranTeacherCompletionProps> = ({
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 my-6">
         <div
           className={`p-4 rounded-2xl border text-center ${
-            isDark ? 'bg-[#0E1218] border-stone-800' : 'bg-stone-50 border-stone-200'
+            isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
           }`}
         >
-          <span className="text-[11px] text-stone-400 block mb-1">{isArabic ? 'المكتملة بإتقان' : 'Completed'}</span>
-          <span className="text-xl font-bold font-mono text-emerald-400">
+          <span className={`text-[11px] block mb-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{isArabic ? 'المكتملة بإتقان' : 'Completed'}</span>
+          <span className={`text-xl font-bold font-mono ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>
             {stats.completedAyahsCount}
           </span>
         </div>
 
         <div
           className={`p-4 rounded-2xl border text-center ${
-            isDark ? 'bg-[#0E1218] border-stone-800' : 'bg-stone-50 border-stone-200'
+            isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
           }`}
         >
-          <span className="text-[11px] text-stone-400 block mb-1">{isArabic ? 'تحتاج تثبيتاً' : 'Needs Practice'}</span>
+          <span className={`text-[11px] block mb-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{isArabic ? 'تحتاج تثبيتاً' : 'Needs Practice'}</span>
           <span
             className={`text-xl font-bold font-mono ${
-              stats.struggledAyahsCount > 0 ? 'text-amber-400' : 'text-emerald-400'
+              stats.struggledAyahsCount > 0
+                ? isDark ? 'text-sky-400' : 'text-sky-700'
+                : isDark ? 'text-emerald-400' : 'text-emerald-700'
             }`}
           >
             {stats.struggledAyahsCount}
@@ -110,22 +114,22 @@ export const QuranTeacherCompletion: React.FC<QuranTeacherCompletionProps> = ({
 
         <div
           className={`p-4 rounded-2xl border text-center ${
-            isDark ? 'bg-[#0E1218] border-stone-800' : 'bg-stone-50 border-stone-200'
+            isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
           }`}
         >
-          <span className="text-[11px] text-stone-400 block mb-1">{isArabic ? 'مرات الإعادة' : 'Retries'}</span>
-          <span className="text-xl font-bold font-mono text-[#DFBA7F]">
+          <span className={`text-[11px] block mb-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{isArabic ? 'مرات الإعادة' : 'Retries'}</span>
+          <span className={`text-xl font-bold font-mono ${isDark ? 'text-white' : 'text-[#111214]'}`}>
             {stats.totalRetries}
           </span>
         </div>
 
         <div
           className={`p-4 rounded-2xl border text-center ${
-            isDark ? 'bg-[#0E1218] border-stone-800' : 'bg-stone-50 border-stone-200'
+            isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
           }`}
         >
-          <span className="text-[11px] text-stone-400 block mb-1">{isArabic ? 'المدة' : 'Duration'}</span>
-          <span className="text-xl font-bold font-mono text-stone-200">
+          <span className={`text-[11px] block mb-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{isArabic ? 'المدة' : 'Duration'}</span>
+          <span className={`text-xl font-bold font-mono ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>
             {durationFormatted}
           </span>
         </div>
@@ -138,10 +142,12 @@ export const QuranTeacherCompletion: React.FC<QuranTeacherCompletionProps> = ({
           onClick={() => setShowOnlyStruggled(!showOnlyStruggled)}
           className={`flex-1 py-3 px-4 rounded-xl text-xs font-semibold border flex items-center justify-center gap-2 transition-all ${
             showOnlyStruggled
-              ? 'bg-[#C9A063] text-[#080A0E] border-[#C9A063]'
+              ? isDark
+                ? 'bg-white text-[#111214] border-white'
+                : 'bg-[#111214] text-white border-[#111214]'
               : isDark
-              ? 'bg-[#0E1218] border-stone-700 text-stone-200 hover:text-white'
-              : 'bg-stone-100 border-stone-300 text-stone-800 hover:text-stone-950'
+              ? 'bg-[#1B1D23] border-white/[0.1] text-stone-200 hover:text-white'
+              : 'bg-[#F3F3F1] border-black/[0.1] text-[#111214] hover:bg-black/[0.06]'
           }`}
         >
           <span>
@@ -150,7 +156,15 @@ export const QuranTeacherCompletion: React.FC<QuranTeacherCompletionProps> = ({
               : (isArabic ? 'مراجعة الملاحظات' : 'Review Mistakes')}
           </span>
           {stats.struggledAyahsCount > 0 && (
-            <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-500/20 text-amber-300">
+            <span
+              className={`px-1.5 py-0.5 rounded-full text-[10px] ${
+                showOnlyStruggled
+                  ? isDark ? 'bg-[#111214]/15 text-[#111214]' : 'bg-white/20 text-white'
+                  : isDark
+                  ? 'bg-sky-500/20 text-sky-300'
+                  : 'bg-sky-100 text-sky-800'
+              }`}
+            >
               {stats.struggledAyahsCount}
             </span>
           )}
@@ -159,7 +173,9 @@ export const QuranTeacherCompletion: React.FC<QuranTeacherCompletionProps> = ({
         <button
           type="button"
           onClick={onPracticeAgain}
-          className="flex-1 py-3 px-4 rounded-xl text-xs font-semibold bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] text-[#080A0E] hover:opacity-90 transition-all flex items-center justify-center gap-2"
+          className={`flex-1 py-3 px-4 rounded-xl text-xs font-semibold hover:opacity-90 transition-all flex items-center justify-center gap-2 ${
+            isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+          }`}
         >
           <RotateCcw className="w-3.5 h-3.5" />
           <span>{isArabic ? 'التدريب مرة أخرى' : 'Practice Again'}</span>
@@ -168,7 +184,7 @@ export const QuranTeacherCompletion: React.FC<QuranTeacherCompletionProps> = ({
 
       {/* Detailed Ayah-by-Ayah Review List */}
       <div className="mt-4">
-        <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-stone-400 mb-2 px-1">
+        <div className={`flex items-center justify-between text-xs font-semibold uppercase tracking-wider mb-2 px-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
           <span>{isArabic ? 'تفصيل الآيات المباركة' : 'Ayah Breakdown'}</span>
           <span>{isArabic ? 'الحالة' : 'Status'}</span>
         </div>
@@ -184,11 +200,11 @@ export const QuranTeacherCompletion: React.FC<QuranTeacherCompletionProps> = ({
                 className={`rounded-2xl border transition-all overflow-hidden ${
                   isDark
                     ? isExpanded
-                      ? 'bg-[#0E1218] border-[#DFBA7F]/40 shadow-md'
-                      : 'bg-[#0A0D12] border-stone-800/80 hover:border-stone-700'
+                      ? 'bg-[#1B1D23] border-white/30 shadow-md'
+                      : 'bg-[#0B0C0E] border-white/[0.08] hover:border-white/20'
                     : isExpanded
-                    ? 'bg-amber-50/70 border-[#C9A063]/40 shadow-sm'
-                    : 'bg-stone-50 border-stone-200 hover:border-stone-300'
+                    ? 'bg-[#F3F3F1] border-[#111214]/35 shadow-sm'
+                    : 'bg-white border-black/[0.08] hover:border-black/20'
                 }`}
               >
                 <button
@@ -197,7 +213,11 @@ export const QuranTeacherCompletion: React.FC<QuranTeacherCompletionProps> = ({
                   className="w-full p-3.5 flex items-center justify-between text-left"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="w-7 h-7 rounded-lg bg-[#C9A063]/15 text-[#DFBA7F] flex items-center justify-center font-mono text-xs font-bold shrink-0">
+                    <span
+                      className={`w-7 h-7 rounded-lg flex items-center justify-center font-mono text-xs font-bold shrink-0 ${
+                        isDark ? 'bg-white/[0.08] text-white' : 'bg-[#F3F3F1] text-[#111214]'
+                      }`}
+                    >
                       {item.ayahNumber}
                     </span>
                     <span className="font-arabic text-sm line-clamp-1" dir="rtl">
@@ -207,39 +227,44 @@ export const QuranTeacherCompletion: React.FC<QuranTeacherCompletionProps> = ({
 
                   <div className="flex items-center gap-3 shrink-0 ml-3">
                     {isPerfect ? (
-                      <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-400">
+                      <span className={`inline-flex items-center gap-1 text-xs font-medium ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>
                         <CheckCircle2 className="w-4 h-4" />
                         <span>{isArabic ? 'متقنة' : 'Recited'}</span>
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-400">
+                      <span className={`inline-flex items-center gap-1 text-xs font-medium ${isDark ? 'text-sky-400' : 'text-sky-700'}`}>
                         <AlertCircle className="w-4 h-4" />
                         <span>{isArabic ? 'تحتاج تثبيتاً' : 'Needs practice'}</span>
                       </span>
                     )}
-                    {isExpanded ? <ChevronUp className="w-4 h-4 text-stone-400" /> : <ChevronDown className="w-4 h-4 text-stone-400" />}
+                    {isExpanded ? <ChevronUp className={`w-4 h-4 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`} /> : <ChevronDown className={`w-4 h-4 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`} />}
                   </div>
                 </button>
 
-                {/* Expanded Explanation Card */}
                 {isExpanded && (
                   <div
                     className={`p-4 border-t text-xs leading-relaxed ${
-                      isDark ? 'border-stone-800 bg-[#06080C]' : 'border-stone-200 bg-white'
+                      isDark ? 'border-white/[0.08] bg-[#14161A]' : 'border-black/[0.08] bg-white'
                     }`}
                   >
-                    <div className="font-arabic text-xl leading-loose text-right text-[#DFBA7F] mb-3">
+                    <div className={`font-arabic text-xl leading-loose text-right mb-3 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                       {item.ayahText}
                     </div>
 
-                    <div className="p-3 rounded-xl bg-stone-800/40 border border-[#C9A063]/15">
-                      <span className="text-[11px] font-semibold text-stone-400 block mb-1">
+                    <div
+                      className={`p-3 rounded-xl border ${
+                        isDark
+                          ? 'bg-[#1B1D23] border-white/[0.08]'
+                          : 'bg-[#F3F3F1] border-black/[0.08]'
+                      }`}
+                    >
+                      <span className={`text-[11px] font-semibold block mb-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                         {isArabic ? 'تقييم المعلم:' : 'Teacher Evaluation:'}
                       </span>
-                      <p className="text-stone-200">{item.lastFeedback}</p>
+                      <p className={isDark ? 'text-stone-200' : 'text-[#111214]'}>{item.lastFeedback}</p>
 
                       {item.missingWords && item.missingWords.length > 0 && (
-                        <p className="mt-2 text-amber-400">
+                        <p className={`mt-2 ${isDark ? 'text-sky-400' : 'text-sky-700'}`}>
                           <strong>{isArabic ? 'كلمات ساقطة من التلاوة: ' : 'Missing tokens: '}</strong>
                           <span className="font-arabic text-sm">{item.missingWords.join(' · ')}</span>
                         </p>
@@ -254,11 +279,15 @@ export const QuranTeacherCompletion: React.FC<QuranTeacherCompletionProps> = ({
       </div>
 
       {/* Done Button */}
-      <div className="mt-6 pt-4 border-t border-[#C9A063]/20">
+      <div className={`mt-6 pt-4 border-t ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
         <button
           type="button"
           onClick={onClose}
-          className="w-full py-3.5 rounded-xl font-serif-heading font-bold text-xs uppercase tracking-wider bg-stone-800 hover:bg-stone-700 text-stone-200 transition-colors"
+          className={`w-full py-3.5 rounded-xl font-serif-heading font-bold text-xs uppercase tracking-wider border transition-colors cursor-pointer ${
+            isDark
+              ? 'bg-[#1B1D23] hover:bg-white/[0.1] text-stone-200 border-white/[0.1]'
+              : 'bg-[#F3F3F1] hover:bg-black/[0.06] text-[#111214] border-black/[0.08]'
+          }`}
         >
           {isArabic ? 'تم · العودة للمصحف الشريف' : 'Done · Return to Sanctuary'}
         </button>

@@ -6,7 +6,7 @@ interface AppLogoIconProps {
   withContainer?: boolean;
 }
 
-export const APP_ICON_URL = '/app-icon.png';
+export const APP_ICON_URL = 'https://img.sanishtech.com/u/172708f56394f3c5a6dd1b2d9876c79e.jpeg';
 export const LOCAL_APP_ICON_URL = '/app-icon.png';
 
 /**
@@ -17,12 +17,12 @@ export const AppLogoIcon: React.FC<AppLogoIconProps> = ({
   size,
   withContainer = true,
 }) => {
-  const [currentSrc, setCurrentSrc] = useState(LOCAL_APP_ICON_URL);
+  const [currentSrc, setCurrentSrc] = useState(APP_ICON_URL);
 
   const handleError = () => {
-    if (currentSrc === LOCAL_APP_ICON_URL) {
-      setCurrentSrc('/app-icon.svg');
-    } else if (currentSrc === '/app-icon.svg') {
+    if (currentSrc === APP_ICON_URL) {
+      setCurrentSrc(LOCAL_APP_ICON_URL);
+    } else if (currentSrc === LOCAL_APP_ICON_URL) {
       setCurrentSrc('/icon-192.png');
     }
   };
@@ -38,7 +38,7 @@ export const AppLogoIcon: React.FC<AppLogoIconProps> = ({
       <img
         src={currentSrc}
         alt="Noor App Emblem"
-        className="w-full h-full object-contain select-none pointer-events-none drop-shadow-xs"
+        className="w-full h-full object-cover select-none pointer-events-none drop-shadow-xs"
         loading="eager"
         decoding="async"
         onError={handleError}

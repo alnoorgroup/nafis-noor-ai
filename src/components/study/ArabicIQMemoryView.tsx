@@ -84,22 +84,30 @@ export const ArabicIQMemoryView: React.FC<ArabicIQMemoryViewProps> = ({ isDark, 
       {/* Top Banner */}
       <div
         className={`p-6 rounded-2xl border ${
-          isDark ? 'bg-[#101318] border-white/5 shadow-xl' : 'bg-white border-stone-200 shadow-md'
+          isDark
+            ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+            : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
         }`}
       >
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="px-2.5 py-0.5 text-[11px] font-semibold tracking-wider uppercase rounded-full bg-[#C9A063]/15 text-[#DFBA7F] border border-[#C9A063]/30 flex items-center gap-1">
+              <span
+                className={`px-2.5 py-0.5 text-[11px] font-semibold tracking-wider uppercase rounded-full border flex items-center gap-1 ${
+                  isDark
+                    ? 'bg-white/[0.08] text-white border-white/[0.14]'
+                    : 'bg-black/[0.04] text-[#111214] border-black/[0.1]'
+                }`}
+              >
                 <Brain className="w-3.5 h-3.5" />
                 Cognitive Arabic Lab
               </span>
-              <span className="text-xs text-stone-500">Linguistic Reasoning & Memory</span>
+              <span className={`text-xs ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>Linguistic Reasoning & Memory</span>
             </div>
-            <h2 className="text-2xl font-bold font-serif text-stone-900 dark:text-stone-100">
+            <h2 className={`text-2xl font-bold font-serif ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
               Arabic Linguistic IQ & Memory Arena
             </h2>
-            <p className="text-sm text-stone-500 dark:text-stone-400 mt-0.5">
+            <p className={`text-sm mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               Challenge yourself with root derivations (Wazn), morphological deduction, odd-one-out patterns, and sequential Arabic memory retention.
             </p>
           </div>
@@ -107,15 +115,19 @@ export const ArabicIQMemoryView: React.FC<ArabicIQMemoryViewProps> = ({ isDark, 
           {/* Mode Switcher */}
           <div
             className={`flex items-center p-1 rounded-xl border ${
-              isDark ? 'bg-black/30 border-white/10' : 'bg-stone-100 border-stone-200'
+              isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
             }`}
           >
             <button
               onClick={() => setSubTab('iq')}
               className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 subTab === 'iq'
-                  ? 'bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] shadow-xs'
-                  : 'text-stone-400 hover:text-stone-200'
+                  ? isDark
+                    ? 'bg-white text-[#111214]'
+                    : 'bg-[#111214] text-white'
+                  : isDark
+                  ? 'text-stone-400 hover:text-white'
+                  : 'text-[#5A5D63] hover:text-[#111214]'
               }`}
             >
               Arabic IQ Challenges
@@ -124,8 +136,12 @@ export const ArabicIQMemoryView: React.FC<ArabicIQMemoryViewProps> = ({ isDark, 
               onClick={() => setSubTab('memory')}
               className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 subTab === 'memory'
-                  ? 'bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] shadow-xs'
-                  : 'text-stone-400 hover:text-stone-200'
+                  ? isDark
+                    ? 'bg-white text-[#111214]'
+                    : 'bg-[#111214] text-white'
+                  : isDark
+                  ? 'text-stone-400 hover:text-white'
+                  : 'text-[#5A5D63] hover:text-[#111214]'
               }`}
             >
               Arabic Memory Training
@@ -134,31 +150,33 @@ export const ArabicIQMemoryView: React.FC<ArabicIQMemoryViewProps> = ({ isDark, 
         </div>
 
         {/* Real Live Metrics Bar */}
-        <div className="mt-5 pt-4 border-t border-stone-200/50 dark:border-white/5 grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <div className="p-3 rounded-xl bg-stone-500/5 border border-stone-200/40 dark:border-white/5">
-            <span className="text-[11px] text-stone-500 block">Linguistic IQ Index</span>
-            <span className="text-xl font-bold text-[#DFBA7F] font-serif">
+        <div className={`mt-5 pt-4 border-t grid grid-cols-2 sm:grid-cols-4 gap-3 ${
+          isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+        }`}>
+          <div className={`p-3 rounded-xl border ${isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'}`}>
+            <span className={`text-[11px] block ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>Linguistic IQ Index</span>
+            <span className={`text-xl font-bold font-serif ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
               {progressState.arabicIQScore}
             </span>
           </div>
 
-          <div className="p-3 rounded-xl bg-stone-500/5 border border-stone-200/40 dark:border-white/5">
-            <span className="text-[11px] text-stone-500 block">IQ Puzzles Solved</span>
-            <span className="text-xl font-bold text-stone-200 font-serif">
+          <div className={`p-3 rounded-xl border ${isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'}`}>
+            <span className={`text-[11px] block ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>IQ Puzzles Solved</span>
+            <span className={`text-xl font-bold font-serif ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
               {progressState.iqChallengesCompleted}
             </span>
           </div>
 
-          <div className="p-3 rounded-xl bg-stone-500/5 border border-stone-200/40 dark:border-white/5">
-            <span className="text-[11px] text-stone-500 block">Memory Accuracy</span>
-            <span className="text-xl font-bold text-emerald-400 font-serif">
+          <div className={`p-3 rounded-xl border ${isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'}`}>
+            <span className={`text-[11px] block ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>Memory Accuracy</span>
+            <span className={`text-xl font-bold font-serif ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>
               {progressState.memoryAccuracy}%
             </span>
           </div>
 
-          <div className="p-3 rounded-xl bg-stone-500/5 border border-stone-200/40 dark:border-white/5">
-            <span className="text-[11px] text-stone-500 block">Memory Sessions</span>
-            <span className="text-xl font-bold text-stone-200 font-serif">
+          <div className={`p-3 rounded-xl border ${isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'}`}>
+            <span className={`text-[11px] block ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>Memory Sessions</span>
+            <span className={`text-xl font-bold font-serif ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
               {progressState.memorySessionsCount}
             </span>
           </div>
@@ -169,22 +187,30 @@ export const ArabicIQMemoryView: React.FC<ArabicIQMemoryViewProps> = ({ isDark, 
       {subTab === 'iq' && currentIq && (
         <div
           className={`max-w-2xl mx-auto p-7 rounded-2xl border text-center space-y-6 ${
-            isDark ? 'bg-[#101318] border-white/5 shadow-xl' : 'bg-white border-stone-200 shadow-md'
+            isDark
+              ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+              : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
           }`}
         >
-          <div className="flex items-center justify-between text-xs text-stone-500">
+          <div className={`flex items-center justify-between text-xs ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
             <span>IQ Puzzle {currentIqIndex + 1} of {ARABIC_IQ_CHALLENGES.length}</span>
-            <span className="px-2.5 py-0.5 rounded-full bg-[#C9A063]/15 text-[#DFBA7F] font-semibold text-[10px] uppercase">
+            <span
+              className={`px-2.5 py-0.5 rounded-full font-semibold text-[10px] uppercase border ${
+                isDark
+                  ? 'bg-white/[0.08] text-white border-white/[0.12]'
+                  : 'bg-black/[0.04] text-[#111214] border-black/[0.1]'
+              }`}
+            >
               {currentIq.type.replace('_', ' ')}
             </span>
           </div>
 
           <div className="space-y-2">
-            <h3 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100">
+            <h3 className={`text-xl font-bold font-serif ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
               {currentIq.question}
             </h3>
             {currentIq.arabicPrompt && (
-              <div className="text-3xl md:text-4xl font-serif text-[#DFBA7F] py-3 tracking-wide">
+              <div className={`text-3xl md:text-4xl font-serif py-3 tracking-wide ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                 {currentIq.arabicPrompt}
               </div>
             )}
@@ -196,14 +222,18 @@ export const ArabicIQMemoryView: React.FC<ArabicIQMemoryViewProps> = ({ isDark, 
               const isSelected = iqSelectedOpt === idx;
               const isCorrect = idx === currentIq.correctIndex;
               let btnStyle = isDark
-                ? 'bg-stone-900/60 border-white/5 text-stone-200 hover:bg-white/10'
-                : 'bg-stone-50 border-stone-200 text-stone-800 hover:bg-stone-100';
+                ? 'bg-[#1B1D23] border-white/[0.08] text-stone-200 hover:bg-white/[0.08]'
+                : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214] hover:bg-black/[0.06]';
 
               if (iqFeedback) {
                 if (isCorrect) {
-                  btnStyle = 'bg-emerald-500/20 border-emerald-500/60 text-emerald-300 font-semibold';
+                  btnStyle = isDark
+                    ? 'bg-emerald-500/20 border-emerald-500/60 text-emerald-300 font-semibold'
+                    : 'bg-emerald-50 border-emerald-400 text-emerald-800 font-semibold';
                 } else if (isSelected) {
-                  btnStyle = 'bg-rose-500/20 border-rose-500/60 text-rose-300';
+                  btnStyle = isDark
+                    ? 'bg-rose-500/20 border-rose-500/60 text-rose-300'
+                    : 'bg-rose-50 border-rose-400 text-rose-700';
                 }
               }
 
@@ -215,8 +245,8 @@ export const ArabicIQMemoryView: React.FC<ArabicIQMemoryViewProps> = ({ isDark, 
                   className={`p-4 rounded-2xl border text-sm transition-all flex items-center justify-between gap-3 ${btnStyle}`}
                 >
                   <span className="font-serif text-base">{opt}</span>
-                  {iqFeedback && isCorrect && <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />}
-                  {iqFeedback && isSelected && !isCorrect && <XCircle className="w-4 h-4 text-rose-400 flex-shrink-0" />}
+                  {iqFeedback && isCorrect && <CheckCircle2 className={`w-4 h-4 flex-shrink-0 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`} />}
+                  {iqFeedback && isSelected && !isCorrect && <XCircle className={`w-4 h-4 flex-shrink-0 ${isDark ? 'text-rose-400' : 'text-rose-600'}`} />}
                 </button>
               );
             })}
@@ -227,8 +257,12 @@ export const ArabicIQMemoryView: React.FC<ArabicIQMemoryViewProps> = ({ isDark, 
             <div
               className={`p-4 rounded-2xl border text-left text-xs space-y-3 ${
                 iqFeedback.isCorrect
-                  ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
-                  : 'border-rose-500/30 bg-rose-500/10 text-rose-300'
+                  ? isDark
+                    ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
+                    : 'border-emerald-300 bg-emerald-50 text-emerald-800'
+                  : isDark
+                  ? 'border-rose-500/30 bg-rose-500/10 text-rose-300'
+                  : 'border-rose-300 bg-rose-50 text-rose-800'
               }`}
             >
               <div className="flex items-center gap-2 font-semibold">
@@ -244,10 +278,14 @@ export const ArabicIQMemoryView: React.FC<ArabicIQMemoryViewProps> = ({ isDark, 
                   </>
                 )}
               </div>
-              <p className="text-stone-300">{iqFeedback.explanation}</p>
+              <p className={isDark ? 'text-stone-300' : 'text-[#3F4248]'}>{iqFeedback.explanation}</p>
               <button
                 onClick={handleNextIq}
-                className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] font-semibold text-xs flex items-center gap-1.5 ml-auto"
+                className={`px-4 py-2 rounded-xl font-semibold text-xs flex items-center gap-1.5 ml-auto transition-colors ${
+                  isDark
+                    ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                    : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                }`}
               >
                 <span>Next Linguistic Puzzle</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -261,12 +299,20 @@ export const ArabicIQMemoryView: React.FC<ArabicIQMemoryViewProps> = ({ isDark, 
       {subTab === 'memory' && currentMem && (
         <div
           className={`max-w-2xl mx-auto p-7 rounded-2xl border text-center space-y-6 ${
-            isDark ? 'bg-[#101318] border-white/5 shadow-xl' : 'bg-white border-stone-200 shadow-md'
+            isDark
+              ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+              : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
           }`}
         >
-          <div className="flex items-center justify-between text-xs text-stone-500">
+          <div className={`flex items-center justify-between text-xs ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
             <span>Memory Challenge {memIndex + 1} of {ARABIC_MEMORY_CHALLENGES.length}</span>
-            <span className="px-2.5 py-0.5 rounded-full bg-[#C9A063]/15 text-[#DFBA7F] font-semibold text-[10px] uppercase">
+            <span
+              className={`px-2.5 py-0.5 rounded-full font-semibold text-[10px] uppercase border ${
+                isDark
+                  ? 'bg-white/[0.08] text-white border-white/[0.12]'
+                  : 'bg-black/[0.04] text-[#111214] border-black/[0.1]'
+              }`}
+            >
               {currentMem.type.replace('_', ' ')}
             </span>
           </div>
@@ -275,16 +321,18 @@ export const ArabicIQMemoryView: React.FC<ArabicIQMemoryViewProps> = ({ isDark, 
             /* Phase 1: Memorization Display */
             <div className="space-y-6 py-4">
               <div className="space-y-2">
-                <span className="text-xs text-stone-400 uppercase tracking-wider block">
+                <span className={`text-xs uppercase tracking-wider block ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                   Study & Commit to Memory:
                 </span>
-                <h3 className="text-xl font-bold font-serif text-stone-100">
+                <h3 className={`text-xl font-bold font-serif ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                   {currentMem.presentationPrompt || currentMem.title}
                 </h3>
               </div>
 
               {/* Items Card */}
-              <div className="flex flex-wrap items-center justify-center gap-3 p-6 rounded-2xl bg-stone-500/5 border border-stone-200/40 dark:border-white/5">
+              <div className={`flex flex-wrap items-center justify-center gap-3 p-6 rounded-2xl border ${
+                isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
+              }`}>
                 {(currentMem.items || currentMem.itemsToMemorize || []).map((item, idx) => {
                   const arabicText = typeof item === 'string' ? item : item.arabic;
                   const meaningText =
@@ -294,11 +342,15 @@ export const ArabicIQMemoryView: React.FC<ArabicIQMemoryViewProps> = ({ isDark, 
                   return (
                     <span
                       key={idx}
-                      className="px-5 py-3 rounded-2xl bg-black/40 border border-[#C9A063]/40 text-2xl md:text-3xl font-serif text-[#DFBA7F] shadow-sm flex flex-col items-center"
+                      className={`px-5 py-3 rounded-2xl border text-2xl md:text-3xl font-serif shadow-sm flex flex-col items-center ${
+                        isDark
+                          ? 'bg-[#14161A] border-white/[0.14] text-[#F3F4F6]'
+                          : 'bg-white border-black/[0.1] text-[#111214]'
+                      }`}
                     >
                       <span>{arabicText}</span>
                       {meaningText && (
-                        <span className="text-[10px] font-sans text-stone-400 mt-0.5 font-normal">
+                        <span className={`text-[10px] font-sans mt-0.5 font-normal ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                           {meaningText}
                         </span>
                       )}
@@ -309,7 +361,11 @@ export const ArabicIQMemoryView: React.FC<ArabicIQMemoryViewProps> = ({ isDark, 
 
               <button
                 onClick={() => setMemPhase('recall')}
-                className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] text-xs font-semibold inline-flex items-center gap-2 shadow-md hover:opacity-90"
+                className={`px-6 py-3 rounded-xl text-xs font-semibold inline-flex items-center gap-2 transition-colors ${
+                  isDark
+                    ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                    : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                }`}
               >
                 <EyeOff className="w-4 h-4" />
                 <span>I Have Memorized This (Start Recall Test)</span>
@@ -319,10 +375,10 @@ export const ArabicIQMemoryView: React.FC<ArabicIQMemoryViewProps> = ({ isDark, 
             /* Phase 2: Recall Question */
             <div className="space-y-6">
               <div className="space-y-2">
-                <span className="text-xs text-stone-400 uppercase tracking-wider block">
+                <span className={`text-xs uppercase tracking-wider block ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                   Recall Test:
                 </span>
-                <h3 className="text-xl font-bold font-serif text-stone-100">
+                <h3 className={`text-xl font-bold font-serif ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                   {currentMem.questionText || currentMem.question}
                 </h3>
               </div>
@@ -332,14 +388,18 @@ export const ArabicIQMemoryView: React.FC<ArabicIQMemoryViewProps> = ({ isDark, 
                   const isSelected = memSelectedOpt === idx;
                   const isCorrect = idx === currentMem.correctIndex;
                   let btnStyle = isDark
-                    ? 'bg-stone-900/60 border-white/5 text-stone-200 hover:bg-white/10'
-                    : 'bg-stone-50 border-stone-200 text-stone-800 hover:bg-stone-100';
+                    ? 'bg-[#1B1D23] border-white/[0.08] text-stone-200 hover:bg-white/[0.08]'
+                    : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214] hover:bg-black/[0.06]';
 
                   if (memFeedback) {
                     if (isCorrect) {
-                      btnStyle = 'bg-emerald-500/20 border-emerald-500/60 text-emerald-300 font-semibold';
+                      btnStyle = isDark
+                        ? 'bg-emerald-500/20 border-emerald-500/60 text-emerald-300 font-semibold'
+                        : 'bg-emerald-50 border-emerald-400 text-emerald-800 font-semibold';
                     } else if (isSelected) {
-                      btnStyle = 'bg-rose-500/20 border-rose-500/60 text-rose-300';
+                      btnStyle = isDark
+                        ? 'bg-rose-500/20 border-rose-500/60 text-rose-300'
+                        : 'bg-rose-50 border-rose-400 text-rose-700';
                     }
                   }
 
@@ -351,8 +411,8 @@ export const ArabicIQMemoryView: React.FC<ArabicIQMemoryViewProps> = ({ isDark, 
                       className={`p-4 rounded-2xl border text-sm transition-all flex items-center justify-between gap-3 ${btnStyle}`}
                     >
                       <span className="font-serif text-lg">{opt}</span>
-                      {memFeedback && isCorrect && <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />}
-                      {memFeedback && isSelected && !isCorrect && <XCircle className="w-4 h-4 text-rose-400 flex-shrink-0" />}
+                      {memFeedback && isCorrect && <CheckCircle2 className={`w-4 h-4 flex-shrink-0 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`} />}
+                      {memFeedback && isSelected && !isCorrect && <XCircle className={`w-4 h-4 flex-shrink-0 ${isDark ? 'text-rose-400' : 'text-rose-600'}`} />}
                     </button>
                   );
                 })}
@@ -362,8 +422,12 @@ export const ArabicIQMemoryView: React.FC<ArabicIQMemoryViewProps> = ({ isDark, 
                 <div
                   className={`p-4 rounded-2xl border text-left text-xs space-y-3 ${
                     memFeedback.isCorrect
-                      ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
-                      : 'border-rose-500/30 bg-rose-500/10 text-rose-300'
+                      ? isDark
+                        ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
+                        : 'border-emerald-300 bg-emerald-50 text-emerald-800'
+                      : isDark
+                      ? 'border-rose-500/30 bg-rose-500/10 text-rose-300'
+                      : 'border-rose-300 bg-rose-50 text-rose-800'
                   }`}
                 >
                   <div className="flex items-center gap-2 font-semibold">
@@ -379,10 +443,14 @@ export const ArabicIQMemoryView: React.FC<ArabicIQMemoryViewProps> = ({ isDark, 
                       </>
                     )}
                   </div>
-                  <p className="text-stone-300">{memFeedback.explanation}</p>
+                  <p className={isDark ? 'text-stone-300' : 'text-[#3F4248]'}>{memFeedback.explanation}</p>
                   <button
                     onClick={handleNextMem}
-                    className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] font-semibold text-xs flex items-center gap-1.5 ml-auto"
+                    className={`px-4 py-2 rounded-xl font-semibold text-xs flex items-center gap-1.5 ml-auto transition-colors ${
+                      isDark
+                        ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                        : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                    }`}
                   >
                     <span>Next Memory Exercise</span>
                     <ArrowRight className="w-3.5 h-3.5" />

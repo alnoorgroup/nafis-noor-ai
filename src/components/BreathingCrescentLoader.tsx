@@ -28,11 +28,10 @@ export const BreathingCrescentLoader: React.FC<BreathingCrescentLoaderProps> = (
 
   return (
     <div className="flex flex-col items-center justify-center p-6 space-y-3 select-none">
-      {/* Breathing Crescent Moon (Scale 0.9 to 1.1, 2s loop in gold) */}
       <motion.div
         variants={breathingCrescentVariant}
         animate="animate"
-        className={`flex items-center justify-center text-[#DFBA7F] ${currentSize.box}`}
+        className={`flex items-center justify-center ${isDark ? 'text-white' : 'text-[#111214]'} ${currentSize.box}`}
       >
         <svg
           viewBox="0 0 24 24"
@@ -40,14 +39,13 @@ export const BreathingCrescentLoader: React.FC<BreathingCrescentLoaderProps> = (
           className={currentSize.icon}
           aria-hidden="true"
         >
-          {/* Elegant Astronomical Crescent Moon path */}
           <path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.79c.45-.33.94-.61 1.46-.83A8.93 8.93 0 0 0 12 3z" />
         </svg>
       </motion.div>
 
       {label && (
         <span
-          className={`font-cinzel tracking-wider text-[#DFBA7F] font-semibold ${currentSize.text} animate-pulse`}
+          className={`font-display tracking-wider font-semibold ${isDark ? 'text-stone-300' : 'text-[#6B6F76]'} ${currentSize.text} animate-pulse`}
         >
           {label}
         </span>
@@ -56,9 +54,6 @@ export const BreathingCrescentLoader: React.FC<BreathingCrescentLoaderProps> = (
   );
 };
 
-/**
- * Reusable Skeleton placeholder with flowing grey/gold gradient
- */
 export const SkeletonPlaceholder: React.FC<{
   className?: string;
   isDark?: boolean;

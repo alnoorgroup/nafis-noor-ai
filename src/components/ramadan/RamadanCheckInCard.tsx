@@ -79,27 +79,29 @@ export const RamadanCheckInCard: React.FC<RamadanCheckInCardProps> = ({
       <div
         className={`p-5 rounded-3xl border transition-all duration-200 relative overflow-hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${
           isDark
-            ? 'bg-gradient-to-r from-[#0C1222] via-[#090E1A] to-[#060A14] border-[#C9A063]/30 text-stone-100 shadow-md'
-            : 'bg-gradient-to-r from-amber-50/90 via-stone-50 to-amber-100/60 border-[#C9A063]/40 text-stone-900 shadow-xs'
+            ? 'bg-[#14161A] border-white/[0.08] text-stone-100 shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+            : 'bg-white border-black/[0.08] text-[#111214] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
         } ${className}`}
       >
         <div className="flex items-center gap-3.5">
-          <div className="w-11 h-11 rounded-2xl bg-[#C9A063]/15 border border-[#C9A063]/30 flex items-center justify-center text-[#DFBA7F] shrink-0 shadow-sm">
-            <Moon className="w-5 h-5 text-[#DFBA7F]" />
+          <div className={`w-11 h-11 rounded-2xl border flex items-center justify-center shrink-0 ${
+            isDark ? 'bg-white/[0.06] border-white/10 text-white' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+          }`}>
+            <Moon className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-mono uppercase tracking-widest text-[#DFBA7F] font-bold">
+              <span className={`text-[10px] font-mono uppercase tracking-widest font-bold ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                 Noor Ramadan 1447 AH
               </span>
-              <span className="text-xs font-arabic text-[#DFBA7F]" dir="rtl">
+              <span className={`text-xs font-arabic ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`} dir="rtl">
                 رمضان كريم
               </span>
             </div>
-            <h3 className="text-sm font-serif-heading font-bold text-white">
+            <h3 className={`text-sm font-serif-heading font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
               What is your spiritual dream for this Ramadan?
             </h3>
-            <p className="text-xs text-stone-400 font-light mt-0.5">
+            <p className={`text-xs font-light mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               Set one sincere goal, build your daily schedule, and track 30 days of divine growth.
             </p>
           </div>
@@ -109,7 +111,9 @@ export const RamadanCheckInCard: React.FC<RamadanCheckInCardProps> = ({
           <button
             type="button"
             onClick={onNavigateToRamadan}
-            className="w-full sm:w-auto py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] text-[#07090F] text-xs font-cinzel font-bold tracking-wider hover:brightness-110 active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1.5 shrink-0 shadow-xs"
+            className={`w-full sm:w-auto py-2.5 px-4 rounded-xl text-xs font-cinzel font-bold tracking-wider active:scale-95 transition-all cursor-pointer flex items-center justify-center gap-1.5 shrink-0 ${
+              isDark ? 'bg-white hover:bg-stone-200 text-[#111214]' : 'bg-[#111214] hover:bg-[#27292D] text-white'
+            }`}
           >
             <span>Set My Dream</span>
             <ChevronRight className="w-3.5 h-3.5" />
@@ -127,24 +131,23 @@ export const RamadanCheckInCard: React.FC<RamadanCheckInCardProps> = ({
     <div
       className={`p-5 rounded-3xl border transition-all duration-200 relative overflow-hidden space-y-4 ${
         isDark
-          ? 'bg-gradient-to-b from-[#0B1120] to-[#070B16] border-[#C9A063]/30 text-stone-100 shadow-md'
-          : 'bg-white border-[#C9A063]/35 text-stone-900 shadow-xs'
+          ? 'bg-[#14161A] border-white/[0.08] text-stone-100 shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+          : 'bg-white border-black/[0.08] text-[#111214] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
       } ${className}`}
     >
-      {/* Top Gold Trim */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#DFBA7F] to-transparent opacity-80" />
-
       {/* Header Info */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-[#C9A063]/15 border border-[#C9A063]/30 flex items-center justify-center text-[#DFBA7F]">
-            <Moon className="w-4 h-4 text-[#DFBA7F]" />
+          <div className={`w-8 h-8 rounded-xl border flex items-center justify-center ${
+            isDark ? 'bg-white/[0.06] border-white/10 text-white' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+          }`}>
+            <Moon className="w-4 h-4" />
           </div>
           <div>
-            <span className="text-[10px] font-mono uppercase tracking-widest text-[#DFBA7F] font-semibold">
+            <span className={`text-[10px] font-mono uppercase tracking-widest font-semibold ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               Daily Ramadan Dream Check-In
             </span>
-            <h4 className="text-xs sm:text-sm font-semibold text-white truncate max-w-xs sm:max-w-md">
+            <h4 className={`text-xs sm:text-sm font-semibold truncate max-w-xs sm:max-w-md ${isDark ? 'text-white' : 'text-[#111214]'}`}>
               "{userData.goalText}"
             </h4>
           </div>
@@ -154,7 +157,7 @@ export const RamadanCheckInCard: React.FC<RamadanCheckInCardProps> = ({
           <button
             type="button"
             onClick={onNavigateToRamadan}
-            className="text-[11px] font-mono text-[#DFBA7F] hover:underline flex items-center gap-1 cursor-pointer"
+            className={`text-[11px] font-mono hover:underline flex items-center gap-1 cursor-pointer ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}
           >
             <span>View Plan</span>
             <ChevronRight className="w-3 h-3" />
@@ -163,14 +166,14 @@ export const RamadanCheckInCard: React.FC<RamadanCheckInCardProps> = ({
       </div>
 
       {/* Question & Actions */}
-      <div className="p-4 rounded-2xl bg-black/40 border border-white/5 space-y-3">
+      <div className={`p-4 rounded-2xl border space-y-3 ${isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'}`}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <p className="text-xs sm:text-sm font-medium text-stone-200">
+          <p className={`text-xs sm:text-sm font-medium ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>
             Did you work toward your Ramadan dream today?
           </p>
 
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-mono text-stone-400">
+            <span className={`text-[10px] font-mono ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               {daysAchieved}/30 Days Achieved ({progressPercent}%)
             </span>
           </div>
@@ -185,7 +188,9 @@ export const RamadanCheckInCard: React.FC<RamadanCheckInCardProps> = ({
             className={`py-2.5 px-3 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 ${
               todayStatus === 'yes'
                 ? 'bg-emerald-500 text-stone-950 font-bold shadow-[0_0_15px_rgba(16,185,129,0.4)]'
-                : 'bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300'
+                : isDark
+                ? 'bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300'
+                : 'bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-800'
             }`}
           >
             <CheckCircle2 className="w-3.5 h-3.5" />
@@ -199,17 +204,19 @@ export const RamadanCheckInCard: React.FC<RamadanCheckInCardProps> = ({
             className={`py-2.5 px-3 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 ${
               todayStatus === 'no'
                 ? 'bg-purple-600 text-white font-bold shadow-[0_0_15px_rgba(147,51,234,0.4)]'
-                : 'bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300'
+                : isDark
+                ? 'bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 text-stone-300'
+                : 'bg-white hover:bg-black/[0.03] border border-black/[0.08] text-[#3F4248]'
             }`}
           >
-            <Heart className="w-3.5 h-3.5 text-purple-400" />
+            <Heart className={`w-3.5 h-3.5 ${isDark ? 'text-purple-400' : 'text-purple-600'}`} />
             <span>Not today</span>
           </button>
         </div>
 
         {/* Feedback Message */}
         {feedbackMessage && (
-          <p className="text-[11px] text-center font-light italic text-[#DFBA7F] animate-fadeIn">
+          <p className={`text-[11px] text-center font-light italic animate-fadeIn ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
             {feedbackMessage}
           </p>
         )}

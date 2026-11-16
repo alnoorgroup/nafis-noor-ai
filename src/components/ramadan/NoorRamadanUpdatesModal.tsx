@@ -64,30 +64,32 @@ export const NoorRamadanUpdatesModal: React.FC<NoorRamadanUpdatesModalProps> = (
       <div
         className={`w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl border shadow-2xl relative transition-all flex flex-col ${
           isDark
-            ? 'bg-[#090D16] border-[#DFBA7F]/40 text-[#F5EFE6]'
-            : 'bg-white border-[#C9A063]/40 text-stone-900'
+            ? 'bg-[#14161A] border-white/[0.1] text-[#F3F4F6]'
+            : 'bg-[#FCFCFA] border-black/[0.08] text-[#111214]'
         }`}
       >
-        {/* Ambient Top Glow */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[#DFBA7F]/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute top-32 left-0 w-48 h-48 bg-[#C9A063]/10 rounded-full blur-2xl pointer-events-none" />
-
         {/* Modal Header */}
-        <div className="sticky top-0 z-20 px-6 py-4 border-b border-[#C9A063]/20 backdrop-blur-xl bg-inherit/90 flex items-center justify-between">
+        <div className={`sticky top-0 z-20 px-6 py-4 border-b backdrop-blur-xl flex items-center justify-between ${
+          isDark ? 'border-white/[0.08] bg-[#14161A]/95' : 'border-black/[0.08] bg-[#FCFCFA]/95'
+        }`}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#DFBA7F] to-[#A67C38] text-[#090C11] flex items-center justify-center shadow-md shadow-[#C9A063]/25 shrink-0">
+            <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 ${
+              isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+            }`}>
               <Moon className="w-5 h-5 fill-current" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-base sm:text-lg font-serif-heading font-bold text-[#DFBA7F]">
+                <h2 className={`text-base sm:text-lg font-serif-heading font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                   Ramadan Updates & Features
                 </h2>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#DFBA7F]/15 text-[#DFBA7F] border border-[#DFBA7F]/30 uppercase">
+                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border uppercase ${
+                  isDark ? 'bg-white/[0.08] text-white border-white/15' : 'bg-[#F3F3F1] text-[#111214] border-black/10'
+                }`}>
                   Release Notes
                 </span>
               </div>
-              <p className="text-[11px] text-stone-400 font-light">
+              <p className={`text-[11px] font-light ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 Verified Islamic Schedule & Guidelines
               </p>
             </div>
@@ -96,7 +98,11 @@ export const NoorRamadanUpdatesModal: React.FC<NoorRamadanUpdatesModalProps> = (
           <button
             type="button"
             onClick={onClose}
-            className="w-8 h-8 rounded-full border border-stone-700/60 bg-stone-800/40 hover:bg-stone-800 text-stone-300 flex items-center justify-center transition-colors cursor-pointer"
+            className={`w-8 h-8 rounded-full border flex items-center justify-center transition-colors cursor-pointer ${
+              isDark
+                ? 'border-white/10 bg-white/[0.06] hover:bg-white/[0.12] text-stone-300'
+                : 'border-black/[0.08] bg-black/[0.04] hover:bg-black/[0.08] text-[#3F4248]'
+            }`}
             aria-label="Close modal"
           >
             <X className="w-4 h-4" />
@@ -109,30 +115,38 @@ export const NoorRamadanUpdatesModal: React.FC<NoorRamadanUpdatesModalProps> = (
           <div
             className={`p-4 rounded-2xl border transition-all ${
               isRamadanActive
-                ? 'bg-emerald-950/20 border-emerald-500/40 text-emerald-200'
-                : 'bg-amber-950/20 border-amber-500/30 text-amber-200'
+                ? isDark
+                  ? 'bg-emerald-950/20 border-emerald-500/40 text-emerald-200'
+                  : 'bg-emerald-50 border-emerald-300 text-emerald-900'
+                : isDark
+                ? 'bg-[#1B1D23] border-white/[0.08] text-stone-200'
+                : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
             }`}
           >
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider">
-                <ShieldCheck className="w-4 h-4 text-[#DFBA7F]" />
+                <ShieldCheck className={`w-4 h-4 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
                 <span>Real-Time Date & Time Verification</span>
               </div>
-              <div className="flex items-center gap-1.5 text-[10px] font-mono px-2 py-0.5 rounded-md bg-black/40 border border-white/10 text-[#DFBA7F]">
-                <Clock className="w-3 h-3 animate-spin text-[#DFBA7F]" />
+              <div className={`flex items-center gap-1.5 text-[10px] font-mono px-2 py-0.5 rounded-md border ${
+                isDark
+                  ? 'bg-[#14161A] border-white/10 text-white'
+                  : 'bg-white border-black/[0.08] text-[#111214]'
+              }`}>
+                <Clock className={`w-3 h-3 animate-spin ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`} />
                 <span>{currentLiveTime}</span>
               </div>
             </div>
 
             <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-              <div className="p-2.5 rounded-xl bg-black/30 border border-white/5 space-y-0.5">
-                <span className="text-[10px] text-stone-400 uppercase font-semibold">Gregorian Live:</span>
-                <p className="font-semibold text-white">{currentLiveDate}</p>
+              <div className={`p-2.5 rounded-xl border space-y-0.5 ${isDark ? 'bg-[#14161A] border-white/[0.08]' : 'bg-white border-black/[0.08]'}`}>
+                <span className={`text-[10px] uppercase font-semibold ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>Gregorian Live:</span>
+                <p className={`font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>{currentLiveDate}</p>
               </div>
 
-              <div className="p-2.5 rounded-xl bg-black/30 border border-white/5 space-y-0.5">
-                <span className="text-[10px] text-stone-400 uppercase font-semibold">Hijri Calendar:</span>
-                <p className="font-semibold text-[#DFBA7F]">
+              <div className={`p-2.5 rounded-xl border space-y-0.5 ${isDark ? 'bg-[#14161A] border-white/[0.08]' : 'bg-white border-black/[0.08]'}`}>
+                <span className={`text-[10px] uppercase font-semibold ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>Hijri Calendar:</span>
+                <p className={`font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                   {ramadanStatus ? `${ramadanStatus.day} ${ramadanStatus.monthNameEn} ${ramadanStatus.year} AH` : 'Calculating...'}
                   {ramadanStatus?.monthNameAr && ` (${ramadanStatus.monthNameAr})`}
                 </p>
@@ -140,53 +154,61 @@ export const NoorRamadanUpdatesModal: React.FC<NoorRamadanUpdatesModalProps> = (
             </div>
 
             {/* Lock / Active Status Notice */}
-            <div className="mt-3 pt-3 border-t border-white/10 flex items-center justify-between text-xs">
+            <div className={`mt-3 pt-3 border-t flex items-center justify-between text-xs ${isDark ? 'border-white/10' : 'border-black/[0.08]'}`}>
               <div className="flex items-center gap-2">
                 {isRamadanActive ? (
                   <>
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="font-semibold text-emerald-300">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className={`font-semibold ${isDark ? 'text-emerald-300' : 'text-emerald-700'}`}>
                       Ramadan Active (Month 9) • Events Unlocked
                     </span>
                   </>
                 ) : (
                   <>
-                    <Lock className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                    <span className="font-semibold text-amber-300">
+                    <Lock className={`w-3.5 h-3.5 shrink-0 ${isDark ? 'text-sky-400' : 'text-sky-700'}`} />
+                    <span className={`font-semibold ${isDark ? 'text-sky-300' : 'text-sky-800'}`}>
                       Events Locked: Currently outside Ramadan (Month {ramadanStatus?.monthNumber || 5} of 12).
                     </span>
                   </>
                 )}
               </div>
 
-              <span className="text-[10px] font-mono text-stone-400">
+              <span className={`text-[10px] font-mono ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 Aladhan Sync
               </span>
             </div>
           </div>
 
           {/* 2. Important Architectural Rules Notice */}
-          <div className="p-4 rounded-2xl bg-black/40 border border-[#C9A063]/25 space-y-2">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#DFBA7F] flex items-center gap-2">
+          <div className={`p-4 rounded-2xl border space-y-2 ${isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'}`}>
+            <h4 className={`text-xs font-bold uppercase tracking-wider flex items-center gap-2 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
               <Sparkles className="w-3.5 h-3.5" />
               <span>Ramadan Event Access & Day Locking Rules</span>
             </h4>
-            <p className="text-xs text-stone-300 leading-relaxed font-light">
+            <p className={`text-xs leading-relaxed font-light ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
               By Islamic principle and app design, Ramadan events activate <strong>only on verified Ramadan dates</strong>. Furthermore, to keep focus on today's sincere efforts, upcoming days in the Ramadan journey are locked sequentially:
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 text-xs">
-              <div className="p-2.5 rounded-xl bg-[#DFBA7F]/10 border border-[#DFBA7F]/30 text-[#DFBA7F] flex items-center gap-2">
+              <div className={`p-2.5 rounded-xl border flex items-center gap-2 ${
+                isDark
+                  ? 'bg-[#14161A] border-white/10 text-stone-200'
+                  : 'bg-white border-black/[0.08] text-[#111214]'
+              }`}>
                 <Lock className="w-3.5 h-3.5 shrink-0" />
                 <div>
                   <span className="font-bold block">Tomorrow:</span>
-                  <span className="text-[11px] text-stone-200">Locked with label <strong>"Tomorrow Insha'Allah"</strong> (unlocks at Fajr).</span>
+                  <span className={`text-[11px] ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>Locked with label <strong>"Tomorrow Insha'Allah"</strong> (unlocks at Fajr).</span>
                 </div>
               </div>
-              <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-stone-300 flex items-center gap-2">
+              <div className={`p-2.5 rounded-xl border flex items-center gap-2 ${
+                isDark
+                  ? 'bg-[#14161A] border-white/10 text-stone-300'
+                  : 'bg-white border-black/[0.08] text-[#3F4248]'
+              }`}>
                 <Lock className="w-3.5 h-3.5 shrink-0" />
                 <div>
                   <span className="font-bold block">Future Days (Day +2 onward):</span>
-                  <span className="text-[11px] text-stone-300">Locked with label <strong>"Insha'Allah that time"</strong>.</span>
+                  <span className={`text-[11px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>Locked with label <strong>"Insha'Allah that time"</strong>.</span>
                 </div>
               </div>
             </div>
@@ -194,72 +216,72 @@ export const NoorRamadanUpdatesModal: React.FC<NoorRamadanUpdatesModalProps> = (
 
           {/* 3. Ramadan Features & Updates */}
           <div className="space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-stone-400">
+            <h4 className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               What's Included in the Ramadan Update
             </h4>
 
             <div className="grid grid-cols-1 gap-2.5">
               {/* Feature 1 */}
-              <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 hover:border-[#C9A063]/30 transition-colors flex items-start gap-3">
-                <div className="w-8 h-8 rounded-xl bg-[#DFBA7F]/20 text-[#DFBA7F] flex items-center justify-center shrink-0 mt-0.5">
+              <div className={`p-3.5 rounded-2xl border transition-colors flex items-start gap-3 ${isDark ? 'bg-[#1B1D23] border-white/[0.08] hover:border-white/20' : 'bg-white border-black/[0.08] hover:border-black/20'}`}>
+                <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${isDark ? 'bg-white/[0.08] text-white' : 'bg-[#F3F3F1] text-[#111214]'}`}>
                   <Moon className="w-4 h-4 fill-current" />
                 </div>
                 <div>
-                  <h5 className="text-xs font-bold text-white">1. One Personal Spiritual Dream</h5>
-                  <p className="text-[11px] text-stone-400 mt-0.5">
+                  <h5 className={`text-xs font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>1. One Personal Spiritual Dream</h5>
+                  <p className={`text-[11px] mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     Set a single, heart-centered goal for Ramadan (Fast 30 days, Read full Quran, Taraweeh nightly, Daily charity, Memorize surahs, Stop a bad habit, Patience) or enter a custom dream.
                   </p>
                 </div>
               </div>
 
               {/* Feature 2 */}
-              <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 hover:border-[#C9A063]/30 transition-colors flex items-start gap-3">
-                <div className="w-8 h-8 rounded-xl bg-[#DFBA7F]/20 text-[#DFBA7F] flex items-center justify-center shrink-0 mt-0.5">
+              <div className={`p-3.5 rounded-2xl border transition-colors flex items-start gap-3 ${isDark ? 'bg-[#1B1D23] border-white/[0.08] hover:border-white/20' : 'bg-white border-black/[0.08] hover:border-black/20'}`}>
+                <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${isDark ? 'bg-white/[0.08] text-white' : 'bg-[#F3F3F1] text-[#111214]'}`}>
                   <Clock className="w-4 h-4" />
                 </div>
                 <div>
-                  <h5 className="text-xs font-bold text-white">2. Al-Noor Plan & Custom Daily Routine</h5>
-                  <p className="text-[11px] text-stone-400 mt-0.5">
+                  <h5 className={`text-xs font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>2. Al-Noor Plan & Custom Daily Routine</h5>
+                  <p className={`text-[11px] mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     Pre-built 10-step routine combining best practices (Suhoor before Fajr, post-Fajr Quran, Morning & Afternoon Adhkar, Maghrib/Iftar, Taraweeh, Tahajjud) with customizable times.
                   </p>
                 </div>
               </div>
 
               {/* Feature 3 */}
-              <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 hover:border-[#C9A063]/30 transition-colors flex items-start gap-3">
-                <div className="w-8 h-8 rounded-xl bg-[#DFBA7F]/20 text-[#DFBA7F] flex items-center justify-center shrink-0 mt-0.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <div className={`p-3.5 rounded-2xl border transition-colors flex items-start gap-3 ${isDark ? 'bg-[#1B1D23] border-white/[0.08] hover:border-white/20' : 'bg-white border-black/[0.08] hover:border-black/20'}`}>
+                <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${isDark ? 'bg-emerald-500/15 text-emerald-400' : 'bg-emerald-100 text-emerald-700'}`}>
+                  <CheckCircle2 className="w-4 h-4" />
                 </div>
                 <div>
-                  <h5 className="text-xs font-bold text-white">3. Daily Maghrib Check-In & Affirmation</h5>
-                  <p className="text-[11px] text-stone-400 mt-0.5">
+                  <h5 className={`text-xs font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>3. Daily Maghrib Check-In & Affirmation</h5>
+                  <p className={`text-[11px] mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     "Did you work toward your dream today?" with affirmative reinforcement or guilt-free encouragement grounded in Allah's mercy.
                   </p>
                 </div>
               </div>
 
               {/* Feature 4 */}
-              <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 hover:border-[#C9A063]/30 transition-colors flex items-start gap-3">
-                <div className="w-8 h-8 rounded-xl bg-[#DFBA7F]/20 text-[#DFBA7F] flex items-center justify-center shrink-0 mt-0.5">
-                  <Calendar className="w-4 h-4 text-amber-400" />
+              <div className={`p-3.5 rounded-2xl border transition-colors flex items-start gap-3 ${isDark ? 'bg-[#1B1D23] border-white/[0.08] hover:border-white/20' : 'bg-white border-black/[0.08] hover:border-black/20'}`}>
+                <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${isDark ? 'bg-white/[0.08] text-white' : 'bg-[#F3F3F1] text-[#111214]'}`}>
+                  <Calendar className="w-4 h-4" />
                 </div>
                 <div>
-                  <h5 className="text-xs font-bold text-white">4. 30-Day Journey Calendar & Progress</h5>
-                  <p className="text-[11px] text-stone-400 mt-0.5">
+                  <h5 className={`text-xs font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>4. 30-Day Journey Calendar & Progress</h5>
+                  <p className={`text-[11px] mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     Visual 30-day grid with streak tracker and completion percentage. Today is active; Tomorrow shows "Tomorrow Insha'Allah"; all subsequent days show "Insha'Allah that time".
                   </p>
                 </div>
               </div>
 
               {/* Feature 5 */}
-              <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/5 hover:border-[#C9A063]/30 transition-colors flex items-start gap-3">
-                <div className="w-8 h-8 rounded-xl bg-[#DFBA7F]/20 text-[#DFBA7F] flex items-center justify-center shrink-0 mt-0.5">
-                  <Flame className="w-4 h-4 text-orange-400" />
+              <div className={`p-3.5 rounded-2xl border transition-colors flex items-start gap-3 ${isDark ? 'bg-[#1B1D23] border-white/[0.08] hover:border-white/20' : 'bg-white border-black/[0.08] hover:border-black/20'}`}>
+                <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${isDark ? 'bg-white/[0.08] text-white' : 'bg-[#F3F3F1] text-[#111214]'}`}>
+                  <Flame className="w-4 h-4" />
                 </div>
                 <div>
-                  <h5 className="text-xs font-bold text-white">5. 24-Hour Daily Inspiration Pulse</h5>
-                  <p className="text-[11px] text-stone-400 mt-0.5">
-                    Full-screen card with amber glow featuring rotating Quranic verses, life transformations, global charity calls, and authentic hadiths.
+                  <h5 className={`text-xs font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>5. 24-Hour Daily Inspiration Pulse</h5>
+                  <p className={`text-[11px] mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
+                    Full-screen card with calm monochrome styling featuring rotating Quranic verses, life transformations, global charity calls, and authentic hadiths.
                   </p>
                 </div>
               </div>
@@ -267,10 +289,10 @@ export const NoorRamadanUpdatesModal: React.FC<NoorRamadanUpdatesModalProps> = (
           </div>
 
           {/* 4. Action Area */}
-          <div className="pt-2 border-t border-[#C9A063]/20 space-y-3">
+          <div className={`pt-2 border-t space-y-3 ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
             {isRamadanActive ? (
               <div className="space-y-2">
-                <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs text-center">
+                <div className={`p-3 rounded-xl border text-xs text-center ${isDark ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300' : 'bg-emerald-50 border-emerald-300 text-emerald-800'}`}>
                   Ramadan date verified! You can enter and interact with the Ramadan module.
                 </div>
                 {onProceedToRamadan && (
@@ -280,7 +302,9 @@ export const NoorRamadanUpdatesModal: React.FC<NoorRamadanUpdatesModalProps> = (
                       onClose();
                       onProceedToRamadan();
                     }}
-                    className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#DFBA7F] via-[#C9A063] to-[#A67C38] text-[#080B10] font-bold text-sm tracking-wide shadow-lg hover:brightness-110 active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    className={`w-full py-3 px-4 rounded-xl font-bold text-sm tracking-wide shadow-sm active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                      isDark ? 'bg-white hover:bg-stone-200 text-[#111214]' : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                    }`}
                   >
                     <Moon className="w-4 h-4 fill-current" />
                     <span>Open Ramadan Events</span>
@@ -289,12 +313,12 @@ export const NoorRamadanUpdatesModal: React.FC<NoorRamadanUpdatesModalProps> = (
                 )}
               </div>
             ) : (
-              <div className="p-3.5 rounded-2xl bg-black/50 border border-amber-500/30 text-xs space-y-2">
-                <div className="flex items-center gap-2 text-amber-300 font-semibold">
+              <div className={`p-3.5 rounded-2xl border text-xs space-y-2 ${isDark ? 'bg-sky-500/10 border-sky-500/30' : 'bg-sky-50 border-sky-200'}`}>
+                <div className={`flex items-center gap-2 font-semibold ${isDark ? 'text-sky-300' : 'text-sky-800'}`}>
                   <Lock className="w-4 h-4" />
                   <span>Ramadan Events are locked until Ramadan begins.</span>
                 </div>
-                <p className="text-stone-400 text-[11px] leading-relaxed">
+                <p className={`text-[11px] leading-relaxed ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                   The live date & time check confirms that we are currently in Month {ramadanStatus?.monthNumber || 5} ({ramadanStatus?.monthNameEn || 'Islamic Calendar'}). Ramadan events will unlock automatically on 1 Ramadan 1447, Insha'Allah.
                 </p>
               </div>
@@ -302,15 +326,19 @@ export const NoorRamadanUpdatesModal: React.FC<NoorRamadanUpdatesModalProps> = (
 
             {/* Developer Testing Simulation Toggler */}
             {onToggleSimulated && (
-              <div className="flex items-center justify-between pt-2 text-[11px] text-stone-400">
+              <div className={`flex items-center justify-between pt-2 text-[11px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 <span>Testing Mode (Simulate Ramadan Date):</span>
                 <button
                   type="button"
                   onClick={onToggleSimulated}
                   className={`px-2.5 py-1 rounded-lg text-[10px] font-semibold border transition-colors cursor-pointer ${
                     isRamadanSimulated
-                      ? 'border-[#DFBA7F]/50 bg-[#DFBA7F]/20 text-[#DFBA7F]'
-                      : 'border-stone-700 bg-stone-800 text-stone-300'
+                      ? isDark
+                        ? 'border-white/30 bg-white text-[#111214]'
+                        : 'border-[#111214] bg-[#111214] text-white'
+                      : isDark
+                      ? 'border-white/10 bg-[#1B1D23] text-stone-300'
+                      : 'border-black/10 bg-[#F3F3F1] text-[#3F4248]'
                   }`}
                 >
                   {isRamadanSimulated ? 'Simulation Enabled (Testing)' : 'Real Date Check (Standard)'}
@@ -321,12 +349,18 @@ export const NoorRamadanUpdatesModal: React.FC<NoorRamadanUpdatesModalProps> = (
         </div>
 
         {/* Modal Footer */}
-        <div className="px-6 py-3.5 border-t border-[#C9A063]/20 bg-inherit flex items-center justify-between text-xs text-stone-400">
+        <div className={`px-6 py-3.5 border-t bg-inherit flex items-center justify-between text-xs ${
+          isDark ? 'border-white/[0.08] text-stone-400' : 'border-black/[0.08] text-[#5A5D63]'
+        }`}>
           <span>NOOR Islamic App • Ramadan 1447</span>
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-1.5 rounded-xl border border-stone-700 hover:bg-stone-800 text-stone-300 text-xs font-semibold cursor-pointer transition-colors"
+            className={`px-4 py-1.5 rounded-xl border text-xs font-semibold cursor-pointer transition-colors ${
+              isDark
+                ? 'border-white/10 hover:bg-white/[0.08] text-stone-300'
+                : 'border-black/[0.1] hover:bg-black/[0.04] text-[#3F4248]'
+            }`}
           >
             Close
           </button>

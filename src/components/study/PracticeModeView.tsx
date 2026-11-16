@@ -118,11 +118,11 @@ export const PracticeModeView: React.FC<PracticeModeViewProps> = ({
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold flex items-center gap-2">
-            <Target className="w-5 h-5 text-[#DFBA7F]" />
+          <h2 className={`text-xl font-bold flex items-center gap-2 ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
+            <Target className={`w-5 h-5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
             <span>Adaptive Practice</span>
           </h2>
-          <p className="text-xs text-stone-400 mt-0.5">
+          <p className={`text-xs mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
             One-by-one questions adapting to your mastery level in {selectedSubject.name}{' '}
             {selectedTopic ? `• ${selectedTopic.name}` : ''}
           </p>
@@ -130,16 +130,16 @@ export const PracticeModeView: React.FC<PracticeModeViewProps> = ({
 
         {/* Difficulty indicator badge */}
         <div className="flex items-center gap-2">
-          <span className="text-xs text-stone-400">Current Level:</span>
+          <span className={`text-xs ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>Current Level:</span>
           <span
             className={`text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full border ${
               currentDifficulty === 'easy'
-                ? 'bg-blue-500/15 border-blue-500/30 text-blue-400'
+                ? isDark ? 'bg-white/[0.08] text-white border-white/[0.14]' : 'bg-black/[0.04] text-[#111214] border-black/[0.1]'
                 : currentDifficulty === 'medium'
-                ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400'
+                ? isDark ? 'bg-sky-500/15 text-sky-300 border-sky-500/30' : 'bg-sky-50 text-sky-700 border-sky-300'
                 : currentDifficulty === 'hard'
-                ? 'bg-amber-500/15 border-amber-500/30 text-amber-400'
-                : 'bg-purple-500/15 border-purple-500/30 text-purple-400'
+                ? isDark ? 'bg-amber-500/15 text-amber-300 border-amber-500/30' : 'bg-amber-50 text-amber-800 border-amber-300'
+                : isDark ? 'bg-rose-500/15 text-rose-300 border-rose-500/30' : 'bg-rose-50 text-rose-700 border-rose-300'
             }`}
           >
             {currentDifficulty}
@@ -150,13 +150,17 @@ export const PracticeModeView: React.FC<PracticeModeViewProps> = ({
       {/* Main Practice Container */}
       <div
         className={`max-w-2xl mx-auto p-6 sm:p-8 rounded-3xl border shadow-lg transition-colors ${
-          isDark ? 'bg-[#0E131E] border-white/15 text-stone-100' : 'bg-white border-stone-200 text-stone-900'
+          isDark
+            ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+            : 'bg-white border-black/[0.08] text-[#111214] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
         }`}
       >
         {isLoading ? (
           <div className="py-16 text-center space-y-3">
-            <div className="w-10 h-10 rounded-full border-2 border-[#DFBA7F] border-t-transparent animate-spin mx-auto" />
-            <p className="text-xs text-stone-400 font-medium">
+            <div className={`w-10 h-10 rounded-full border-2 border-t-transparent animate-spin mx-auto ${
+              isDark ? 'border-white' : 'border-[#111214]'
+            }`} />
+            <p className={`text-xs font-medium ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               Generating your next adaptive question...
             </p>
           </div>
@@ -164,10 +168,10 @@ export const PracticeModeView: React.FC<PracticeModeViewProps> = ({
           <div className="space-y-6">
             {/* Question Box */}
             <div className="space-y-2">
-              <span className="text-[10px] uppercase font-bold tracking-wider text-stone-500">
+              <span className={`text-[10px] uppercase font-bold tracking-wider ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                 Target Question
               </span>
-              <h3 className="text-base sm:text-lg font-bold leading-relaxed">
+              <h3 className={`text-base sm:text-lg font-bold leading-relaxed ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                 {currentQuestion.question}
               </h3>
             </div>
@@ -185,19 +189,23 @@ export const PracticeModeView: React.FC<PracticeModeViewProps> = ({
                       onClick={() => setSelectedAnswer(option)}
                       className={`w-full p-4 rounded-2xl border text-left text-xs sm:text-sm font-medium flex items-center justify-between transition-all ${
                         isSelected
-                          ? 'bg-[#C9A063]/20 border-[#C9A063] text-[#DFBA7F] font-semibold'
+                          ? isDark
+                            ? 'bg-white/[0.12] border-white text-white font-semibold'
+                            : 'bg-[#111214]/[0.08] border-[#111214] text-[#111214] font-semibold'
                           : isDark
-                          ? 'bg-[#121826] border-white/10 hover:border-white/20 text-stone-200'
-                          : 'bg-stone-50 border-stone-200 hover:border-stone-300 text-stone-800'
+                          ? 'bg-[#1B1D23] border-white/[0.08] hover:border-white/35 text-stone-200'
+                          : 'bg-[#F3F3F1] border-black/[0.08] hover:border-[#111214]/40 text-[#3F4248]'
                       }`}
                     >
                       <span>{option}</span>
                       <div
                         className={`w-4 h-4 rounded-full border flex items-center justify-center ${
-                          isSelected ? 'border-[#DFBA7F] bg-[#DFBA7F]' : 'border-stone-500'
+                          isSelected
+                            ? isDark ? 'border-white bg-white' : 'border-[#111214] bg-[#111214]'
+                            : isDark ? 'border-stone-500' : 'border-stone-400'
                         }`}
                       >
-                        {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-[#080A0E]" />}
+                        {isSelected && <div className={`w-1.5 h-1.5 rounded-full ${isDark ? 'bg-[#111214]' : 'bg-white'}`} />}
                       </div>
                     </button>
                   );
@@ -211,7 +219,9 @@ export const PracticeModeView: React.FC<PracticeModeViewProps> = ({
                     onChange={(e) => setSelectedAnswer(e.target.value)}
                     placeholder="Enter your concise answer..."
                     className={`w-full p-3.5 rounded-xl text-xs sm:text-sm border outline-none ${
-                      isDark ? 'bg-[#141B2B] border-white/10' : 'bg-stone-50 border-stone-200'
+                      isDark
+                        ? 'bg-[#1B1D23] border-white/[0.08] text-[#F3F4F6] placeholder-stone-500'
+                        : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214] placeholder-[#6B6F76]'
                     }`}
                   />
                 </div>
@@ -223,25 +233,33 @@ export const PracticeModeView: React.FC<PracticeModeViewProps> = ({
               <button
                 type="button"
                 disabled={!selectedAnswer.trim()}
+                className={`w-full py-3 rounded-xl font-bold text-xs sm:text-sm disabled:opacity-40 transition-colors ${
+                  isDark
+                    ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                    : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                }`}
                 onClick={handleSubmitAnswer}
-                className="w-full py-3 rounded-xl font-bold text-xs sm:text-sm bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] disabled:opacity-40 transition-opacity"
               >
                 Check Answer
               </button>
             ) : (
               /* Answer Feedback Section */
-              <div className="space-y-4 pt-4 border-t border-white/10 animate-fadeIn">
+              <div className={`space-y-4 pt-4 border-t animate-fadeIn ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
                 <div
                   className={`p-4 rounded-2xl border flex items-center gap-3 ${
                     isCorrect
-                      ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
-                      : 'bg-red-500/10 border-red-500/30 text-red-300'
+                      ? isDark
+                        ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
+                        : 'bg-emerald-50 border-emerald-300 text-emerald-800'
+                      : isDark
+                      ? 'bg-rose-500/10 border-rose-500/30 text-rose-300'
+                      : 'bg-rose-50 border-rose-300 text-rose-800'
                   }`}
                 >
                   {isCorrect ? (
-                    <CheckCircle2 className="w-6 h-6 shrink-0 text-emerald-400" />
+                    <CheckCircle2 className={`w-6 h-6 shrink-0 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`} />
                   ) : (
-                    <XCircle className="w-6 h-6 shrink-0 text-red-400" />
+                    <XCircle className={`w-6 h-6 shrink-0 ${isDark ? 'text-rose-400' : 'text-rose-600'}`} />
                   )}
                   <div>
                     <h4 className="font-bold text-sm">
@@ -258,16 +276,22 @@ export const PracticeModeView: React.FC<PracticeModeViewProps> = ({
                 {/* Explanation */}
                 <div
                   className={`p-4 rounded-2xl border text-xs leading-relaxed ${
-                    isDark ? 'bg-[#141B2B] border-white/10 text-stone-300' : 'bg-stone-100 border-stone-200 text-stone-800'
+                    isDark
+                      ? 'bg-[#1B1D23] border-white/[0.08] text-stone-300'
+                      : 'bg-[#F3F3F1] border-black/[0.08] text-[#3F4248]'
                   }`}
                 >
-                  <strong className="text-[#DFBA7F] block mb-1">Step-by-Step Explanation:</strong>
+                  <strong className={`block mb-1 ${isDark ? 'text-white' : 'text-[#111214]'}`}>Step-by-Step Explanation:</strong>
                   {currentQuestion.explanation}
                 </div>
 
                 {/* Optional follow-up challenge */}
                 {currentQuestion.followUpPrompt && (
-                  <div className="p-3 rounded-xl bg-blue-500/10 border border-blue-500/20 text-xs text-blue-300">
+                  <div className={`p-3 rounded-xl border text-xs ${
+                    isDark
+                      ? 'bg-sky-500/10 border-sky-500/30 text-sky-300'
+                      : 'bg-sky-50 border-sky-300 text-sky-800'
+                  }`}>
                     <strong className="block mb-0.5">Deeper Reflection:</strong>
                     {currentQuestion.followUpPrompt}
                   </div>
@@ -277,7 +301,11 @@ export const PracticeModeView: React.FC<PracticeModeViewProps> = ({
                 <button
                   type="button"
                   onClick={() => fetchNextQuestion(isCorrect)}
-                  className="w-full py-3 rounded-xl font-bold text-xs sm:text-sm bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] flex items-center justify-center gap-2 shadow-sm"
+                  className={`w-full py-3 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition-colors ${
+                    isDark
+                      ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                      : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                  }`}
                 >
                   <span>Next Adaptive Question</span>
                   <ArrowRight className="w-4 h-4" />
@@ -287,11 +315,15 @@ export const PracticeModeView: React.FC<PracticeModeViewProps> = ({
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-xs text-stone-400">Failed to load question.</p>
+            <p className={`text-xs ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>Failed to load question.</p>
             <button
               type="button"
               onClick={() => fetchNextQuestion()}
-              className="mt-3 px-4 py-2 rounded-xl text-xs bg-[#C9A063] text-[#080A0E]"
+              className={`mt-3 px-4 py-2 rounded-xl text-xs font-semibold transition-colors ${
+                isDark
+                  ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                  : 'bg-[#111214] hover:bg-[#27292D] text-white'
+              }`}
             >
               Retry
             </button>

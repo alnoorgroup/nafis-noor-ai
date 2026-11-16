@@ -158,11 +158,11 @@ export const SmartNotesView: React.FC<SmartNotesViewProps> = ({
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold flex items-center gap-2">
-            <Notebook className="w-5 h-5 text-[#DFBA7F]" />
+          <h2 className={`text-xl font-bold flex items-center gap-2 ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
+            <Notebook className={`w-5 h-5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
             <span>AI Smart Notes</span>
           </h2>
-          <p className="text-xs text-stone-400 mt-0.5">
+          <p className={`text-xs mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
             Structured study notes with automated AI formatting and revision summaries.
           </p>
         </div>
@@ -171,7 +171,11 @@ export const SmartNotesView: React.FC<SmartNotesViewProps> = ({
           <button
             type="button"
             onClick={handleCreateNew}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] shadow-sm"
+            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors ${
+              isDark
+                ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                : 'bg-[#111214] hover:bg-[#27292D] text-white'
+            }`}
           >
             <Plus className="w-3.5 h-3.5" />
             <span>New Note</span>
@@ -183,24 +187,32 @@ export const SmartNotesView: React.FC<SmartNotesViewProps> = ({
         {/* Left: Notes List */}
         <div className="lg:col-span-4 space-y-3">
           <div
-            className={`p-4 rounded-3xl border shadow-sm ${
-              isDark ? 'bg-[#0E131E] border-white/15' : 'bg-white border-stone-200'
+            className={`p-4 rounded-3xl border ${
+              isDark
+                ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+                : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
             }`}
           >
-            <div className="flex items-center justify-between text-xs text-stone-400 mb-3 px-1">
+            <div className={`flex items-center justify-between text-xs mb-3 px-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               <span className="font-bold uppercase tracking-wider">
                 {selectedSubject.name} Notes ({subjectNotes.length})
               </span>
             </div>
 
             {subjectNotes.length === 0 ? (
-              <div className="p-8 text-center text-xs text-stone-400 border border-dashed rounded-2xl border-white/10">
-                <Notebook className="w-6 h-6 mx-auto mb-2 text-stone-500" />
+              <div className={`p-8 text-center text-xs border border-dashed rounded-2xl ${
+                isDark ? 'text-stone-400 border-white/[0.1]' : 'text-[#5A5D63] border-black/[0.1]'
+              }`}>
+                <Notebook className={`w-6 h-6 mx-auto mb-2 ${isDark ? 'text-stone-500' : 'text-[#6B6F76]'}`} />
                 <p>No notes in this subject yet.</p>
                 <button
                   type="button"
                   onClick={handleCreateNew}
-                  className="mt-3 px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#C9A063] text-[#080A0E]"
+                  className={`mt-3 px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors ${
+                    isDark
+                      ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                      : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                  }`}
                 >
                   Create First Note
                 </button>
@@ -215,29 +227,33 @@ export const SmartNotesView: React.FC<SmartNotesViewProps> = ({
                       onClick={() => handleSelectNote(n)}
                       className={`p-3.5 rounded-2xl border cursor-pointer text-xs space-y-1 transition-all ${
                         isSelected
-                          ? 'bg-[#C9A063]/15 border-[#C9A063] text-[#DFBA7F]'
+                          ? isDark
+                            ? 'bg-white/[0.1] border-white/35 text-white'
+                            : 'bg-[#111214]/[0.06] border-[#111214]/40 text-[#111214]'
                           : isDark
-                          ? 'bg-[#121826] border-white/10 hover:border-white/20 text-stone-300'
-                          : 'bg-stone-50 border-stone-200 hover:border-stone-300 text-stone-800'
+                          ? 'bg-[#1B1D23] border-white/[0.08] hover:border-white/20 text-stone-300'
+                          : 'bg-[#F3F3F1] border-black/[0.08] hover:border-black/20 text-[#3F4248]'
                       }`}
                     >
                       <div className="flex items-center justify-between">
-                        <p className="font-bold truncate text-stone-100">{n.title || 'Untitled'}</p>
+                        <p className={`font-bold truncate ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>{n.title || 'Untitled'}</p>
                         <button
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleDelete(n.id);
                           }}
-                          className="p-1 text-stone-500 hover:text-red-400"
+                          className={`p-1 transition-colors ${
+                            isDark ? 'text-stone-400 hover:text-rose-400' : 'text-[#6B6F76] hover:text-rose-600'
+                          }`}
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
                       </div>
-                      <p className="text-[11px] text-stone-400 line-clamp-2">
+                      <p className={`text-[11px] line-clamp-2 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                         {n.content || '(Empty content)'}
                       </p>
-                      <span className="text-[10px] text-stone-500 font-mono block pt-0.5">
+                      <span className={`text-[10px] font-mono block pt-0.5 ${isDark ? 'text-stone-500' : 'text-[#6B6F76]'}`}>
                         {new Date(n.updatedAt).toLocaleDateString()}
                       </span>
                     </div>
@@ -252,12 +268,16 @@ export const SmartNotesView: React.FC<SmartNotesViewProps> = ({
         <div className="lg:col-span-8">
           {activeNote ? (
             <div
-              className={`p-6 rounded-3xl border shadow-lg space-y-4 ${
-                isDark ? 'bg-[#0E131E] border-white/15 text-stone-100' : 'bg-white border-stone-200 text-stone-900'
+              className={`p-6 rounded-3xl border space-y-4 ${
+                isDark
+                  ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+                  : 'bg-white border-black/[0.08] text-[#111214] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
               }`}
             >
               {/* Note Header Toolbar */}
-              <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/10">
+              <div className={`flex flex-wrap items-center justify-between gap-3 pb-3 border-b ${
+                isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+              }`}>
                 <input
                   type="text"
                   value={title}
@@ -271,7 +291,11 @@ export const SmartNotesView: React.FC<SmartNotesViewProps> = ({
                     type="button"
                     onClick={handleAiOrganize}
                     disabled={isOrganizing}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-[#DFBA7F]/20 text-[#DFBA7F] border border-[#DFBA7F]/30 hover:bg-[#DFBA7F]/30 disabled:opacity-40 transition-all"
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border disabled:opacity-40 transition-all ${
+                      isDark
+                        ? 'bg-white/[0.08] text-white border-white/[0.14] hover:bg-white/[0.14]'
+                        : 'bg-[#F3F3F1] text-[#111214] border-black/[0.1] hover:bg-black/[0.06]'
+                    }`}
                   >
                     <Sparkles className="w-3.5 h-3.5" />
                     <span>{isOrganizing ? 'Organizing...' : 'AI Organize'}</span>
@@ -280,8 +304,14 @@ export const SmartNotesView: React.FC<SmartNotesViewProps> = ({
                   <button
                     type="button"
                     onClick={() => setIsEditing(!isEditing)}
-                    className={`p-2 rounded-xl border text-xs ${
-                      !isEditing ? 'bg-[#C9A063] text-[#080A0E]' : 'border-white/10 text-stone-300'
+                    className={`p-2 rounded-xl border text-xs transition-colors ${
+                      !isEditing
+                        ? isDark
+                          ? 'bg-white text-[#111214] border-white'
+                          : 'bg-[#111214] text-white border-[#111214]'
+                        : isDark
+                        ? 'border-white/[0.08] text-stone-300 hover:text-white'
+                        : 'border-black/[0.08] text-[#3F4248] hover:text-[#111214]'
                     }`}
                     title={isEditing ? 'Preview Markdown' : 'Edit raw text'}
                   >
@@ -291,16 +321,24 @@ export const SmartNotesView: React.FC<SmartNotesViewProps> = ({
                   <button
                     type="button"
                     onClick={handleCopy}
-                    className="p-2 rounded-xl border border-white/10 text-stone-400 hover:text-stone-200"
+                    className={`p-2 rounded-xl border transition-colors ${
+                      isDark
+                        ? 'border-white/[0.08] text-stone-300 hover:text-white'
+                        : 'border-black/[0.08] text-[#3F4248] hover:text-[#111214]'
+                    }`}
                     title="Copy note"
                   >
-                    {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                    {copied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
                   </button>
 
                   <button
                     type="button"
                     onClick={handleSave}
-                    className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold bg-[#C9A063] text-[#080A0E] shadow-sm"
+                    className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold transition-colors ${
+                      isDark
+                        ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                        : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                    }`}
                   >
                     <Save className="w-3.5 h-3.5" />
                     <span>Save</span>
@@ -309,20 +347,28 @@ export const SmartNotesView: React.FC<SmartNotesViewProps> = ({
               </div>
 
               {saveStatus && (
-                <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-medium">
+                <div className={`p-2 rounded-xl border text-xs font-medium ${
+                  isDark
+                    ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
+                    : 'bg-emerald-50 border-emerald-300 text-emerald-800'
+                }`}>
                   {saveStatus}
                 </div>
               )}
 
               {/* Tags line */}
-              <div className="flex items-center gap-2 text-xs text-stone-400">
+              <div className={`flex items-center gap-2 text-xs ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 <Tag className="w-3.5 h-3.5 shrink-0" />
                 <input
                   type="text"
                   value={tagsText}
                   onChange={(e) => setTagsText(e.target.value)}
                   placeholder="Comma-separated tags (e.g. Exam 1, Formulas, Chapter 3)"
-                  className="bg-transparent border-b border-white/10 text-xs py-0.5 outline-none flex-1 text-stone-300"
+                  className={`bg-transparent border-b text-xs py-0.5 outline-none flex-1 ${
+                    isDark
+                      ? 'border-white/[0.08] text-stone-300 placeholder-stone-500'
+                      : 'border-black/[0.08] text-[#3F4248] placeholder-[#6B6F76]'
+                  }`}
                 />
               </div>
 
@@ -334,13 +380,17 @@ export const SmartNotesView: React.FC<SmartNotesViewProps> = ({
                   onChange={(e) => setContent(e.target.value)}
                   placeholder="Write your study notes, paste text, or jot down ideas. Click 'AI Organize' to turn rough notes into formatted exam summaries!"
                   className={`w-full p-4 rounded-2xl text-xs sm:text-sm border outline-none font-mono leading-relaxed resize-y ${
-                    isDark ? 'bg-[#141B2B] border-white/10 text-stone-100' : 'bg-stone-50 border-stone-200 text-stone-900'
+                    isDark
+                      ? 'bg-[#1B1D23] border-white/[0.08] text-[#F3F4F6] placeholder-stone-500'
+                      : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214] placeholder-[#6B6F76]'
                   }`}
                 />
               ) : (
                 <div
                   className={`p-5 rounded-2xl border min-h-[300px] text-xs sm:text-sm leading-relaxed markdown-study-content space-y-3 ${
-                    isDark ? 'bg-[#141B2B] border-white/10 text-stone-200' : 'bg-stone-50 border-stone-200 text-stone-800'
+                    isDark
+                      ? 'bg-[#1B1D23] border-white/[0.08] text-stone-200'
+                      : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
                   }`}
                 >
                   <Markdown>{content || '*No content to display*'}</Markdown>
@@ -350,18 +400,24 @@ export const SmartNotesView: React.FC<SmartNotesViewProps> = ({
           ) : (
             <div
               className={`p-16 text-center rounded-3xl border flex flex-col items-center justify-center min-h-[400px] ${
-                isDark ? 'bg-[#0D1220] border-white/10' : 'bg-stone-50 border-stone-200'
+                isDark
+                  ? 'bg-[#14161A] border-white/[0.08]'
+                  : 'bg-white border-black/[0.08]'
               }`}
             >
-              <Notebook className="w-10 h-10 text-stone-500 mb-2" />
-              <h3 className="font-bold text-base mb-1">No Note Selected</h3>
-              <p className="text-xs text-stone-400 mb-4">
+              <Notebook className={`w-10 h-10 mb-2 ${isDark ? 'text-stone-500' : 'text-[#6B6F76]'}`} />
+              <h3 className={`font-bold text-base mb-1 ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>No Note Selected</h3>
+              <p className={`text-xs mb-4 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 Select an existing note from the list or create a new one.
               </p>
               <button
                 type="button"
                 onClick={handleCreateNew}
-                className="px-4 py-2 rounded-xl text-xs font-semibold bg-[#C9A063] text-[#080A0E]"
+                className={`px-4 py-2 rounded-xl text-xs font-semibold transition-colors ${
+                  isDark
+                    ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                    : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                }`}
               >
                 Create Note
               </button>

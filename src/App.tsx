@@ -12,7 +12,7 @@ import { QuranScreen } from './components/QuranScreen';
 import { NoorAIScreen } from './components/NoorAIScreen';
 import { StudyDashboard } from './components/study/StudyDashboard';
 import { ProfileScreen } from './components/ProfileScreen';
-import { DhikrDuaSection } from './components/DhikrDuaSection';
+import { DhikrLibraryScreen } from './components/DhikrLibraryScreen';
 import { PrayerCheckScreen } from './components/prayerCheck/PrayerCheckScreen';
 import { NoorRamadanScreen } from './components/ramadan/NoorRamadanScreen';
 import { DailyInspirationPulseModal } from './components/ramadan/DailyInspirationPulseModal';
@@ -120,6 +120,9 @@ const INITIAL_ZERO_STATS: UserStats = {
   unlockedAchievements: [],
   activityHistory: [],
   noorAiConversation: [],
+  noorAiSessions: [],
+  noorAiMemories: [],
+  noorAiMemoryEnabled: true,
 };
 
 export default function App() {
@@ -381,10 +384,14 @@ export default function App() {
   // Sync theme
   useEffect(() => {
     localStorage.setItem('noor_theme', isDark ? 'dark' : 'light');
-    if (isDark) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
+    document.documentElement.classList.toggle('dark', isDark);
+    document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
+    document.body.className = isDark
+      ? 'bg-[#0B0C0E] text-[#F3F4F6] antialiased selection:bg-white/20 selection:text-white'
+      : 'bg-[#FCFCFA] text-[#111214] antialiased selection:bg-black/15 selection:text-[#111214]';
+    const themeMeta = document.querySelector('meta[name="theme-color"]');
+    if (themeMeta) {
+      themeMeta.setAttribute('content', isDark ? '#0B0C0E' : '#FCFCFA');
     }
   }, [isDark]);
 
@@ -414,10 +421,19 @@ export default function App() {
     const unsubscribe = subscribeToUserDocument(userStats.accountId, (docData) => {
       if (docData && docData.stats) {
         setUserStats((current) => {
-          // Merge incoming remote stats if remote is updated
-          if (JSON.stringify(current.bookmarks) !== JSON.stringify(docData.stats.bookmarks) ||
-              current.overallStreak !== docData.stats.overallStreak ||
-              current.totalXP !== docData.stats.totalXP) {
+          // Merge incoming remote stats if remote has meaningful updates
+          const remoteMemSig = (docData.stats.noorAiMemories || []).map((m) => `${m.id}:${m.updatedAt}`).join('|');
+          const localMemSig = (current.noorAiMemories || []).map((m) => `${m.id}:${m.updatedAt}`).join('|');
+          const remoteSessCount = docData.stats.noorAiSessions?.length || 0;
+          const localSessCount = current.noorAiSessions?.length || 0;
+
+          if (
+            JSON.stringify(current.bookmarks) !== JSON.stringify(docData.stats.bookmarks) ||
+            current.overallStreak !== docData.stats.overallStreak ||
+            current.totalXP !== docData.stats.totalXP ||
+            (remoteMemSig !== localMemSig && (docData.stats.noorAiMemories?.length || 0) >= (current.noorAiMemories?.length || 0)) ||
+            (remoteSessCount > localSessCount)
+          ) {
             return {
               ...current,
               ...docData.stats,
@@ -554,7 +570,12 @@ export default function App() {
   const handleAuthenticated = (authenticatedStats: UserStats) => {
     setUserStats(authenticatedStats);
     if (authenticatedStats.themePreference) {
-      setIsDark(authenticatedStats.themePreference === 'dark');
+      setThemeMode(authenticatedStats.themePreference);
+      if (authenticatedStats.themePreference === 'system') {
+        setIsDark(typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      } else {
+        setIsDark(authenticatedStats.themePreference === 'dark');
+      }
     }
     setActiveTab('home');
   };
@@ -598,41 +619,41 @@ export default function App() {
   return (
     <div
       className={`min-h-screen transition-colors duration-200 font-sans ${
-        isDark ? 'bg-[#06080B] text-stone-100' : 'bg-[#FAF9F5] text-stone-900'
+        isDark ? 'bg-[#0B0C0E] text-[#F3F4F6]' : 'bg-[#FCFCFA] text-[#111214]'
       }`}
     >
-      {/* Dynamic Background Glow Layer & Pure CSS Stars with Parallax Offset */}
+      {/* Subtle Monochrome Background Pattern */}
       <motion.div
         key={`parallax-bg-${activeTab}`}
         variants={parallaxBackgroundVariants}
         initial="initial"
         animate="animate"
         className={`fixed inset-0 pointer-events-none overflow-hidden z-0 transition-opacity duration-200 ${
-          isDark ? 'islamic-pattern opacity-60' : 'islamic-pattern-light opacity-75'
+          isDark ? 'islamic-pattern opacity-40' : 'islamic-pattern-light opacity-50'
         }`}
       >
         <div
           className="absolute top-[-10%] left-[-10%] w-[550px] h-[550px] rounded-full pointer-events-none"
           style={{
             background: isDark
-              ? 'radial-gradient(circle, rgba(201, 160, 99, 0.08) 0%, transparent 70%)'
-              : 'radial-gradient(circle, rgba(201, 160, 99, 0.1) 0%, transparent 70%)',
+              ? 'radial-gradient(circle, rgba(255, 255, 255, 0.035) 0%, transparent 70%)'
+              : 'radial-gradient(circle, rgba(17, 18, 20, 0.03) 0%, transparent 70%)',
           }}
         />
         <div
           className="absolute top-[35%] right-[-15%] w-[480px] h-[480px] rounded-full pointer-events-none"
           style={{
             background: isDark
-              ? 'radial-gradient(circle, rgba(223, 186, 127, 0.06) 0%, transparent 70%)'
-              : 'radial-gradient(circle, rgba(223, 186, 127, 0.08) 0%, transparent 70%)',
+              ? 'radial-gradient(circle, rgba(255, 255, 255, 0.025) 0%, transparent 70%)'
+              : 'radial-gradient(circle, rgba(17, 18, 20, 0.02) 0%, transparent 70%)',
           }}
         />
         <div
           className="absolute bottom-[-10%] left-[20%] w-[550px] h-[550px] rounded-full pointer-events-none"
           style={{
             background: isDark
-              ? 'radial-gradient(circle, rgba(140, 107, 50, 0.07) 0%, transparent 70%)'
-              : 'radial-gradient(circle, rgba(201, 160, 99, 0.06) 0%, transparent 70%)',
+              ? 'radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 70%)'
+              : 'radial-gradient(circle, rgba(17, 18, 20, 0.025) 0%, transparent 70%)',
           }}
         />
         {/* CSS-Only Celestial Star Particles (Strictly 24 particles, zero JS loops) */}
@@ -747,12 +768,12 @@ export default function App() {
                   )}
 
                   {activeTab === 'dhikr' && (
-                    <DhikrDuaSection
+                    <DhikrLibraryScreen
                       isDark={isDark}
                       userStats={userStats}
                       onUpdateStats={handleUpdateStats}
                       onOpenNoorAIWithPrompt={handleOpenNoorAIWithPrompt}
-                      isStandalonePage={true}
+                      onBackToJourney={() => navigateToTab('profile')}
                     />
                   )}
 
@@ -808,6 +829,8 @@ export default function App() {
                       onLogout={handleLogout}
                       onResetAllData={handleResetAllData}
                       onNavigateToRamadan={() => navigateToTab('ramadan')}
+                      onNavigateToDhikr={() => navigateToTab('profile')}
+                      onOpenNoorAIWithPrompt={handleOpenNoorAIWithPrompt}
                     />
                   )}
                 </motion.div>

@@ -169,26 +169,28 @@ export const LearnScreen: React.FC<LearnScreenProps> = ({
 
   return (
     <div className="w-full max-w-5xl xl:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-6 pb-32 lg:pb-16 space-y-6 animate-fadeIn">
-      {/* 1. Duolingo-style XP & Level Progress Banner */}
+      {/* 1. XP & Level Progress Banner */}
       <div
         id="learn-level-banner"
         className={`rounded-3xl p-5 sm:p-6 border transition-all ${
           isDark
-            ? 'liquid-glass border-[#C9A063]/30 shadow-[0_12px_36px_rgba(0,0,0,0.6)]'
-            : 'liquid-glass-light border-[#C9A063]/30 shadow-md'
+            ? 'bg-[#14161A] border-white/[0.08] shadow-[0_8px_24px_rgba(0,0,0,0.35)]'
+            : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
         }`}
       >
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#C9A063] to-[#DFBA7F] text-[#090B0E] flex items-center justify-center shadow-md font-bold">
+            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm font-bold ${
+              isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+            }`}>
               <Trophy className="w-6 h-6" />
             </div>
             <div>
-              <div className="flex items-center gap-1.5 text-xs font-cinzel font-semibold text-[#DFBA7F]">
-                <Sparkles className="w-3.5 h-3.5 text-[#C9A063]" />
+              <div className={`flex items-center gap-1.5 text-xs font-cinzel font-semibold ${isDark ? 'text-stone-300' : 'text-[#5A5D63]'}`}>
+                <Sparkles className={`w-3.5 h-3.5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
                 <span>{getUserLevelName(userStats.totalXP)}</span>
               </div>
-              <h2 className={`text-base font-serif-heading font-bold mt-0.5 ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+              <h2 className={`text-base font-serif-heading font-bold mt-0.5 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                 {userStats.totalXP === 0
                   ? (lang === 'ar' ? 'رحلتك في طلب العلم تبدأ هنا.' : 'Your learning journey starts here.')
                   : `${userStats.totalXP} ${lang === 'ar' ? 'نقطة خبرة' : 'Total XP'}`}
@@ -201,11 +203,11 @@ export const LearnScreen: React.FC<LearnScreenProps> = ({
             <div
               className={`flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-bold ${
                 isDark
-                  ? 'bg-[#C9A063]/15 border-[#C9A063]/30 text-[#DFBA7F]'
-                  : 'bg-amber-50 border-amber-200 text-amber-800'
+                  ? 'bg-[#1B1D23] border-white/[0.1] text-white'
+                  : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
               }`}
             >
-              <Flame className="w-3.5 h-3.5 text-[#C9A063] fill-[#C9A063]" />
+              <Flame className={`w-3.5 h-3.5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
               <span>
                 {userStats.learningStreak === 0
                   ? (lang === 'ar' ? '0 يوم التزام' : '0d Streak')
@@ -215,22 +217,22 @@ export const LearnScreen: React.FC<LearnScreenProps> = ({
 
             <button
               onClick={() => setShowAchievements(true)}
-              className="text-[11px] text-[#DFBA7F] hover:underline flex items-center gap-0.5 font-medium font-cinzel"
+              className={`text-[11px] hover:underline flex items-center gap-0.5 font-medium font-cinzel cursor-pointer ${isDark ? 'text-stone-300 hover:text-white' : 'text-[#3F4248] hover:text-[#111214]'}`}
             >
-              <Award className="w-3 h-3 text-[#C9A063]" />
+              <Award className="w-3 h-3" />
               <span>{t(lang, 'achievements')}</span>
             </button>
           </div>
         </div>
 
         {/* XP Level Progress Bar */}
-        <div className="w-full bg-stone-800/60 rounded-full h-2 overflow-hidden">
+        <div className={`w-full rounded-full h-2 overflow-hidden ${isDark ? 'bg-white/[0.08]' : 'bg-black/[0.08]'}`}>
           <div
-            className="bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] h-2 rounded-full transition-all duration-200 shadow-xs"
+            className={`h-2 rounded-full transition-all duration-200 ${isDark ? 'bg-white' : 'bg-[#111214]'}`}
             style={{ width: `${Math.max(userStats.totalXP > 0 ? 2 : 0, Math.min(100, (userStats.totalXP % 250) / 2.5))}%` }}
           />
         </div>
-        <div className="flex items-center justify-between text-[10px] text-stone-400 mt-1.5">
+        <div className={`flex items-center justify-between text-[10px] mt-1.5 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
           <span>{userStats.lessonsCompleted} {t(lang, 'completed')}</span>
           <span>{lang === 'ar' ? 'المرحلة القادمة: ' : 'Next Milestone: '}{Math.max(50, Math.ceil((userStats.totalXP + 1) / 250) * 250)} {lang === 'ar' ? 'نقطة' : 'XP'}</span>
         </div>
@@ -247,12 +249,14 @@ export const LearnScreen: React.FC<LearnScreenProps> = ({
             <button
               key={level}
               onClick={() => setSelectedLevel(level)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all whitespace-nowrap ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all whitespace-nowrap cursor-pointer ${
                 selectedLevel === level
-                  ? 'bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] text-[#090B0E] border-[#C9A063] shadow-sm font-bold'
+                  ? isDark
+                    ? 'bg-white text-[#111214] border-white shadow-sm font-bold'
+                    : 'bg-[#111214] text-white border-[#111214] shadow-sm font-bold'
                   : isDark
-                  ? 'bg-[#0E1217]/85 border-[#C9A063]/20 text-stone-300 hover:text-white'
-                  : 'bg-white border-stone-200 text-stone-700 hover:text-stone-900 shadow-2xs'
+                  ? 'bg-[#14161A] border-white/[0.08] text-stone-300 hover:text-white hover:bg-[#1B1D23]'
+                  : 'bg-white border-black/[0.08] text-[#5A5D63] hover:text-[#111214] shadow-2xs'
               }`}
             >
               {levelLabel}
@@ -269,13 +273,19 @@ export const LearnScreen: React.FC<LearnScreenProps> = ({
             id={`course-card-${course.id}`}
             className={`rounded-3xl p-5 border transition-all ${
               isDark
-                ? 'bg-[#0E1217]/98 border-[#C9A063]/20 shadow-md'
-                : 'bg-white/98 border-stone-200 shadow-sm'
+                ? 'bg-[#14161A] border-white/[0.08] shadow-md'
+                : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
             }`}
           >
             <div className="flex items-start justify-between mb-3">
               <div className="flex items-center gap-3">
-                <div className={`w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#1E2530] to-[#12161D] border border-[#C9A063]/30 text-[#DFBA7F] flex items-center justify-center shadow-sm`}>
+                <div
+                  className={`w-11 h-11 rounded-2xl border flex items-center justify-center shadow-sm ${
+                    isDark
+                      ? 'bg-[#1B1D23] border-white/[0.1] text-white'
+                      : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+                  }`}
+                >
                   {course.id === 'five-pillars' && <Columns3 className="w-5 h-5" />}
                   {course.id === 'wudu-purity' && <Droplets className="w-5 h-5" />}
                   {course.id === 'islamic-manners' && <Heart className="w-5 h-5" />}
@@ -283,19 +293,19 @@ export const LearnScreen: React.FC<LearnScreenProps> = ({
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className={`text-sm font-serif-heading font-bold ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+                    <h3 className={`text-sm font-serif-heading font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                       {lang === 'ar' ? (course.arabicTitle || course.title) : course.title}
                     </h3>
-                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
-                      course.level === 'Beginner'
-                        ? isDark ? 'bg-[#C9A063]/15 text-[#DFBA7F] border border-[#C9A063]/30' : 'bg-amber-50 text-amber-800'
-                        : isDark ? 'bg-amber-700/20 text-amber-300 border border-amber-600/30' : 'bg-stone-100 text-stone-700'
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium border ${
+                      isDark
+                        ? 'bg-[#1B1D23] text-stone-200 border-white/[0.1]'
+                        : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.08]'
                     }`}>
                       {lang === 'ar' ? (course.level === 'Beginner' ? 'مبتدئ' : course.level === 'Intermediate' ? 'متوسط' : 'متقدم') : course.level}
                     </span>
                   </div>
                   {lang !== 'ar' && (
-                    <div className="font-arabic text-sm text-[#DFBA7F] font-medium mt-0.5">
+                    <div className={`font-arabic text-sm font-medium mt-0.5 ${isDark ? 'text-stone-300' : 'text-[#5A5D63]'}`}>
                       {course.arabicTitle}
                     </div>
                   )}
@@ -303,7 +313,7 @@ export const LearnScreen: React.FC<LearnScreenProps> = ({
               </div>
             </div>
 
-            <p className={`text-xs leading-relaxed mb-4 ${isDark ? 'text-stone-300' : 'text-stone-600'}`}>
+            <p className={`text-xs leading-relaxed mb-4 ${isDark ? 'text-stone-300' : 'text-[#5A5D63]'}`}>
               {lang === 'ar' ? (course.descriptionAr || course.description) : course.description}
             </p>
 
@@ -319,33 +329,43 @@ export const LearnScreen: React.FC<LearnScreenProps> = ({
                     className={`cursor-pointer p-3.5 rounded-2xl border transition-all duration-200 hover:scale-[1.01] flex items-center justify-between ${
                       isCompleted
                         ? isDark
-                          ? 'bg-[#12161D]/90 border-emerald-500/30 hover:border-emerald-500/50'
+                          ? 'bg-[#1B1D23] border-emerald-500/30 hover:border-emerald-500/50'
                           : 'bg-emerald-50/60 border-emerald-200 hover:border-emerald-300'
                         : isDark
-                        ? 'bg-[#12161D]/80 border-white/10 hover:border-[#C9A063]/50'
-                        : 'bg-stone-50 border-stone-200 hover:border-[#C9A063]/50'
+                        ? 'bg-[#1B1D23] border-white/[0.08] hover:border-white/[0.22]'
+                        : 'bg-[#FCFCFA] border-black/[0.08] hover:border-black/[0.2]'
                     }`}
                   >
                     <div className="flex items-center gap-3">
                       <div
                         className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xs font-mono border ${
                           isCompleted
-                            ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400'
-                            : 'bg-[#C9A063]/15 border-[#C9A063]/30 text-[#DFBA7F]'
+                            ? isDark
+                              ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400'
+                              : 'bg-emerald-100 border-emerald-300 text-emerald-700'
+                            : isDark
+                            ? 'bg-white/[0.08] border-white/[0.12] text-white'
+                            : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
                         }`}
                       >
                         {isCompleted ? '✓' : idx + 1}
                       </div>
                       <div>
-                        <div className={`text-xs font-semibold flex items-center gap-1.5 ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+                        <div className={`text-xs font-semibold flex items-center gap-1.5 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                           <span>{lang === 'ar' ? (lesson.titleAr || lesson.title) : lesson.title}</span>
                           {isCompleted && (
-                            <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                            <span
+                              className={`text-[9px] font-bold px-1.5 py-0.5 rounded border ${
+                                isDark
+                                  ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'
+                                  : 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                              }`}
+                            >
                               {lang === 'ar' ? 'مكتمل' : 'Completed'}
                             </span>
                           )}
                         </div>
-                        <div className="text-[10px] text-stone-400">
+                        <div className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                           {lang === 'ar'
                             ? `${lesson.estimatedMinutes} دقائق • ${lesson.steps.length} خطوات تفاعلية`
                             : `${lesson.estimatedMinutes} mins • ${lesson.steps.length} interactive steps`}
@@ -357,13 +377,17 @@ export const LearnScreen: React.FC<LearnScreenProps> = ({
                       <span
                         className={`text-[10px] font-bold px-2 py-0.5 rounded-full border font-mono ${
                           isCompleted
-                            ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
-                            : 'bg-[#C9A063]/15 text-[#DFBA7F] border-[#C9A063]/30'
+                            ? isDark
+                              ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
+                              : 'bg-emerald-50 text-emerald-700 border-emerald-300'
+                            : isDark
+                            ? 'bg-white/[0.06] text-stone-200 border-white/[0.12]'
+                            : 'bg-[#F3F3F1] text-[#111214] border-black/[0.08]'
                         }`}
                       >
                         +{lesson.xp} {lang === 'ar' ? 'نقطة خبرة' : 'XP'}
                       </span>
-                      <ChevronRight className="w-4 h-4 text-stone-400" />
+                      <ChevronRight className={`w-4 h-4 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`} />
                     </div>
                   </div>
                 );
@@ -379,40 +403,54 @@ export const LearnScreen: React.FC<LearnScreenProps> = ({
           <div
             className={`w-full max-w-md rounded-3xl p-6 border transition-all max-h-[90vh] overflow-y-auto flex flex-col justify-between ${
               isDark
-                ? 'bg-[#0E1217] border-[#C9A063]/30 shadow-2xl text-white'
-                : 'bg-white border-stone-200 shadow-2xl text-stone-900'
+                ? 'bg-[#14161A] border-white/[0.1] shadow-2xl text-[#F3F4F6]'
+                : 'bg-white border-black/[0.08] shadow-2xl text-[#111214]'
             }`}
           >
             {lessonCompleted ? (
               /* LESSON COMPLETED CELEBRATION */
               <div className="text-center py-6 space-y-4 animate-scaleUp">
-                <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-[#C9A063] via-[#DFBA7F] to-[#B88E4F] text-[#090B0E] mx-auto flex items-center justify-center shadow-xl">
+                <div className={`w-20 h-20 rounded-full mx-auto flex items-center justify-center shadow-xl ${
+                  isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+                }`}>
                   <Award className="w-10 h-10 animate-bounce" />
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-serif-heading font-bold text-[#DFBA7F]">
+                  <h3 className={`text-xl font-serif-heading font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                     {lang === 'ar' ? 'مبارك! تم إكمال الدرس بنجاح' : 'Mubarak! Lesson Completed'}
                   </h3>
-                  <p className="text-xs text-stone-400 mt-1">
+                  <p className={`text-xs mt-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     {lang === 'ar' ? `لقد رسخت علمك في هذا الباب المبارك.` : `You have strengthened your knowledge of ${activeLesson.title}.`}
                   </p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 py-3">
-                  <div className="p-3 rounded-2xl bg-[#C9A063]/15 border border-[#C9A063]/30">
-                    <div className="text-xs font-semibold text-[#DFBA7F]">{lang === 'ar' ? 'النقاط المكتسبة' : 'XP Earned'}</div>
-                    <div className="text-xl font-bold text-[#F5EFE6]">+{activeLesson.xp} {lang === 'ar' ? 'نقطة خبرة' : 'XP'}</div>
+                  <div
+                    className={`p-3 rounded-2xl border ${
+                      isDark ? 'bg-[#1B1D23] border-white/[0.1]' : 'bg-[#F3F3F1] border-black/[0.08]'
+                    }`}
+                  >
+                    <div className={`text-xs font-semibold ${isDark ? 'text-stone-300' : 'text-[#5A5D63]'}`}>{lang === 'ar' ? 'النقاط المكتسبة' : 'XP Earned'}</div>
+                    <div className={`text-xl font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>+{activeLesson.xp} {lang === 'ar' ? 'نقطة خبرة' : 'XP'}</div>
                   </div>
-                  <div className="p-3 rounded-2xl bg-[#DFBA7F]/15 border border-[#DFBA7F]/30">
-                    <div className="text-xs font-semibold text-[#DFBA7F]">{lang === 'ar' ? 'استمرار الالتزام' : 'Streak Maintained'}</div>
-                    <div className="text-xl font-bold text-[#F5EFE6]">{userStats.learningStreak} {lang === 'ar' ? 'أيام' : 'Days'} 🔥</div>
+                  <div
+                    className={`p-3 rounded-2xl border ${
+                      isDark ? 'bg-[#1B1D23] border-white/[0.1]' : 'bg-[#F3F3F1] border-black/[0.08]'
+                    }`}
+                  >
+                    <div className={`text-xs font-semibold ${isDark ? 'text-stone-300' : 'text-[#5A5D63]'}`}>{lang === 'ar' ? 'استمرار الالتزام' : 'Streak Maintained'}</div>
+                    <div className={`text-xl font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>{userStats.learningStreak} {lang === 'ar' ? 'أيام' : 'Days'} 🔥</div>
                   </div>
                 </div>
 
                 <button
                   onClick={() => setActiveLesson(null)}
-                  className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] hover:opacity-95 text-[#090B0E] font-bold text-sm shadow-lg transition-all active:scale-95 cursor-pointer"
+                  className={`w-full py-3.5 rounded-2xl font-bold text-sm shadow-sm transition-all active:scale-95 cursor-pointer ${
+                    isDark
+                      ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                      : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                  }`}
                 >
                   {lang === 'ar' ? 'الحمد لله، متابعة' : 'Alhamdulillah, Continue'}
                 </button>
@@ -422,29 +460,29 @@ export const LearnScreen: React.FC<LearnScreenProps> = ({
               <div className="space-y-4">
                 {/* Step Progress & Close */}
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-cinzel font-semibold text-[#DFBA7F]">
+                  <span className={`text-xs font-cinzel font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                     {lang === 'ar'
                       ? `المرحلة ${currentStepIndex + 1} من ${activeLesson.steps.length}`
                       : `Step ${currentStepIndex + 1} of ${activeLesson.steps.length}`}
                   </span>
                   <button
                     onClick={() => setActiveLesson(null)}
-                    className="text-stone-400 hover:text-stone-200 text-xs font-bold cursor-pointer"
+                    className={`text-xs font-bold cursor-pointer ${isDark ? 'text-stone-400 hover:text-stone-200' : 'text-[#6B6F76] hover:text-[#111214]'}`}
                   >
                     {lang === 'ar' ? '✕ إغلاق' : '✕ Close'}
                   </button>
                 </div>
 
                 {/* Progress bar */}
-                <div className="w-full bg-stone-800 rounded-full h-1.5">
+                <div className={`w-full rounded-full h-1.5 ${isDark ? 'bg-white/[0.08]' : 'bg-black/[0.08]'}`}>
                   <div
-                    className="bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] h-1.5 rounded-full transition-all duration-200"
+                    className={`h-1.5 rounded-full transition-all duration-200 ${isDark ? 'bg-white' : 'bg-[#111214]'}`}
                     style={{ width: `${((currentStepIndex + 1) / activeLesson.steps.length) * 100}%` }}
                   />
                 </div>
 
                 {/* Step Title */}
-                <h3 className="text-base font-serif-heading font-bold tracking-tight text-[#F5EFE6]">
+                <h3 className={`text-base font-serif-heading font-bold tracking-tight ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                   {lang === 'ar' ? (currentStep.titleAr || currentStep.title) : currentStep.title}
                 </h3>
 
@@ -452,21 +490,31 @@ export const LearnScreen: React.FC<LearnScreenProps> = ({
                 {currentStep.type === 'concept' && (
                   <div className="space-y-3 my-3">
                     {currentStep.arabicText && (
-                      <div className="p-4 rounded-2xl bg-[#C9A063]/12 border border-[#C9A063]/30 text-center">
-                        <div className="font-arabic text-2xl text-[#DFBA7F] font-bold leading-loose">
+                      <div
+                        className={`p-4 rounded-2xl border text-center ${
+                          isDark ? 'bg-[#1B1D23] border-white/[0.1]' : 'bg-[#F3F3F1] border-black/[0.08]'
+                        }`}
+                      >
+                        <div className={`font-arabic text-2xl font-bold leading-loose ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                           {currentStep.arabicText}
                         </div>
                         {currentStep.transliteration && lang !== 'ar' && (
-                          <div className="text-xs italic text-stone-400 mt-1">
+                          <div className={`text-xs italic mt-1 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                             "{currentStep.transliteration}"
                           </div>
                         )}
                       </div>
                     )}
-                    <p className={`text-xs leading-relaxed ${isDark ? 'text-stone-300' : 'text-stone-700'}`}>
+                    <p className={`text-xs leading-relaxed ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                       {lang === 'ar' ? (currentStep.contentAr || currentStep.content) : currentStep.content}
                     </p>
-                    <div className="p-3 rounded-2xl bg-[#12161D] border border-stone-800 text-xs text-stone-300 italic">
+                    <div
+                      className={`p-3 rounded-2xl border text-xs italic ${
+                        isDark
+                          ? 'bg-[#1B1D23] border-white/[0.08] text-stone-300'
+                          : 'bg-[#F3F3F1] border-black/[0.08] text-[#3F4248]'
+                      }`}
+                    >
                       💡 {lang === 'ar' ? (currentStep.explanationAr || currentStep.explanation) : currentStep.explanation}
                     </div>
                   </div>
@@ -475,22 +523,28 @@ export const LearnScreen: React.FC<LearnScreenProps> = ({
                 {/* MULTIPLE CHOICE / MATCH STEP */}
                 {(currentStep.type === 'multiple-choice' || currentStep.type === 'match') && (
                   <div className="space-y-3 my-2">
-                    <p className="text-xs font-semibold text-stone-300">
+                    <p className={`text-xs font-semibold ${isDark ? 'text-stone-300' : 'text-[#111214]'}`}>
                       {lang === 'ar' ? (currentStep.questionAr || currentStep.question) : currentStep.question}
                     </p>
                     <div className="space-y-2">
                       {currentStep.options?.map((opt) => {
                         const isSelected = selectedOptionId === opt.id;
-                        let optionStyle = isDark ? 'bg-[#12161D] border-white/10 text-stone-200' : 'bg-stone-50 border-stone-200 text-stone-800';
+                        let optionStyle = isDark ? 'bg-[#1B1D23] border-white/[0.08] text-stone-200' : 'bg-[#FCFCFA] border-black/[0.08] text-[#111214]';
 
                         if (isAnswerSubmitted) {
                           if (opt.isCorrect) {
-                            optionStyle = 'bg-[#C9A063]/25 border-[#C9A063] text-[#DFBA7F] font-semibold';
+                            optionStyle = isDark
+                              ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-300 font-semibold'
+                              : 'bg-emerald-50 border-emerald-400 text-emerald-800 font-semibold';
                           } else if (isSelected && !opt.isCorrect) {
-                            optionStyle = 'bg-rose-500/20 border-rose-500 text-rose-300';
+                            optionStyle = isDark
+                              ? 'bg-rose-500/20 border-rose-500 text-rose-300'
+                              : 'bg-rose-50 border-rose-400 text-rose-700';
                           }
                         } else if (isSelected) {
-                          optionStyle = 'bg-[#C9A063]/20 border-[#C9A063] text-[#DFBA7F] font-semibold';
+                          optionStyle = isDark
+                            ? 'bg-white/[0.12] border-white/40 text-white font-semibold'
+                            : 'bg-[#111214]/[0.06] border-[#111214]/40 text-[#111214] font-semibold';
                         }
 
                         return (
@@ -510,7 +564,7 @@ export const LearnScreen: React.FC<LearnScreenProps> = ({
                 {/* ORDERING STEP */}
                 {currentStep.type === 'ordering' && (
                   <div className="space-y-3 my-2">
-                    <p className="text-xs font-semibold text-stone-300">
+                    <p className={`text-xs font-semibold ${isDark ? 'text-stone-300' : 'text-[#111214]'}`}>
                       {lang === 'ar'
                         ? `${currentStep.questionAr || currentStep.question} (المس الأسهم لإعادة الترتيب)`
                         : `${currentStep.question} (Tap arrows to reorder)`}
@@ -522,15 +576,25 @@ export const LearnScreen: React.FC<LearnScreenProps> = ({
                           className={`p-3 rounded-2xl border flex items-center justify-between text-xs transition-all ${
                             isAnswerSubmitted
                               ? item.correctIndex === idx
-                                ? 'bg-[#C9A063]/25 border-[#C9A063] text-[#DFBA7F]'
-                                : 'bg-rose-500/20 border-rose-500 text-rose-300'
+                                ? isDark
+                                  ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-300'
+                                  : 'bg-emerald-50 border-emerald-400 text-emerald-800'
+                                : isDark
+                                ? 'bg-rose-500/20 border-rose-500 text-rose-300'
+                                : 'bg-rose-50 border-rose-400 text-rose-700'
                               : isDark
-                              ? 'bg-[#12161D] border-white/10 text-stone-200'
-                              : 'bg-stone-50 border-stone-200 text-stone-800'
+                              ? 'bg-[#1B1D23] border-white/[0.08] text-stone-200'
+                              : 'bg-[#FCFCFA] border-black/[0.08] text-[#111214]'
                           }`}
                         >
                           <div className="flex items-center gap-2">
-                            <span className="w-5 h-5 rounded-full bg-[#C9A063]/20 border border-[#C9A063]/30 text-[#DFBA7F] flex items-center justify-center font-bold text-[10px]">
+                            <span
+                              className={`w-5 h-5 rounded-full border flex items-center justify-center font-bold text-[10px] ${
+                                isDark
+                                  ? 'bg-white/[0.08] border-white/[0.15] text-white'
+                                  : 'bg-[#F3F3F1] border-black/[0.1] text-[#111214]'
+                              }`}
+                            >
                               {idx + 1}
                             </span>
                             <span>{lang === 'ar' ? (item.textAr || item.text) : item.text}</span>
@@ -541,14 +605,18 @@ export const LearnScreen: React.FC<LearnScreenProps> = ({
                               <button
                                 disabled={idx === 0}
                                 onClick={() => handleMoveOrderItem(idx, idx - 1)}
-                                className="px-2 py-0.5 rounded bg-stone-800 text-stone-200 disabled:opacity-30 text-[10px] cursor-pointer"
+                                className={`px-2 py-0.5 rounded disabled:opacity-30 text-[10px] cursor-pointer ${
+                                  isDark ? 'bg-white/[0.1] text-stone-200' : 'bg-[#F3F3F1] text-[#111214] hover:bg-black/[0.08]'
+                                }`}
                               >
                                 ▲
                               </button>
                               <button
                                 disabled={idx === orderItemsState.length - 1}
                                 onClick={() => handleMoveOrderItem(idx, idx + 1)}
-                                className="px-2 py-0.5 rounded bg-stone-800 text-stone-200 disabled:opacity-30 text-[10px] cursor-pointer"
+                                className={`px-2 py-0.5 rounded disabled:opacity-30 text-[10px] cursor-pointer ${
+                                  isDark ? 'bg-white/[0.1] text-stone-200' : 'bg-[#F3F3F1] text-[#111214] hover:bg-black/[0.08]'
+                                }`}
                               >
                                 ▼
                               </button>
@@ -565,24 +633,28 @@ export const LearnScreen: React.FC<LearnScreenProps> = ({
                   <div
                     className={`p-3.5 rounded-2xl border text-xs animate-fadeIn ${
                       isCorrectAnswer
-                        ? 'bg-[#C9A063]/20 border-[#C9A063]/40 text-[#DFBA7F]'
-                        : 'bg-rose-500/20 border-rose-500/40 text-rose-300'
+                        ? isDark
+                          ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
+                          : 'bg-emerald-50 border-emerald-400 text-emerald-800'
+                        : isDark
+                        ? 'bg-rose-500/20 border-rose-500/40 text-rose-300'
+                        : 'bg-rose-50 border-rose-300 text-rose-700'
                     }`}
                   >
                     <div className="flex items-center gap-1.5 font-bold mb-1">
                       {isCorrectAnswer ? (
                         <>
-                          <CheckCircle2 className="w-4 h-4 text-[#DFBA7F]" />
+                          <CheckCircle2 className={`w-4 h-4 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`} />
                           <span>{lang === 'ar' ? 'إجابة صحيحة! بارك الله فيك' : 'Correct! SubhanAllah'}</span>
                         </>
                       ) : (
                         <>
-                          <XCircle className="w-4 h-4 text-rose-400" />
+                          <XCircle className={`w-4 h-4 ${isDark ? 'text-rose-400' : 'text-rose-600'}`} />
                           <span>{lang === 'ar' ? 'محاولة طيبة، فلنتدبر الصواب' : 'Good effort, keep learning'}</span>
                         </>
                       )}
                     </div>
-                    <p className="text-[11px] text-stone-300">
+                    <p className={`text-[11px] ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                       {lang === 'ar' ? (currentStep.explanationAr || currentStep.explanation) : currentStep.explanation}
                     </p>
                   </div>
@@ -594,14 +666,22 @@ export const LearnScreen: React.FC<LearnScreenProps> = ({
                     <button
                       onClick={handleCheckAnswer}
                       disabled={currentStep.type === 'multiple-choice' && !selectedOptionId}
-                      className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] hover:opacity-95 disabled:opacity-40 text-[#090B0E] font-bold text-xs shadow-md transition-all active:scale-95 cursor-pointer"
+                      className={`w-full py-3.5 rounded-2xl disabled:opacity-40 font-bold text-xs shadow-sm transition-all active:scale-95 cursor-pointer ${
+                        isDark
+                          ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                          : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                      }`}
                     >
                       {t(lang, 'checkAnswer')}
                     </button>
                   ) : (
                     <button
                       onClick={handleNextStep}
-                      className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] hover:opacity-95 text-[#090B0E] font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
+                      className={`w-full py-3.5 rounded-2xl font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer ${
+                        isDark
+                          ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                          : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                      }`}
                     >
                       <span>{t(lang, 'continue')}</span>
                       <ArrowRight className="w-4 h-4" />
@@ -619,19 +699,19 @@ export const LearnScreen: React.FC<LearnScreenProps> = ({
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fadeIn">
           <div
             className={`w-full max-w-md rounded-3xl p-6 border transition-all max-h-[85vh] overflow-y-auto ${
-              isDark ? 'bg-[#0E1217] border-[#C9A063]/30 text-white' : 'bg-white border-stone-200 text-stone-900'
+              isDark ? 'bg-[#14161A] border-white/[0.1] text-[#F3F4F6]' : 'bg-white border-black/[0.08] text-[#111214]'
             }`}
           >
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <Award className="w-5 h-5 text-[#DFBA7F]" />
-                <h3 className="text-base font-serif-heading font-bold text-[#F5EFE6]">
+                <Award className={`w-5 h-5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
+                <h3 className={`text-base font-serif-heading font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                   {lang === 'ar' ? 'الإنجازات الإيمانية' : 'Spiritual Achievements'}
                 </h3>
               </div>
               <button
                 onClick={() => setShowAchievements(false)}
-                className="text-stone-400 hover:text-stone-200 text-xs font-bold cursor-pointer"
+                className={`text-xs font-bold cursor-pointer ${isDark ? 'text-stone-400 hover:text-stone-200' : 'text-[#6B6F76] hover:text-[#111214]'}`}
               >
                 {lang === 'ar' ? '✕ إغلاق' : '✕'}
               </button>
@@ -643,31 +723,39 @@ export const LearnScreen: React.FC<LearnScreenProps> = ({
                   key={ach.id}
                   className={`p-3.5 rounded-2xl border flex items-center gap-3.5 ${
                     ach.unlocked
-                      ? 'bg-[#C9A063]/15 border-[#C9A063]/35'
+                      ? isDark
+                        ? 'bg-white/[0.08] border-white/25'
+                        : 'bg-[#F3F3F1] border-[#111214]/25'
                       : isDark
-                      ? 'bg-[#12161D]/50 border-white/5 opacity-60'
-                      : 'bg-stone-100 border-stone-200 opacity-60'
+                      ? 'bg-[#1B1D23]/60 border-white/[0.06] opacity-60'
+                      : 'bg-[#FCFCFA] border-black/[0.08] opacity-75'
                   }`}
                 >
                   <div
                     className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg ${
-                      ach.unlocked ? 'bg-[#C9A063]/25 text-[#DFBA7F]' : 'bg-stone-800 text-stone-500'
+                      ach.unlocked
+                        ? isDark
+                          ? 'bg-white text-[#111214]'
+                          : 'bg-[#111214] text-white'
+                        : isDark
+                        ? 'bg-white/[0.06] text-stone-500'
+                        : 'bg-[#F3F3F1] text-[#6B6F76]'
                     }`}
                   >
                     🏆
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between">
-                      <h4 className="text-xs font-bold text-[#F5EFE6]">
+                      <h4 className={`text-xs font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                         {lang === 'ar' ? (ach.titleAr || ach.title) : ach.title}
                       </h4>
                       {ach.unlocked && (
-                        <span className="text-[10px] text-[#DFBA7F] font-semibold font-cinzel">
+                        <span className={`text-[10px] font-semibold font-cinzel ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                           {lang === 'ar' ? 'تم الإنجاز' : 'Unlocked'}
                         </span>
                       )}
                     </div>
-                    <p className="text-[11px] text-stone-400 mt-0.5">
+                    <p className={`text-[11px] mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                       {lang === 'ar' ? (ach.descriptionAr || ach.description) : ach.description}
                     </p>
                   </div>

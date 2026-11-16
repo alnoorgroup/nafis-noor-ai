@@ -15,15 +15,18 @@ import {
 import {
   getFirestore,
   Firestore,
+  collection,
   doc,
   getDoc,
+  getDocs,
   getDocFromServer,
   setDoc,
   updateDoc,
+  deleteDoc,
   onSnapshot,
 } from 'firebase/firestore';
 import firebaseConfig from '../../firebase-applet-config.json';
-import { UserStats } from '../types';
+import { NoorAIConversationSession, NoorAIMessage, UserStats } from '../types';
 import { sanitizeUserText, sanitizeUserStatsPayload } from '../utils/securitySanitizer';
 
 export enum OperationType {
@@ -97,8 +100,9 @@ async function testConnection() {
   try {
     await getDocFromServer(doc(db, 'test', 'connection'));
   } catch (error) {
-    if (error instanceof Error && error.message.includes('the client is offline')) {
-      console.error('Please check your Firebase configuration.');
+    // Graceful handling for offline mode / backend connection latency
+    if (error instanceof Error && (error.message.includes('offline') || error.message.includes('backend') || error.message.includes('Could not reach'))) {
+      console.log('Firebase operating in offline / local persistence mode.');
     }
   }
 }
@@ -163,6 +167,131 @@ export function assertOwnUserAccess(targetUid: string): boolean {
     return false;
   }
   return auth.currentUser.uid === targetUid;
+}
+
+function stripUndefinedDeep<T>(value: T): T {
+  if (Array.isArray(value)) {
+    return value.map((item) => stripUndefinedDeep(item)) as unknown as T;
+  }
+  if (value && typeof value === 'object') {
+    const out: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
+      if (v !== undefined) {
+        out[k] = stripUndefinedDeep(v);
+      }
+    }
+    return out as T;
+  }
+  return value;
+}
+
+function compactMessageForFirestore(msg: NoorAIMessage): NoorAIMessage {
+  const compacted: NoorAIMessage = { ...msg };
+  if (typeof compacted.attachedImage === 'string' && compacted.attachedImage.length > 40000) {
+    delete compacted.attachedImage;
+  }
+  if (typeof compacted.audioUrl === 'string' && compacted.audioUrl.length > 8000) {
+    delete compacted.audioUrl;
+  }
+  return compacted;
+}
+
+function prepareStatsForFirestore(stats: UserStats): UserStats {
+  const sanitized = sanitizeUserStatsPayload(stats);
+  return stripUndefinedDeep({
+    ...sanitized,
+    noorAiConversation: (sanitized.noorAiConversation || []).slice(-120).map(compactMessageForFirestore),
+    noorAiSessions: (sanitized.noorAiSessions || []).slice(0, 80).map((sess) => ({
+      ...sess,
+      messages: (sess.messages || []).slice(-120).map(compactMessageForFirestore),
+    })),
+    savedNoorMessages: (sanitized.savedNoorMessages || []).slice(0, 120).map(compactMessageForFirestore),
+  });
+}
+
+export async function syncChatSessionToFirestore(
+  uid: string,
+  session: NoorAIConversationSession
+): Promise<void> {
+  if (!uid || !db || !session?.id) return;
+  if (!assertOwnUserAccess(uid)) return;
+  if (!/^[a-zA-Z0-9_\-]{1,128}$/.test(session.id)) return;
+
+  const chatPath = `users/${uid}/chats/${session.id}`;
+  try {
+    const chatRef = doc(db, 'users', uid, 'chats', session.id);
+    const payload = stripUndefinedDeep({
+      id: session.id,
+      userId: uid,
+      title: sanitizeUserText(session.title || 'New Conversation', 200) || 'New Conversation',
+      messages: (session.messages || []).slice(-200).map(compactMessageForFirestore),
+      createdAt: (session.createdAt || new Date().toISOString()).slice(0, 64),
+      updatedAt: (session.updatedAt || new Date().toISOString()).slice(0, 64),
+    });
+    await setDoc(chatRef, payload, { merge: true });
+  } catch (err: any) {
+    if (err?.code === 'permission-denied') {
+      try {
+        handleFirestoreError(err, OperationType.WRITE, chatPath);
+      } catch {
+        // Logged structured FirestoreErrorInfo
+      }
+    }
+  }
+}
+
+export async function deleteChatSessionFromFirestore(uid: string, sessionId: string): Promise<void> {
+  if (!uid || !db || !sessionId) return;
+  if (!assertOwnUserAccess(uid)) return;
+  if (!/^[a-zA-Z0-9_\-]{1,128}$/.test(sessionId)) return;
+
+  const chatPath = `users/${uid}/chats/${sessionId}`;
+  try {
+    await deleteDoc(doc(db, 'users', uid, 'chats', sessionId));
+  } catch (err: any) {
+    if (err?.code === 'permission-denied') {
+      try {
+        handleFirestoreError(err, OperationType.DELETE, chatPath);
+      } catch {
+        // Logged structured FirestoreErrorInfo
+      }
+    }
+  }
+}
+
+export async function fetchChatSessionsFromFirestore(
+  uid: string
+): Promise<NoorAIConversationSession[]> {
+  if (!uid || !db) return [];
+  if (!assertOwnUserAccess(uid)) return [];
+
+  const chatsPath = `users/${uid}/chats`;
+  try {
+    const snap = await getDocs(collection(db, 'users', uid, 'chats'));
+    const list: NoorAIConversationSession[] = [];
+    snap.forEach((docSnap) => {
+      const data = docSnap.data() as any;
+      if (data && typeof data.id === 'string' && Array.isArray(data.messages)) {
+        list.push({
+          id: data.id,
+          title: typeof data.title === 'string' ? data.title : 'Conversation',
+          createdAt: typeof data.createdAt === 'string' ? data.createdAt : new Date().toISOString(),
+          updatedAt: typeof data.updatedAt === 'string' ? data.updatedAt : new Date().toISOString(),
+          messages: data.messages,
+        });
+      }
+    });
+    return list.sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || ''));
+  } catch (err: any) {
+    if (err?.code === 'permission-denied') {
+      try {
+        handleFirestoreError(err, OperationType.LIST, chatsPath);
+      } catch {
+        // Logged structured FirestoreErrorInfo
+      }
+    }
+    return [];
+  }
 }
 
 /**
@@ -232,6 +361,28 @@ export async function syncAndRecognizeUser(
       const resolvedRole: 'user' | 'admin' =
         existingData.role === 'admin' || isVerifiedFounder ? 'admin' : 'user';
 
+      let subcollectionChats: NoorAIConversationSession[] = [];
+      try {
+        subcollectionChats = await fetchChatSessionsFromFirestore(uid);
+      } catch {
+        subcollectionChats = [];
+      }
+
+      const mergedSessionsMap = new Map<string, NoorAIConversationSession>();
+      for (const s of existingData.stats?.noorAiSessions || []) {
+        if (s && s.id) mergedSessionsMap.set(s.id, s);
+      }
+      for (const s of subcollectionChats) {
+        if (!s || !s.id) continue;
+        const prev = mergedSessionsMap.get(s.id);
+        if (!prev || (s.messages?.length || 0) > (prev.messages?.length || 0) || (s.updatedAt || '') > (prev.updatedAt || '')) {
+          mergedSessionsMap.set(s.id, s);
+        }
+      }
+      const mergedSessions = Array.from(mergedSessionsMap.values()).sort((a, b) =>
+        (b.updatedAt || '').localeCompare(a.updatedAt || '')
+      );
+
       const updatedProfile: UserProfileDocument = {
         id: uid,
         email: existingData.email || email,
@@ -246,6 +397,9 @@ export async function syncAndRecognizeUser(
         role: resolvedRole,
         stats: sanitizeUserStatsPayload({
           ...existingData.stats,
+          noorAiSessions: mergedSessions,
+          noorAiMemories: existingData.stats?.noorAiMemories || [],
+          noorAiMemoryEnabled: existingData.stats?.noorAiMemoryEnabled !== false,
           accountId: uid,
           accountEmail: existingData.email || email,
           userName: sanitizeUserText(existingData.displayName || displayName, 100) || 'Servant of Allah',
@@ -308,6 +462,9 @@ export async function syncAndRecognizeUser(
         unlockedAchievements: [],
         activityHistory: [],
         noorAiConversation: [],
+        noorAiSessions: [],
+        noorAiMemories: [],
+        noorAiMemoryEnabled: true,
       });
 
       const newProfile: UserProfileDocument = {
@@ -568,14 +725,14 @@ export async function saveUserStatsToFirestore(uid: string, stats: UserStats): P
     return;
   }
 
-  const sanitizedStats = sanitizeUserStatsPayload(stats);
+  const firestoreSafeStats = prepareStatsForFirestore(stats);
   const userPath = `users/${uid}`;
 
   try {
     const userDocRef = doc(db, 'users', uid);
     await updateDoc(userDocRef, {
-      stats: sanitizedStats,
-      displayName: sanitizedStats.userName,
+      stats: firestoreSafeStats,
+      displayName: firestoreSafeStats.userName,
       updatedAt: new Date().toISOString().slice(0, 64),
     });
   } catch (err: any) {

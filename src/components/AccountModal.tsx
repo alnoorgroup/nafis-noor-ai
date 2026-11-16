@@ -167,25 +167,27 @@ export const AccountModal: React.FC<AccountModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 pt-[max(12px,env(safe-area-inset-top))] pb-[max(14px,env(safe-area-inset-bottom))] bg-black/75 backdrop-blur-md animate-fadeIn">
       <div
         id="account-modal-container"
-        className={`w-full max-w-md rounded-[32px] p-5 sm:p-7 border shadow-2xl overflow-y-auto max-h-[min(92dvh,700px)] flex flex-col ${
+        className={`w-full max-w-md rounded-[32px] p-5 sm:p-7 border overflow-y-auto max-h-[min(92dvh,700px)] flex flex-col ${
           isDark
-            ? 'bg-[#0E1217] border-[#C9A063]/30 text-stone-100'
-            : 'bg-white border-stone-200 text-stone-900'
+            ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6] shadow-[0_2px_10px_rgba(0,0,0,0.45)]'
+            : 'bg-white border-black/[0.08] text-[#111214] shadow-[0_4px_24px_rgba(0,0,0,0.08)]'
         }`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-stone-700/20">
+        <div className={`flex items-center justify-between pb-4 border-b ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#C9A063] to-[#DFBA7F] text-[#090B0E] flex items-center justify-center font-bold shadow-md">
+            <div className={`w-10 h-10 rounded-2xl flex items-center justify-center font-bold shadow-sm ${
+              isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+            }`}>
               <User className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-base font-serif-heading font-bold text-[#DFBA7F]">
+              <h2 className={`text-base font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                 {userStats.isLoggedIn
                   ? (isArabic ? 'حساب نور والمزامنة الآمنة' : 'Noor Account & Device Sync')
                   : (isArabic ? 'الحساب والمزامنة' : 'Account & Sync')}
               </h2>
-              <p className="text-xs text-stone-400">
+              <p className={`text-xs ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 {userStats.isLoggedIn
                   ? (isArabic ? 'سجل إيماني محفوظ ومزامن بأمان عبر أجهزتك' : 'Your spiritual journey saved safely across devices')
                   : (isArabic ? 'مزامنة إنجازاتك الحقيقية عبر جميع أجهزتك' : 'Sync your real progress across devices')}
@@ -194,7 +196,11 @@ export const AccountModal: React.FC<AccountModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-xl text-stone-400 hover:text-stone-200 hover:bg-stone-800/40 transition-colors"
+            className={`p-2 rounded-xl transition-colors ${
+              isDark
+                ? 'text-stone-400 hover:text-white hover:bg-white/[0.06]'
+                : 'text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05]'
+            }`}
           >
             <X className="w-5 h-5" />
           </button>
@@ -204,17 +210,23 @@ export const AccountModal: React.FC<AccountModalProps> = ({
         {userStats.isLoggedIn && view === 'status' && (
           <div className="py-4 space-y-4 text-xs">
             {/* Account Card */}
-            <div className="p-4 rounded-2xl bg-[#12161D] border border-[#C9A063]/25 space-y-2">
+            <div className={`p-4 rounded-2xl border space-y-2 ${
+              isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
+            }`}>
               <div className="flex items-center justify-between">
-                <span className="font-serif-heading font-bold text-sm text-[#F5EFE6]">
+                <span className={`font-bold text-sm ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                   {userStats.userName || (isArabic ? 'عبد الله' : 'Servant of Allah')}
                 </span>
-                <span className="flex items-center gap-1 text-[10px] text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/30 font-medium">
+                <span className={`flex items-center gap-1 text-[10px] px-2.5 py-0.5 rounded-full border font-medium ${
+                  isDark
+                    ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30'
+                    : 'text-emerald-800 bg-emerald-50 border-emerald-300'
+                }`}>
                   <Cloud className="w-3 h-3" />
                   {isArabic ? 'متزامن بأمان' : 'Safely Synced'}
                 </span>
               </div>
-              <p className="text-stone-400 text-xs font-mono">{userStats.accountEmail || (isArabic ? 'حساب Google' : 'Google Account')}</p>
+              <p className={`text-xs font-mono ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{userStats.accountEmail || (isArabic ? 'حساب Google' : 'Google Account')}</p>
 
               {userStats.accountId && (
                 <div className="text-[10px] text-stone-500 font-mono truncate">
@@ -222,18 +234,18 @@ export const AccountModal: React.FC<AccountModalProps> = ({
                 </div>
               )}
 
-              <div className="grid grid-cols-3 gap-2 pt-2 border-t border-white/5 text-center">
-                <div className="p-2 rounded-xl bg-[#090B0E]">
-                  <div className="text-[10px] text-stone-400">{isArabic ? 'المواظبة' : 'Overall Streak'}</div>
-                  <div className="font-bold text-[#DFBA7F]">{userStats.overallStreak}{isArabic ? ' يوم' : 'd'}</div>
+              <div className={`grid grid-cols-3 gap-2 pt-2 border-t text-center ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
+                <div className={`p-2 rounded-xl ${isDark ? 'bg-[#14161A] border border-white/[0.06]' : 'bg-white border border-black/[0.08]'}`}>
+                  <div className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{isArabic ? 'المواظبة' : 'Overall Streak'}</div>
+                  <div className={`font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>{userStats.overallStreak}{isArabic ? ' يوم' : 'd'}</div>
                 </div>
-                <div className="p-2 rounded-xl bg-[#090B0E]">
-                  <div className="text-[10px] text-stone-400">{isArabic ? 'صفحات القرآن' : 'Pages Read'}</div>
-                  <div className="font-bold text-stone-200">{userStats.quranPagesRead}</div>
+                <div className={`p-2 rounded-xl ${isDark ? 'bg-[#14161A] border border-white/[0.06]' : 'bg-white border border-black/[0.08]'}`}>
+                  <div className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{isArabic ? 'صفحات القرآن' : 'Pages Read'}</div>
+                  <div className={`font-bold ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>{userStats.quranPagesRead}</div>
                 </div>
-                <div className="p-2 rounded-xl bg-[#090B0E]">
-                  <div className="text-[10px] text-stone-400">{isArabic ? 'نقاط الإنجاز' : 'Total XP'}</div>
-                  <div className="font-bold text-stone-200">{userStats.totalXP}</div>
+                <div className={`p-2 rounded-xl ${isDark ? 'bg-[#14161A] border border-white/[0.06]' : 'bg-white border border-black/[0.08]'}`}>
+                  <div className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{isArabic ? 'نقاط الإنجاز' : 'Total XP'}</div>
+                  <div className={`font-bold ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>{userStats.totalXP}</div>
                 </div>
               </div>
             </div>
@@ -241,7 +253,11 @@ export const AccountModal: React.FC<AccountModalProps> = ({
             {/* Sync Now Action */}
             <button
               onClick={handleManualSync}
-              className="w-full py-2.5 px-4 rounded-xl bg-[#C9A063]/15 hover:bg-[#C9A063]/25 border border-[#C9A063]/30 text-[#DFBA7F] font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer"
+              className={`w-full py-2.5 px-4 rounded-xl border font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                isDark
+                  ? 'bg-white/[0.08] hover:bg-white/[0.12] border-white/[0.12] text-white'
+                  : 'bg-[#111214] hover:bg-[#27292D] border-[#111214] text-white'
+              }`}
             >
               <RefreshCw className={`w-3.5 h-3.5 ${syncNotice ? 'animate-spin' : ''}`} />
               <span>
@@ -255,12 +271,16 @@ export const AccountModal: React.FC<AccountModalProps> = ({
             <button
               id="account-signout-btn"
               onClick={handleSignOut}
-              className="w-full py-2.5 px-4 rounded-xl border border-white/10 hover:border-red-500/30 hover:bg-red-500/10 text-stone-300 hover:text-red-400 font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer"
+              className={`w-full py-2.5 px-4 rounded-xl border font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+                isDark
+                  ? 'border-white/10 hover:border-red-500/30 hover:bg-red-500/10 text-stone-300 hover:text-red-400'
+                  : 'border-stone-300 hover:border-red-300 hover:bg-red-50 text-stone-700 hover:text-red-700'
+              }`}
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>{isArabic ? 'تسجيل الخروج من هذا الجهاز' : 'Sign Out from This Device'}</span>
             </button>
-            <p className="text-[10px] text-center text-stone-500">
+            <p className={`text-[10px] text-center ${isDark ? 'text-stone-500' : 'text-stone-600'}`}>
               {isArabic
                 ? 'تسجيل الخروج يحفظ جميع بياناتك وقراءاتك بأمان.'
                 : 'Signing out keeps all your reading progress and streaks safe.'}
@@ -272,7 +292,11 @@ export const AccountModal: React.FC<AccountModalProps> = ({
         {(!userStats.isLoggedIn || view === 'login') && view !== 'register' && (
           <div className="py-4 space-y-3.5 text-xs">
             {errorMsg && (
-              <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 flex items-center gap-2 text-[11px]">
+              <div className={`p-3 rounded-xl border flex items-center gap-2 text-[11px] ${
+                isDark
+                  ? 'bg-red-500/10 border-red-500/30 text-red-400'
+                  : 'bg-red-50 border-red-300 text-red-700'
+              }`}>
                 <AlertCircle className="w-4 h-4 shrink-0" />
                 <span>{errorMsg}</span>
               </div>
@@ -311,14 +335,14 @@ export const AccountModal: React.FC<AccountModalProps> = ({
             </button>
 
             <div className="flex items-center gap-3 my-2">
-              <div className="flex-1 h-px bg-white/10" />
+              <div className={`flex-1 h-px ${isDark ? 'bg-white/10' : 'bg-stone-200'}`} />
               <span className="text-[10px] text-stone-500 uppercase font-mono">{isArabic ? 'أو بالبريد الإلكتروني' : 'or email'}</span>
-              <div className="flex-1 h-px bg-white/10" />
+              <div className={`flex-1 h-px ${isDark ? 'bg-white/10' : 'bg-stone-200'}`} />
             </div>
 
             <form onSubmit={handleLogin} className="space-y-3">
               <div>
-                <label className="block text-stone-400 mb-1">{isArabic ? 'البريد الإلكتروني' : 'Email Address'}</label>
+                <label className={`block mb-1 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>{isArabic ? 'البريد الإلكتروني' : 'Email Address'}</label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-3 w-4 h-4 text-stone-500" />
                   <input
@@ -327,13 +351,17 @@ export const AccountModal: React.FC<AccountModalProps> = ({
                     placeholder="your.email@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-[#12161D] border border-stone-700 text-stone-100 focus:outline-none focus:border-[#C9A063]"
+                    className={`w-full pl-9 pr-3 py-2.5 rounded-xl border focus:outline-none ${
+                      isDark
+                        ? 'bg-[#1B1D23] border-white/[0.1] focus:border-white/35 text-stone-100'
+                        : 'bg-[#F3F3F1] border-black/[0.1] focus:border-[#111214]/40 text-[#111214] placeholder:text-[#6B6F76]'
+                    }`}
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-stone-400 mb-1">{isArabic ? 'كلمة المرور' : 'Password'}</label>
+                <label className={`block mb-1 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>{isArabic ? 'كلمة المرور' : 'Password'}</label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-3 w-4 h-4 text-stone-500" />
                   <input
@@ -342,7 +370,11 @@ export const AccountModal: React.FC<AccountModalProps> = ({
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-[#12161D] border border-stone-700 text-stone-100 focus:outline-none focus:border-[#C9A063]"
+                    className={`w-full pl-9 pr-3 py-2.5 rounded-xl border focus:outline-none ${
+                      isDark
+                        ? 'bg-[#1B1D23] border-white/[0.1] focus:border-white/35 text-stone-100'
+                        : 'bg-[#F3F3F1] border-black/[0.1] focus:border-[#111214]/40 text-[#111214] placeholder:text-[#6B6F76]'
+                    }`}
                   />
                 </div>
               </div>
@@ -351,14 +383,18 @@ export const AccountModal: React.FC<AccountModalProps> = ({
                 id="login-submit-btn"
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3 px-4 rounded-xl font-bold bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] text-[#090B0E] shadow-md hover:opacity-95 transition-all flex items-center justify-center gap-2"
+                className={`w-full py-3 px-4 rounded-xl font-bold shadow-sm transition-all flex items-center justify-center gap-2 ${
+                  isDark
+                    ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                    : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                }`}
               >
                 <span>{isSubmitting ? (isArabic ? 'جاري الدخول...' : 'Signing In...') : (isArabic ? 'دخول واستعادة الإنجازات' : 'Sign In & Restore Progress')}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </form>
 
-            <div className="pt-2 text-center text-stone-400 text-[11px]">
+            <div className={`pt-2 text-center text-[11px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               {isArabic ? 'ليس لديك حساب؟ ' : "Don't have an account? "}
               <button
                 type="button"
@@ -366,7 +402,7 @@ export const AccountModal: React.FC<AccountModalProps> = ({
                   setErrorMsg(null);
                   setView('register');
                 }}
-                className="text-[#DFBA7F] font-semibold underline hover:opacity-90"
+                className={`font-semibold underline hover:opacity-90 ${isDark ? 'text-white' : 'text-[#111214]'}`}
               >
                 {isArabic ? 'إنشاء حساب جديد' : 'Create Account'}
               </button>
@@ -378,14 +414,18 @@ export const AccountModal: React.FC<AccountModalProps> = ({
         {view === 'register' && (
           <form onSubmit={handleRegister} className="py-4 space-y-3 text-xs">
             {errorMsg && (
-              <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 flex items-center gap-2 text-[11px]">
+              <div className={`p-3 rounded-xl border flex items-center gap-2 text-[11px] ${
+                isDark
+                  ? 'bg-red-500/10 border-red-500/30 text-red-400'
+                  : 'bg-red-50 border-red-300 text-red-700'
+              }`}>
                 <AlertCircle className="w-4 h-4 shrink-0" />
                 <span>{errorMsg}</span>
               </div>
             )}
 
             <div>
-              <label className="block text-stone-400 mb-1">{isArabic ? 'الاسم الكريم' : 'Your Name'}</label>
+              <label className={`block mb-1 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>{isArabic ? 'الاسم الكريم' : 'Your Name'}</label>
               <div className="relative">
                 <User className="absolute left-3 top-3 w-4 h-4 text-stone-500" />
                 <input
@@ -393,13 +433,17 @@ export const AccountModal: React.FC<AccountModalProps> = ({
                   placeholder={isArabic ? 'مثال: عبد الله' : 'e.g. Abdullah'}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-[#12161D] border border-stone-700 text-stone-100 focus:outline-none focus:border-[#C9A063]"
+                  className={`w-full pl-9 pr-3 py-2.5 rounded-xl border focus:outline-none ${
+                    isDark
+                      ? 'bg-[#1B1D23] border-white/[0.1] focus:border-white/35 text-stone-100'
+                      : 'bg-[#F3F3F1] border-black/[0.1] focus:border-[#111214]/40 text-[#111214] placeholder:text-[#6B6F76]'
+                  }`}
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-stone-400 mb-1">{isArabic ? 'البريد الإلكتروني' : 'Email Address'}</label>
+              <label className={`block mb-1 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>{isArabic ? 'البريد الإلكتروني' : 'Email Address'}</label>
               <div className="relative">
                 <Mail className="absolute left-3 top-3 w-4 h-4 text-stone-500" />
                 <input
@@ -408,13 +452,17 @@ export const AccountModal: React.FC<AccountModalProps> = ({
                   placeholder="your.email@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-[#12161D] border border-stone-700 text-stone-100 focus:outline-none focus:border-[#C9A063]"
+                  className={`w-full pl-9 pr-3 py-2.5 rounded-xl border focus:outline-none ${
+                    isDark
+                      ? 'bg-[#1B1D23] border-white/[0.1] focus:border-white/35 text-stone-100'
+                      : 'bg-[#F3F3F1] border-black/[0.1] focus:border-[#111214]/40 text-[#111214] placeholder:text-[#6B6F76]'
+                  }`}
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-stone-400 mb-1">{isArabic ? 'كلمة المرور (٦ أحرف كحد أدنى)' : 'Password (min 6 characters)'}</label>
+              <label className={`block mb-1 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>{isArabic ? 'كلمة المرور (٦ أحرف كحد أدنى)' : 'Password (min 6 characters)'}</label>
               <div className="relative">
                 <Lock className="absolute left-3 top-3 w-4 h-4 text-stone-500" />
                 <input
@@ -424,7 +472,11 @@ export const AccountModal: React.FC<AccountModalProps> = ({
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-[#12161D] border border-stone-700 text-stone-100 focus:outline-none focus:border-[#C9A063]"
+                  className={`w-full pl-9 pr-3 py-2.5 rounded-xl border focus:outline-none ${
+                    isDark
+                      ? 'bg-[#1B1D23] border-white/[0.1] focus:border-white/35 text-stone-100'
+                      : 'bg-[#F3F3F1] border-black/[0.1] focus:border-[#111214]/40 text-[#111214] placeholder:text-[#6B6F76]'
+                  }`}
                 />
               </div>
             </div>
@@ -433,13 +485,17 @@ export const AccountModal: React.FC<AccountModalProps> = ({
               id="register-submit-btn"
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-3 px-4 rounded-xl font-bold bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] text-[#090B0E] shadow-md hover:opacity-95 transition-all flex items-center justify-center gap-2"
+              className={`w-full py-3 px-4 rounded-xl font-bold shadow-sm transition-all flex items-center justify-center gap-2 ${
+                isDark
+                  ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                  : 'bg-[#111214] hover:bg-[#27292D] text-white'
+              }`}
             >
               <span>{isSubmitting ? (isArabic ? 'جاري إنشاء الحساب...' : 'Creating Account...') : (isArabic ? 'إنشاء الحساب والمزامنة' : 'Create Account')}</span>
               <Sparkles className="w-4 h-4" />
             </button>
 
-            <div className="pt-2 text-center text-stone-400 text-[11px]">
+            <div className={`pt-2 text-center text-[11px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               {isArabic ? 'لديك حساب بالفعل؟ ' : 'Already have an account? '}
               <button
                 type="button"
@@ -447,7 +503,7 @@ export const AccountModal: React.FC<AccountModalProps> = ({
                   setErrorMsg(null);
                   setView('login');
                 }}
-                className="text-[#DFBA7F] font-semibold underline hover:opacity-90"
+                className={`font-semibold underline hover:opacity-90 ${isDark ? 'text-white' : 'text-[#111214]'}`}
               >
                 {isArabic ? 'تسجيل الدخول' : 'Sign In'}
               </button>

@@ -88,22 +88,16 @@ export function resampleAudioBuffer(
     return inputData;
   }
   const ratio = fromSampleRate / toSampleRate;
-  const newLength = Math.round(inputData.length / ratio);
+  const newLength = Math.max(1, Math.round(inputData.length / ratio));
   const result = new Float32Array(newLength);
-  let offsetResult = 0;
-  let offsetInput = 0;
 
-  while (offsetResult < result.length) {
-    const nextOffsetInput = Math.round((offsetResult + 1) * ratio);
-    let accum = 0;
-    let count = 0;
-    for (let i = offsetInput; i < nextOffsetInput && i < inputData.length; i++) {
-      accum += inputData[i];
-      count++;
-    }
-    result[offsetResult] = count > 0 ? accum / count : 0;
-    offsetResult++;
-    offsetInput = nextOffsetInput;
+  for (let i = 0; i < newLength; i++) {
+    const srcPos = i * ratio;
+    const idx = Math.floor(srcPos);
+    const frac = srcPos - idx;
+    const s0 = inputData[idx] ?? 0;
+    const s1 = inputData[Math.min(idx + 1, inputData.length - 1)] ?? s0;
+    result[i] = s0 + (s1 - s0) * frac;
   }
   return result;
 }
@@ -126,10 +120,14 @@ export class LiveVoiceSession {
   private voiceName: string = 'Fenrir';
   private animFrameId: number | null = null;
   private isConnecting: boolean = false;
+  private isServerReady: boolean = false;
+  private pendingAudioQueue: string[] = [];
+  private memoryContext: string = '';
 
-  constructor(callbacks: LiveSessionCallbacks, voiceName: string = 'Fenrir') {
+  constructor(callbacks: LiveSessionCallbacks, voiceName: string = 'Fenrir', memoryContext: string = '') {
     this.callbacks = callbacks;
     this.voiceName = voiceName;
+    this.memoryContext = memoryContext;
   }
 
   public setVoice(voice: string) {
@@ -215,15 +213,16 @@ export class LiveVoiceSession {
       }
     }
 
-    // Setup output analyser for AI speech visualizer
-    if (!this.outAnalyser) {
-      this.outAnalyser = this.audioCtx.createAnalyser();
-      this.outAnalyser.fftSize = 64;
-      this.outAnalyser.connect(this.audioCtx.destination);
-    }
+      // Setup output analyser for AI speech visualizer
+      if (!this.outAnalyser) {
+        this.outAnalyser = this.audioCtx.createAnalyser();
+        this.outAnalyser.fftSize = 256;
+        this.outAnalyser.smoothingTimeConstant = 0.65;
+        this.outAnalyser.connect(this.audioCtx.destination);
+      }
 
-    return this.audioCtx;
-  }
+      return this.audioCtx;
+    }
 
   /**
    * Attaches microphone stream to the Web Audio pipeline without speaker feedback
@@ -236,13 +235,14 @@ export class LiveVoiceSession {
 
       // Microphone analyser for user voice visualizer
       this.micAnalyser = this.audioCtx.createAnalyser();
-      this.micAnalyser.fftSize = 64;
+      this.micAnalyser.fftSize = 256;
+      this.micAnalyser.smoothingTimeConstant = 0.65;
 
       this.micSource = this.audioCtx.createMediaStreamSource(this.mediaStream);
       this.micSource.connect(this.micAnalyser);
 
-      // Buffer size 4096 gives ~90-180ms latency chunks depending on sample rate
-      this.scriptProcessor = this.audioCtx.createScriptProcessor(4096, 1, 1);
+      // Buffer size 1024 (~21ms @ 48kHz) delivers ultra-low capture latency for fast VAD & hearing
+      this.scriptProcessor = this.audioCtx.createScriptProcessor(1024, 1, 1);
       this.micSource.connect(this.scriptProcessor);
 
       // Silent gain node to keep script processor alive without echoing user's voice to speakers
@@ -252,38 +252,57 @@ export class LiveVoiceSession {
       this.silentGain.connect(this.audioCtx.destination);
 
       this.scriptProcessor.onaudioprocess = (e) => {
-        if (!this.ws || this.ws.readyState !== WebSocket.OPEN || this.isMuted) return;
+        if (!this.ws || this.isMuted) return;
 
         const inputChannelData = e.inputBuffer.getChannelData(0);
 
-        // Smart Noise Gate & Anti-Interruption Filter:
-        let sumSquares = 0;
-        for (let i = 0; i < inputChannelData.length; i++) {
-          sumSquares += inputChannelData[i] * inputChannelData[i];
-        }
-        const rms = Math.sqrt(sumSquares / inputChannelData.length);
-
-        // While AI is speaking, require clear deliberate vocal volume (> 0.035) to interrupt,
-        // preventing background hiss, computer fan, or speaker echo from falsely interrupting.
         const isAiSpeaking = this.activeSourceNodes.length > 0;
-        const noiseFloor = isAiSpeaking ? 0.035 : 0.007;
+        let resampled: Float32Array;
 
-        if (rms < noiseFloor) {
-          return;
+        if (isAiSpeaking) {
+          // Light echo-suppression ONLY while AI is playing out loud; keep streaming continuous frames
+          let sumSquares = 0;
+          for (let i = 0; i < inputChannelData.length; i++) {
+            sumSquares += inputChannelData[i] * inputChannelData[i];
+          }
+          const rms = Math.sqrt(sumSquares / inputChannelData.length);
+          if (rms >= 0.028) {
+            resampled = resampleAudioBuffer(
+              inputChannelData,
+              this.audioCtx?.sampleRate || 44100,
+              16000
+            );
+          } else {
+            const silentLen = Math.max(
+              1,
+              Math.round((inputChannelData.length * 16000) / (this.audioCtx?.sampleRate || 44100))
+            );
+            resampled = new Float32Array(silentLen);
+          }
+        } else {
+          // Stream 100% of user audio & natural trailing pauses continuously so server VAD hears everything cleanly and responds immediately
+          resampled = resampleAudioBuffer(
+            inputChannelData,
+            this.audioCtx?.sampleRate || 44100,
+            16000
+          );
         }
-
-        const resampled = resampleAudioBuffer(
-          inputChannelData,
-          this.audioCtx?.sampleRate || 44100,
-          16000
-        );
 
         const base64PCM = floatTo16BitPCMBase64(resampled);
-        this.ws.send(JSON.stringify({ audio: base64PCM }));
+        if (this.ws.readyState === WebSocket.OPEN && this.isServerReady) {
+          this.ws.send(JSON.stringify({ audio: base64PCM }));
+        } else if (this.ws.readyState === WebSocket.CONNECTING || (this.ws.readyState === WebSocket.OPEN && !this.isServerReady)) {
+          if (this.pendingAudioQueue.length < 40) {
+            this.pendingAudioQueue.push(base64PCM);
+          }
+        }
       };
 
       this.isMicActive = true;
       this.callbacks.onMicStatusChange?.(true);
+      if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+        this.callbacks.onStateChange('listening');
+      }
       return true;
     } catch (err: any) {
       console.error('[LiveVoice] Failed to setup microphone pipeline:', err);
@@ -352,16 +371,35 @@ export class LiveVoiceSession {
       // 1. Initialize AudioContext for sound playback and visualization
       await this.ensureAudioContext();
 
-      // 2. Connect WebSocket to backend /api/live (supports both Web and Android Studio / Capacitor)
+      // 2. Register short-lived memory & history context if available, then connect WebSocket
+      let contextParam = '';
+      if (this.memoryContext && this.memoryContext.trim().length > 0) {
+        try {
+          const ctxRes = await fetch(getApiUrl('/api/live/context'), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ memoryContext: this.memoryContext }),
+          });
+          if (ctxRes.ok) {
+            const ctxData = await ctxRes.json().catch(() => null);
+            if (ctxData?.contextId) {
+              contextParam = `&contextId=${encodeURIComponent(ctxData.contextId)}`;
+            }
+          }
+        } catch {
+          // Non-fatal fallback: connect without memory context
+        }
+      }
+
       const wsUrl = getWebSocketUrl(
-        `/api/live?voice=${encodeURIComponent(this.voiceName)}&lang=${encodeURIComponent(getGlobalLanguage())}`
+        `/api/live?voice=${encodeURIComponent(this.voiceName)}&lang=${encodeURIComponent(getGlobalLanguage())}${contextParam}`
       );
 
       this.ws = new WebSocket(wsUrl);
 
       this.ws.onopen = () => {
         this.isConnecting = false;
-        this.callbacks.onStateChange('connected');
+        this.callbacks.onStateChange(this.isMicActive ? 'listening' : 'connected');
         this.startAudioVisualizerLoop();
       };
 
@@ -381,6 +419,8 @@ export class LiveVoiceSession {
       };
 
       this.ws.onclose = () => {
+        this.isServerReady = false;
+        this.pendingAudioQueue = [];
         this.callbacks.onStateChange('idle');
       };
 
@@ -406,7 +446,16 @@ export class LiveVoiceSession {
   }
 
   private handleServerMessage(msg: any) {
-    if (msg.type === 'audio' && msg.audio) {
+    if (msg.type === 'ready') {
+      this.isServerReady = true;
+      if (this.ws && this.ws.readyState === WebSocket.OPEN && this.pendingAudioQueue.length > 0) {
+        for (const chunk of this.pendingAudioQueue) {
+          this.ws.send(JSON.stringify({ audio: chunk }));
+        }
+        this.pendingAudioQueue = [];
+      }
+      this.callbacks.onStateChange(this.isMicActive ? 'listening' : 'connected');
+    } else if (msg.type === 'audio' && msg.audio) {
       this.playAudioChunk(msg.audio);
       this.callbacks.onStateChange('speaking');
     } else if (msg.type === 'input_transcript' && msg.text) {
@@ -420,7 +469,9 @@ export class LiveVoiceSession {
       this.callbacks.onStateChange('listening');
     } else if (msg.type === 'turn_complete') {
       this.markLastTranscriptComplete();
-      this.callbacks.onStateChange('listening');
+      if (this.activeSourceNodes.length === 0) {
+        this.callbacks.onStateChange('listening');
+      }
     } else if (msg.type === 'error') {
       this.callbacks.onError(msg.error || 'Live session error');
     }
@@ -513,32 +564,54 @@ export class LiveVoiceSession {
   }
 
   private startAudioVisualizerLoop() {
-    const micDataArray = new Uint8Array(32);
-    const outDataArray = new Uint8Array(32);
+    const micTimeArray = new Uint8Array(256);
+    const micFreqArray = new Uint8Array(128);
+    const outTimeArray = new Uint8Array(256);
+    const outFreqArray = new Uint8Array(128);
 
     const checkVolume = () => {
-      // Calculate Mic Volume
+      // Calculate responsive real-time Mic Volume using both time-domain RMS and lower speech spectrum
       if (this.micAnalyser && !this.isMuted && this.isMicActive) {
-        this.micAnalyser.getByteFrequencyData(micDataArray);
-        let sum = 0;
-        for (let i = 0; i < micDataArray.length; i++) {
-          sum += micDataArray[i];
+        this.micAnalyser.getByteTimeDomainData(micTimeArray);
+        this.micAnalyser.getByteFrequencyData(micFreqArray);
+
+        let sumSq = 0;
+        for (let i = 0; i < micTimeArray.length; i++) {
+          const v = (micTimeArray[i] - 128) / 128;
+          sumSq += v * v;
         }
-        const avg = sum / micDataArray.length;
-        this.callbacks.onUserVolume(Math.min(1, avg / 80));
+        const rms = Math.sqrt(sumSq / micTimeArray.length);
+
+        let speechSum = 0;
+        const speechBins = 24;
+        for (let i = 1; i <= speechBins; i++) {
+          speechSum += micFreqArray[i];
+        }
+        const speechAvg = speechSum / (speechBins * 255);
+        this.callbacks.onUserVolume(Math.min(1, Math.max(rms * 3.8, speechAvg * 2.1)));
       } else {
         this.callbacks.onUserVolume(0);
       }
 
-      // Calculate AI Output Volume
-      if (this.outAnalyser) {
-        this.outAnalyser.getByteFrequencyData(outDataArray);
-        let sum = 0;
-        for (let i = 0; i < outDataArray.length; i++) {
-          sum += outDataArray[i];
+      // Calculate vivid real-time AI Output Volume
+      if (this.outAnalyser && this.activeSourceNodes.length > 0) {
+        this.outAnalyser.getByteTimeDomainData(outTimeArray);
+        this.outAnalyser.getByteFrequencyData(outFreqArray);
+
+        let sumSq = 0;
+        for (let i = 0; i < outTimeArray.length; i++) {
+          const v = (outTimeArray[i] - 128) / 128;
+          sumSq += v * v;
         }
-        const avg = sum / outDataArray.length;
-        this.callbacks.onAiVolume(Math.min(1, avg / 75));
+        const rms = Math.sqrt(sumSq / outTimeArray.length);
+
+        let speechSum = 0;
+        const speechBins = 24;
+        for (let i = 1; i <= speechBins; i++) {
+          speechSum += outFreqArray[i];
+        }
+        const speechAvg = speechSum / (speechBins * 255);
+        this.callbacks.onAiVolume(Math.min(1, Math.max(rms * 3.5, speechAvg * 1.9)));
       } else {
         this.callbacks.onAiVolume(0);
       }
@@ -606,6 +679,8 @@ export class LiveVoiceSession {
 
     this.isMicActive = false;
     this.isConnecting = false;
+    this.isServerReady = false;
+    this.pendingAudioQueue = [];
     this.callbacks.onStateChange('idle');
   }
 }

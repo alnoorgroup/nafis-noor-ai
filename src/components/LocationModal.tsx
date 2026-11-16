@@ -160,23 +160,29 @@ export const LocationModal: React.FC<LocationModalProps> = ({
         id="location-settings-modal-content"
         onClick={(e) => e.stopPropagation()}
         dir={isArabic ? 'rtl' : 'ltr'}
-        className={`w-full max-w-md rounded-3xl p-4 sm:p-6 border transition-all duration-200 shadow-md relative max-h-[min(92dvh,720px)] flex flex-col ${
+        className={`w-full max-w-md rounded-3xl p-4 sm:p-6 border transition-all duration-200 relative max-h-[min(92dvh,720px)] flex flex-col ${
           isDark
-            ? 'liquid-glass border-[#C9A063]/30 text-stone-100'
-            : 'liquid-glass-light border-[#C9A063]/40 text-stone-900'
+            ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6] shadow-[0_12px_40px_rgba(0,0,0,0.55)]'
+            : 'bg-white border-black/[0.08] text-[#111214] shadow-[0_12px_40px_rgba(0,0,0,0.12)]'
         }`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#C9A063]/20">
+        <div className={`flex items-center justify-between pb-3 mb-3 border-b ${
+          isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+        }`}>
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-[#C9A063]/20 border border-[#C9A063]/40 flex items-center justify-center text-[#DFBA7F]">
+            <div className={`w-10 h-10 rounded-2xl border flex items-center justify-center ${
+              isDark
+                ? 'bg-[#1B1D23] border-white/[0.1] text-white'
+                : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+            }`}>
               <MapPin className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-cinzel text-sm font-bold tracking-wider text-[#DFBA7F]">
+              <h3 className={`font-cinzel text-sm font-bold tracking-wider ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                 {isArabic ? 'الموقع وطريقة الحساب' : 'LOCATION & CALCULATION'}
               </h3>
-              <p className="text-[11px] text-stone-400">
+              <p className={`text-[11px] ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                 {isArabic ? 'جدول مواقيت الصلاة الفلكية الدقيقة' : 'Accurate astronomical Salah schedule'}
               </p>
             </div>
@@ -184,20 +190,30 @@ export const LocationModal: React.FC<LocationModalProps> = ({
 
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-[#141A22]/80 border border-[#C9A063]/20 flex items-center justify-center text-stone-400 hover:text-white transition-all cursor-pointer"
+            className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all cursor-pointer ${
+              isDark
+                ? 'bg-[#1B1D23] border-white/[0.08] text-stone-400 hover:text-white hover:bg-white/[0.08]'
+                : 'bg-[#F3F3F1] border-black/[0.08] text-[#6B6F76] hover:text-[#111214] hover:bg-black/[0.06]'
+            }`}
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Tab switch: City Selector vs Calculation Method */}
-        <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-[#0E1217]/80 border border-[#C9A063]/20 mb-3.5">
+        <div className={`flex items-center gap-1.5 p-1 rounded-2xl border mb-3.5 ${
+          isDark ? 'bg-[#0B0C0E] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
+        }`}>
           <button
             onClick={() => setActiveTab('city')}
             className={`flex-1 py-1.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
               activeTab === 'city'
-                ? 'bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] text-[#090B0E] font-bold shadow-sm'
-                : 'text-stone-400 hover:text-stone-200'
+                ? isDark
+                  ? 'bg-white text-[#111214] font-bold shadow-sm'
+                  : 'bg-[#111214] text-white font-bold shadow-sm'
+                : isDark
+                ? 'text-stone-400 hover:text-stone-200'
+                : 'text-[#5A5D63] hover:text-[#111214]'
             }`}
           >
             <Globe2 className="w-3.5 h-3.5" />
@@ -207,8 +223,12 @@ export const LocationModal: React.FC<LocationModalProps> = ({
             onClick={() => setActiveTab('method')}
             className={`flex-1 py-1.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
               activeTab === 'method'
-                ? 'bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] text-[#090B0E] font-bold shadow-sm'
-                : 'text-stone-400 hover:text-stone-200'
+                ? isDark
+                  ? 'bg-white text-[#111214] font-bold shadow-sm'
+                  : 'bg-[#111214] text-white font-bold shadow-sm'
+                : isDark
+                ? 'text-stone-400 hover:text-stone-200'
+                : 'text-[#5A5D63] hover:text-[#111214]'
             }`}
           >
             <Sliders className="w-3.5 h-3.5" />
@@ -226,7 +246,11 @@ export const LocationModal: React.FC<LocationModalProps> = ({
               id="gps-auto-detect-btn"
               onClick={handleDetectGPS}
               disabled={isDetectingLocation}
-              className="w-full py-2.5 px-3.5 rounded-2xl border border-[#C9A063]/40 bg-gradient-to-r from-[#C9A063]/20 via-[#DFBA7F]/15 to-[#C9A063]/20 hover:border-[#DFBA7F] text-[#DFBA7F] text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-sm group cursor-pointer"
+              className={`w-full py-2.5 px-3.5 rounded-2xl border text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-sm group cursor-pointer ${
+                isDark
+                  ? 'border-white/[0.14] bg-[#1B1D23] hover:bg-white/[0.08] text-white'
+                  : 'border-black/[0.1] bg-[#F3F3F1] hover:bg-black/[0.06] text-[#111214]'
+              }`}
             >
               <Compass className={`w-4 h-4 ${isDetectingLocation ? 'animate-spin' : 'group-hover:rotate-45'} transition-transform`} />
               <span>
@@ -237,7 +261,11 @@ export const LocationModal: React.FC<LocationModalProps> = ({
             </button>
 
             {geoError && (
-              <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-[11px] flex items-center gap-2">
+              <div className={`p-2.5 rounded-xl border text-[11px] flex items-center gap-2 ${
+                isDark
+                  ? 'bg-rose-500/10 border-rose-500/30 text-rose-300'
+                  : 'bg-rose-50 border-rose-200 text-rose-800'
+              }`}>
                 <Info className="w-4 h-4 shrink-0" />
                 <span>{geoError}</span>
               </div>
@@ -251,7 +279,11 @@ export const LocationModal: React.FC<LocationModalProps> = ({
                 placeholder={isArabic ? 'ابحث عن المدينة (مثل: مكة، القاهرة، الرياض، دبي)...' : 'Search city (e.g. London, New York, Cairo, Dubai)...'}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className={`w-full py-2 rounded-2xl bg-[#12161D] border border-[#C9A063]/25 text-stone-100 text-xs focus:outline-none focus:border-[#DFBA7F] placeholder:text-stone-500 ${isArabic ? 'pr-9 pl-3' : 'pl-9 pr-3'}`}
+                className={`w-full py-2 rounded-2xl border text-xs focus:outline-none ${
+                  isDark
+                    ? 'bg-[#0B0C0E] border-white/[0.1] text-[#F3F4F6] focus:border-white/30 placeholder:text-stone-500'
+                    : 'bg-[#FCFCFA] border-black/[0.1] text-[#111214] focus:border-black/30 placeholder:text-[#6B6F76]'
+                } ${isArabic ? 'pr-9 pl-3' : 'pl-9 pr-3'}`}
               />
             </div>
 
@@ -269,22 +301,32 @@ export const LocationModal: React.FC<LocationModalProps> = ({
                     onClick={() => handleSelectCity(city)}
                     className={`w-full p-2.5 rounded-xl border text-xs transition-all flex items-center justify-between cursor-pointer ${isArabic ? 'text-right' : 'text-left'} ${
                       isSelected
-                        ? 'bg-[#C9A063]/25 border-[#DFBA7F] text-[#DFBA7F] font-semibold shadow-inner'
-                        : 'bg-[#12161D]/70 border-white/5 text-stone-300 hover:border-[#C9A063]/30 hover:bg-[#12161D]'
+                        ? isDark
+                          ? 'bg-white/[0.1] border-white/30 text-white font-semibold'
+                          : 'bg-[#111214]/[0.06] border-[#111214]/40 text-[#111214] font-semibold'
+                        : isDark
+                        ? 'bg-[#1B1D23]/70 border-white/[0.06] text-stone-300 hover:border-white/[0.15] hover:bg-[#1B1D23]'
+                        : 'bg-[#FCFCFA] border-black/[0.08] text-[#3F4248] hover:border-black/[0.18] hover:bg-[#F3F3F1]'
                     }`}
                   >
                     <div>
-                      <div className="font-semibold text-stone-100 flex items-center gap-1.5">
+                      <div className={`font-semibold flex items-center gap-1.5 ${
+                        isSelected
+                          ? isDark ? 'text-white' : 'text-[#111214]'
+                          : isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'
+                      }`}>
                         <span>{displayName}</span>
-                        <span className="text-[10px] text-stone-400 font-normal">({displayCountry})</span>
+                        <span className={`text-[10px] font-normal ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>({displayCountry})</span>
                       </div>
-                      <div className="text-[10px] text-stone-400 font-mono">
+                      <div className={`text-[10px] font-mono ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                         {city.latitude.toFixed(2)}° N, {city.longitude.toFixed(2)}° E
                       </div>
                     </div>
 
                     {isSelected && (
-                      <div className="w-5 h-5 rounded-full bg-[#C9A063] text-[#090B0E] flex items-center justify-center shrink-0">
+                      <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${
+                        isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+                      }`}>
                         <Check className="w-3 h-3 stroke-[3]" />
                       </div>
                     )}
@@ -293,7 +335,7 @@ export const LocationModal: React.FC<LocationModalProps> = ({
               })}
 
               {filteredCities.length === 0 && (
-                <div className="text-center py-6 text-xs text-stone-400">
+                <div className={`text-center py-6 text-xs ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                   {isArabic
                     ? `لا توجد مدن تطابق "${searchQuery}". يمكنك تفعيل التحديد التلقائي أو اختيار أقرب مدينة كبرى.`
                     : `No cities matching "${searchQuery}". You can use GPS auto-detect or enter nearby major city.`}
@@ -310,7 +352,7 @@ export const LocationModal: React.FC<LocationModalProps> = ({
           <div className="space-y-3.5">
             {/* Calculation Method */}
             <div>
-              <label className="text-[11px] font-semibold text-stone-300 block mb-1.5">
+              <label className={`text-[11px] font-semibold block mb-1.5 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                 {isArabic ? 'الهيئة المعتمدة لحساب المواقيت:' : 'Calculation Authority / Standard:'}
               </label>
               <div className="max-h-48 overflow-y-auto no-scrollbar space-y-1">
@@ -322,15 +364,23 @@ export const LocationModal: React.FC<LocationModalProps> = ({
                       onClick={() => onUpdateStats({ prayerCalculationMethod: method.key })}
                       className={`w-full p-2.5 rounded-xl border text-xs transition-all cursor-pointer ${isArabic ? 'text-right' : 'text-left'} ${
                         isSelected
-                          ? 'bg-[#C9A063]/25 border-[#DFBA7F] text-[#DFBA7F] font-semibold'
-                          : 'bg-[#12161D]/70 border-white/5 text-stone-300 hover:border-[#C9A063]/30'
+                          ? isDark
+                            ? 'bg-white/[0.1] border-white/30 text-white font-semibold'
+                            : 'bg-[#111214]/[0.06] border-[#111214]/40 text-[#111214] font-semibold'
+                          : isDark
+                          ? 'bg-[#1B1D23]/70 border-white/[0.06] text-stone-300 hover:border-white/[0.16]'
+                          : 'bg-[#FCFCFA] border-black/[0.08] text-[#3F4248] hover:border-black/[0.18] hover:bg-[#F3F3F1]'
                       }`}
                     >
                       <div className="flex items-center justify-between">
-                        <span className="font-semibold text-stone-100">{isArabic ? method.nameAr : method.name}</span>
-                        {isSelected && <Check className="w-3.5 h-3.5 text-[#DFBA7F]" />}
+                        <span className={`font-semibold ${
+                          isSelected
+                            ? isDark ? 'text-white' : 'text-[#111214]'
+                            : isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'
+                        }`}>{isArabic ? method.nameAr : method.name}</span>
+                        {isSelected && <Check className={`w-3.5 h-3.5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />}
                       </div>
-                      <p className="text-[10px] text-stone-400 mt-0.5 font-light leading-tight">
+                      <p className={`text-[10px] mt-0.5 font-light leading-tight ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                         {isArabic ? method.descriptionAr : method.description}
                       </p>
                     </button>
@@ -340,8 +390,8 @@ export const LocationModal: React.FC<LocationModalProps> = ({
             </div>
 
             {/* Asr Juristic School */}
-            <div className="pt-2 border-t border-[#C9A063]/15">
-              <label className="text-[11px] font-semibold text-stone-300 block mb-1.5">
+            <div className={`pt-2 border-t ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
+              <label className={`text-[11px] font-semibold block mb-1.5 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                 {isArabic ? 'المذهب الفقهي لحساب وقت العصر:' : "'Asr Jurisprudence (Madhab):"}
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -349,14 +399,22 @@ export const LocationModal: React.FC<LocationModalProps> = ({
                   onClick={() => onUpdateStats({ asrJuristicMethod: 'Shafi' })}
                   className={`p-2.5 rounded-xl border text-center text-xs transition-all cursor-pointer ${
                     currentMadhab === 'Shafi'
-                      ? 'bg-[#C9A063]/25 border-[#DFBA7F] text-[#DFBA7F] font-semibold'
-                      : 'bg-[#12161D]/70 border-white/5 text-stone-400'
+                      ? isDark
+                        ? 'bg-white/[0.1] border-white/30 text-white font-semibold'
+                        : 'bg-[#111214]/[0.06] border-[#111214]/40 text-[#111214] font-semibold'
+                      : isDark
+                      ? 'bg-[#1B1D23]/70 border-white/[0.06] text-stone-400'
+                      : 'bg-[#FCFCFA] border-black/[0.08] text-[#3F4248] hover:bg-[#F3F3F1]'
                   }`}
                 >
-                  <div className="font-semibold text-stone-200">
+                  <div className={`font-semibold ${
+                    currentMadhab === 'Shafi'
+                      ? isDark ? 'text-white' : 'text-[#111214]'
+                      : isDark ? 'text-stone-200' : 'text-[#111214]'
+                  }`}>
                     {isArabic ? 'الجمهور (الشافعي والمالكي والحنبلي)' : "Standard / Shafi'i"}
                   </div>
-                  <div className="text-[10px] text-stone-400 mt-0.5">
+                  <div className={`text-[10px] mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                     {isArabic ? 'ظل الشيء مثله' : "Maliki, Hanbali, Shafi'i"}
                   </div>
                 </button>
@@ -365,14 +423,22 @@ export const LocationModal: React.FC<LocationModalProps> = ({
                   onClick={() => onUpdateStats({ asrJuristicMethod: 'Hanafi' })}
                   className={`p-2.5 rounded-xl border text-center text-xs transition-all cursor-pointer ${
                     currentMadhab === 'Hanafi'
-                      ? 'bg-[#C9A063]/25 border-[#DFBA7F] text-[#DFBA7F] font-semibold'
-                      : 'bg-[#12161D]/70 border-white/5 text-stone-400'
+                      ? isDark
+                        ? 'bg-white/[0.1] border-white/30 text-white font-semibold'
+                        : 'bg-[#111214]/[0.06] border-[#111214]/40 text-[#111214] font-semibold'
+                      : isDark
+                      ? 'bg-[#1B1D23]/70 border-white/[0.06] text-stone-400'
+                      : 'bg-[#FCFCFA] border-black/[0.08] text-[#3F4248] hover:bg-[#F3F3F1]'
                   }`}
                 >
-                  <div className="font-semibold text-stone-200">
+                  <div className={`font-semibold ${
+                    currentMadhab === 'Hanafi'
+                      ? isDark ? 'text-white' : 'text-[#111214]'
+                      : isDark ? 'text-stone-200' : 'text-[#111214]'
+                  }`}>
                     {isArabic ? 'المذهب الحنفي' : 'Hanafi'}
                   </div>
-                  <div className="text-[10px] text-stone-400 mt-0.5">
+                  <div className={`text-[10px] mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                     {isArabic ? 'ظل الشيء مثليه' : 'Shadow = 2x object'}
                   </div>
                 </button>
@@ -382,16 +448,22 @@ export const LocationModal: React.FC<LocationModalProps> = ({
         )}
 
         {/* Live Calculation Preview Footer */}
-        <div className="mt-4 pt-3 border-t border-[#C9A063]/20 flex items-center justify-between text-xs">
+        <div className={`mt-4 pt-3 border-t flex items-center justify-between text-xs ${
+          isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+        }`}>
           <div className="truncate pr-2">
-            <span className="text-stone-400 text-[11px]">{isArabic ? 'المحدد: ' : 'Active: '}</span>
-            <span className="text-[#DFBA7F] font-semibold">{activeLocationDisplayName}</span>
-            <span className="text-[10px] text-stone-400 block truncate">{activeMethodDisplayName}</span>
+            <span className={`text-[11px] ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>{isArabic ? 'المحدد: ' : 'Active: '}</span>
+            <span className={`font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>{activeLocationDisplayName}</span>
+            <span className={`text-[10px] block truncate ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>{activeMethodDisplayName}</span>
           </div>
 
           <button
             onClick={onClose}
-            className="px-5 py-2 rounded-xl font-bold text-xs bg-gradient-to-r from-[#C9A063] via-[#DFBA7F] to-[#C9A063] text-[#090B0E] shadow-sm hover:opacity-95 transition-all cursor-pointer shrink-0"
+            className={`px-5 py-2 rounded-xl font-bold text-xs shadow-sm transition-all cursor-pointer shrink-0 ${
+              isDark
+                ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                : 'bg-[#111214] hover:bg-[#27292D] text-white'
+            }`}
           >
             {isArabic ? 'تطبيق المواقيت' : 'Apply Times'}
           </button>

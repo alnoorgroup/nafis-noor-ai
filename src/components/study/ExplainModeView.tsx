@@ -124,11 +124,11 @@ export const ExplainModeView: React.FC<ExplainModeViewProps> = ({
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-xl font-bold flex items-center gap-2">
-          <Lightbulb className="w-5 h-5 text-[#DFBA7F]" />
+        <h2 className={`text-xl font-bold flex items-center gap-2 ${isDark ? 'text-stone-100' : 'text-[#111214]'}`}>
+          <Lightbulb className={`w-5 h-5 ${isDark ? 'text-stone-300' : 'text-[#111214]'}`} />
           <span>Explain Mode</span>
         </h2>
-        <p className="text-xs text-stone-400 mt-0.5">
+        <p className={`text-xs mt-0.5 ${isDark ? 'text-stone-400' : 'text-stone-600'}`}>
           Demystify difficult concepts through customized pedagogical angles in{' '}
           {selectedSubject.name} {selectedTopic ? `• ${selectedTopic.name}` : ''}
         </p>
@@ -138,13 +138,13 @@ export const ExplainModeView: React.FC<ExplainModeViewProps> = ({
         {/* Controls Column (Left) */}
         <div
           className={`lg:col-span-5 p-6 rounded-3xl border shadow-sm space-y-5 h-fit ${
-            isDark ? 'bg-[#0E131E] border-white/15 text-stone-100' : 'bg-white border-stone-200 text-stone-900'
+            isDark ? 'bg-[#14161A] border-white/10 text-stone-100' : 'bg-white border-stone-200 text-[#111214]'
           }`}
         >
           <form onSubmit={handleExplain} className="space-y-4">
             {/* Concept Input */}
             <div>
-              <label className="text-xs font-semibold text-stone-400 block mb-1">
+              <label className={`text-xs font-semibold block mb-1 ${isDark ? 'text-stone-400' : 'text-stone-600'}`}>
                 Concept, Problem, or Theorem to Explain
               </label>
               <textarea
@@ -153,24 +153,24 @@ export const ExplainModeView: React.FC<ExplainModeViewProps> = ({
                 onChange={(e) => setConcept(e.target.value)}
                 placeholder="e.g. Endosymbiotic Theory, Fourier Transform, Keynesian Multiplier..."
                 className={`w-full p-3 rounded-xl text-xs sm:text-sm border outline-none ${
-                  isDark ? 'bg-[#141B2B] border-white/10' : 'bg-stone-50 border-stone-200'
+                  isDark ? 'bg-[#1B1D23] border-white/10 text-stone-100' : 'bg-stone-50 border-stone-200 text-[#111214]'
                 }`}
               />
             </div>
 
             {/* Optional attachment */}
             <div>
-              <label className="text-xs font-semibold text-stone-400 block mb-1">
+              <label className={`text-xs font-semibold block mb-1 ${isDark ? 'text-stone-400' : 'text-stone-600'}`}>
                 Or Attach Diagram / Problem Image / PDF
               </label>
               <input
                 type="file"
                 accept="image/*,application/pdf"
                 onChange={handleFileUpload}
-                className="text-xs text-stone-400"
+                className={`text-xs ${isDark ? 'text-stone-400' : 'text-stone-600'}`}
               />
               {attachment && (
-                <div className="p-2 mt-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs">
+                <div className="p-2 mt-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs">
                   Attached: {attachment.name}
                 </div>
               )}
@@ -178,7 +178,7 @@ export const ExplainModeView: React.FC<ExplainModeViewProps> = ({
 
             {/* Explanation Depth */}
             <div>
-              <label className="text-xs font-semibold text-stone-400 block mb-1.5">
+              <label className={`text-xs font-semibold block mb-1.5 ${isDark ? 'text-stone-400' : 'text-stone-600'}`}>
                 Explanation Depth
               </label>
               <div className="grid grid-cols-2 gap-2 text-xs">
@@ -194,10 +194,10 @@ export const ExplainModeView: React.FC<ExplainModeViewProps> = ({
                     onClick={() => setLevel(l.id)}
                     className={`py-2 px-2.5 rounded-xl border font-medium text-xs transition-all ${
                       level === l.id
-                        ? 'bg-[#C9A063] text-[#080A0E] font-bold border-[#C9A063]'
+                        ? isDark ? 'bg-white text-[#111214] font-bold border-white' : 'bg-[#111214] text-white font-bold border-[#111214]'
                         : isDark
-                        ? 'border-white/10 text-stone-400 hover:text-stone-200'
-                        : 'border-stone-200 text-stone-600 hover:text-stone-900'
+                        ? 'border-white/10 text-stone-400 hover:text-stone-200 bg-[#1B1D23]'
+                        : 'border-stone-200 text-stone-600 hover:text-[#111214] bg-stone-50'
                     }`}
                   >
                     {l.label}
@@ -208,7 +208,7 @@ export const ExplainModeView: React.FC<ExplainModeViewProps> = ({
 
             {/* Specific Angle */}
             <div>
-              <label className="text-xs font-semibold text-stone-400 block mb-1.5">
+              <label className={`text-xs font-semibold block mb-1.5 ${isDark ? 'text-stone-400' : 'text-stone-600'}`}>
                 Perspective Angle
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
@@ -224,10 +224,10 @@ export const ExplainModeView: React.FC<ExplainModeViewProps> = ({
                     onClick={() => setAngle(a.id)}
                     className={`py-2 px-2.5 rounded-xl border font-medium text-xs text-left transition-all ${
                       angle === a.id
-                        ? 'bg-[#C9A063] text-[#080A0E] font-bold border-[#C9A063]'
+                        ? isDark ? 'bg-white text-[#111214] font-bold border-white' : 'bg-[#111214] text-white font-bold border-[#111214]'
                         : isDark
-                        ? 'border-white/10 text-stone-400 hover:text-stone-200'
-                        : 'border-stone-200 text-stone-600 hover:text-stone-900'
+                        ? 'border-white/10 text-stone-400 hover:text-stone-200 bg-[#1B1D23]'
+                        : 'border-stone-200 text-stone-600 hover:text-[#111214] bg-stone-50'
                     }`}
                   >
                     {a.label}
@@ -239,7 +239,9 @@ export const ExplainModeView: React.FC<ExplainModeViewProps> = ({
             <button
               type="submit"
               disabled={isLoading || (!concept.trim() && !attachment)}
-              className="w-full py-3 rounded-xl font-bold text-xs sm:text-sm bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] disabled:opacity-40 shadow-sm"
+              className={`w-full py-3 rounded-xl font-bold text-xs sm:text-sm shadow-sm disabled:opacity-40 transition-opacity ${
+                isDark ? 'bg-white text-[#111214] hover:bg-stone-200' : 'bg-[#111214] text-white hover:bg-black'
+              }`}
             >
               {isLoading ? 'Crafting Explanation...' : 'Explain Now'}
             </button>
@@ -255,31 +257,31 @@ export const ExplainModeView: React.FC<ExplainModeViewProps> = ({
             />
           ) : explanation ? (
             <div
-              className={`p-6 sm:p-8 rounded-3xl border shadow-lg space-y-4 animate-fadeIn ${
-                isDark ? 'bg-[#0E131E] border-white/15 text-stone-100' : 'bg-white border-stone-200 text-stone-900'
+              className={`p-6 sm:p-8 rounded-3xl border shadow-sm space-y-4 animate-fadeIn ${
+                isDark ? 'bg-[#14161A] border-white/10 text-stone-100' : 'bg-white border-stone-200 text-[#111214]'
               }`}
             >
               {/* Toolbar */}
-              <div className="flex items-center justify-between pb-3 border-b border-white/10 text-xs">
-                <span className="font-bold text-[#DFBA7F] uppercase tracking-wider text-[10px]">
+              <div className={`flex items-center justify-between pb-3 border-b text-xs ${isDark ? 'border-white/10' : 'border-stone-200'}`}>
+                <span className={`font-bold uppercase tracking-wider text-[10px] ${isDark ? 'text-stone-300' : 'text-[#111214]'}`}>
                   {level} • {angle.replace('_', ' ')}
                 </span>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                   <button
                     type="button"
                     onClick={handleCopy}
-                    className="flex items-center gap-1 text-stone-400 hover:text-stone-200"
+                    className={`flex items-center gap-1 ${isDark ? 'text-stone-400 hover:text-stone-200' : 'text-stone-600 hover:text-stone-900'}`}
                   >
-                    {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                    {copied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
                     <span>{copied ? 'Copied' : 'Copy'}</span>
                   </button>
                   <button
                     type="button"
                     onClick={handleSaveToNotes}
-                    className="flex items-center gap-1 text-stone-400 hover:text-[#DFBA7F]"
+                    className={`flex items-center gap-1 ${isDark ? 'text-stone-400 hover:text-stone-200' : 'text-stone-600 hover:text-stone-900'}`}
                   >
                     {savedToNotes ? (
-                      <Check className="w-3.5 h-3.5 text-emerald-400" />
+                      <Check className="w-3.5 h-3.5 text-emerald-500" />
                     ) : (
                       <BookmarkPlus className="w-3.5 h-3.5" />
                     )}
@@ -296,14 +298,14 @@ export const ExplainModeView: React.FC<ExplainModeViewProps> = ({
           ) : (
             <div
               className={`p-12 text-center rounded-3xl border flex flex-col items-center justify-center min-h-[360px] ${
-                isDark ? 'bg-[#0D1220] border-white/10' : 'bg-stone-50 border-stone-200'
+                isDark ? 'bg-[#14161A] border-white/10' : 'bg-stone-50 border-stone-200'
               }`}
             >
-              <div className="w-12 h-12 rounded-2xl bg-[#DFBA7F]/15 text-[#DFBA7F] flex items-center justify-center mb-3">
+              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-3 ${isDark ? 'bg-white/10 text-stone-200' : 'bg-stone-100 text-[#111214]'}`}>
                 <Lightbulb className="w-6 h-6" />
               </div>
               <h3 className="font-bold text-base mb-1">Awaiting Concept</h3>
-              <p className="text-xs text-stone-400 max-w-sm">
+              <p className={`text-xs max-w-sm ${isDark ? 'text-stone-400' : 'text-stone-600'}`}>
                 Enter any term or problem on the left and select your preferred explanation depth.
               </p>
             </div>

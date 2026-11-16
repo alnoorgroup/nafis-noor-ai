@@ -241,11 +241,11 @@ export const StudyPlannerView: React.FC<StudyPlannerViewProps> = ({
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold flex items-center gap-2">
-            <Calendar className="w-5 h-5 text-[#DFBA7F]" />
+          <h2 className={`text-xl font-bold flex items-center gap-2 ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
+            <Calendar className={`w-5 h-5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
             <span>{isArabic ? 'خطة المذاكرة الذكية' : 'AI Study Planner'}</span>
           </h2>
-          <p className="text-xs text-stone-400 mt-0.5">
+          <p className={`text-xs mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
             {isArabic
               ? 'جدولة هادئة ومنهجية للامتحانات والأهداف الأكاديمية دون إجهاد.'
               : 'Structured, calm, milestone-based scheduling for exams and targets without burnout.'}
@@ -256,8 +256,10 @@ export const StudyPlannerView: React.FC<StudyPlannerViewProps> = ({
           <button
             type="button"
             onClick={() => setActivePlan(null)}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold border cursor-pointer ${
-              isDark ? 'border-white/10 text-stone-300' : 'border-stone-300 text-stone-700'
+            className={`px-3 py-1.5 rounded-xl text-xs font-semibold border cursor-pointer transition-colors ${
+              isDark
+                ? 'border-white/10 text-stone-300 hover:bg-white/[0.06]'
+                : 'border-black/[0.1] text-[#3F4248] hover:bg-black/[0.05]'
             }`}
           >
             {isArabic ? 'إنشاء خطة جديدة' : 'Create New Plan'}
@@ -268,17 +270,19 @@ export const StudyPlannerView: React.FC<StudyPlannerViewProps> = ({
       {!activePlan ? (
         /* Plan Generator Form */
         <div
-          className={`max-w-xl mx-auto p-6 sm:p-8 rounded-3xl border shadow-lg ${
-            isDark ? 'bg-[#0E131E] border-white/15 text-stone-100' : 'bg-white border-stone-200 text-stone-900'
+          className={`max-w-xl mx-auto p-6 sm:p-8 rounded-3xl border ${
+            isDark
+              ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+              : 'bg-white border-black/[0.08] text-[#111214] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
           }`}
         >
           <div className="flex items-center gap-2 mb-2">
-            <Sparkles className="w-5 h-5 text-[#DFBA7F]" />
+            <Sparkles className={`w-5 h-5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
             <h3 className="text-base font-bold">
               {isArabic ? 'جدولة اختبار أو هدف دراسي' : 'Schedule an Exam or Learning Goal'}
             </h3>
           </div>
-          <p className="text-xs text-stone-400 mb-6">
+          <p className={`text-xs mb-6 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
             {isArabic
               ? 'حدد موعد الاختبار وعدد الساعات اليومية المتاحة، وسيقوم الذكاء بتقسيم المنهج إلى محطات يومية ميسرة.'
               : 'Tell the AI your target date and capacity. It will break the syllabus into manageable, bite-sized daily milestones.'}
@@ -286,7 +290,7 @@ export const StudyPlannerView: React.FC<StudyPlannerViewProps> = ({
 
           <form onSubmit={handleGeneratePlan} className="space-y-4">
             <div>
-              <label className="text-xs font-semibold text-stone-400 block mb-1">
+              <label className={`text-xs font-semibold block mb-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 {isArabic ? 'اسم الاختبار أو الهدف الأكاديمي' : 'Target Exam or Academic Goal'}
               </label>
               <input
@@ -296,14 +300,16 @@ export const StudyPlannerView: React.FC<StudyPlannerViewProps> = ({
                 onChange={(e) => setExamTitle(e.target.value)}
                 placeholder={isArabic ? 'مثال: اختبار الكيمياء الحيوية، نهائي التفاضل والتكامل، الفقه الميسر' : 'e.g. Organic Chemistry Midterm, Calculus Final, AP Biology Unit 4'}
                 className={`w-full p-3 rounded-xl text-xs sm:text-sm border outline-none ${
-                  isDark ? 'bg-[#141B2B] border-white/10' : 'bg-stone-50 border-stone-200'
+                  isDark
+                    ? 'bg-[#1B1D23] border-white/10 text-[#F3F4F6] placeholder:text-stone-500'
+                    : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214] placeholder:text-[#6B6F76]'
                 }`}
               />
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="text-xs font-semibold text-stone-400 block mb-1">
+                <label className={`text-xs font-semibold block mb-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                   {isArabic ? 'موعد الاختبار' : 'Target Date'}
                 </label>
                 <input
@@ -312,13 +318,15 @@ export const StudyPlannerView: React.FC<StudyPlannerViewProps> = ({
                   value={targetDate}
                   onChange={(e) => setTargetDate(e.target.value)}
                   className={`w-full p-2.5 rounded-xl text-xs border outline-none ${
-                    isDark ? 'bg-[#141B2B] border-white/10' : 'bg-stone-50 border-stone-200'
+                    isDark
+                      ? 'bg-[#1B1D23] border-white/10 text-[#F3F4F6]'
+                      : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
                   }`}
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-stone-400 block mb-1">
+                <label className={`text-xs font-semibold block mb-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                   {isArabic ? 'ساعات المذاكرة المتاحة يومياً' : 'Available Daily Study Hours'}
                 </label>
                 <select
@@ -326,7 +334,9 @@ export const StudyPlannerView: React.FC<StudyPlannerViewProps> = ({
                   value={hoursPerDay}
                   onChange={(e) => setHoursPerDay(Number(e.target.value))}
                   className={`w-full p-2.5 rounded-xl text-xs border outline-none ${
-                    isDark ? 'bg-[#141B2B] border-white/10' : 'bg-stone-50 border-stone-200'
+                    isDark
+                      ? 'bg-[#1B1D23] border-white/10 text-[#F3F4F6]'
+                      : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
                   }`}
                 >
                   <option value={1}>{isArabic ? 'ساعة واحدة يومياً (هادئ)' : '1 hour / day (Calm)'}</option>
@@ -340,7 +350,11 @@ export const StudyPlannerView: React.FC<StudyPlannerViewProps> = ({
             <button
               type="submit"
               disabled={isGenerating || !examTitle.trim() || !targetDate}
-              className="w-full py-3 rounded-xl font-bold text-xs sm:text-sm bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] shadow-sm disabled:opacity-40 cursor-pointer"
+              className={`w-full py-3 rounded-xl font-bold text-xs sm:text-sm shadow-sm disabled:opacity-40 cursor-pointer transition-colors ${
+                isDark
+                  ? 'bg-white text-[#111214] hover:bg-stone-200'
+                  : 'bg-[#111214] text-white hover:bg-[#27292D]'
+              }`}
             >
               {isGenerating
                 ? (isArabic ? 'جاري بناء الجدول الأكاديمي الهادئ...' : 'Structuring Calm Academic Schedule...')
@@ -353,19 +367,21 @@ export const StudyPlannerView: React.FC<StudyPlannerViewProps> = ({
         <div className="max-w-3xl mx-auto space-y-6">
           {/* Plan Header Card */}
           <div
-            className={`p-6 sm:p-8 rounded-3xl border shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-6 ${
-              isDark ? 'bg-[#0E131E] border-white/15 text-stone-100' : 'bg-white border-stone-200 text-stone-900'
+            className={`p-6 sm:p-8 rounded-3xl border flex flex-col sm:flex-row sm:items-center justify-between gap-6 ${
+              isDark
+                ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+                : 'bg-white border-black/[0.08] text-[#111214] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
             }`}
           >
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <Target className="w-4 h-4 text-[#DFBA7F]" />
-                <span className="text-xs uppercase font-bold tracking-wider text-stone-400">
+                <Target className={`w-4 h-4 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
+                <span className={`text-xs uppercase font-bold tracking-wider ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                   {isArabic ? 'الهدف الأكاديمي' : 'Target Goal'}
                 </span>
               </div>
-              <h3 className="text-xl font-bold text-stone-100">{activePlan.targetGoal}</h3>
-              <p className="text-xs text-stone-400 mt-1">
+              <h3 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>{activePlan.targetGoal}</h3>
+              <p className={`text-xs mt-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 {isArabic ? 'تاريخ الهدف: ' : 'Target Date: '}
                 <strong>{new Date(activePlan.examDate).toLocaleDateString()}</strong> •{' '}
                 {isArabic
@@ -375,13 +391,13 @@ export const StudyPlannerView: React.FC<StudyPlannerViewProps> = ({
             </div>
 
             {/* Progress Fraction */}
-            <div className={`flex items-center gap-4 border-t sm:border-t-0 ${isArabic ? 'sm:border-r sm:pr-6' : 'sm:border-l sm:pl-6'} border-white/10 pt-4 sm:pt-0`}>
+            <div className={`flex items-center gap-4 border-t sm:border-t-0 ${isArabic ? 'sm:border-r sm:pr-6' : 'sm:border-l sm:pl-6'} ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'} pt-4 sm:pt-0`}>
               <div>
-                <span className="text-3xl font-extrabold text-[#DFBA7F] font-mono">
+                <span className={`text-3xl font-extrabold font-mono ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                   {completedCount}
                 </span>
-                <span className="text-xs text-stone-400 font-mono">/{totalCount}</span>
-                <p className="text-[10px] uppercase font-bold text-stone-400">
+                <span className={`text-xs font-mono ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>/{totalCount}</span>
+                <p className={`text-[10px] uppercase font-bold ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                   {isArabic ? 'المحطات المكتملة' : 'Milestones Done'}
                 </p>
               </div>
@@ -391,14 +407,14 @@ export const StudyPlannerView: React.FC<StudyPlannerViewProps> = ({
           {/* Tasks List */}
           <div
             className={`p-6 rounded-3xl border space-y-4 ${
-              isDark ? 'bg-[#0E131E] border-white/15' : 'bg-white border-stone-200'
+              isDark ? 'bg-[#14161A] border-white/[0.08]' : 'bg-white border-black/[0.08]'
             }`}
           >
-            <div className="flex items-center justify-between pb-3 border-b border-white/10">
-              <h4 className="font-bold text-sm text-stone-300">
+            <div className={`flex items-center justify-between pb-3 border-b ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
+              <h4 className={`font-bold text-sm ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>
                 {isArabic ? 'المحطات المجدولة' : 'Scheduled Milestones'}
               </h4>
-              <span className="text-xs text-stone-400 font-mono">
+              <span className={`text-xs font-mono ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                 {Math.round(totalCount > 0 ? (completedCount / totalCount) * 100 : 0)}% {isArabic ? 'مكتمل' : 'Complete'}
               </span>
             </div>
@@ -412,32 +428,34 @@ export const StudyPlannerView: React.FC<StudyPlannerViewProps> = ({
                     task.completed
                       ? 'bg-emerald-500/10 border-emerald-500/20 text-stone-400'
                       : isDark
-                      ? 'bg-[#121826] border-white/10 hover:border-white/20 text-stone-200'
-                      : 'bg-stone-50 border-stone-200 hover:border-stone-300 text-stone-800'
+                      ? 'bg-[#1B1D23] border-white/[0.08] hover:border-white/20 text-stone-200'
+                      : 'bg-[#F3F3F1] border-black/[0.08] hover:border-black/20 text-[#111214]'
                   }`}
                 >
                   <div className="mt-0.5 shrink-0">
                     {task.completed ? (
-                      <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                      <CheckCircle2 className="w-5 h-5 text-emerald-500" />
                     ) : (
-                      <Circle className="w-5 h-5 text-stone-500" />
+                      <Circle className={`w-5 h-5 ${isDark ? 'text-stone-500' : 'text-[#6B6F76]'}`} />
                     )}
                   </div>
 
                   <div className="flex-1 space-y-1">
                     <p
                       className={`text-xs sm:text-sm font-semibold ${
-                        task.completed ? 'line-through text-stone-500' : 'text-stone-100'
+                        task.completed
+                          ? 'line-through text-stone-500'
+                          : isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'
                       }`}
                     >
                       {task.title}
                     </p>
                     {task.description && (
-                      <p className="text-xs text-stone-400">{task.description}</p>
+                      <p className={`text-xs ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{task.description}</p>
                     )}
                   </div>
 
-                  <span className="text-[11px] text-stone-500 font-mono shrink-0">
+                  <span className={`text-[11px] font-mono shrink-0 ${isDark ? 'text-stone-500' : 'text-[#6B6F76]'}`}>
                     {task.estimatedMinutes} {isArabic ? 'د' : 'm'}
                   </span>
                 </div>
@@ -452,13 +470,19 @@ export const StudyPlannerView: React.FC<StudyPlannerViewProps> = ({
                 onChange={(e) => setNewTaskTitle(e.target.value)}
                 placeholder={isArabic ? 'أضف مهمة دراسية مخصصة أخرى...' : 'Add another custom study task...'}
                 className={`flex-1 p-2.5 rounded-xl text-xs border outline-none ${
-                  isDark ? 'bg-[#141B2B] border-white/10' : 'bg-stone-50 border-stone-200'
+                  isDark
+                    ? 'bg-[#1B1D23] border-white/10 text-[#F3F4F6] placeholder:text-stone-500'
+                    : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214] placeholder:text-[#6B6F76]'
                 }`}
               />
               <button
                 type="submit"
                 disabled={!newTaskTitle.trim()}
-                className="px-3 py-2.5 rounded-xl bg-[#C9A063] text-[#080A0E] text-xs font-bold disabled:opacity-40 cursor-pointer"
+                className={`px-3 py-2.5 rounded-xl text-xs font-bold disabled:opacity-40 cursor-pointer transition-colors ${
+                  isDark
+                    ? 'bg-white text-[#111214] hover:bg-stone-200'
+                    : 'bg-[#111214] text-white hover:bg-[#27292D]'
+                }`}
               >
                 {isArabic ? 'إضافة مهمة' : 'Add Task'}
               </button>

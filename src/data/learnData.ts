@@ -278,7 +278,7 @@ export const COURSES: Course[] = [
     category: 'Character',
     categoryAr: 'الأخلاق والتزكية',
     icon: 'Heart',
-    color: 'from-amber-500/20 to-orange-500/10 text-amber-400',
+    color: 'from-stone-500/15 to-stone-400/10 text-stone-400',
     lessons: [
       {
         id: 'lesson-sabr-shukr',

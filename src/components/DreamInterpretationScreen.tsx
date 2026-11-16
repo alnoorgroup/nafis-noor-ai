@@ -212,42 +212,32 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
     <div
       id="dream-interpretation-fullscreen-container"
       className={`fixed inset-0 z-50 flex flex-col w-full h-[100dvh] overflow-hidden select-none animate-fadeIn transition-all duration-200 ${
-        isDark ? 'bg-[#07090E] text-stone-100' : 'bg-[#FAF8F5] text-stone-900'
+        isDark ? 'bg-[#0B0C0E] text-[#F3F4F6]' : 'bg-[#FCFCFA] text-[#111214]'
       }`}
     >
-      {/* Ambient background spiritual lighting (hardware-accelerated radial gradients) */}
-      <div
-        className="absolute -top-32 -left-32 w-80 h-80 rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(201, 160, 99, 0.1) 0%, transparent 70%)' }}
-      />
-      <div
-        className="absolute top-1/3 -right-32 w-80 h-80 rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(223, 186, 127, 0.08) 0%, transparent 70%)' }}
-      />
-      <div
-        className="absolute -bottom-32 left-1/3 w-80 h-80 rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(16, 185, 129, 0.06) 0%, transparent 70%)' }}
-      />
-
       {/* 1. TOP HEADER BAR */}
       <header className={`w-full border-b shrink-0 z-10 transition-colors duration-200 ${
-        isDark ? 'bg-[#0A0D14]/95 border-[#C9A063]/25 shadow-md' : 'bg-white/95 border-[#C9A063]/30 shadow-xs'
+        isDark ? 'bg-[#14161A]/95 border-white/[0.08] shadow-md' : 'bg-white/95 border-black/[0.08] shadow-xs'
       }`}>
         <div className="max-w-4xl xl:max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#C9A063] via-[#DFBA7F] to-[#997334] flex items-center justify-center text-[#090B0E] shadow-[0_4px_18px_rgba(201,160,99,0.35)] shrink-0">
-              <Moon className="w-5 h-5 text-[#090B0E]" />
+            <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shadow-sm shrink-0 ${
+              isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+            }`}>
+              <Moon className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-sm sm:text-base font-cinzel font-bold text-[#F5EFE6] tracking-wider">
+                <h2 className={`text-sm sm:text-base font-cinzel font-bold tracking-wider ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                   {isArabic ? 'تفسير الرؤى والأحلام' : 'TAFSIR AL-AHLAM'}
                 </h2>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold">
+                <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border font-semibold ${
+                  isDark ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' : 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                }`}>
                   {isArabic ? 'منهج الإمام ابن سيرين' : 'Ibn Sirin Methodology'}
                 </span>
               </div>
-              <p className="text-[11px] text-[#DFBA7F] font-arabic mt-0.5" dir="rtl">
+              <p className={`text-[11px] font-arabic mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`} dir="rtl">
                 تعبير الرؤى والأحلام وفق منهج الإمام ابن سيرين والعلماء الأجلاء
               </p>
             </div>
@@ -259,7 +249,11 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
               <button
                 type="button"
                 onClick={handleClearHistory}
-                className="p-2 rounded-xl border border-white/5 hover:border-red-500/30 hover:bg-red-500/10 text-stone-400 hover:text-red-400 text-xs transition-all cursor-pointer"
+                className={`p-2 rounded-xl border text-xs transition-all cursor-pointer ${
+                  isDark
+                    ? 'border-white/[0.08] hover:border-red-500/30 hover:bg-red-500/10 text-stone-400 hover:text-red-400'
+                    : 'border-black/[0.08] hover:border-red-300 hover:bg-red-50 text-[#5A5D63] hover:text-red-700'
+                }`}
                 title={isArabic ? 'مسح المحادثة' : 'Clear dream conversation'}
               >
                 <Trash2 className="w-4 h-4" />
@@ -271,7 +265,11 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
               id="exit-dream-screen-btn"
               type="button"
               onClick={onClose}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-[#C9A063]/40 bg-[#C9A063]/20 hover:bg-[#C9A063]/35 text-[#DFBA7F] hover:text-white transition-all text-xs font-bold cursor-pointer active:scale-95 shadow-sm"
+              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl border transition-all text-xs font-bold cursor-pointer active:scale-95 shadow-sm ${
+                isDark
+                  ? 'border-white/[0.12] bg-[#1B1D23] hover:bg-white/[0.1] text-white'
+                  : 'border-black/[0.1] bg-[#F3F3F1] hover:bg-black/[0.06] text-[#111214]'
+              }`}
               title={isArabic ? 'إغلاق والعودة' : 'Exit and return to Spiritual Journey'}
             >
               <X className="w-4 h-4" />
@@ -288,18 +286,22 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
           {messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-6 sm:py-10 text-center animate-fadeIn max-w-xl mx-auto">
               <div className="relative mb-4">
-                <div className="w-16 h-16 rounded-3xl bg-gradient-to-tr from-[#C9A063] via-[#DFBA7F] to-[#B88E4F] flex items-center justify-center text-[#090B0E] shadow-[0_8px_32px_rgba(201,160,99,0.4)] animate-pulse">
-                  <Moon className="w-8 h-8 text-[#090B0E]" />
+                <div className={`w-16 h-16 rounded-3xl flex items-center justify-center shadow-md ${
+                  isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+                }`}>
+                  <Moon className="w-8 h-8" />
                 </div>
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-[#0E1217] border-2 border-[#DFBA7F] flex items-center justify-center text-[#DFBA7F]">
+                <div className={`absolute -bottom-1 -right-1 w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                  isDark ? 'bg-[#14161A] border-white/30 text-white' : 'bg-white border-black/15 text-[#111214]'
+                }`}>
                   <Sparkles className="w-3 h-3" />
                 </div>
               </div>
 
-              <h3 className="font-serif-heading font-bold text-lg sm:text-xl text-[#F5EFE6] mb-1.5">
+              <h3 className={`font-serif-heading font-bold text-lg sm:text-xl mb-1.5 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                 {isArabic ? 'تعبير الرؤى والأحلام في ضوء الكتاب والسنة' : 'Classical Islamic Dream Interpretation'}
               </h3>
-              <p className="text-xs text-stone-400 max-w-md mb-6 leading-relaxed">
+              <p className={`text-xs max-w-md mb-6 leading-relaxed ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 {isArabic
                   ? 'صِف رؤياك بتفاصيلها ورموزها ومشاعرها ليتم تحليلها وتأويلها وفق الأصول المعتمدة عند أئمة التعبير كالإمام محمد بن سيرين مع الشواهد النبوية والقرآنية.'
                   : "Describe any dream or vision. Analyzed through Muhammad Ibn Sirin's 7-step classical framework: symbol extraction, emotional context, primary ruling, alternative possibilities, and authentic Hadith citations."}
@@ -307,7 +309,7 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
 
               {/* Quick Starter Suggestions */}
               <div className="w-full space-y-2 text-left rtl:text-right" dir={isArabic ? 'rtl' : 'ltr'}>
-                <div className="text-[10px] font-cinzel font-bold uppercase tracking-wider text-[#DFBA7F] px-1">
+                <div className={`text-[10px] font-cinzel font-bold uppercase tracking-wider px-1 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                   {isArabic ? 'نماذج من الرؤى المأثورة والشائعة' : 'Common Prophetic & Classical Visions'}
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -323,19 +325,23 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
                       }}
                       className={`p-3.5 rounded-2xl border text-left rtl:text-right transition-all group flex items-start justify-between cursor-pointer ${
                         isDark
-                          ? 'bg-[#0E1217]/80 hover:bg-[#151B24] border-[#C9A063]/20 hover:border-[#DFBA7F]/50 text-stone-200'
-                          : 'bg-white hover:bg-amber-50/60 border-stone-200 hover:border-[#C9A063]/50 text-stone-800 shadow-xs'
+                          ? 'bg-[#14161A] hover:bg-[#1B1D23] border-white/[0.08] hover:border-white/[0.2] text-[#F3F4F6]'
+                          : 'bg-white hover:bg-[#F3F3F1] border-black/[0.08] hover:border-black/[0.18] text-[#111214] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
                       }`}
                     >
                       <div>
-                        <div className="text-xs font-semibold group-hover:text-[#DFBA7F] transition-colors">
+                        <div className={`text-xs font-semibold transition-colors ${
+                          isDark ? 'text-white' : 'text-[#111214]'
+                        }`}>
                           {item.title}
                         </div>
-                        <div className="text-[11px] text-stone-400 mt-0.5 line-clamp-1">
+                        <div className={`text-[11px] mt-0.5 line-clamp-1 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                           {item.desc}
                         </div>
                       </div>
-                      <ArrowRight className={`w-4 h-4 text-stone-400 group-hover:text-[#DFBA7F] transition-transform group-hover:translate-x-1 shrink-0 ml-2 rtl:ml-0 rtl:mr-2 mt-0.5 ${isArabic ? 'rotate-180' : ''}`} />
+                      <ArrowRight className={`w-4 h-4 transition-transform group-hover:translate-x-1 shrink-0 ml-2 rtl:ml-0 rtl:mr-2 mt-0.5 ${
+                        isDark ? 'text-stone-400 group-hover:text-white' : 'text-[#6B6F76] group-hover:text-[#111214]'
+                      } ${isArabic ? 'rotate-180' : ''}`} />
                     </button>
                   ))}
                 </div>
@@ -347,8 +353,12 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
               if (msg.sender === 'user') {
                 return (
                   <div key={msg.id} className="flex justify-end animate-fadeIn">
-                    <div className="max-w-xl rounded-3xl p-4 sm:p-5 bg-gradient-to-r from-[#C9A063] via-[#DFBA7F] to-[#C9A063] text-[#090B0E] shadow-md space-y-2">
-                      <div className="flex items-center justify-between gap-3 text-[11px] font-bold opacity-80 border-b border-black/10 pb-1.5">
+                    <div className={`max-w-xl rounded-3xl p-4 sm:p-5 shadow-sm space-y-2 ${
+                      isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+                    }`}>
+                      <div className={`flex items-center justify-between gap-3 text-[11px] font-bold opacity-80 border-b pb-1.5 ${
+                        isDark ? 'border-black/10' : 'border-white/15'
+                      }`}>
                         <span>{isArabic ? 'الرؤيا المروية' : 'Dream Narrated'}</span>
                         <span>{msg.timestamp}</span>
                       </div>
@@ -356,10 +366,10 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
                         "{msg.dreamText}"
                       </p>
                       <div className="flex flex-wrap gap-1.5 pt-1 text-[10px] font-semibold">
-                        <span className="px-2 py-0.5 rounded-full bg-black/15">
+                        <span className={`px-2 py-0.5 rounded-full ${isDark ? 'bg-black/10' : 'bg-white/15'}`}>
                           {isArabic ? 'المشاعر:' : 'Emotion:'} {msg.emotion}
                         </span>
-                        <span className="px-2 py-0.5 rounded-full bg-black/15">
+                        <span className={`px-2 py-0.5 rounded-full ${isDark ? 'bg-black/10' : 'bg-white/15'}`}>
                           {isArabic ? 'الوقت:' : 'Timing:'} {msg.timing}
                         </span>
                       </div>
@@ -375,24 +385,28 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
               return (
                 <div key={msg.id} className="flex justify-start animate-fadeIn">
                   <div
-                    className={`w-full max-w-3xl rounded-3xl p-5 sm:p-6 border space-y-5 transition-all duration-200 shadow-md ${
+                    className={`w-full max-w-3xl rounded-3xl p-5 sm:p-6 border space-y-5 transition-all duration-200 shadow-sm ${
                       isDark
-                        ? 'bg-[#0E131C] border-[#DFBA7F]/30 text-stone-100'
-                        : 'bg-white border-[#C9A063]/40 text-stone-900'
+                        ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6]'
+                        : 'bg-white border-black/[0.08] text-[#111214]'
                     }`}
                   >
                     {/* Analysis Header */}
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#C9A063]/20">
+                    <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b ${
+                      isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+                    }`}>
                       <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-xl bg-[#DFBA7F]/20 border border-[#DFBA7F]/40 flex items-center justify-center text-[#DFBA7F]">
+                        <div className={`w-8 h-8 rounded-xl border flex items-center justify-center ${
+                          isDark ? 'bg-[#1B1D23] border-white/[0.1] text-white' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+                        }`}>
                           <Moon className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className="text-xs sm:text-sm font-serif-heading font-bold text-[#F5EFE6]">
+                          <div className={`text-xs sm:text-sm font-serif-heading font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                             {isArabic ? '🌙 تأويل الرؤيا المباركة' : '🌙 Tafsir al-Ahlam Analysis'}
                           </div>
-                          <div className="text-[11px] text-stone-400">
-                            {isArabic ? 'الموضوع:' : 'Topic:'} <strong className="text-[#DFBA7F]">{data.topic}</strong>
+                          <div className={`text-[11px] ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
+                            {isArabic ? 'الموضوع:' : 'Topic:'} <strong className={isDark ? 'text-white' : 'text-[#111214]'}>{data.topic}</strong>
                           </div>
                         </div>
                       </div>
@@ -406,7 +420,11 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
                               [msg.id]: currentMode === 'structured' ? 'raw' : 'structured',
                             }))
                           }
-                          className="px-2.5 py-1 rounded-xl text-[11px] font-medium border border-white/10 hover:border-[#DFBA7F]/40 bg-white/5 text-[#DFBA7F] transition-all cursor-pointer"
+                          className={`px-2.5 py-1 rounded-xl text-[11px] font-medium border transition-all cursor-pointer ${
+                            isDark
+                              ? 'border-white/[0.1] hover:border-white/[0.25] bg-[#1B1D23] text-white'
+                              : 'border-black/[0.1] hover:border-black/[0.2] bg-[#F3F3F1] text-[#111214]'
+                          }`}
                         >
                           {isArabic
                             ? currentMode === 'structured'
@@ -420,11 +438,15 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
                         <button
                           type="button"
                           onClick={() => handleCopyText(msg.id, data.fullFormattedText)}
-                          className="p-1.5 rounded-xl border border-white/10 hover:border-[#DFBA7F]/40 bg-white/5 text-[#DFBA7F] transition-all cursor-pointer"
+                          className={`p-1.5 rounded-xl border transition-all cursor-pointer ${
+                            isDark
+                              ? 'border-white/[0.1] hover:border-white/[0.25] bg-[#1B1D23] text-white'
+                              : 'border-black/[0.1] hover:border-black/[0.2] bg-[#F3F3F1] text-[#111214]'
+                          }`}
                           title={isArabic ? 'نسخ التحليل كاملاً' : 'Copy complete analysis'}
                         >
                           {copiedId === msg.id ? (
-                            <Check className="w-4 h-4 text-emerald-400" />
+                            <Check className={`w-4 h-4 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`} />
                           ) : (
                             <Copy className="w-4 h-4" />
                           )}
@@ -437,10 +459,10 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
                         {/* Step 1 & 2: Symbol Extraction & Topic Classification */}
                         <div
                           className={`p-4 rounded-2xl border ${
-                            isDark ? 'bg-[#090C10] border-white/5' : 'bg-stone-50 border-stone-200'
+                            isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
                           }`}
                         >
-                          <div className="text-[11px] font-mono uppercase tracking-wider text-[#DFBA7F] font-bold mb-2 flex items-center gap-1.5">
+                          <div className={`text-[11px] font-mono uppercase tracking-wider font-bold mb-2 flex items-center gap-1.5 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                             <Layers className="w-3.5 h-3.5" />
                             <span>{isArabic ? 'استخراج الرموز والمعاني الدلالية' : 'Symbols Detected (استخراج الرموز)'}</span>
                           </div>
@@ -448,13 +470,17 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
                             {data.symbolsDetected.map((sym, idx) => (
                               <span
                                 key={idx}
-                                className="px-2.5 py-1 rounded-xl text-xs font-semibold bg-[#C9A063]/15 text-[#DFBA7F] border border-[#C9A063]/30"
+                                className={`px-2.5 py-1 rounded-xl text-xs font-semibold border ${
+                                  isDark
+                                    ? 'bg-white/[0.08] text-white border-white/[0.14]'
+                                    : 'bg-white text-[#111214] border-black/[0.1]'
+                                }`}
                               >
                                 ✦ {sym}
                               </span>
                             ))}
                           </div>
-                          <p className="text-xs text-stone-300 leading-relaxed font-light">
+                          <p className={`text-xs leading-relaxed ${isDark ? 'text-stone-300 font-light' : 'text-[#3F4248]'}`}>
                             {data.keyElements}
                           </p>
                         </div>
@@ -462,20 +488,20 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
                         {/* Step 3: Emotional Context Analysis */}
                         <div
                           className={`p-4 rounded-2xl border ${
-                            isDark ? 'bg-[#090C10] border-white/5' : 'bg-stone-50 border-stone-200'
+                            isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
                           }`}
                         >
-                          <div className="text-[11px] font-mono uppercase tracking-wider text-emerald-400 font-bold mb-2 flex items-center gap-1.5">
+                          <div className={`text-[11px] font-mono uppercase tracking-wider font-bold mb-2 flex items-center gap-1.5 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>
                             <Clock className="w-3.5 h-3.5" />
                             <span>{isArabic ? 'السياق الوجداني وحال الرائي' : 'Emotional Context (السياق الوجداني)'}</span>
                           </div>
-                          <div className="text-xs text-stone-200 space-y-1 leading-relaxed">
+                          <div className={`text-xs space-y-1 leading-relaxed ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>
                             <div>
                               <strong>{isArabic ? 'طبيعة الشعور:' : 'Tenor:'} </strong>
-                              <span className="text-[#DFBA7F]">{data.emotionalContext.emotion}</span>
+                              <span className={isDark ? 'text-white font-semibold' : 'text-[#111214] font-semibold'}>{data.emotionalContext.emotion}</span>
                             </div>
                             <p>{data.emotionalContext.impact}</p>
-                            <p className="text-stone-400 font-light italic">
+                            <p className={`italic ${isDark ? 'text-stone-400 font-light' : 'text-[#5A5D63]'}`}>
                               {data.emotionalContext.psychologicalLayer}
                             </p>
                           </div>
@@ -485,27 +511,33 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
                         <div
                           className={`p-5 rounded-2xl border ${
                             isDark
-                              ? 'bg-gradient-to-br from-[#121824] via-[#0E131C] to-[#0A0D14] border-[#DFBA7F]/40 shadow-lg'
-                              : 'bg-amber-50/90 border-[#DFBA7F]/50 shadow-sm'
+                              ? 'bg-[#1B1D23] border-white/[0.16] shadow-md'
+                              : 'bg-[#F3F3F1] border-black/[0.12] shadow-xs'
                           }`}
                         >
                           <div className="flex items-center gap-2 mb-2">
-                            <Sparkles className="w-4 h-4 text-[#DFBA7F]" />
-                            <h4 className="text-sm font-bold font-serif-heading text-[#F5EFE6]">
+                            <Sparkles className={`w-4 h-4 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
+                            <h4 className={`text-sm font-bold font-serif-heading ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                               {isArabic ? 'التأويل الراجح وفق أصول ابن سيرين' : 'Primary Classical Interpretation (التأويل الراجح عند ابن سيرين)'}
                             </h4>
                           </div>
-                          <p className="text-xs sm:text-sm text-stone-200 font-medium leading-relaxed mb-3">
+                          <p className={`text-xs sm:text-sm font-medium leading-relaxed mb-3 ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>
                             {data.primaryInterpretation.text}
                           </p>
 
-                          <div className="p-3 rounded-xl bg-[#090C10]/80 border border-[#C9A063]/25 text-xs text-stone-300 space-y-1.5">
+                          <div
+                            className={`p-3 rounded-xl border text-xs space-y-1.5 ${
+                              isDark
+                                ? 'bg-[#0B0C0E] border-white/[0.08] text-stone-300'
+                                : 'bg-white border-black/[0.08] text-[#3F4248]'
+                            }`}
+                          >
                             <div>
-                              <strong className="text-[#DFBA7F]">{isArabic ? 'العلة والتأصيل الشرعي:' : 'Scholarly Reasoning (العلة والتأصيل):'} </strong>
+                              <strong className={isDark ? 'text-white' : 'text-[#111214]'}>{isArabic ? 'العلة والتأصيل الشرعي:' : 'Scholarly Reasoning (العلة والتأصيل):'} </strong>
                               {data.primaryInterpretation.why}
                             </div>
                             {data.primaryInterpretation.supportingEvidence && (
-                              <div className="pt-1 border-t border-white/5 text-[11px] text-[#DFBA7F]">
+                              <div className={`pt-1 border-t text-[11px] ${isDark ? 'border-white/[0.08] text-stone-200' : 'border-black/[0.08] text-[#111214]'}`}>
                                 <strong>{isArabic ? 'الشاهد والدليل:' : 'Evidence:'} </strong>
                                 {data.primaryInterpretation.supportingEvidence}
                               </div>
@@ -515,7 +547,7 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
 
                         {/* Step 5: Alternative Interpretations */}
                         <div className="space-y-2">
-                          <div className="text-[11px] font-mono uppercase tracking-wider text-[#DFBA7F] font-bold flex items-center gap-1.5">
+                          <div className={`text-[11px] font-mono uppercase tracking-wider font-bold flex items-center gap-1.5 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                             <Compass className="w-3.5 h-3.5" />
                             <span>{isArabic ? 'التأويلات والوجوه المحتملة الأخرى' : 'Alternative Contextual Interpretations (التأويلات الأخرى)'}</span>
                           </div>
@@ -524,15 +556,21 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
                               <div
                                 key={idx}
                                 className={`p-3.5 rounded-2xl border text-xs leading-relaxed ${
-                                  isDark ? 'bg-[#090C10] border-white/5' : 'bg-stone-50 border-stone-200'
+                                  isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
                                 }`}
                               >
-                                <div className="font-bold text-[#DFBA7F] text-xs mb-1">
+                                <div className={`font-bold text-xs mb-1 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                                   {idx + 1}️⃣ {alt.title}
                                 </div>
-                                <div className="text-stone-300 mb-1.5">{alt.why}</div>
-                                <div className="text-[11px] text-stone-400 bg-white/5 p-2 rounded-xl border border-white/5">
-                                  <span className="text-[#DFBA7F] font-semibold">{isArabic ? 'يرجح هذا الوجه إذا:' : 'Most likely if:'} </span>
+                                <div className={`mb-1.5 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>{alt.why}</div>
+                                <div
+                                  className={`text-[11px] p-2 rounded-xl border ${
+                                    isDark
+                                      ? 'text-stone-400 bg-white/[0.05] border-white/[0.08]'
+                                      : 'text-[#5A5D63] bg-white border-black/[0.08]'
+                                  }`}
+                                >
+                                  <span className={`font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>{isArabic ? 'يرجح هذا الوجه إذا:' : 'Most likely if:'} </span>
                                   {alt.mostLikelyIf}
                                 </div>
                               </div>
@@ -543,17 +581,17 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
                         {/* Step 6: Scholarly References */}
                         <div
                           className={`p-4 rounded-2xl border text-xs ${
-                            isDark ? 'bg-[#090C10] border-white/5' : 'bg-stone-50 border-stone-200'
+                            isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
                           }`}
                         >
-                          <div className="font-bold text-[#DFBA7F] mb-1.5 flex items-center gap-1.5">
+                          <div className={`font-bold mb-1.5 flex items-center gap-1.5 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                             <BookOpen className="w-3.5 h-3.5" />
                             <span>{isArabic ? 'المراجع والمصادر المعتمدة' : 'Scholarly References (المراجع المعتمدة)'}</span>
                           </div>
-                          <ul className="space-y-1 text-stone-300 text-[11px]">
+                          <ul className={`space-y-1 text-[11px] ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                             {data.scholarlyReferences.map((ref, idx) => (
                               <li key={idx} className="flex items-start gap-1.5">
-                                <span className="text-[#DFBA7F]">✦</span>
+                                <span className={isDark ? 'text-stone-400' : 'text-[#6B6F76]'}>✦</span>
                                 <span>{ref}</span>
                               </li>
                             ))}
@@ -561,12 +599,18 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
                         </div>
 
                         {/* Step 7: Prophetic Adab */}
-                        <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-200 space-y-1">
-                          <div className="font-bold flex items-center gap-1.5 text-amber-400">
+                        <div
+                          className={`p-3.5 rounded-2xl border text-xs space-y-1 ${
+                            isDark
+                              ? 'bg-[#1B1D23] border-white/[0.12] text-stone-200'
+                              : 'bg-[#F3F3F1] border-black/[0.1] text-[#111214]'
+                          }`}
+                        >
+                          <div className={`font-bold flex items-center gap-1.5 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                             <ShieldCheck className="w-4 h-4" />
                             <span>{isArabic ? 'الآداب النبوية والتوجيهات الإيمانية' : 'Prophetic Adab & Guidance (آداب الرؤى)'}</span>
                           </div>
-                          <ul className="space-y-0.5 text-[11px] text-stone-300">
+                          <ul className={`space-y-0.5 text-[11px] ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                             {data.importantNotes.map((note, idx) => (
                               <li key={idx} className="flex items-start gap-1.5">
                                 <span>•</span>
@@ -580,7 +624,7 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
                       /* Verbatim Template View */
                       <pre
                         className={`p-4 rounded-2xl text-xs font-mono whitespace-pre-wrap leading-relaxed border overflow-x-auto ${
-                          isDark ? 'bg-[#06080B] border-[#C9A063]/30 text-stone-200' : 'bg-stone-900 border-stone-700 text-stone-100'
+                          isDark ? 'bg-[#0B0C0E] border-white/[0.1] text-stone-200' : 'bg-[#FCFCFA] border-black/[0.1] text-[#111214]'
                         }`}
                       >
                         {data.fullFormattedText}
@@ -595,8 +639,14 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
           {/* Loading Indicator */}
           {isLoading && (
             <div className="flex justify-start animate-fadeIn">
-              <div className="flex items-center gap-3 p-4 rounded-2xl bg-[#0E131C] border border-[#DFBA7F]/30 text-xs text-[#DFBA7F]">
-                <RefreshCw className="w-4 h-4 animate-spin text-[#DFBA7F]" />
+              <div
+                className={`flex items-center gap-3 p-4 rounded-2xl border text-xs ${
+                  isDark
+                    ? 'bg-[#14161A] border-white/[0.1] text-white'
+                    : 'bg-white border-black/[0.1] text-[#111214]'
+                }`}
+              >
+                <RefreshCw className={`w-4 h-4 animate-spin ${isDark ? 'text-white' : 'text-[#111214]'}`} />
                 <span>{isArabic ? 'جاري استخراج الرموز ومطابقتها مع أصول ابن سيرين...' : 'Consulting Ibn Sirin Hermeneutics & Extracting Symbols...'}</span>
               </div>
             </div>
@@ -604,8 +654,14 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
 
           {/* Error message */}
           {errorMessage && (
-            <div className="p-3 rounded-2xl bg-red-500/15 border border-red-500/30 text-red-300 text-xs flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 shrink-0 text-red-400" />
+            <div
+              className={`p-3 rounded-2xl border text-xs flex items-center gap-2 ${
+                isDark
+                  ? 'bg-red-500/15 border-red-500/30 text-red-300'
+                  : 'bg-red-50 border-red-300 text-red-700'
+              }`}
+            >
+              <AlertTriangle className={`w-4 h-4 shrink-0 ${isDark ? 'text-red-400' : 'text-red-600'}`} />
               <span>{errorMessage}</span>
             </div>
           )}
@@ -616,37 +672,45 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
 
       {/* 3. BOTTOM INPUT BAR (Styled exactly like Noor AI) */}
       <footer className={`w-full border-t shrink-0 z-10 transition-colors duration-200 ${
-        isDark ? 'bg-[#0A0D14]/95 border-[#C9A063]/25 shadow-lg' : 'bg-white/95 border-[#C9A063]/30 shadow-md'
+        isDark ? 'bg-[#14161A]/95 border-white/[0.08] shadow-lg' : 'bg-white/95 border-black/[0.08] shadow-md'
       } pb-safe pb-4 sm:pb-5`}>
         <div className="max-w-4xl xl:max-w-5xl mx-auto px-4 pt-3 space-y-2.5">
           {/* Context Controls (Emotion + Timing) */}
           <div className="flex flex-wrap items-center gap-2 text-xs" dir={isArabic ? 'rtl' : 'ltr'}>
-            <div className="flex items-center gap-1.5 bg-[#07090E] px-3 py-1.5 rounded-xl border border-white/10">
-              <span className="text-[11px] text-stone-400 font-medium">{isArabic ? 'المشاعر:' : 'Emotion:'}</span>
+            <div
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border ${
+                isDark ? 'bg-[#0B0C0E] border-white/[0.1]' : 'bg-[#F3F3F1] border-black/[0.08]'
+              }`}
+            >
+              <span className={`text-[11px] font-medium ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{isArabic ? 'المشاعر:' : 'Emotion:'}</span>
               <select
                 value={selectedEmotion}
                 onChange={(e) => setSelectedEmotion(e.target.value)}
-                className="bg-transparent text-[#DFBA7F] font-semibold text-xs focus:outline-hidden cursor-pointer"
+                className={`bg-transparent font-semibold text-xs focus:outline-hidden cursor-pointer ${isDark ? 'text-white' : 'text-[#111214]'}`}
               >
-                <option value="peaceful" className="bg-[#0E1218]">{isArabic ? 'سكينة واطمئنان' : 'Peaceful (سكينة)'}</option>
-                <option value="joyful" className="bg-[#0E1218]">{isArabic ? 'بشرى وسرور' : 'Joyful (بشرى وفرح)'}</option>
-                <option value="fearful" className="bg-[#0E1218]">{isArabic ? 'خوف وتحذير' : 'Fearful (خوف وتحذير)'}</option>
-                <option value="confused" className="bg-[#0E1218]">{isArabic ? 'حيرة وتساؤل' : 'Confused (حيرة)'}</option>
-                <option value="sad" className="bg-[#0E1218]">{isArabic ? 'حزن وشوق' : 'Sorrowful (حزن وشوق)'}</option>
+                <option value="peaceful" className={isDark ? 'bg-[#14161A] text-stone-100' : 'bg-white text-[#111214]'}>{isArabic ? 'سكينة واطمئنان' : 'Peaceful (سكينة)'}</option>
+                <option value="joyful" className={isDark ? 'bg-[#14161A] text-stone-100' : 'bg-white text-[#111214]'}>{isArabic ? 'بشرى وسرور' : 'Joyful (بشرى وفرح)'}</option>
+                <option value="fearful" className={isDark ? 'bg-[#14161A] text-stone-100' : 'bg-white text-[#111214]'}>{isArabic ? 'خوف وتحذير' : 'Fearful (خوف وتحذير)'}</option>
+                <option value="confused" className={isDark ? 'bg-[#14161A] text-stone-100' : 'bg-white text-[#111214]'}>{isArabic ? 'حيرة وتساؤل' : 'Confused (حيرة)'}</option>
+                <option value="sad" className={isDark ? 'bg-[#14161A] text-stone-100' : 'bg-white text-[#111214]'}>{isArabic ? 'حزن وشوق' : 'Sorrowful (حزن وشوق)'}</option>
               </select>
             </div>
 
-            <div className="flex items-center gap-1.5 bg-[#07090E] px-3 py-1.5 rounded-xl border border-white/10">
-              <span className="text-[11px] text-stone-400 font-medium">{isArabic ? 'الوقت:' : 'Time:'}</span>
+            <div
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border ${
+                isDark ? 'bg-[#0B0C0E] border-white/[0.1]' : 'bg-[#F3F3F1] border-black/[0.08]'
+              }`}
+            >
+              <span className={`text-[11px] font-medium ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{isArabic ? 'الوقت:' : 'Time:'}</span>
               <select
                 value={selectedTiming}
                 onChange={(e) => setSelectedTiming(e.target.value)}
-                className="bg-transparent text-[#DFBA7F] font-semibold text-xs focus:outline-hidden cursor-pointer"
+                className={`bg-transparent font-semibold text-xs focus:outline-hidden cursor-pointer ${isDark ? 'text-white' : 'text-[#111214]'}`}
               >
-                <option value="sahar" className="bg-[#0E1218]">{isArabic ? 'وقت السحر (قبل الفجر)' : 'Pre-Dawn / Sahar (وقت السحر)'}</option>
-                <option value="night" className="bg-[#0E1218]">{isArabic ? 'في جوف الليل' : 'Night (في الليل)'}</option>
-                <option value="qaylulah" className="bg-[#0E1218]">{isArabic ? 'نوم القيلولة (نهاراً)' : 'Afternoon Nap (القيلولة)'}</option>
-                <option value="unknown" className="bg-[#0E1218]">{isArabic ? 'غير محدد' : 'Unspecified'}</option>
+                <option value="sahar" className={isDark ? 'bg-[#14161A] text-stone-100' : 'bg-white text-[#111214]'}>{isArabic ? 'وقت السحر (قبل الفجر)' : 'Pre-Dawn / Sahar (وقت السحر)'}</option>
+                <option value="night" className={isDark ? 'bg-[#14161A] text-stone-100' : 'bg-white text-[#111214]'}>{isArabic ? 'في جوف الليل' : 'Night (في الليل)'}</option>
+                <option value="qaylulah" className={isDark ? 'bg-[#14161A] text-stone-100' : 'bg-white text-[#111214]'}>{isArabic ? 'نوم القيلولة (نهاراً)' : 'Afternoon Nap (القيلولة)'}</option>
+                <option value="unknown" className={isDark ? 'bg-[#14161A] text-stone-100' : 'bg-white text-[#111214]'}>{isArabic ? 'غير محدد' : 'Unspecified'}</option>
               </select>
             </div>
           </div>
@@ -666,8 +730,8 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
               placeholder={isArabic ? 'صِف رؤياك بالتفصيل (الرموز، الأشخاص، الألوان، الأفعال، والمشاعر المصاحبة)...' : 'Describe your dream (symbols, actions, people, colors, sensations)...'}
               className={`flex-1 p-3 rounded-2xl text-xs sm:text-sm border transition-all resize-none focus:outline-hidden ${
                 isDark
-                  ? 'bg-[#07090E] border-[#C9A063]/30 text-stone-100 placeholder-stone-500 focus:border-[#DFBA7F]'
-                  : 'bg-white border-[#C9A063]/40 text-stone-900 placeholder-stone-400 focus:border-[#DFBA7F]'
+                  ? 'bg-[#0B0C0E] border-white/[0.1] text-[#F3F4F6] placeholder-stone-500 focus:border-white/30'
+                  : 'bg-[#FCFCFA] border-black/[0.1] text-[#111214] placeholder-[#6B6F76] focus:border-black/30'
               }`}
             />
 
@@ -675,7 +739,11 @@ export const DreamInterpretationScreen: React.FC<DreamInterpretationScreenProps>
               type="button"
               onClick={() => handleSendDream()}
               disabled={isLoading || !inputText.trim()}
-              className="p-3 rounded-2xl bg-gradient-to-r from-[#C9A063] via-[#DFBA7F] to-[#C9A063] hover:brightness-110 active:scale-95 text-[#080A0E] font-bold shadow-md transition-all flex items-center justify-center cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+              className={`p-3 rounded-2xl active:scale-95 font-bold shadow-sm transition-all flex items-center justify-center cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shrink-0 ${
+                isDark
+                  ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                  : 'bg-[#111214] hover:bg-[#27292D] text-white'
+              }`}
               title={isArabic ? 'تعبير الرؤيا' : 'Interpret Dream'}
             >
               {isLoading ? (

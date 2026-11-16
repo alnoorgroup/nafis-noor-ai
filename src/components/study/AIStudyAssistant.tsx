@@ -200,20 +200,22 @@ export const AIStudyAssistant: React.FC<AIStudyAssistantProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full max-h-[82vh] rounded-2xl overflow-hidden border shadow-sm transition-colors">
+    <div className={`flex flex-col h-full max-h-[82vh] rounded-2xl overflow-hidden border shadow-sm transition-colors ${
+      isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+    }`}>
       {/* Top Banner / Session Info */}
       <div
         className={`px-5 py-3 border-b flex items-center justify-between text-xs transition-colors ${
-          isDark ? 'bg-[#0E131E] border-white/10 text-stone-300' : 'bg-stone-50 border-stone-200 text-stone-700'
+          isDark ? 'bg-[#14161A] border-white/[0.08] text-stone-300' : 'bg-white border-black/[0.08] text-[#3F4248]'
         }`}
       >
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
-          <span className="font-semibold text-sm text-[#DFBA7F]">{selectedSubject.name}</span>
+          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          <span className={`font-semibold text-sm ${isDark ? 'text-white' : 'text-[#111214]'}`}>{selectedSubject.name}</span>
           {selectedTopic && (
             <>
-              <span className="text-stone-400">•</span>
-              <span className="text-stone-400 font-medium">{selectedTopic.name}</span>
+              <span className={isDark ? 'text-stone-500' : 'text-[#6B6F76]'}>•</span>
+              <span className={`font-medium ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{selectedTopic.name}</span>
             </>
           )}
         </div>
@@ -221,7 +223,9 @@ export const AIStudyAssistant: React.FC<AIStudyAssistantProps> = ({
           <button
             type="button"
             onClick={() => setMessages([])}
-            className="flex items-center gap-1 text-[11px] text-stone-400 hover:text-stone-200"
+            className={`flex items-center gap-1 text-[11px] transition-colors ${
+              isDark ? 'text-stone-400 hover:text-white' : 'text-[#5A5D63] hover:text-[#111214]'
+            }`}
           >
             <RotateCcw className="w-3 h-3" />
             <span>Clear Chat</span>
@@ -232,18 +236,20 @@ export const AIStudyAssistant: React.FC<AIStudyAssistantProps> = ({
       {/* Messages Scroll Area */}
       <div
         className={`flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 ${
-          isDark ? 'bg-[#0A0D14]' : 'bg-stone-100/50'
+          isDark ? 'bg-[#0B0C0E]' : 'bg-[#FCFCFA]'
         }`}
       >
         {messages.length === 0 && (
           <div className="h-full flex flex-col items-center justify-center text-center max-w-lg mx-auto py-12 px-4">
-            <div className="w-14 h-14 rounded-3xl bg-[#C9A063]/15 border border-[#C9A063]/30 flex items-center justify-center text-[#DFBA7F] mb-4 shadow-sm">
+            <div className={`w-14 h-14 rounded-3xl border flex items-center justify-center mb-4 shadow-sm ${
+              isDark ? 'bg-white/[0.06] border-white/10 text-white' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+            }`}>
               <Bot className="w-7 h-7" />
             </div>
-            <h2 className="text-lg font-bold mb-1">
+            <h2 className={`text-lg font-bold mb-1 ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
               AI Study Tutor for {selectedSubject.name}
             </h2>
-            <p className="text-xs text-stone-400 leading-relaxed mb-6">
+            <p className={`text-xs leading-relaxed mb-6 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               Ask any question, paste assignment problems, upload textbook photos or study PDFs.
               The AI tutor guides your understanding step by step.
             </p>
@@ -267,8 +273,8 @@ export const AIStudyAssistant: React.FC<AIStudyAssistantProps> = ({
                   }
                   className={`p-3 rounded-xl border text-xs font-medium transition-all ${
                     isDark
-                      ? 'bg-[#121724] border-white/10 hover:border-[#C9A063]/40 text-stone-200'
-                      : 'bg-white border-stone-200 hover:border-[#C9A063]/60 text-stone-800 shadow-sm'
+                      ? 'bg-[#14161A] border-white/[0.08] hover:border-white/25 text-stone-200'
+                      : 'bg-white border-black/[0.08] hover:border-black/25 text-[#111214] shadow-sm'
                   }`}
                 >
                   {p.label} →
@@ -286,7 +292,9 @@ export const AIStudyAssistant: React.FC<AIStudyAssistantProps> = ({
             }`}
           >
             {msg.role === 'model' && (
-              <div className="w-8 h-8 rounded-xl bg-[#C9A063]/20 border border-[#C9A063]/40 flex items-center justify-center text-[#DFBA7F] shrink-0 mt-0.5">
+              <div className={`w-8 h-8 rounded-xl border flex items-center justify-center shrink-0 mt-0.5 ${
+                isDark ? 'bg-white/[0.08] border-white/10 text-white' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+              }`}>
                 <Bot className="w-4 h-4" />
               </div>
             )}
@@ -296,13 +304,13 @@ export const AIStudyAssistant: React.FC<AIStudyAssistantProps> = ({
               {msg.attachment && (
                 <div
                   className={`p-2 rounded-xl border flex items-center gap-2 text-xs font-medium mb-1 ${
-                    isDark ? 'bg-[#181F2F] border-white/10 text-stone-200' : 'bg-stone-200/70 border-stone-300 text-stone-800'
+                    isDark ? 'bg-[#1B1D23] border-white/10 text-stone-200' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
                   }`}
                 >
                   {msg.attachment.type === 'pdf' ? (
-                    <FileText className="w-4 h-4 text-red-400" />
+                    <FileText className="w-4 h-4 text-rose-500" />
                   ) : (
-                    <ImageIcon className="w-4 h-4 text-blue-400" />
+                    <ImageIcon className="w-4 h-4 text-sky-500" />
                   )}
                   <span className="truncate max-w-[180px]">{msg.attachment.name}</span>
                   {msg.attachment.previewUrl && (
@@ -321,10 +329,12 @@ export const AIStudyAssistant: React.FC<AIStudyAssistantProps> = ({
               <div
                 className={`p-4 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-sm ${
                   msg.role === 'user'
-                    ? 'bg-gradient-to-br from-[#DFBA7F] to-[#C9A063] text-[#080A0E] font-medium rounded-tr-none'
+                    ? isDark
+                      ? 'bg-white text-[#111214] font-medium rounded-tr-none'
+                      : 'bg-[#111214] text-white font-medium rounded-tr-none'
                     : isDark
-                    ? 'bg-[#121722] border border-white/10 text-stone-100 rounded-tl-none'
-                    : 'bg-white border border-stone-200 text-stone-900 rounded-tl-none'
+                    ? 'bg-[#14161A] border border-white/[0.08] text-[#F3F4F6] rounded-tl-none'
+                    : 'bg-white border border-black/[0.08] text-[#111214] rounded-tl-none'
                 }`}
               >
                 {msg.role === 'user' ? (
@@ -338,18 +348,18 @@ export const AIStudyAssistant: React.FC<AIStudyAssistantProps> = ({
 
               {/* Action Buttons for AI response */}
               {msg.role === 'model' && (
-                <div className="flex items-center gap-2 text-[11px] text-stone-400 px-1">
+                <div className={`flex items-center gap-2 text-[11px] px-1 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                   <span>{msg.timestamp}</span>
                   <button
                     type="button"
                     onClick={() => handleCopy(msg.id, msg.text)}
-                    className="hover:text-stone-200 flex items-center gap-1"
+                    className={`flex items-center gap-1 transition-colors ${isDark ? 'hover:text-white' : 'hover:text-[#111214]'}`}
                     title="Copy response"
                   >
                     {copiedId === msg.id ? (
                       <>
-                        <Check className="w-3 h-3 text-emerald-400" />
-                        <span className="text-emerald-400">Copied</span>
+                        <Check className="w-3 h-3 text-emerald-500" />
+                        <span className="text-emerald-500">Copied</span>
                       </>
                     ) : (
                       <>
@@ -361,13 +371,13 @@ export const AIStudyAssistant: React.FC<AIStudyAssistantProps> = ({
                   <button
                     type="button"
                     onClick={() => handleSpeak(msg.id, msg.text)}
-                    className="hover:text-stone-200 flex items-center gap-1"
+                    className={`flex items-center gap-1 transition-colors ${isDark ? 'hover:text-white' : 'hover:text-[#111214]'}`}
                     title="Read aloud"
                   >
                     {speakingId === msg.id ? (
                       <>
-                        <VolumeX className="w-3 h-3 text-red-400" />
-                        <span className="text-red-400">Stop</span>
+                        <VolumeX className="w-3 h-3 text-rose-500" />
+                        <span className="text-rose-500">Stop</span>
                       </>
                     ) : (
                       <>
@@ -381,7 +391,9 @@ export const AIStudyAssistant: React.FC<AIStudyAssistantProps> = ({
             </div>
 
             {msg.role === 'user' && (
-              <div className="w-8 h-8 rounded-xl bg-stone-700/40 border border-white/10 flex items-center justify-center text-stone-300 shrink-0 mt-0.5">
+              <div className={`w-8 h-8 rounded-xl border flex items-center justify-center shrink-0 mt-0.5 ${
+                isDark ? 'bg-white/[0.08] border-white/10 text-stone-300' : 'bg-[#F3F3F1] border-black/[0.08] text-[#3F4248]'
+              }`}>
                 <User className="w-4 h-4" />
               </div>
             )}
@@ -390,17 +402,19 @@ export const AIStudyAssistant: React.FC<AIStudyAssistantProps> = ({
 
         {isLoading && (
           <div className="flex gap-3 max-w-xl mr-auto">
-            <div className="w-8 h-8 rounded-xl bg-[#C9A063]/20 border border-[#C9A063]/40 flex items-center justify-center text-[#DFBA7F] shrink-0">
+            <div className={`w-8 h-8 rounded-xl border flex items-center justify-center shrink-0 ${
+              isDark ? 'bg-white/[0.08] border-white/10 text-white' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+            }`}>
               <Bot className="w-4 h-4 animate-spin" />
             </div>
             <div
               className={`p-4 rounded-2xl text-xs rounded-tl-none border flex items-center gap-2 ${
-                isDark ? 'bg-[#121722] border-white/10 text-stone-300' : 'bg-white border-stone-200 text-stone-600'
+                isDark ? 'bg-[#14161A] border-white/[0.08] text-stone-300' : 'bg-white border-black/[0.08] text-[#3F4248]'
               }`}
             >
-              <div className="w-2 h-2 rounded-full bg-[#DFBA7F] animate-bounce" />
-              <div className="w-2 h-2 rounded-full bg-[#DFBA7F] animate-bounce [animation-delay:0.2s]" />
-              <div className="w-2 h-2 rounded-full bg-[#DFBA7F] animate-bounce [animation-delay:0.4s]" />
+              <div className={`w-2 h-2 rounded-full animate-bounce ${isDark ? 'bg-white' : 'bg-[#111214]'}`} />
+              <div className={`w-2 h-2 rounded-full animate-bounce [animation-delay:0.2s] ${isDark ? 'bg-white' : 'bg-[#111214]'}`} />
+              <div className={`w-2 h-2 rounded-full animate-bounce [animation-delay:0.4s] ${isDark ? 'bg-white' : 'bg-[#111214]'}`} />
               <span className="ml-2 font-medium">Tutor is analyzing your question...</span>
             </div>
           </div>
@@ -413,15 +427,15 @@ export const AIStudyAssistant: React.FC<AIStudyAssistantProps> = ({
       {messages.length > 0 && !isLoading && (
         <div
           className={`px-4 py-2 border-t flex items-center gap-2 overflow-x-auto no-scrollbar text-xs ${
-            isDark ? 'bg-[#0E131E] border-white/10' : 'bg-stone-50 border-stone-200'
+            isDark ? 'bg-[#14161A] border-white/[0.08]' : 'bg-[#FCFCFA] border-black/[0.08]'
           }`}
         >
-          <span className="text-[11px] uppercase font-bold text-stone-500 shrink-0">Tutor:</span>
+          <span className={`text-[11px] uppercase font-bold shrink-0 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>Tutor:</span>
           <button
             type="button"
             onClick={() => handleSendMessage('Can you simplify this explanation and use an everyday analogy?', 'simplify')}
             className={`px-2.5 py-1 rounded-lg border shrink-0 transition-colors ${
-              isDark ? 'border-white/10 hover:border-[#DFBA7F] text-stone-300' : 'border-stone-300 hover:border-[#DFBA7F] text-stone-700'
+              isDark ? 'border-white/10 hover:border-white/30 text-stone-300' : 'border-black/[0.08] hover:border-black/25 text-[#3F4248]'
             }`}
           >
             💡 Simplify this
@@ -430,7 +444,7 @@ export const AIStudyAssistant: React.FC<AIStudyAssistantProps> = ({
             type="button"
             onClick={() => handleSendMessage('Could you provide 2 clear, concrete examples of this?', 'examples')}
             className={`px-2.5 py-1 rounded-lg border shrink-0 transition-colors ${
-              isDark ? 'border-white/10 hover:border-[#DFBA7F] text-stone-300' : 'border-stone-300 hover:border-[#DFBA7F] text-stone-700'
+              isDark ? 'border-white/10 hover:border-white/30 text-stone-300' : 'border-black/[0.08] hover:border-black/25 text-[#3F4248]'
             }`}
           >
             📌 Give examples
@@ -439,7 +453,7 @@ export const AIStudyAssistant: React.FC<AIStudyAssistantProps> = ({
             type="button"
             onClick={() => handleSendMessage('Can you explain this from a different angle or perspective?', 'differently')}
             className={`px-2.5 py-1 rounded-lg border shrink-0 transition-colors ${
-              isDark ? 'border-white/10 hover:border-[#DFBA7F] text-stone-300' : 'border-stone-300 hover:border-[#DFBA7F] text-stone-700'
+              isDark ? 'border-white/10 hover:border-white/30 text-stone-300' : 'border-black/[0.08] hover:border-black/25 text-[#3F4248]'
             }`}
           >
             🔄 Explain differently
@@ -448,7 +462,7 @@ export const AIStudyAssistant: React.FC<AIStudyAssistantProps> = ({
             type="button"
             onClick={() => handleSendMessage('Please quiz me with 1 question to test if I understood this correctly.', 'test_understanding')}
             className={`px-2.5 py-1 rounded-lg border shrink-0 transition-colors ${
-              isDark ? 'border-white/10 hover:border-[#DFBA7F] text-stone-300' : 'border-stone-300 hover:border-[#DFBA7F] text-stone-700'
+              isDark ? 'border-white/10 hover:border-white/30 text-stone-300' : 'border-black/[0.08] hover:border-black/25 text-[#3F4248]'
             }`}
           >
             🎯 Test my understanding
@@ -460,22 +474,22 @@ export const AIStudyAssistant: React.FC<AIStudyAssistantProps> = ({
       {activeAttachment && (
         <div
           className={`px-4 py-2 border-t flex items-center justify-between text-xs ${
-            isDark ? 'bg-[#151C2C] border-white/10 text-stone-200' : 'bg-stone-200 border-stone-300 text-stone-800'
+            isDark ? 'bg-[#1B1D23] border-white/[0.08] text-stone-200' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
           }`}
         >
           <div className="flex items-center gap-2 truncate">
             {activeAttachment.mimeType.includes('pdf') ? (
-              <FileText className="w-4 h-4 text-red-400 shrink-0" />
+              <FileText className="w-4 h-4 text-rose-500 shrink-0" />
             ) : (
-              <ImageIcon className="w-4 h-4 text-blue-400 shrink-0" />
+              <ImageIcon className="w-4 h-4 text-sky-500 shrink-0" />
             )}
             <span className="font-semibold truncate">{activeAttachment.name}</span>
-            <span className="text-[10px] text-stone-400">Ready to analyze</span>
+            <span className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>Ready to analyze</span>
           </div>
           <button
             type="button"
             onClick={() => setActiveAttachment(null)}
-            className="p-1 rounded-md hover:bg-white/10 text-stone-400 hover:text-stone-100"
+            className={`p-1 rounded-md transition-colors ${isDark ? 'hover:bg-white/10 text-stone-400 hover:text-white' : 'hover:bg-black/5 text-[#5A5D63] hover:text-[#111214]'}`}
           >
             <X className="w-3.5 h-3.5" />
           </button>
@@ -485,7 +499,7 @@ export const AIStudyAssistant: React.FC<AIStudyAssistantProps> = ({
       {/* Input Area */}
       <div
         className={`p-3 sm:p-4 border-t transition-colors ${
-          isDark ? 'bg-[#0E131E] border-white/10' : 'bg-white border-stone-200'
+          isDark ? 'bg-[#14161A] border-white/[0.08]' : 'bg-white border-black/[0.08]'
         }`}
       >
         <form
@@ -521,8 +535,8 @@ export const AIStudyAssistant: React.FC<AIStudyAssistantProps> = ({
               title="Upload textbook photo, diagram, or study PDF"
               className={`p-2.5 rounded-xl border transition-colors ${
                 isDark
-                  ? 'border-white/10 text-stone-400 hover:text-stone-100 hover:bg-white/5'
-                  : 'border-stone-200 text-stone-600 hover:text-stone-900 hover:bg-stone-100'
+                  ? 'border-white/10 text-stone-400 hover:text-white hover:bg-white/[0.06]'
+                  : 'border-black/[0.08] text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05]'
               }`}
             >
               <UploadCloud className="w-4 h-4" />
@@ -533,8 +547,8 @@ export const AIStudyAssistant: React.FC<AIStudyAssistantProps> = ({
               title="Snap photo with camera"
               className={`p-2.5 rounded-xl border transition-colors ${
                 isDark
-                  ? 'border-white/10 text-stone-400 hover:text-stone-100 hover:bg-white/5'
-                  : 'border-stone-200 text-stone-600 hover:text-stone-900 hover:bg-stone-100'
+                  ? 'border-white/10 text-stone-400 hover:text-white hover:bg-white/[0.06]'
+                  : 'border-black/[0.08] text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05]'
               }`}
             >
               <Camera className="w-4 h-4" />
@@ -554,15 +568,17 @@ export const AIStudyAssistant: React.FC<AIStudyAssistantProps> = ({
             rows={1}
             className={`flex-1 max-h-32 min-h-[42px] px-3.5 py-2.5 rounded-xl text-xs sm:text-sm border resize-none outline-none leading-relaxed transition-all ${
               isDark
-                ? 'bg-[#141A27] border-white/15 text-stone-100 placeholder-stone-500 focus:border-[#C9A063]'
-                : 'bg-stone-50 border-stone-200 text-stone-900 placeholder-stone-400 focus:border-[#C9A063]'
+                ? 'bg-[#1B1D23] border-white/10 text-[#F3F4F6] placeholder-stone-500 focus:border-white/30'
+                : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214] placeholder-[#6B6F76] focus:border-[#111214]'
             }`}
           />
 
           <button
             type="submit"
             disabled={isLoading || (!inputText.trim() && !activeAttachment)}
-            className="p-2.5 rounded-xl bg-gradient-to-tr from-[#DFBA7F] to-[#C9A063] text-[#080A0E] shadow-sm disabled:opacity-40 transition-opacity shrink-0"
+            className={`p-2.5 rounded-xl shadow-sm disabled:opacity-40 transition-all shrink-0 ${
+              isDark ? 'bg-white text-[#111214] hover:bg-stone-200' : 'bg-[#111214] text-white hover:bg-[#27292D]'
+            }`}
           >
             <Send className="w-4 h-4" />
           </button>

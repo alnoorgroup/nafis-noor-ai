@@ -1,5 +1,5 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { RotateCcw, AlertTriangle, RefreshCw, Sparkles } from 'lucide-react';
+import { RotateCcw, RefreshCw, Sparkles } from 'lucide-react';
 
 interface Props {
   children: ReactNode;
@@ -48,30 +48,40 @@ export class ErrorBoundary extends Component<Props, State> {
     } catch (e) {
       console.warn('Cache clearing error:', e);
     }
-    // Reload freshly from server
     window.location.href = '/';
   };
 
   public render() {
     if (this.state.hasError) {
+      const isDark = typeof document !== 'undefined'
+        ? document.documentElement.classList.contains('dark')
+        : true;
       return (
-        <div className="min-h-screen bg-[#080A0E] text-[#F5EFE6] flex items-center justify-center p-4 selection:bg-[#C9A063]/30">
-          <div className="w-full max-w-md p-6 sm:p-8 rounded-3xl bg-[#10141D] border border-[#C9A063]/40 shadow-2xl text-center space-y-6">
-            <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-[#DFBA7F] to-[#A67C38] text-[#090C11] flex items-center justify-center shadow-lg shadow-[#C9A063]/25">
+        <div className={`min-h-screen flex items-center justify-center p-4 ${
+          isDark ? 'bg-[#0B0C0E] text-[#F3F4F6]' : 'bg-[#FCFCFA] text-[#111214]'
+        }`}>
+          <div className={`w-full max-w-md p-6 sm:p-8 rounded-3xl border shadow-xl text-center space-y-6 ${
+            isDark ? 'bg-[#14161A] border-white/[0.1]' : 'bg-white border-black/[0.08]'
+          }`}>
+            <div className={`w-16 h-16 mx-auto rounded-2xl flex items-center justify-center shadow-sm ${
+              isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+            }`}>
               <Sparkles className="w-8 h-8" />
             </div>
 
             <div className="space-y-2">
-              <h1 className="text-xl sm:text-2xl font-serif-heading font-bold text-[#DFBA7F]">
+              <h1 className={`text-xl sm:text-2xl font-display font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                 NOOR Islamic Companion
               </h1>
-              <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
+              <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? 'text-stone-300' : 'text-[#5A5D63]'}`}>
                 A browser display update is ready. Please tap below to refresh NOOR and view the latest features.
               </p>
             </div>
 
             {this.state.error && (
-              <div className="p-3 rounded-xl bg-black/50 border border-white/10 text-left overflow-x-auto max-h-32 text-[11px] font-mono text-stone-400">
+              <div className={`p-3 rounded-xl border text-left overflow-x-auto max-h-32 text-[11px] font-mono ${
+                isDark ? 'bg-black/50 border-white/10 text-stone-400' : 'bg-[#F3F3F1] border-black/[0.08] text-[#6B6F76]'
+              }`}>
                 {this.state.error.message || 'Unknown display error'}
               </div>
             )}
@@ -80,7 +90,11 @@ export class ErrorBoundary extends Component<Props, State> {
               <button
                 type="button"
                 onClick={this.handleReload}
-                className="w-full py-3 px-4 rounded-xl font-bold text-xs sm:text-sm bg-gradient-to-r from-[#C9A063] via-[#DFBA7F] to-[#C9A063] text-[#080A0E] shadow-lg hover:opacity-95 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className={`w-full py-3 px-4 rounded-xl font-bold text-xs sm:text-sm active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                  isDark
+                    ? 'bg-white text-[#111214] hover:bg-stone-200'
+                    : 'bg-[#111214] text-white hover:bg-[#27292D]'
+                }`}
               >
                 <RefreshCw className="w-4 h-4" />
                 <span>Refresh NOOR</span>
@@ -89,7 +103,11 @@ export class ErrorBoundary extends Component<Props, State> {
               <button
                 type="button"
                 onClick={this.handleHardReset}
-                className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className={`w-full py-2.5 px-4 rounded-xl text-xs font-semibold border active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                  isDark
+                    ? 'bg-white/[0.06] hover:bg-white/[0.1] border-white/[0.1] text-stone-300'
+                    : 'bg-[#F3F3F1] hover:bg-black/[0.06] border-black/[0.08] text-[#3F4248]'
+                }`}
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Clear Browser Cache & Reload</span>

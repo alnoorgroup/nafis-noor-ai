@@ -1121,13 +1121,13 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
     setTimeout(() => setCopiedPage(false), 2000);
   };
 
-  // High-contrast colors requested by user:
+  // High-contrast colors:
   // Dark mode = Crisp Pure White (#FFFFFF)
-  // Light mode = Deep Pure Black (#0A0D13)
-  const textColorClass = isDark ? 'text-white' : 'text-stone-950 font-semibold';
+  // Light mode = Deep Pure Black (#111214)
+  const textColorClass = isDark ? 'text-white' : 'text-[#111214] font-semibold';
   const pageBgClass = isDark
-    ? 'bg-[#090C11] border-[#DFBA7F]/55 shadow-[0_20px_60px_rgba(0,0,0,0.92)]'
-    : 'bg-[#FFFDF7] border-[#C9A063]/70 shadow-[0_14px_40px_rgba(140,107,50,0.18)]';
+    ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+    : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]';
 
   // Pages 1 and 2 (Al-Fatihah and start of Al-Baqarah) are centered royal pages in Madani Mushaf
   const isCenteredRoyalPage = currentPage === 1 || currentPage === 2;
@@ -1146,17 +1146,21 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsSidePanelOpen((prev) => !prev)}
-        className="fixed top-20 right-0 z-40 h-10 px-2.5 rounded-l-2xl bg-black/85 backdrop-blur-xl border border-r-0 border-[#DFBA7F]/60 text-[#DFBA7F] shadow-[0_4px_20px_rgba(0,0,0,0.5)] flex items-center gap-1.5 cursor-pointer group transition-all"
+        className={`fixed top-20 right-0 z-40 h-10 px-2.5 rounded-l-2xl backdrop-blur-xl border border-r-0 flex items-center gap-1.5 cursor-pointer group transition-all ${
+          isDark
+            ? 'bg-[#14161A]/95 border-white/[0.12] text-white shadow-[0_4px_20px_rgba(0,0,0,0.45)]'
+            : 'bg-white/95 border-black/[0.1] text-[#111214] shadow-md'
+        }`}
         aria-label={isSidePanelOpen ? 'Hide Quran Index' : 'Reveal Quran Index'}
         title={isSidePanelOpen ? 'Hide Index' : 'Surah & Juz Index'}
       >
-        <span className="text-[10px] font-cinzel font-bold hidden sm:inline text-[#DFBA7F]">
+        <span className={`text-[10px] font-cinzel font-bold hidden sm:inline ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
           {isArabic ? 'الفهرس' : 'Index'}
         </span>
         {isSidePanelOpen ? (
-          <ChevronRight className="w-4 h-4 text-[#DFBA7F] transition-transform group-hover:translate-x-0.5" />
+          <ChevronRight className={`w-4 h-4 transition-transform group-hover:translate-x-0.5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
         ) : (
-          <ChevronLeft className="w-4 h-4 text-[#DFBA7F] transition-transform group-hover:-translate-x-0.5" />
+          <ChevronLeft className={`w-4 h-4 transition-transform group-hover:-translate-x-0.5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
         )}
       </motion.button>
 
@@ -1177,28 +1181,32 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 300 }}
               className={`fixed top-0 right-0 bottom-0 z-[95] w-72 sm:w-80 p-5 flex flex-col border-l shadow-2xl ${
-                isDark ? 'bg-[#0A0D13]/98 border-[#DFBA7F]/30 text-stone-100' : 'bg-white/98 border-[#C9A063]/30 text-stone-900'
+                isDark ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6]' : 'bg-white border-black/[0.08] text-[#111214]'
               }`}
             >
-              <div className="flex items-center justify-between pb-3 border-b border-[#C9A063]/20 mb-3 shrink-0">
+              <div className={`flex items-center justify-between pb-3 border-b mb-3 shrink-0 ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
                 <div className="flex items-center gap-2">
-                  <BookOpen className="w-4 h-4 text-[#DFBA7F]" />
-                  <h3 className="font-serif-heading font-bold text-sm text-[#DFBA7F]">
+                  <BookOpen className={`w-4 h-4 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
+                  <h3 className={`font-serif-heading font-bold text-sm ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                     {isArabic ? 'فهرس مصحف المدينة (١٤٠٥ هـ)' : 'Madani Mushaf (1405) Index'}
                   </h3>
                 </div>
                 <button
                   type="button"
                   onClick={() => setIsSidePanelOpen(false)}
-                  className="p-1 rounded-lg text-stone-400 hover:text-white"
+                  className={`p-1 rounded-lg transition-colors ${
+                    isDark ? 'text-stone-400 hover:text-white hover:bg-white/[0.06]' : 'text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.04]'
+                  }`}
                 >
                   <PanelRightClose className="w-4 h-4" />
                 </button>
               </div>
 
               {/* Quick Page Jumper */}
-              <div className="mb-3 p-3 rounded-xl border border-[#C9A063]/25 bg-[#C9A063]/10">
-                <div className="text-[11px] font-semibold text-[#DFBA7F] mb-1.5">
+              <div className={`mb-3 p-3 rounded-xl border ${
+                isDark ? 'border-white/[0.08] bg-[#1B1D23]' : 'border-black/[0.08] bg-[#F3F3F1]'
+              }`}>
+                <div className={`text-[11px] font-semibold mb-1.5 ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                   {isArabic ? 'الانتقال السريع للصفحة (١ - ٦٠٤)' : 'Jump to Page (1 - 604)'}
                 </div>
                 <div className="flex items-center gap-2">
@@ -1217,7 +1225,9 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
                         }
                       }
                     }}
-                    className="w-20 px-2 py-1 rounded-lg text-center font-mono font-bold text-xs border border-[#C9A063]/40 bg-stone-900 text-[#DFBA7F]"
+                    className={`w-20 px-2 py-1 rounded-lg text-center font-mono font-bold text-xs border ${
+                      isDark ? 'border-white/[0.12] bg-[#0B0C0E] text-white' : 'border-black/[0.12] bg-white text-[#111214]'
+                    }`}
                   />
                   <button
                     type="button"
@@ -1228,7 +1238,9 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
                         setIsSidePanelOpen(false);
                       }
                     }}
-                    className="flex-1 py-1 px-2.5 rounded-lg bg-[#C9A063] text-[#090B0E] font-bold text-xs"
+                    className={`flex-1 py-1 px-2.5 rounded-lg font-bold text-xs transition-colors ${
+                      isDark ? 'bg-white hover:bg-stone-200 text-[#111214]' : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                    }`}
                   >
                     {isArabic ? 'انتقال' : 'Go'}
                   </button>
@@ -1247,21 +1259,25 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
                     }}
                     className={`w-full p-2 rounded-xl text-left rtl:text-right flex items-center justify-between transition-colors ${
                       currentPage === s.pageNumber
-                        ? 'bg-[#C9A063]/25 text-[#DFBA7F] font-bold border border-[#C9A063]/40'
-                        : 'hover:bg-white/5 text-stone-300'
+                        ? isDark
+                          ? 'bg-white/[0.1] text-white font-bold border border-white/35'
+                          : 'bg-[#111214]/[0.06] text-[#111214] font-bold border border-[#111214]/40'
+                        : isDark
+                        ? 'hover:bg-white/[0.05] text-stone-300'
+                        : 'hover:bg-black/[0.03] text-[#3F4248]'
                     }`}
                   >
                     <div className="flex items-center gap-2">
-                      <span className="font-arabic font-bold text-xs text-[#DFBA7F] w-6">
+                      <span className={`font-arabic font-bold text-xs w-6 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                         {toEasternArabicNumerals(s.number)}
                       </span>
                       <span>{s.englishName}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] text-stone-400 font-arabic">
+                      <span className={`text-[10px] font-arabic ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                         ص {toEasternArabicNumerals(s.pageNumber)}
                       </span>
-                      <span className="font-arabic font-bold text-[#DFBA7F]">{s.name}</span>
+                      <span className={`font-arabic font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>{s.name}</span>
                     </div>
                   </button>
                 ))}
@@ -1274,7 +1290,11 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
       {/* Top Utility Bar: Madani 1405 Edition Badge, Revision (Tarteel) Switch & Controls */}
       <div className="flex items-center justify-between mb-2 px-1 select-none flex-wrap gap-1.5">
         <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="px-2.5 py-0.5 rounded-lg bg-[#C9A063]/15 border border-[#DFBA7F]/35 text-[11px] font-arabic font-bold text-[#DFBA7F]">
+          <span className={`px-2.5 py-0.5 rounded-lg border text-[11px] font-arabic font-bold ${
+            isDark
+              ? 'bg-white/[0.06] border-white/[0.1] text-[#F3F4F6]'
+              : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+          }`}>
             {isArabic ? 'مصحف المدينة النبوية (١٤٠٥ هـ • ١٥ سطراً)' : 'Madani Mushaf (1405 AH • 15-Line)'}
           </span>
 
@@ -1284,8 +1304,12 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
             onClick={handleToggleRevisionMode}
             className={`px-3 py-1 rounded-lg border text-[11px] font-semibold flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shadow-2xs ${
               viewMode === 'revision'
-                ? 'bg-emerald-500/20 border-emerald-400/70 text-emerald-300 ring-1 ring-emerald-400/40'
-                : 'bg-[#C9A063]/25 border-[#DFBA7F]/50 text-[#DFBA7F] hover:bg-[#C9A063]/35'
+                ? isDark
+                  ? 'bg-emerald-500/20 border-emerald-400/70 text-emerald-300 ring-1 ring-emerald-400/40'
+                  : 'bg-emerald-50 border-emerald-400 text-emerald-800 ring-1 ring-emerald-400/40'
+                : isDark
+                  ? 'bg-[#1B1D23] border-white/[0.1] text-[#F3F4F6] hover:bg-white/[0.08]'
+                  : 'bg-white border-black/[0.1] text-[#111214] hover:bg-black/[0.03]'
             }`}
             title={
               isArabic
@@ -1301,7 +1325,7 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
                   )}
                   <span
                     className={`relative inline-flex rounded-full h-2 w-2 ${
-                      isListeningRevision ? 'bg-emerald-400' : 'bg-amber-400'
+                      isListeningRevision ? 'bg-emerald-500' : isDark ? 'bg-stone-400' : 'bg-[#5A5D63]'
                     }`}
                   />
                 </span>
@@ -1309,7 +1333,7 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
               </>
             ) : (
               <>
-                <Mic className="w-3.5 h-3.5 text-[#DFBA7F]" />
+                <Mic className={`w-3.5 h-3.5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
                 <span>{isArabic ? 'مراجعة الحفظ (Revision)' : 'Revision'}</span>
               </>
             )}
@@ -1321,8 +1345,12 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
             onClick={handleToggleTajweed}
             className={`px-3 py-1 rounded-lg border text-[11px] font-semibold flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shadow-2xs ${
               isTajweedEnabled
-                ? 'bg-gradient-to-r from-rose-500/20 via-emerald-500/20 to-sky-500/20 border-[#DFBA7F]/80 text-[#DFBA7F] ring-1 ring-[#DFBA7F]/50'
-                : 'bg-[#C9A063]/15 border-[#DFBA7F]/35 text-stone-300 hover:text-[#DFBA7F] hover:bg-[#C9A063]/25'
+                ? isDark
+                  ? 'bg-white/[0.1] border-white/35 text-white ring-1 ring-white/20'
+                  : 'bg-[#111214]/[0.06] border-[#111214]/40 text-[#111214] ring-1 ring-[#111214]/15'
+                : isDark
+                  ? 'bg-[#1B1D23] border-white/[0.08] text-stone-300 hover:text-white hover:bg-white/[0.08]'
+                  : 'bg-white border-black/[0.08] text-[#3F4248] hover:text-[#111214] hover:bg-black/[0.03]'
             }`}
             title={
               isArabic
@@ -1349,19 +1377,23 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
                 }
                 className={`px-2 py-0.5 rounded-lg border text-[11px] font-semibold flex items-center gap-1 transition-all active:scale-95 cursor-pointer ${
                   isListeningRevision
-                    ? 'bg-emerald-500/25 border-emerald-400/60 text-emerald-300'
-                    : 'bg-amber-500/20 border-amber-400/50 text-amber-300'
+                    ? isDark
+                      ? 'bg-emerald-500/25 border-emerald-400/60 text-emerald-300'
+                      : 'bg-emerald-50 border-emerald-400 text-emerald-800'
+                    : isDark
+                      ? 'bg-[#1B1D23] border-white/[0.12] text-stone-300'
+                      : 'bg-[#F3F3F1] border-black/[0.1] text-[#3F4248]'
                 }`}
                 title={isArabic ? 'تشغيل / إيقاف الميكروفون' : 'Toggle Microphone'}
               >
                 {isListeningRevision ? (
                   <>
-                    <Mic className="w-3 h-3 animate-pulse text-emerald-300" />
+                    <Mic className={`w-3 h-3 animate-pulse ${isDark ? 'text-emerald-300' : 'text-emerald-700'}`} />
                     <span>{isArabic ? 'يستمع ويفهم تلاوتك...' : 'Listening...'}</span>
                   </>
                 ) : (
                   <>
-                    <MicOff className="w-3 h-3 text-amber-300" />
+                    <MicOff className={`w-3 h-3 ${isDark ? 'text-stone-300' : 'text-[#5A5D63]'}`} />
                     <span>{isArabic ? 'تشغيل الميكروفون' : 'Resume Mic'}</span>
                   </>
                 )}
@@ -1372,7 +1404,11 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
                 type="button"
                 onClick={handleHintNextWord}
                 disabled={activeCursorIndex >= totalWordsOnPage}
-                className="px-2 py-0.5 rounded-lg border border-[#C9A063]/40 bg-[#C9A063]/15 text-[#DFBA7F] hover:bg-[#C9A063]/25 disabled:opacity-30 text-[11px] font-semibold flex items-center gap-1 transition-all active:scale-95 cursor-pointer"
+                className={`px-2 py-0.5 rounded-lg border disabled:opacity-30 text-[11px] font-semibold flex items-center gap-1 transition-all active:scale-95 cursor-pointer ${
+                  isDark
+                    ? 'border-white/[0.12] bg-[#1B1D23] text-white hover:bg-white/[0.08]'
+                    : 'border-black/[0.1] bg-[#F3F3F1] text-[#111214] hover:bg-black/[0.06]'
+                }`}
                 title={isArabic ? 'إظهار الكلمة التالية (تلميح)' : 'Reveal next word (Hint)'}
               >
                 <Eye className="w-3 h-3" />
@@ -1383,7 +1419,11 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
               <button
                 type="button"
                 onClick={handleResetRevisionPage}
-                className="px-2 py-0.5 rounded-lg border border-white/10 text-stone-300 hover:text-white hover:bg-white/5 text-[11px] flex items-center gap-1 transition-all active:scale-95 cursor-pointer"
+                className={`px-2 py-0.5 rounded-lg border text-[11px] flex items-center gap-1 transition-all active:scale-95 cursor-pointer ${
+                  isDark
+                    ? 'border-white/[0.1] text-stone-300 hover:text-white hover:bg-white/[0.05]'
+                    : 'border-black/[0.1] text-[#3F4248] hover:text-[#111214] hover:bg-black/[0.03]'
+                }`}
                 title={isArabic ? 'إعادة إخفاء الكلمات للمراجعة من جديد' : 'Hide all words again'}
               >
                 <RotateCcw className="w-3 h-3" />
@@ -1391,28 +1431,34 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
               </button>
 
               {/* Word Progress Counter */}
-              <span className="px-2 py-0.5 rounded-lg bg-black/30 border border-[#C9A063]/25 text-[10px] font-mono text-[#DFBA7F]">
+              <span className={`px-2 py-0.5 rounded-lg border text-[10px] font-mono ${
+                isDark ? 'bg-[#14161A] border-white/[0.1] text-[#F3F4F6]' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+              }`}>
                 {revealedWordIndices.size}/{totalWordsOnPage}
               </span>
 
-              {/* Detected Surah & Ayah Badge (Shows which Surah the user is reciting!) */}
+              {/* Detected Surah & Ayah Badge */}
               {detectedSurahBadge && (
                 <span
                   dir="rtl"
-                  className="px-2 py-0.5 rounded-lg bg-[#C9A063]/20 border border-[#DFBA7F]/45 text-[11px] font-arabic font-bold text-[#DFBA7F] flex items-center gap-1"
+                  className={`px-2 py-0.5 rounded-lg border text-[11px] font-arabic font-bold flex items-center gap-1 ${
+                    isDark
+                      ? 'bg-white/[0.1] border-white/25 text-white'
+                      : 'bg-[#111214]/[0.06] border-[#111214]/25 text-[#111214]'
+                  }`}
                 >
-                  <Sparkles className="w-2.5 h-2.5 text-[#DFBA7F]" />
+                  <Sparkles className={`w-2.5 h-2.5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
                   <span>{detectedSurahBadge}</span>
                 </span>
               )}
 
-              {/* Live Audio Level Bars (Inline so Mushaf position never shifts when speaking) */}
+              {/* Live Audio Level Bars */}
               {isListeningRevision && (
                 <div className="flex items-center gap-0.5 h-3.5 px-1.5" aria-hidden="true">
                   {[0.5, 1, 0.7, 0.9].map((mult, idx) => (
                     <span
                       key={idx}
-                      className="w-0.5 rounded-full bg-emerald-400 transition-all duration-75"
+                      className={`w-0.5 rounded-full transition-all duration-75 ${isDark ? 'bg-emerald-400' : 'bg-emerald-600'}`}
                       style={{
                         height: `${Math.max(3, Math.min(12, (micLevel || 25) * 0.12 * mult))}px`,
                       }}
@@ -1421,18 +1467,22 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
                 </div>
               )}
 
-              {/* Inline Spoken Word Indicator (Fixed height, zero layout shift) */}
+              {/* Inline Spoken Word Indicator */}
               {lastSpokenPreview && !revisionError && (
                 <span
                   dir="rtl"
-                  className="px-2 py-0.5 rounded-lg bg-emerald-500/15 border border-emerald-400/30 text-[11px] font-arabic text-emerald-300 font-bold max-w-[140px] sm:max-w-[200px] truncate"
+                  className={`px-2 py-0.5 rounded-lg border text-[11px] font-arabic font-bold max-w-[140px] sm:max-w-[200px] truncate ${
+                    isDark
+                      ? 'bg-emerald-500/15 border-emerald-400/30 text-emerald-300'
+                      : 'bg-emerald-50 border-emerald-300 text-emerald-800'
+                  }`}
                 >
                   {lastSpokenPreview}
                 </span>
               )}
 
               {revisionError && (
-                <span className="text-[10px] text-amber-300 truncate max-w-[220px]">
+                <span className={`text-[10px] truncate max-w-[220px] ${isDark ? 'text-rose-400' : 'text-rose-700'}`}>
                   {revisionError}
                 </span>
               )}
@@ -1443,12 +1493,16 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
         <button
           type="button"
           onClick={handleCopyPageText}
-          className="px-2.5 py-0.5 rounded-lg border border-white/10 text-stone-400 hover:text-[#DFBA7F] hover:bg-white/5 text-[11px] flex items-center gap-1 transition-all active:scale-95 cursor-pointer"
+          className={`px-2.5 py-0.5 rounded-lg border text-[11px] flex items-center gap-1 transition-all active:scale-95 cursor-pointer ${
+            isDark
+              ? 'border-white/[0.1] text-stone-300 hover:text-white hover:bg-white/[0.06]'
+              : 'border-black/[0.08] text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.04]'
+          }`}
         >
           {copiedPage ? (
             <>
-              <Check className="w-3 h-3 text-emerald-400" />
-              <span className="text-emerald-400">{isArabic ? 'تم النسخ' : 'Copied'}</span>
+              <Check className={`w-3 h-3 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`} />
+              <span className={isDark ? 'text-emerald-400' : 'text-emerald-700'}>{isArabic ? 'تم النسخ' : 'Copied'}</span>
             </>
           ) : (
             <>
@@ -1465,11 +1519,11 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
           dir={isArabic ? 'rtl' : 'ltr'}
           className={`mb-2 px-2.5 py-1.5 rounded-xl border flex items-center justify-center flex-wrap gap-x-3 gap-y-1 text-[10px] sm:text-[11px] select-none ${
             isDark
-              ? 'bg-[#0B0F16]/90 border-[#DFBA7F]/30 text-stone-200'
-              : 'bg-[#FFFDF9] border-[#C9A063]/40 text-stone-800'
+              ? 'bg-[#14161A] border-white/[0.08] text-stone-200'
+              : 'bg-white border-black/[0.08] text-[#111214]'
           }`}
         >
-          <span className="font-bold text-[#DFBA7F]">
+          <span className={`font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
             {isArabic ? 'دليل ألوان التجويد:' : 'Tajweed Key:'}
           </span>
           {TAJWEED_LEGEND_ITEMS.map((item) => (
@@ -1485,17 +1539,19 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
       {/* AUTHENTIC 15-LINE MADANI MUSHAF (1405 AH) BOOK PAGE                       */}
       {/* Used identically for both 'text' & 'revision' so NO positions ever move!  */}
       {/* ========================================================================= */}
-      <div className={`rounded-2xl sm:rounded-3xl border-2 p-1.5 sm:p-3 transition-all duration-300 relative ${pageBgClass}`}>
+      <div className={`rounded-2xl sm:rounded-3xl border p-1.5 sm:p-3 transition-all duration-300 relative ${pageBgClass}`}>
         {/* Inner Traditional Double-Ruled Mushaf Margin Frame */}
         <div
           className={`rounded-xl sm:rounded-2xl border p-2.5 sm:p-5 relative ${
-            isDark ? 'border-[#DFBA7F]/40 bg-[#0B0F16]' : 'border-[#C9A063]/55 bg-[#FFFDF9]'
+            isDark ? 'border-white/[0.1] bg-[#0B0C0E]' : 'border-black/[0.08] bg-[#FCFCFA]'
           }`}
         >
           {/* Top Margin Header: Juz & Hizb (Right), Page Number (Center), Surah Name & Number (Left) */}
           <div
             dir="rtl"
-            className="flex items-center justify-between pb-2 mb-2.5 border-b border-[#C9A063]/35 text-xs text-[#DFBA7F] font-arabic font-bold select-none px-1"
+            className={`flex items-center justify-between pb-2 mb-2.5 border-b text-xs font-arabic font-bold select-none px-1 ${
+              isDark ? 'border-white/[0.08] text-[#F3F4F6]' : 'border-black/[0.08] text-[#111214]'
+            }`}
           >
             <div className="flex items-center gap-1.5">
               <span className="text-xs sm:text-sm">
@@ -1510,7 +1566,11 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
             <button
               type="button"
               onClick={() => setIsSidePanelOpen(true)}
-              className="px-2.5 py-0.2 rounded-full border border-[#DFBA7F]/45 bg-[#C9A063]/15 hover:bg-[#C9A063]/30 transition-all cursor-pointer text-xs sm:text-sm font-bold text-[#DFBA7F]"
+              className={`px-2.5 py-0.2 rounded-full border transition-all cursor-pointer text-xs sm:text-sm font-bold ${
+                isDark
+                  ? 'border-white/[0.12] bg-[#1B1D23] hover:bg-white/[0.1] text-white'
+                  : 'border-black/[0.1] bg-[#F3F3F1] hover:bg-black/[0.06] text-[#111214]'
+              }`}
               title={isArabic ? 'اضغط للانتقال إلى صفحة أخرى' : 'Tap to jump to page'}
             >
               ﴿ {toEasternArabicNumerals(currentPage)} ﴾
@@ -1539,12 +1599,12 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
                 aria-label={isArabic ? 'جاري تحميل صفحة المصحف...' : 'Loading Mushaf page...'}
                 className="py-3 px-2 sm:px-4 space-y-3 select-none"
               >
-                {/* Illuminated Surah Banner Skeleton with Shimmer */}
+                {/* Surah Banner Skeleton with Shimmer */}
                 <div
                   className={`h-11 w-full rounded-2xl border flex items-center justify-between px-5 ${
                     isDark
-                      ? 'bg-[#C9A063]/10 border-[#DFBA7F]/30 shadow-[0_4px_20px_rgba(201,160,99,0.15)]'
-                      : 'bg-amber-50/80 border-[#C9A063]/40 shadow-sm'
+                      ? 'bg-[#14161A] border-white/[0.08]'
+                      : 'bg-[#F3F3F1] border-black/[0.08]'
                   }`}
                 >
                   <div className={`h-3 w-16 rounded-md ${isDark ? 'skeleton-pulse' : 'skeleton-pulse-light'}`} />
@@ -1555,8 +1615,8 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
                 {/* 15 Madani Mushaf Lines Skeleton with Ayah Medallion Placeholders */}
                 <div className={`p-4 sm:p-6 rounded-3xl border space-y-3 ${
                   isDark
-                    ? 'bg-[#0E1218]/90 border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.6)]'
-                    : 'bg-white/90 border-[#C9A063]/30 shadow-md'
+                    ? 'bg-[#14161A] border-white/[0.08]'
+                    : 'bg-white border-black/[0.08]'
                 }`}>
                   {Array.from({ length: 15 }, (_, idx) => (
                     <motion.div
@@ -1565,27 +1625,22 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: idx * 0.02, duration: 0.3 }}
                       className={`w-full flex items-center justify-between gap-3 py-2 border-b ${
-                        isDark ? 'border-white/[0.04]' : 'border-stone-900/[0.04]'
+                        isDark ? 'border-white/[0.05]' : 'border-black/[0.05]'
                       }`}
                     >
-                      {/* Left Word Group Skeleton */}
                       <div
                         className={`h-5 rounded-lg ${isDark ? 'skeleton-pulse' : 'skeleton-pulse-light'}`}
                         style={{ width: `${20 + ((idx * 7) % 22)}%` }}
                       />
-                      
-                      {/* Center-Left Word Group Skeleton */}
                       <div
                         className={`h-5 rounded-lg ${isDark ? 'skeleton-pulse' : 'skeleton-pulse-light'}`}
                         style={{ width: `${26 + ((idx * 11) % 24)}%` }}
                       />
-
-                      {/* Ornate Skeleton Ayah Medallion Circle */}
-                      <div className="w-7 h-7 rounded-full border border-[#C9A063]/50 bg-[#C9A063]/15 shrink-0 flex items-center justify-center shadow-xs">
-                        <div className="w-2.5 h-2.5 rounded-full bg-[#DFBA7F]/60 animate-pulse" />
+                      <div className={`w-7 h-7 rounded-full border shrink-0 flex items-center justify-center ${
+                        isDark ? 'border-white/[0.15] bg-white/[0.06]' : 'border-black/[0.15] bg-black/[0.04]'
+                      }`}>
+                        <div className={`w-2.5 h-2.5 rounded-full animate-pulse ${isDark ? 'bg-white/40' : 'bg-[#111214]/40'}`} />
                       </div>
-
-                      {/* Right Word Group Skeleton */}
                       <div
                         className={`h-5 rounded-lg ${isDark ? 'skeleton-pulse' : 'skeleton-pulse-light'}`}
                         style={{ width: `${22 + ((idx * 5) % 20)}%` }}
@@ -1599,8 +1654,6 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
 
           {/* ========================================================================= */}
           {/* EXACT 15-LINE QURAN.COM MADANI MUSHAF (1405 AH) PAGE RENDERER             */}
-          {/* In Revision Mode: Surah headers & Ayah numbers stay visible in exact      */}
-          {/* spots; unrecited words use transparent text inside fixed-width spans!     */}
           {/* ========================================================================= */}
           {!isLoadingPage && mushafLinesData && (
             <div
@@ -1617,30 +1670,29 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
                   return null;
                 }
 
-                // Check if this is the final line of a Surah (usually centered in Mushaf if short)
                 const isShortCenteredLine =
                   isCenteredRoyalPage ||
                   (itemsOnLine.length <= 4 && itemsOnLine.some((it) => it.type === 'end'));
 
                 return (
                   <React.Fragment key={lineNum}>
-                    {/* Illuminated Surah Banner & Bismillah when a new Surah begins on this line (ALWAYS VISIBLE) */}
+                    {/* Surah Banner & Bismillah when a new Surah begins on this line */}
                     {surahHeaderInfo && (
                       <div className="my-2 select-none">
                         <div
-                          className={`rounded-xl py-1.5 px-3 border-2 border-double flex items-center justify-between shadow-xs ${
+                          className={`rounded-xl py-1.5 px-3 border flex items-center justify-between ${
                             isDark
-                              ? 'bg-gradient-to-r from-[#DFBA7F]/15 via-[#C9A063]/25 to-[#DFBA7F]/15 border-[#DFBA7F]/65'
-                              : 'bg-gradient-to-r from-[#C9A063]/15 via-[#DFBA7F]/25 to-[#C9A063]/15 border-[#C9A063]/75'
+                              ? 'bg-[#1B1D23] border-white/[0.12]'
+                              : 'bg-[#F3F3F1] border-black/[0.1]'
                           }`}
                         >
-                          <span className="text-[11px] sm:text-xs font-arabic font-bold text-[#DFBA7F]">
+                          <span className={`text-[11px] sm:text-xs font-arabic font-bold ${isDark ? 'text-stone-300' : 'text-[#5A5D63]'}`}>
                             رقمها ﴿{toEasternArabicNumerals(surahHeaderInfo.surah.number)}﴾
                           </span>
-                          <span className="text-base sm:text-xl font-arabic font-bold text-[#DFBA7F]">
+                          <span className={`text-base sm:text-xl font-arabic font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                             سُورَةُ {surahHeaderInfo.surah.name}
                           </span>
-                          <span className="text-[11px] sm:text-xs font-arabic font-bold text-[#DFBA7F]">
+                          <span className={`text-[11px] sm:text-xs font-arabic font-bold ${isDark ? 'text-stone-300' : 'text-[#5A5D63]'}`}>
                             آياتها ﴿{toEasternArabicNumerals(surahHeaderInfo.surah.numberOfAyahs)}﴾
                           </span>
                         </div>
@@ -1667,11 +1719,11 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
                       </div>
                     )}
 
-                    {/* Single Mushaf Line (1 of 15): Compact, edge-to-edge without wide gaps */}
+                    {/* Single Mushaf Line (1 of 15) */}
                     {itemsOnLine.length > 0 && (
                       <div
                         className={`w-full flex items-center flex-wrap sm:flex-nowrap py-[3px] sm:py-[4px] border-b transition-colors ${
-                          isDark ? 'border-white/[0.04]' : 'border-stone-900/[0.05]'
+                          isDark ? 'border-white/[0.05]' : 'border-black/[0.05]'
                         } ${
                           isShortCenteredLine
                             ? 'justify-center gap-x-2 sm:gap-x-3'
@@ -1690,7 +1742,6 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
                             playingAyahNumber === item.ayah.numberInSurah &&
                             (!playingSurahNumber || item.surah.number === playingSurahNumber);
 
-                          // Ayah Number Symbol (MadaniAyahOrnament) is ALWAYS visible in its exact place!
                           if (item.type === 'end') {
                             return (
                               <MadaniAyahOrnament
@@ -1713,7 +1764,6 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
                             );
                           }
 
-                          // Determine if this specific word is the active spoken word by the Sheikh
                           let isCurrentSpokenWord = false;
                           let isAlreadySpokenWord = false;
 
@@ -1736,9 +1786,6 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
                             isAlreadySpokenWord = item.wordPosition < currentOneIdx;
                           }
 
-                          // Revision Mode (Tarteel) per-word visibility check:
-                          // Only words actually recited (or tapped) by the user are revealed in their exact place!
-                          // Unrecited Surahs/Ayahs above or below remain hidden with zero layout shift.
                           const isRevisionHidden =
                             viewMode === 'revision' &&
                             !revealedWordIndices.has(item.pageWordIndex);
@@ -1751,7 +1798,6 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
                             viewMode === 'revision' &&
                             item.pageWordIndex === lastRevealedIndex;
 
-                          // Next word in the same Ayah (for cross-word Idgham/Ikhfa/Iqlab check)
                           const nextWordEntry = mushafLinesData.flatWords[item.pageWordIndex + 1];
                           const nextWordInSameAyah =
                             nextWordEntry &&
@@ -1771,9 +1817,7 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
                               }
                               onClick={() => {
                                 if (viewMode === 'revision' && isRevisionHidden) {
-                                  // Tapping a hidden word reveals that specific word and locks the active cursor onto this Surah/Ayah!
                                   const nextSet = new Set(revealedSetRef.current);
-                                  // Also reveal any preceding words in the same Surah on this page
                                   for (let p = 0; p <= item.pageWordIndex; p++) {
                                     if (mushafLinesData.flatWords[p]?.surah.number === item.surah.number) {
                                       nextSet.add(p);
@@ -1803,7 +1847,7 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
                                     ? 'text-transparent select-none border-b-2 border-emerald-400/75 bg-emerald-500/[0.08]'
                                     : isDark
                                     ? 'text-transparent select-none border-b border-dashed border-white/[0.12]'
-                                    : 'text-transparent select-none border-b border-dashed border-stone-900/[0.15]'
+                                    : 'text-transparent select-none border-b border-dashed border-black/[0.15]'
                                   : isJustRevealedInRevision
                                   ? isDark
                                     ? 'text-emerald-300 font-bold bg-emerald-500/20 shadow-[0_0_12px_rgba(16,185,129,0.45)] select-text'
@@ -1814,13 +1858,13 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
                                     : 'text-emerald-950 font-extrabold scale-110 -translate-y-0.5 bg-emerald-300/85 shadow-[0_0_14px_rgba(16,185,129,0.55)] ring-1 ring-emerald-600 select-text'
                                   : isAlreadySpokenWord
                                   ? isDark
-                                    ? 'text-[#DFBA7F] select-text'
-                                    : 'text-amber-800 select-text'
+                                    ? 'text-stone-300 bg-white/[0.08] select-text'
+                                    : 'text-[#111214] bg-black/[0.06] select-text'
                                   : isPlayingThisAyah
                                   ? isDark
                                     ? 'text-white bg-emerald-500/10 select-text'
-                                    : 'text-stone-950 bg-emerald-100/60 select-text'
-                                  : `${textColorClass} hover:text-[#DFBA7F] select-text`
+                                    : 'text-[#111214] bg-emerald-100/60 select-text'
+                                  : `${textColorClass} ${isDark ? 'hover:bg-white/[0.06]' : 'hover:bg-black/[0.04]'} select-text`
                               }`}
                               title={
                                 viewMode === 'revision' && isRevisionHidden
@@ -1852,18 +1896,24 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
           )}
 
           {/* Bottom Page Margin Footer: Prev Page, Centered Arabic Page Number, Next Page */}
-          <div className="flex items-center justify-between pt-3 mt-2.5 border-t border-[#C9A063]/35 text-xs select-none">
+          <div className={`flex items-center justify-between pt-3 mt-2.5 border-t text-xs select-none ${
+            isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+          }`}>
             <button
               type="button"
               onClick={handlePrevPage}
               disabled={currentPage <= 1}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-xl border border-[#C9A063]/40 bg-[#C9A063]/15 text-[#DFBA7F] hover:bg-[#C9A063]/25 disabled:opacity-25 disabled:pointer-events-none active:scale-95 transition-all cursor-pointer font-bold"
+              className={`flex items-center gap-1 px-3 py-1.5 rounded-xl border disabled:opacity-25 disabled:pointer-events-none active:scale-95 transition-all cursor-pointer font-bold ${
+                isDark
+                  ? 'border-white/[0.12] bg-[#1B1D23] text-white hover:bg-white/[0.1]'
+                  : 'border-black/[0.1] bg-[#F3F3F1] text-[#111214] hover:bg-black/[0.06]'
+              }`}
             >
               <ChevronLeft className="w-4 h-4 rtl:rotate-180" />
               <span>{isArabic ? 'السابقة' : 'Prev'}</span>
             </button>
 
-            <div className="flex items-center gap-2 font-arabic font-bold text-sm text-[#DFBA7F]">
+            <div className={`flex items-center gap-2 font-arabic font-bold text-sm ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
               <span>صفحة ﴿{toEasternArabicNumerals(currentPage)}﴾ من ﴿٦٠٤﴾</span>
             </div>
 
@@ -1871,7 +1921,11 @@ export const MadaniMushafBookView: React.FC<MadaniMushafBookViewProps> = ({
               type="button"
               onClick={handleNextPage}
               disabled={currentPage >= 604}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-xl border border-[#C9A063]/40 bg-[#C9A063]/15 text-[#DFBA7F] hover:bg-[#C9A063]/25 disabled:opacity-25 disabled:pointer-events-none active:scale-95 transition-all cursor-pointer font-bold"
+              className={`flex items-center gap-1 px-3 py-1.5 rounded-xl border disabled:opacity-25 disabled:pointer-events-none active:scale-95 transition-all cursor-pointer font-bold ${
+                isDark
+                  ? 'border-white/[0.12] bg-[#1B1D23] text-white hover:bg-white/[0.1]'
+                  : 'border-black/[0.1] bg-[#F3F3F1] text-[#111214] hover:bg-black/[0.06]'
+              }`}
             >
               <span>{isArabic ? 'التالية' : 'Next'}</span>
               <ChevronRight className="w-4 h-4 rtl:rotate-180" />

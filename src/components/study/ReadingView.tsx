@@ -76,22 +76,28 @@ export const ReadingView: React.FC<ReadingViewProps> = ({ isDark, language }) =>
       {/* Top Banner */}
       <div
         className={`p-6 rounded-2xl border ${
-          isDark ? 'bg-[#101318] border-white/5 shadow-xl' : 'bg-white border-stone-200 shadow-md'
+          isDark
+            ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+            : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
         }`}
       >
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="px-2.5 py-0.5 text-[11px] font-semibold tracking-wider uppercase rounded-full bg-[#C9A063]/15 text-[#DFBA7F] border border-[#C9A063]/30 flex items-center gap-1">
+              <span className={`px-2.5 py-0.5 text-[11px] font-semibold tracking-wider uppercase rounded-full border flex items-center gap-1 ${
+                isDark
+                  ? 'bg-white/[0.08] text-white border-white/[0.14]'
+                  : 'bg-black/[0.04] text-[#111214] border-black/[0.1]'
+              }`}>
                 <BookOpen className="w-3.5 h-3.5" />
                 Arabic Reading Academy
               </span>
-              <span className="text-xs text-stone-500">Graded Passages (Levels 1 to 4)</span>
+              <span className={`text-xs ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>Graded Passages (Levels 1 to 4)</span>
             </div>
-            <h2 className="text-2xl font-bold font-serif text-stone-900 dark:text-stone-100">
+            <h2 className={`text-2xl font-bold font-serif ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
               Progressive Arabic Reading & Comprehension
             </h2>
-            <p className="text-sm text-stone-500 dark:text-stone-400 mt-0.5">
+            <p className={`text-sm mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               Read classical and modern Arabic texts. Toggle vowel markings (Tashkeel), tap words for morphology & roots, and verify your comprehension.
             </p>
           </div>
@@ -102,8 +108,12 @@ export const ReadingView: React.FC<ReadingViewProps> = ({ isDark, language }) =>
               onClick={() => setShowTashkeel(prev => !prev)}
               className={`px-3.5 py-2 rounded-xl border text-xs font-semibold flex items-center gap-2 transition-all ${
                 showTashkeel
-                  ? 'border-[#C9A063] bg-[#C9A063]/20 text-[#DFBA7F]'
-                  : 'border-stone-500/20 bg-stone-500/10 text-stone-400'
+                  ? isDark
+                    ? 'border-white/35 bg-white/[0.1] text-white'
+                    : 'border-[#111214]/40 bg-[#111214]/[0.06] text-[#111214]'
+                  : isDark
+                  ? 'border-white/[0.08] bg-[#1B1D23] text-stone-400 hover:text-white'
+                  : 'border-black/[0.08] bg-[#F3F3F1] text-[#5A5D63] hover:text-[#111214]'
               }`}
             >
               <span>{showTashkeel ? 'Vowels ON (مُشَكَّل)' : 'Vowels OFF (غَيْر مُشَكَّل)'}</span>
@@ -111,7 +121,11 @@ export const ReadingView: React.FC<ReadingViewProps> = ({ isDark, language }) =>
 
             <button
               onClick={handlePlayPassageAudio}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] text-xs font-semibold flex items-center gap-1.5 shadow-md hover:opacity-90"
+              className={`px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors ${
+                isDark
+                  ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                  : 'bg-[#111214] hover:bg-[#27292D] text-white'
+              }`}
             >
               <Volume2 className="w-4 h-4" />
               <span>Listen to Passage</span>
@@ -120,7 +134,9 @@ export const ReadingView: React.FC<ReadingViewProps> = ({ isDark, language }) =>
         </div>
 
         {/* Level Passages Ribbon */}
-        <div className="mt-5 pt-4 border-t border-stone-200/50 dark:border-white/5 flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+        <div className={`mt-5 pt-4 border-t flex gap-2 overflow-x-auto pb-1 scrollbar-none ${
+          isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+        }`}>
           {ARABIC_READING_CURRICULUM.map(passage => {
             const isSelected = passage.id === selectedPassage.id;
             return (
@@ -134,10 +150,12 @@ export const ReadingView: React.FC<ReadingViewProps> = ({ isDark, language }) =>
                 }}
                 className={`px-4 py-2 rounded-xl border text-xs font-semibold flex-shrink-0 transition-all ${
                   isSelected
-                    ? 'border-[#C9A063] bg-[#C9A063]/20 text-[#DFBA7F] shadow-xs'
+                    ? isDark
+                      ? 'border-white bg-white text-[#111214]'
+                      : 'border-[#111214] bg-[#111214] text-white'
                     : isDark
-                    ? 'border-white/5 bg-white/5 text-stone-400 hover:text-stone-200'
-                    : 'border-stone-200 bg-stone-50 text-stone-700 hover:bg-stone-100'
+                    ? 'border-white/[0.08] bg-[#1B1D23] text-stone-300 hover:bg-white/[0.08]'
+                    : 'border-black/[0.08] bg-[#F3F3F1] text-[#3F4248] hover:bg-black/[0.06]'
                 }`}
               >
                 <span>Level {passage.level}: {passage.title}</span>
@@ -152,24 +170,32 @@ export const ReadingView: React.FC<ReadingViewProps> = ({ isDark, language }) =>
         <div className="lg:col-span-8 space-y-6">
           <div
             className={`p-7 rounded-2xl border ${
-              isDark ? 'bg-[#101318] border-white/5 shadow-md' : 'bg-white border-stone-200 shadow-sm'
+              isDark
+                ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+                : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
             }`}
           >
-            <div className="flex items-center justify-between border-b border-stone-200/50 dark:border-white/5 pb-4 mb-5">
+            <div className={`flex items-center justify-between border-b pb-4 mb-5 ${
+              isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+            }`}>
               <div>
-                <h3 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100">
+                <h3 className={`text-xl font-bold font-serif ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                   {selectedPassage.title}
                 </h3>
-                <span className="text-xs text-[#DFBA7F] font-serif">{selectedPassage.arabicTitle}</span>
+                <span className={`text-xs font-serif ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>{selectedPassage.arabicTitle}</span>
               </div>
-              <span className="text-xs text-stone-500">Tap any word to inspect</span>
+              <span className={`text-xs ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>Tap any word to inspect</span>
             </div>
 
             {/* Arabic Reading Body */}
-            <div className="p-6 rounded-2xl bg-stone-500/5 border border-stone-200/40 dark:border-white/5 mb-6">
+            <div className={`p-6 rounded-2xl border mb-6 ${
+              isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
+            }`}>
               <p
                 dir="rtl"
-                className="text-2xl md:text-3xl font-serif text-stone-100 leading-[2.2] tracking-wide select-text text-right"
+                className={`text-2xl md:text-3xl font-serif leading-[2.2] tracking-wide select-text text-right ${
+                  isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'
+                }`}
               >
                 {(showTashkeel
                   ? selectedPassage.arabicTashkeel || selectedPassage.arabicText
@@ -201,7 +227,11 @@ export const ReadingView: React.FC<ReadingViewProps> = ({ isDark, language }) =>
                             });
                           }
                         }}
-                        className="cursor-pointer mx-1 hover:text-[#DFBA7F] hover:bg-[#C9A063]/15 px-1 py-0.5 rounded-lg transition-colors inline-block"
+                        className={`cursor-pointer mx-1 px-1 py-0.5 rounded-lg transition-colors inline-block ${
+                          isDark
+                            ? 'hover:text-white hover:bg-white/[0.1]'
+                            : 'hover:text-[#111214] hover:bg-black/[0.08]'
+                        }`}
                         title="Click to analyze"
                       >
                         {word}
@@ -213,16 +243,20 @@ export const ReadingView: React.FC<ReadingViewProps> = ({ isDark, language }) =>
 
             {/* English Translation Toggle */}
             <div className="space-y-2">
-              <span className="text-xs font-semibold text-stone-400">English Translation:</span>
-              <p className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed italic bg-stone-500/5 p-4 rounded-xl border border-stone-200/30 dark:border-white/5">
+              <span className={`text-xs font-semibold ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>English Translation:</span>
+              <p className={`text-sm leading-relaxed italic p-4 rounded-xl border ${
+                isDark
+                  ? 'text-stone-300 bg-[#1B1D23] border-white/[0.08]'
+                  : 'text-[#3F4248] bg-[#F3F3F1] border-black/[0.08]'
+              }`}>
                 "{selectedPassage.englishTranslation}"
               </p>
             </div>
 
             {/* Comprehension Questions */}
-            <div className="mt-8 pt-6 border-t border-stone-200/50 dark:border-white/5 space-y-5">
-              <h4 className="text-sm font-bold text-stone-900 dark:text-stone-100 flex items-center gap-2">
-                <HelpCircle className="w-4 h-4 text-[#C9A063]" />
+            <div className={`mt-8 pt-6 border-t space-y-5 ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
+              <h4 className={`text-sm font-bold flex items-center gap-2 ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
+                <HelpCircle className={`w-4 h-4 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
                 <span>Comprehension Questions</span>
               </h4>
 
@@ -234,23 +268,29 @@ export const ReadingView: React.FC<ReadingViewProps> = ({ isDark, language }) =>
                 return (
                   <div
                     key={q.id}
-                    className="p-4 rounded-xl border border-stone-200/50 dark:border-white/5 bg-stone-500/5 space-y-3"
+                    className={`p-4 rounded-xl border space-y-3 ${
+                      isDark ? 'border-white/[0.08] bg-[#1B1D23]' : 'border-black/[0.08] bg-[#F3F3F1]'
+                    }`}
                   >
-                    <p className="text-sm font-semibold text-stone-200">
+                    <p className={`text-sm font-semibold ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                       {qIdx + 1}. {q.question}
                     </p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {q.options.map((opt, optIdx) => {
                         let btnStyle = isDark
-                          ? 'bg-stone-900/60 border-white/5 text-stone-300 hover:bg-white/10'
-                          : 'bg-white border-stone-200 text-stone-800 hover:bg-stone-100';
+                          ? 'bg-[#14161A] border-white/[0.08] text-stone-200 hover:bg-white/[0.08]'
+                          : 'bg-white border-black/[0.08] text-[#111214] hover:bg-black/[0.04]';
 
                         if (isAnswered) {
                           if (optIdx === q.correctIndex) {
-                            btnStyle = 'bg-emerald-500/20 border-emerald-500/60 text-emerald-300 font-semibold';
+                            btnStyle = isDark
+                              ? 'bg-emerald-500/20 border-emerald-500/60 text-emerald-300 font-semibold'
+                              : 'bg-emerald-50 border-emerald-500 text-emerald-800 font-semibold';
                           } else if (userSelected === optIdx) {
-                            btnStyle = 'bg-rose-500/20 border-rose-500/60 text-rose-300';
+                            btnStyle = isDark
+                              ? 'bg-rose-500/20 border-rose-500/60 text-rose-300'
+                              : 'bg-rose-50 border-rose-500 text-rose-700';
                           }
                         }
 
@@ -271,8 +311,12 @@ export const ReadingView: React.FC<ReadingViewProps> = ({ isDark, language }) =>
                       <div
                         className={`p-3 rounded-xl border text-xs ${
                           isCorrect
-                            ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
-                            : 'bg-rose-500/10 border-rose-500/30 text-rose-300'
+                            ? isDark
+                              ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
+                              : 'bg-emerald-50 border-emerald-300 text-emerald-800'
+                            : isDark
+                            ? 'bg-rose-500/10 border-rose-500/30 text-rose-300'
+                            : 'bg-rose-50 border-rose-300 text-rose-800'
                         }`}
                       >
                         <span className="font-semibold block mb-0.5">
@@ -292,23 +336,31 @@ export const ReadingView: React.FC<ReadingViewProps> = ({ isDark, language }) =>
         <div className="lg:col-span-4 space-y-6">
           <div
             className={`p-6 rounded-2xl border ${
-              isDark ? 'bg-[#101318] border-white/5 shadow-md' : 'bg-white border-stone-200 shadow-sm'
+              isDark
+                ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+                : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
             }`}
           >
-            <h4 className="text-sm font-bold text-stone-900 dark:text-stone-100 flex items-center gap-2 mb-4">
-              <Search className="w-4 h-4 text-[#C9A063]" />
+            <h4 className={`text-sm font-bold flex items-center gap-2 mb-4 ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
+              <Search className={`w-4 h-4 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
               <span>Linguistic & Root Inspector</span>
             </h4>
 
             {selectedWord ? (
               <div className="space-y-4">
-                <div className="text-center p-4 rounded-xl bg-stone-500/10 border border-white/5">
-                  <span className="text-4xl font-serif text-[#DFBA7F] block mb-1">
+                <div className={`text-center p-4 rounded-xl border ${
+                  isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
+                }`}>
+                  <span className={`text-4xl font-serif block mb-1 ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                     {selectedWord.arabic}
                   </span>
                   <button
                     onClick={() => speakArabic(selectedWord.arabic)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#C9A063]/20 text-[#DFBA7F] text-xs font-semibold mt-2"
+                    className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold mt-2 border transition-colors ${
+                      isDark
+                        ? 'bg-white/[0.08] text-white border-white/[0.12] hover:bg-white/[0.14]'
+                        : 'bg-white text-[#111214] border-black/[0.1] hover:bg-black/[0.04]'
+                    }`}
                   >
                     <Volume2 className="w-3.5 h-3.5" />
                     <span>Pronounce</span>
@@ -316,15 +368,15 @@ export const ReadingView: React.FC<ReadingViewProps> = ({ isDark, language }) =>
                 </div>
 
                 <div className="space-y-2 text-xs">
-                  <div className="flex justify-between py-1.5 border-b border-white/5">
-                    <span className="text-stone-500">Meaning:</span>
-                    <span className="text-stone-200 font-semibold">{selectedWord.english}</span>
+                  <div className={`flex justify-between py-1.5 border-b ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
+                    <span className={isDark ? 'text-stone-400' : 'text-[#6B6F76]'}>Meaning:</span>
+                    <span className={`font-semibold ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>{selectedWord.english}</span>
                   </div>
 
                   {selectedWord.root && (
-                    <div className="flex justify-between py-1.5 border-b border-white/5">
-                      <span className="text-stone-500">Tri-literal Root (الجذر):</span>
-                      <span className="text-[#DFBA7F] font-serif font-bold text-sm">
+                    <div className={`flex justify-between py-1.5 border-b ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
+                      <span className={isDark ? 'text-stone-400' : 'text-[#6B6F76]'}>Tri-literal Root (الجذر):</span>
+                      <span className={`font-serif font-bold text-sm ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                         {selectedWord.root}
                       </span>
                     </div>
@@ -332,8 +384,10 @@ export const ReadingView: React.FC<ReadingViewProps> = ({ isDark, language }) =>
 
                   {selectedWord.grammar && (
                     <div className="py-1.5">
-                      <span className="text-stone-500 block mb-1">Morphology & Grammar:</span>
-                      <p className="text-stone-300 bg-black/20 p-2.5 rounded-lg border border-white/5">
+                      <span className={`block mb-1 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>Morphology & Grammar:</span>
+                      <p className={`p-2.5 rounded-lg border ${
+                        isDark ? 'text-stone-300 bg-[#1B1D23] border-white/[0.08]' : 'text-[#3F4248] bg-[#F3F3F1] border-black/[0.08]'
+                      }`}>
                         {selectedWord.grammar}
                       </p>
                     </div>
@@ -341,7 +395,7 @@ export const ReadingView: React.FC<ReadingViewProps> = ({ isDark, language }) =>
                 </div>
               </div>
             ) : (
-              <div className="text-center py-12 text-stone-500 space-y-2">
+              <div className={`text-center py-12 space-y-2 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                 <p className="text-xs">Click or tap any Arabic word in the reading passage to inspect its root, grammar function, and sound.</p>
               </div>
             )}
@@ -350,11 +404,13 @@ export const ReadingView: React.FC<ReadingViewProps> = ({ isDark, language }) =>
           {/* Key Vocabulary from this Passage */}
           <div
             className={`p-6 rounded-2xl border ${
-              isDark ? 'bg-[#101318] border-white/5 shadow-md' : 'bg-white border-stone-200 shadow-sm'
+              isDark
+                ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+                : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
             }`}
           >
-            <h4 className="text-sm font-bold text-stone-900 dark:text-stone-100 mb-3 flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#C9A063]" />
+            <h4 className={`text-sm font-bold mb-3 flex items-center gap-2 ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
+              <Sparkles className={`w-4 h-4 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
               <span>Vocabulary in this Passage</span>
             </h4>
 
@@ -363,14 +419,20 @@ export const ReadingView: React.FC<ReadingViewProps> = ({ isDark, language }) =>
                 <div
                   key={idx}
                   onClick={() => handleSelectWord(item)}
-                  className="p-2.5 rounded-xl bg-stone-500/5 hover:bg-stone-500/10 border border-white/5 flex items-center justify-between cursor-pointer transition-colors"
+                  className={`p-2.5 rounded-xl border flex items-center justify-between cursor-pointer transition-colors ${
+                    isDark
+                      ? 'bg-[#1B1D23] hover:bg-white/[0.08] border-white/[0.08]'
+                      : 'bg-[#F3F3F1] hover:bg-black/[0.06] border-black/[0.08]'
+                  }`}
                 >
                   <div>
-                    <span className="text-sm font-serif text-[#DFBA7F] block">{item.arabic}</span>
-                    <span className="text-[11px] text-stone-400">{item.english}</span>
+                    <span className={`text-sm font-serif block ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>{item.arabic}</span>
+                    <span className={`text-[11px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{item.english}</span>
                   </div>
                   {item.root && (
-                    <span className="text-xs font-serif text-stone-400 bg-white/5 px-2 py-0.5 rounded-md">
+                    <span className={`text-xs font-serif px-2 py-0.5 rounded-md border ${
+                      isDark ? 'text-stone-300 bg-white/[0.06] border-white/[0.08]' : 'text-[#3F4248] bg-white border-black/[0.08]'
+                    }`}>
                       {item.root}
                     </span>
                   )}

@@ -211,32 +211,29 @@ export const PrayerCheckModal: React.FC<PrayerCheckModalProps> = ({
               initial="initial"
               animate="animate"
               exit="exit"
-              className={`w-full max-w-lg min-h-[540px] max-h-[92dvh] rounded-3xl border shadow-[0_4px_30px_rgba(0,0,0,0.5)] relative overflow-hidden flex flex-col justify-between transition-colors ${
+              className={`w-full max-w-lg min-h-[540px] max-h-[92dvh] rounded-3xl border relative overflow-hidden flex flex-col justify-between transition-colors ${
                 isDark
-                  ? 'bg-[#080D1A] border-[#C9A063]/30 text-stone-100 shadow-[0_0_50px_rgba(201,160,99,0.12)]'
-                  : 'bg-[#0A1122] border-[#C9A063]/40 text-stone-100 shadow-2xl'
+                  ? 'bg-[#14161A] border-white/[0.1] text-[#F3F4F6] shadow-2xl'
+                  : 'bg-[#FCFCFA] border-black/[0.08] text-[#111214] shadow-2xl'
               }`}
             >
-              {/* Luminous Top Gold Trim */}
-              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-transparent via-[#DFBA7F] to-transparent opacity-90 z-20" />
-
-              {/* Background Ambient Glow */}
-              <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
-                <div className="absolute -top-24 -left-24 w-80 h-80 rounded-full bg-[#C9A063]/15 blur-3xl" />
-                <div className="absolute -bottom-24 -right-24 w-80 h-80 rounded-full bg-[#DFBA7F]/10 blur-3xl" />
-              </div>
-
               {/* Modal Header Bar with Step Indicator */}
-              <div className="relative z-10 flex items-center justify-between px-6 pt-5 pb-3 border-b border-[#C9A063]/15 bg-[#050914]/60 backdrop-blur-md">
+              <div className={`relative z-10 flex items-center justify-between px-6 pt-5 pb-3 border-b backdrop-blur-md ${
+                isDark ? 'border-white/[0.08] bg-[#14161A]/90' : 'border-black/[0.08] bg-white/90'
+              }`}>
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-2xl bg-[#C9A063]/15 border border-[#C9A063]/30 flex items-center justify-center text-[#DFBA7F]">
+                  <div className={`w-9 h-9 rounded-2xl border flex items-center justify-center ${
+                    isDark ? 'bg-white/[0.08] border-white/15 text-white' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+                  }`}>
                     <Clock className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-cinzel font-bold text-[#DFBA7F] tracking-wider uppercase">
+                    <h3 className={`text-sm font-cinzel font-bold tracking-wider uppercase ${
+                      isDark ? 'text-white' : 'text-[#111214]'
+                    }`}>
                       {isArabic ? `التحقق من الصلاة — الخطوة ${currentStep} من 4` : `${t(langCode, 'prayerCheckShort')} — ${t(langCode, 'stepOf')} ${currentStep}/4`}
                     </h3>
-                    <p className="text-[11px] text-stone-400 font-sans">
+                    <p className={`text-[11px] font-sans ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                       {stepSubtitle}
                     </p>
                   </div>
@@ -244,7 +241,9 @@ export const PrayerCheckModal: React.FC<PrayerCheckModalProps> = ({
 
                 <button
                   onClick={onClose}
-                  className="p-2 rounded-xl text-stone-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                  className={`p-2 rounded-xl transition-colors cursor-pointer ${
+                    isDark ? 'text-stone-400 hover:text-white hover:bg-white/10' : 'text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05]'
+                  }`}
                   title={isArabic ? 'إغلاق' : 'Close'}
                   aria-label="Close"
                 >
@@ -259,8 +258,8 @@ export const PrayerCheckModal: React.FC<PrayerCheckModalProps> = ({
                     key={step}
                     className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
                       currentStep >= step
-                        ? 'bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] shadow-[0_0_8px_rgba(201,160,99,0.5)]'
-                        : 'bg-white/10'
+                        ? isDark ? 'bg-white' : 'bg-[#111214]'
+                        : isDark ? 'bg-white/10' : 'bg-black/[0.08]'
                     }`}
                   />
                 ))}
@@ -272,105 +271,122 @@ export const PrayerCheckModal: React.FC<PrayerCheckModalProps> = ({
               {currentStep === 1 && (
                 <div className="relative z-10 p-6 flex-1 flex flex-col justify-between space-y-6 animate-fadeIn">
                   <div className="text-center space-y-3 pt-2">
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-300 text-xs font-mono font-medium">
+                    <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-mono font-medium ${
+                      isDark ? 'bg-white/[0.06] border-white/15 text-stone-200' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+                    }`}>
                       <Calendar className="w-3.5 h-3.5" />
                       <span>{formattedDate}</span>
                     </div>
 
                     {/* Prayer Name & Calligraphy */}
                     <div className="space-y-1">
-                      <h2 className="text-3xl sm:text-4xl font-serif-heading font-bold text-white tracking-wide">
+                      <h2 className={`text-3xl sm:text-4xl font-serif-heading font-bold tracking-wide ${
+                        isDark ? 'text-white' : 'text-[#111214]'
+                      }`}>
                         {isArabic ? `صلاة ${arabicPrayerName}` : `${prayerDisplay} Prayer`}
                       </h2>
                       {!isArabic && (
-                        <p className="text-2xl font-arabic text-[#DFBA7F]" dir="rtl">
+                        <p className={`text-2xl font-arabic ${isDark ? 'text-stone-200' : 'text-[#111214]'}`} dir="rtl">
                           صلاة {arabicPrayerName}
                         </p>
                       )}
                     </div>
 
                     {/* Scheduled Time Banner */}
-                    <div className="p-4 rounded-2xl bg-white/[0.04] border border-[#C9A063]/20 max-w-sm mx-auto shadow-inner">
-                      <div className="text-xs text-stone-400 uppercase tracking-widest font-mono">
+                    <div className={`p-4 rounded-2xl border max-w-sm mx-auto ${
+                      isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-white border-black/[0.08] shadow-2xs'
+                    }`}>
+                      <div className={`text-xs uppercase tracking-widest font-mono ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                         {isArabic ? 'وقت الصلاة المقرر' : t(langCode, 'scheduledAt')}
                       </div>
-                      <div className="text-2xl font-bold font-mono text-[#DFBA7F] mt-0.5">
+                      <div className={`text-2xl font-bold font-mono mt-0.5 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                         {scheduledTimeStr}
                       </div>
-                      <div className="text-[11px] text-emerald-400 flex items-center justify-center gap-1 mt-1 font-sans">
+                      <div className={`text-[11px] flex items-center justify-center gap-1 mt-1 font-sans ${
+                        isDark ? 'text-emerald-400' : 'text-emerald-700'
+                      }`}>
                         <Sparkles className="w-3 h-3" />
                         <span>{isArabic ? 'مهلة 10 دقائق تُعد صلاة في الوقت' : '10-Minute Grace Period counts as On-Time'}</span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Action Buttons: Ask "Did you pray?" Staggered with 100ms delay */}
+                  {/* Action Buttons */}
                   <motion.div
                     variants={staggerButtonContainer}
                     initial="initial"
                     animate="animate"
                     className="space-y-3 pt-1"
                   >
-                    <p className="text-sm font-semibold text-center text-stone-200 font-sans">
+                    <p className={`text-sm font-semibold text-center font-sans ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>
                       {isArabic
                         ? `هل صليت صلاة ${arabicPrayerName}؟`
                         : t(langCode, 'didYouPrayQuestion').replace('{prayer}', prayerDisplay)}
                     </p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {/* Yes: On Time */}
                       <motion.div variants={staggerButtonItem}>
                         <button
                           type="button"
                           onClick={() => handleSelectTiming('on_time')}
-                          className={`w-full p-4 rounded-2xl bg-gradient-to-b from-emerald-500/20 to-emerald-950/40 border border-emerald-500/40 hover:border-emerald-400 hover:scale-[1.02] active:scale-[0.97] transition-all cursor-pointer group shadow-lg btn-press-bounce ${
-                            isRTL ? 'text-right' : 'text-left'
-                          }`}
+                          className={`w-full p-4 rounded-2xl border hover:scale-[1.02] active:scale-[0.97] transition-all cursor-pointer group btn-press-bounce ${
+                            isDark
+                              ? 'bg-gradient-to-b from-emerald-500/20 to-emerald-950/40 border-emerald-500/40 hover:border-emerald-400 shadow-lg'
+                              : 'bg-emerald-50 border-emerald-300 hover:border-emerald-500 shadow-xs'
+                          } ${isRTL ? 'text-right' : 'text-left'}`}
                         >
                           <div className="flex items-center justify-between">
-                            <span className="text-sm font-bold text-emerald-300 flex items-center gap-1.5">
-                              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                            <span className={`text-sm font-bold flex items-center gap-1.5 ${isDark ? 'text-emerald-300' : 'text-emerald-800'}`}>
+                              <CheckCircle2 className={`w-4 h-4 shrink-0 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`} />
                               <span>{t(langCode, 'yesOnTime')}</span>
                             </span>
-                            <ChevronRight className={`w-4 h-4 text-emerald-400 group-hover:translate-x-1 transition-transform ${isRTL ? 'rotate-180' : ''}`} />
+                            <ChevronRight className={`w-4 h-4 group-hover:translate-x-1 transition-transform ${
+                              isDark ? 'text-emerald-400' : 'text-emerald-600'
+                            } ${isRTL ? 'rotate-180' : ''}`} />
                           </div>
-                          <p className="text-[11px] text-emerald-200/70 mt-1 font-light">
+                          <p className={`text-[11px] mt-1 font-light ${isDark ? 'text-emerald-200/70' : 'text-emerald-700'}`}>
                             {t(langCode, 'yesOnTimeDesc')}
                           </p>
                         </button>
                       </motion.div>
 
-                      {/* Yes: Late / Qada */}
                       <motion.div variants={staggerButtonItem}>
                         <button
                           type="button"
                           onClick={() => handleSelectTiming('late')}
-                          className={`w-full p-4 rounded-2xl bg-gradient-to-b from-amber-500/20 to-amber-950/40 border border-amber-500/40 hover:border-amber-400 hover:scale-[1.02] active:scale-[0.97] transition-all cursor-pointer group shadow-lg btn-press-bounce ${
-                            isRTL ? 'text-right' : 'text-left'
-                          }`}
+                          className={`w-full p-4 rounded-2xl border hover:scale-[1.02] active:scale-[0.97] transition-all cursor-pointer group btn-press-bounce ${
+                            isDark
+                              ? 'bg-gradient-to-b from-sky-500/20 to-sky-950/40 border-sky-500/40 hover:border-sky-400 shadow-lg'
+                              : 'bg-sky-50 border-sky-300 hover:border-sky-500 shadow-xs'
+                          } ${isRTL ? 'text-right' : 'text-left'}`}
                         >
                           <div className="flex items-center justify-between">
-                            <span className="text-sm font-bold text-amber-300 flex items-center gap-1.5">
-                              <Clock className="w-4 h-4 text-amber-400 shrink-0" />
+                            <span className={`text-sm font-bold flex items-center gap-1.5 ${isDark ? 'text-sky-300' : 'text-sky-800'}`}>
+                              <Clock className={`w-4 h-4 shrink-0 ${isDark ? 'text-sky-400' : 'text-sky-600'}`} />
                               <span>{t(langCode, 'yesLate')}</span>
                             </span>
-                            <ChevronRight className={`w-4 h-4 text-amber-400 group-hover:translate-x-1 transition-transform ${isRTL ? 'rotate-180' : ''}`} />
+                            <ChevronRight className={`w-4 h-4 group-hover:translate-x-1 transition-transform ${
+                              isDark ? 'text-sky-400' : 'text-sky-600'
+                            } ${isRTL ? 'rotate-180' : ''}`} />
                           </div>
-                          <p className="text-[11px] text-amber-200/70 mt-1 font-light">
+                          <p className={`text-[11px] mt-1 font-light ${isDark ? 'text-sky-200/70' : 'text-sky-800/80'}`}>
                             {t(langCode, 'yesLateDesc')}
                           </p>
                         </button>
                       </motion.div>
                     </div>
 
-                    {/* Direct Honest Option: No, I did not pray */}
                     <motion.div variants={staggerButtonItem}>
                       <button
                         type="button"
                         onClick={handleDidNotPray}
-                        className="w-full py-3 px-4 rounded-2xl bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 text-purple-300 text-xs font-semibold flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.97] btn-press-bounce"
+                        className={`w-full py-3 px-4 rounded-2xl border text-xs font-semibold flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.97] btn-press-bounce ${
+                          isDark
+                            ? 'bg-purple-500/10 hover:bg-purple-500/20 border-purple-500/30 text-purple-300'
+                            : 'bg-purple-50 hover:bg-purple-100 border-purple-300 text-purple-800'
+                        }`}
                       >
-                        <Heart className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                        <Heart className={`w-3.5 h-3.5 shrink-0 ${isDark ? 'text-purple-400' : 'text-purple-600'}`} />
                         <span>{t(langCode, 'noDidNotPray')} ({t(langCode, 'noDidNotPrayDesc')})</span>
                       </button>
                     </motion.div>
@@ -384,23 +400,27 @@ export const PrayerCheckModal: React.FC<PrayerCheckModalProps> = ({
               {currentStep === 2 && (
                 <div className="relative z-10 p-6 flex-1 flex flex-col justify-between space-y-5 animate-fadeIn">
                   <div className="space-y-4">
-                    <div className="w-14 h-14 rounded-3xl bg-amber-500/15 border border-amber-500/35 flex items-center justify-center text-amber-400 mx-auto shadow-[0_0_20px_rgba(245,158,11,0.2)]">
+                    <div className={`w-14 h-14 rounded-3xl border flex items-center justify-center mx-auto ${
+                      isDark ? 'bg-white/[0.08] border-white/15 text-white' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+                    }`}>
                       <ShieldAlert className="w-7 h-7 animate-pulse" />
                     </div>
 
                     <div className="text-center space-y-1.5">
-                      <h2 className="text-xl sm:text-2xl font-serif-heading font-bold text-[#DFBA7F]">
+                      <h2 className={`text-xl sm:text-2xl font-serif-heading font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                         {t(langCode, 'solemnReflectionTitle')}
                       </h2>
-                      <p className="text-base font-arabic text-amber-300" dir="rtl">
+                      <p className={`text-base font-arabic ${isDark ? 'text-stone-200' : 'text-[#111214]'}`} dir="rtl">
                         {t(langCode, 'solemnReflectionArabic')}
                       </p>
                     </div>
 
                     {/* Solemn Education Card */}
-                    <div className="p-4 rounded-2xl bg-black/50 border border-amber-500/30 text-stone-200 space-y-2.5 text-xs sm:text-sm leading-relaxed">
+                    <div className={`p-4 rounded-2xl border space-y-2.5 text-xs sm:text-sm leading-relaxed ${
+                      isDark ? 'bg-[#1B1D23] border-white/[0.08] text-stone-200' : 'bg-white border-black/[0.08] text-[#111214] shadow-2xs'
+                    }`}>
                       <p>{t(langCode, 'solemnReflectionP1')}</p>
-                      <p className="text-stone-300">{t(langCode, 'solemnReflectionP2')}</p>
+                      <p className={isDark ? 'text-stone-300' : 'text-[#3F4248]'}>{t(langCode, 'solemnReflectionP2')}</p>
                     </div>
 
                     {/* Learn More Link to FAQ */}
@@ -408,7 +428,9 @@ export const PrayerCheckModal: React.FC<PrayerCheckModalProps> = ({
                       <button
                         type="button"
                         onClick={() => setIsFaqOpen(true)}
-                        className="inline-flex items-center gap-1.5 text-xs text-[#DFBA7F] hover:text-[#F3D7A4] underline underline-offset-4 font-medium cursor-pointer transition-colors"
+                        className={`inline-flex items-center gap-1.5 text-xs underline underline-offset-4 font-medium cursor-pointer transition-colors ${
+                          isDark ? 'text-stone-200 hover:text-white' : 'text-[#111214] hover:text-[#3F4248]'
+                        }`}
                       >
                         <Info className="w-3.5 h-3.5" />
                         <span>{t(langCode, 'learnMoreFaq')}</span>
@@ -416,14 +438,14 @@ export const PrayerCheckModal: React.FC<PrayerCheckModalProps> = ({
                     </div>
                   </div>
 
-                  {/* Circular Gold Progress Ring */}
+                  {/* Circular Progress Ring */}
                   <div className="space-y-4 pt-2">
                     <div className="flex flex-col items-center justify-center">
                       <div
                         onClick={countdownRemaining === 0 ? handleAcknowledgeOath : undefined}
                         className={`relative w-28 h-28 flex items-center justify-center transition-all ${
                           countdownRemaining === 0
-                            ? 'cursor-pointer active:scale-95 animate-pulse shadow-[0_0_25px_rgba(223,186,127,0.35)] rounded-full'
+                            ? 'cursor-pointer active:scale-95 animate-pulse rounded-full'
                             : ''
                         }`}
                         title={countdownRemaining === 0 ? (isArabic ? 'اضغط للمتابعة' : 'Tap to proceed') : undefined}
@@ -433,7 +455,7 @@ export const PrayerCheckModal: React.FC<PrayerCheckModalProps> = ({
                             cx="50"
                             cy="50"
                             r="42"
-                            className="stroke-stone-800/80"
+                            className={isDark ? 'stroke-stone-800/80' : 'stroke-stone-200'}
                             strokeWidth="5"
                             fill="transparent"
                           />
@@ -441,7 +463,7 @@ export const PrayerCheckModal: React.FC<PrayerCheckModalProps> = ({
                             cx="50"
                             cy="50"
                             r="42"
-                            stroke="url(#goldGradientTimer)"
+                            stroke="url(#monoTimerGradient)"
                             strokeWidth="5"
                             strokeDasharray={263.89}
                             strokeDashoffset={263.89 * (countdownRemaining / 3)}
@@ -450,10 +472,10 @@ export const PrayerCheckModal: React.FC<PrayerCheckModalProps> = ({
                             className="transition-all duration-300 ease-linear"
                           />
                           <defs>
-                            <linearGradient id="goldGradientTimer" x1="0%" y1="0%" x2="100%" y2="100%">
-                              <stop offset="0%" stopColor="#C9A063" />
-                              <stop offset="50%" stopColor="#DFBA7F" />
-                              <stop offset="100%" stopColor="#FFE3A8" />
+                            <linearGradient id="monoTimerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                              <stop offset="0%" stopColor={isDark ? '#A1A1AA' : '#52525B'} />
+                              <stop offset="50%" stopColor={isDark ? '#D4D4D8' : '#27292D'} />
+                              <stop offset="100%" stopColor={isDark ? '#FFFFFF' : '#111214'} />
                             </linearGradient>
                           </defs>
                         </svg>
@@ -464,17 +486,19 @@ export const PrayerCheckModal: React.FC<PrayerCheckModalProps> = ({
                             initial={{ scale: 1.25, opacity: 0.7 }}
                             animate={{ scale: 1, opacity: 1 }}
                             transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
-                            className="text-2xl font-bold font-mono text-[#DFBA7F] drop-shadow-sm"
+                            className={`text-2xl font-bold font-mono drop-shadow-sm ${isDark ? 'text-white' : 'text-[#111214]'}`}
                           >
                             {countdownRemaining === 0 ? '✓' : countdownRemaining}
                           </motion.span>
-                          <span className={`text-[10px] uppercase font-mono tracking-wider font-bold ${countdownRemaining === 0 ? 'text-[#DFBA7F]' : 'text-stone-400'}`}>
+                          <span className={`text-[10px] uppercase font-mono tracking-wider font-bold ${
+                            countdownRemaining === 0 ? (isDark ? 'text-white' : 'text-[#111214]') : (isDark ? 'text-stone-400' : 'text-[#5A5D63]')
+                          }`}>
                             {countdownRemaining === 0 ? t(langCode, 'ready') : t(langCode, 'secs')}
                           </span>
                         </div>
                       </div>
 
-                      <p className="text-[11px] text-stone-400 mt-2 font-mono text-center">
+                      <p className={`text-[11px] mt-2 font-mono text-center ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                         {countdownRemaining > 0
                           ? t(langCode, 'countdownInProgress')
                           : (isArabic ? 'اضغط على الدائرة أو الزر بالأسفل لتأكيد الصلاة' : 'Ready! Tap circle or button below to confirm')}
@@ -488,8 +512,12 @@ export const PrayerCheckModal: React.FC<PrayerCheckModalProps> = ({
                       disabled={countdownRemaining > 0}
                       className={`w-full py-3.5 px-6 rounded-2xl font-cinzel text-xs font-bold tracking-wider transition-all duration-300 flex items-center justify-center gap-2 btn-press-bounce ${
                         countdownRemaining > 0
-                          ? 'bg-stone-800/80 text-stone-500 border border-white/5 cursor-not-allowed opacity-60'
-                          : 'bg-gradient-to-r from-[#C9A063] via-[#DFBA7F] to-[#C9A063] text-[#080B12] shadow-[0_0_20px_rgba(223,186,127,0.4)] cursor-pointer active:scale-95'
+                          ? isDark
+                            ? 'bg-white/[0.06] text-stone-500 border border-white/10 cursor-not-allowed opacity-60'
+                            : 'bg-[#F3F3F1] text-[#6B6F76] border border-black/[0.08] cursor-not-allowed opacity-80'
+                          : isDark
+                          ? 'bg-white hover:bg-stone-200 text-[#111214] shadow-sm cursor-pointer active:scale-95'
+                          : 'bg-[#111214] hover:bg-[#27292D] text-white shadow-sm cursor-pointer active:scale-95'
                       }`}
                     >
                       <span>{countdownRemaining === 0 ? (isArabic ? 'جاهز • اضغط للمتابعة' : 'Ready • Tap to Proceed') : t(langCode, 'iUnderstandConfirm')}</span>
@@ -499,90 +527,104 @@ export const PrayerCheckModal: React.FC<PrayerCheckModalProps> = ({
                 </div>
               )}
 
-              {/* ========================================================================= */}
-              {/* STEP 3: CONFIRMATION (OR DID NOT PRAY)                                    */}
-              {/* ========================================================================= */}
+              {/* STEP 3: CONFIRMATION (OR DID NOT PRAY) */}
               {currentStep === 3 && (
                 <div className="relative z-10 p-6 flex-1 flex flex-col justify-between space-y-6 animate-fadeIn">
                   <div className="text-center space-y-4 pt-2">
-                    <div className="w-12 h-12 rounded-2xl bg-[#C9A063]/20 border border-[#C9A063]/40 flex items-center justify-center text-[#DFBA7F] mx-auto shadow-[0_0_20px_rgba(201,160,99,0.25)]">
+                    <div className={`w-12 h-12 rounded-2xl border flex items-center justify-center mx-auto ${
+                      isDark ? 'bg-white/[0.08] border-white/15 text-white' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+                    }`}>
                       <Compass className="w-6 h-6" />
                     </div>
 
                     <div>
-                      <div className="text-xs uppercase font-mono tracking-widest text-stone-400">
+                      <div className={`text-xs uppercase font-mono tracking-widest ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                         {isArabic ? `إقرار أداء صلاة ${arabicPrayerName}` : `${t(langCode, 'confirmationStep')}: ${prayerDisplay}`}
                       </div>
-                      <h2 className="text-2xl font-serif-heading font-bold text-white mt-1">
+                      <h2 className={`text-2xl font-serif-heading font-bold mt-1 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                         {t(langCode, 'oathSolemnTitle')}
                       </h2>
                     </div>
 
-                    {/* Atmospheric Arabic Calligraphy Box */}
-                    <div className="p-6 rounded-3xl bg-gradient-to-b from-[#0F182A]/90 to-[#0A101D]/90 border border-[#C9A063]/30 shadow-2xl space-y-3 relative overflow-hidden">
-                      <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-[#C9A063]/10 blur-xl pointer-events-none" />
-
-                      <p className="text-stone-400 text-xs font-sans uppercase tracking-wider">
+                    {/* Arabic Calligraphy Box */}
+                    <div className={`p-6 rounded-3xl border space-y-3 relative overflow-hidden ${
+                      isDark
+                        ? 'bg-[#1B1D23] border-white/[0.1]'
+                        : 'bg-white border-black/[0.08] shadow-sm'
+                    }`}>
+                      <p className={`text-xs font-sans uppercase tracking-wider ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                         {isArabic ? 'صيغة الإقرار والشهادة الشرعية:' : 'Declaration in Arabic:'}
                       </p>
 
-                      <div className="text-2xl sm:text-3xl font-arabic font-bold text-[#DFBA7F] leading-loose py-2 selection:bg-[#C9A063]/30" dir="rtl">
+                      <div className={`text-2xl sm:text-3xl font-arabic font-bold leading-loose py-2 ${
+                        isDark ? 'text-white' : 'text-[#111214]'
+                      }`} dir="rtl">
                         « أُقْسِمُ بِاللَّهِ الْعَظِيمِ أَنِّي قَدْ أَدَّيْتُ صَلَاةَ {arabicPrayerName} »
                       </div>
 
-                      <p className="text-xs text-stone-300 font-serif italic border-t border-[#C9A063]/15 pt-3">
+                      <p className={`text-xs font-serif italic border-t pt-3 ${
+                        isDark ? 'border-white/10 text-stone-300' : 'border-black/[0.08] text-[#3F4248]'
+                      }`}>
                         {isArabic
                           ? 'أشهد وأقر بصدق أني أديت هذه الصلاة لوجه الله تعالى'
                           : t(langCode, 'oathEnglishFormula').replace('{prayer}', prayerDisplay)}
                       </p>
                     </div>
 
-                    <p className="text-[11px] text-stone-400 font-sans max-w-sm mx-auto">
+                    <p className={`text-[11px] font-sans max-w-sm mx-auto ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                       {t(langCode, 'oathSolemnSub')}
                     </p>
                   </div>
 
-                  {/* Two Buttons: Primary Gold (Confirm) vs Secondary Ghost (Did Not Pray) */}
+                  {/* Two Buttons */}
                   <div className="space-y-2.5 pt-2">
                     <button
                       type="button"
                       onClick={handleConfirmUnderOath}
-                      className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-[#C9A063] via-[#DFBA7F] to-[#C9A063] text-[#07090F] font-cinzel text-xs font-bold tracking-widest uppercase shadow-[0_0_25px_rgba(201,160,99,0.35)] hover:brightness-110 active:scale-[0.98] transition-all cursor-pointer flex items-center justify-center gap-2"
+                      className={`w-full py-4 px-6 rounded-2xl font-cinzel text-xs font-bold tracking-widest uppercase shadow-sm active:scale-[0.98] transition-all cursor-pointer flex items-center justify-center gap-2 ${
+                        isDark ? 'bg-white hover:bg-stone-200 text-[#111214]' : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                      }`}
                     >
-                      <Sparkles className="w-4 h-4 text-[#07090F]" />
+                      <Sparkles className="w-4 h-4" />
                       <span>{t(langCode, 'oathConfirmBtn')}</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={handleDidNotPray}
-                      className="w-full py-3 px-6 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] text-stone-300 hover:text-white border border-white/10 hover:border-white/20 font-sans text-xs font-semibold tracking-wider transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                      className={`w-full py-3 px-6 rounded-2xl border font-sans text-xs font-semibold tracking-wider transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                        isDark
+                          ? 'bg-white/[0.06] hover:bg-white/[0.1] text-stone-300 hover:text-white border-white/10 hover:border-white/20'
+                          : 'bg-[#F3F3F1] hover:bg-black/[0.06] text-[#3F4248] hover:text-[#111214] border-black/[0.08]'
+                      }`}
                     >
-                      <Heart className="w-3.5 h-3.5 text-purple-400" />
+                      <Heart className="w-3.5 h-3.5 text-purple-500" />
                       <span>{t(langCode, 'noDidNotPray')}</span>
                     </button>
                   </div>
                 </div>
               )}
 
-              {/* ========================================================================= */}
-              {/* STEP 4: COMPLETION (ACCEPTANCE OR MERCY)                                  */}
-              {/* ========================================================================= */}
+              {/* STEP 4: COMPLETION (ACCEPTANCE OR MERCY) */}
               {currentStep === 4 && (
                 <div className="relative z-10 p-6 flex-1 flex flex-col justify-between space-y-6 animate-fadeIn">
                   <div className="text-center space-y-5 pt-4">
                     {oathGiven ? (
-                      <div className="w-16 h-16 rounded-3xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 mx-auto shadow-[0_0_30px_rgba(16,185,129,0.3)]">
+                      <div className={`w-16 h-16 rounded-3xl border flex items-center justify-center mx-auto ${
+                        isDark ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400 shadow-[0_0_30px_rgba(16,185,129,0.3)]' : 'bg-emerald-50 border-emerald-300 text-emerald-600'
+                      }`}>
                         <CheckCircle2 className="w-9 h-9" />
                       </div>
                     ) : (
-                      <div className="w-16 h-16 rounded-3xl bg-purple-500/20 border border-purple-500/40 flex items-center justify-center text-purple-400 mx-auto shadow-[0_0_30px_rgba(168,85,247,0.3)]">
+                      <div className={`w-16 h-16 rounded-3xl border flex items-center justify-center mx-auto ${
+                        isDark ? 'bg-purple-500/20 border-purple-500/40 text-purple-400 shadow-[0_0_30px_rgba(168,85,247,0.3)]' : 'bg-purple-50 border-purple-300 text-purple-600'
+                      }`}>
                         <Heart className="w-9 h-9" />
                       </div>
                     )}
 
                     <div className="space-y-2">
-                      <h2 className="text-2xl sm:text-3xl font-serif-heading font-bold text-white">
+                      <h2 className={`text-2xl sm:text-3xl font-serif-heading font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                         {oathGiven
                           ? isArabic
                             ? 'تقبّل الله منا ومنكم'
@@ -591,12 +633,14 @@ export const PrayerCheckModal: React.FC<PrayerCheckModalProps> = ({
                           ? 'إن الله غفور رحيم'
                           : 'Allah is Most Merciful'}
                       </h2>
-                      <p className="text-2xl font-arabic text-[#DFBA7F]" dir="rtl">
+                      <p className={`text-2xl font-arabic ${isDark ? 'text-stone-200' : 'text-[#111214]'}`} dir="rtl">
                         {oathGiven ? 'تَقَبَّلَ اللَّهُ مِنَّا وَمِنْكُمْ صَالِحَ الْأَعْمَالِ' : 'إِنَّ اللَّهَ غَفُورٌ رَحِيمٌ'}
                       </p>
                     </div>
 
-                    <div className="p-4 rounded-2xl bg-black/40 border border-[#C9A063]/20 text-xs sm:text-sm text-stone-300 max-w-sm mx-auto leading-relaxed">
+                    <div className={`p-4 rounded-2xl border text-xs sm:text-sm max-w-sm mx-auto leading-relaxed ${
+                      isDark ? 'bg-[#1B1D23] border-white/[0.08] text-stone-300' : 'bg-white border-black/[0.08] text-[#3F4248] shadow-2xs'
+                    }`}>
                       {oathGiven ? (
                         <p>
                           {isArabic
@@ -612,12 +656,14 @@ export const PrayerCheckModal: React.FC<PrayerCheckModalProps> = ({
                       )}
                     </div>
 
-                    <div className="inline-flex flex-wrap items-center justify-center gap-3 text-[11px] font-mono text-stone-400">
-                      <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10">
-                        {isArabic ? 'الصلاة: ' : 'Prayer: '}<strong className="text-white uppercase">{prayerDisplay}</strong>
+                    <div className={`inline-flex flex-wrap items-center justify-center gap-3 text-[11px] font-mono ${
+                      isDark ? 'text-stone-400' : 'text-[#5A5D63]'
+                    }`}>
+                      <span className={`px-3 py-1 rounded-full border ${isDark ? 'bg-white/[0.06] border-white/10' : 'bg-[#F3F3F1] border-black/[0.08]'}`}>
+                        {isArabic ? 'الصلاة: ' : 'Prayer: '}<strong className={`uppercase ${isDark ? 'text-white' : 'text-[#111214]'}`}>{prayerDisplay}</strong>
                       </span>
-                      <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10">
-                        {isArabic ? 'الحالة: ' : 'Status: '}<strong className="text-emerald-400 uppercase">
+                      <span className={`px-3 py-1 rounded-full border ${isDark ? 'bg-white/[0.06] border-white/10' : 'bg-[#F3F3F1] border-black/[0.08]'}`}>
+                        {isArabic ? 'الحالة: ' : 'Status: '}<strong className={`uppercase ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>
                           {finalStatus === 'on_time'
                             ? t(langCode, 'statusOnTime')
                             : finalStatus === 'late'
@@ -627,8 +673,8 @@ export const PrayerCheckModal: React.FC<PrayerCheckModalProps> = ({
                             : t(langCode, 'statusMissed')}
                         </strong>
                       </span>
-                      <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10">
-                        {isArabic ? 'الحفظ: ' : 'Storage: '}<strong className="text-[#DFBA7F]">{isArabic ? 'محلي في الجهاز' : 'Local IndexedDB'}</strong>
+                      <span className={`px-3 py-1 rounded-full border ${isDark ? 'bg-white/[0.06] border-white/10' : 'bg-[#F3F3F1] border-black/[0.08]'}`}>
+                        {isArabic ? 'الحفظ: ' : 'Storage: '}<strong className={isDark ? 'text-white' : 'text-[#111214]'}>{isArabic ? 'محلي في الجهاز' : 'Local IndexedDB'}</strong>
                       </span>
                     </div>
                   </div>
@@ -637,7 +683,9 @@ export const PrayerCheckModal: React.FC<PrayerCheckModalProps> = ({
                     <button
                       type="button"
                       onClick={onClose}
-                      className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#C9A063] via-[#DFBA7F] to-[#C9A063] text-[#050811] font-cinzel text-xs font-bold tracking-wider uppercase shadow-lg hover:brightness-110 active:scale-95 transition-all cursor-pointer"
+                      className={`w-full py-3.5 px-6 rounded-2xl font-cinzel text-xs font-bold tracking-wider uppercase shadow-sm active:scale-95 transition-all cursor-pointer ${
+                        isDark ? 'bg-white hover:bg-stone-200 text-[#111214]' : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                      }`}
                     >
                       {t(langCode, 'returnHome')}
                     </button>

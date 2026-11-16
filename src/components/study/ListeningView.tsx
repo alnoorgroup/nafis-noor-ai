@@ -147,22 +147,28 @@ export const ListeningView: React.FC<ListeningViewProps> = ({ isDark, language }
       {/* Top Banner */}
       <div
         className={`p-6 rounded-2xl border ${
-          isDark ? 'bg-[#101318] border-white/5 shadow-xl' : 'bg-white border-stone-200 shadow-md'
+          isDark
+            ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+            : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
         }`}
       >
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="px-2.5 py-0.5 text-[11px] font-semibold tracking-wider uppercase rounded-full bg-[#C9A063]/15 text-[#DFBA7F] border border-[#C9A063]/30 flex items-center gap-1">
+              <span className={`px-2.5 py-0.5 text-[11px] font-semibold tracking-wider uppercase rounded-full border flex items-center gap-1 ${
+                isDark
+                  ? 'bg-white/[0.08] text-white border-white/15'
+                  : 'bg-[#F3F3F1] text-[#111214] border-black/[0.08]'
+              }`}>
                 <Ear className="w-3.5 h-3.5" />
                 Arabic Listening Center
               </span>
-              <span className="text-xs text-stone-500">Acoustic Discrimination & Memory</span>
+              <span className={`text-xs ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>Acoustic Discrimination & Memory</span>
             </div>
-            <h2 className="text-2xl font-bold font-serif text-stone-900 dark:text-stone-100">
+            <h2 className={`text-2xl font-bold font-serif ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
               Listen & Comprehend Arabic
             </h2>
-            <p className="text-sm text-stone-500 dark:text-stone-400 mt-0.5">
+            <p className={`text-sm mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               Train your ear to distinguish subtle throat letters, recognize vocab by sound, identify missing words, and develop listening memory.
             </p>
           </div>
@@ -187,10 +193,12 @@ export const ListeningView: React.FC<ListeningViewProps> = ({ isDark, language }
                 }}
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
                   selectedCategory === cat.id
-                    ? 'border-[#C9A063] bg-[#C9A063]/20 text-[#DFBA7F]'
+                    ? isDark
+                      ? 'border-white bg-white text-[#111214]'
+                      : 'border-[#111214] bg-[#111214] text-white'
                     : isDark
-                    ? 'border-white/5 bg-white/5 text-stone-400 hover:text-stone-200'
-                    : 'border-stone-200 bg-stone-50 text-stone-700 hover:bg-stone-100'
+                    ? 'border-white/[0.08] bg-white/[0.06] text-stone-300 hover:text-white'
+                    : 'border-black/[0.08] bg-[#F3F3F1] text-[#3F4248] hover:bg-black/[0.08]'
                 }`}
               >
                 {cat.label}
@@ -203,28 +211,34 @@ export const ListeningView: React.FC<ListeningViewProps> = ({ isDark, language }
       {/* Main Exercise Card */}
       <div
         className={`max-w-2xl mx-auto p-7 rounded-2xl border text-center space-y-6 ${
-          isDark ? 'bg-[#101318] border-white/5 shadow-xl' : 'bg-white border-stone-200 shadow-md'
+          isDark
+            ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+            : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
         }`}
       >
-        <div className="flex items-center justify-between text-xs text-stone-500">
+        <div className={`flex items-center justify-between text-xs ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
           <span>Question {currentIndex + 1} of {filteredQuestions.length}</span>
-          <span className="px-2 py-0.5 rounded-md bg-[#C9A063]/15 text-[#DFBA7F] font-semibold uppercase text-[10px]">
+          <span className={`px-2 py-0.5 rounded-md font-semibold uppercase text-[10px] border ${
+            isDark ? 'bg-white/[0.08] text-white border-white/15' : 'bg-[#F3F3F1] text-[#111214] border-black/[0.08]'
+          }`}>
             {currentQ.level}
           </span>
         </div>
 
         <div className="space-y-1">
-          <h3 className="text-xl font-bold font-serif text-stone-900 dark:text-stone-100">
+          <h3 className={`text-xl font-bold font-serif ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
             {currentQ.title}
           </h3>
-          <p className="text-sm text-stone-400">{currentQ.questionText}</p>
+          <p className={`text-sm ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{currentQ.questionText}</p>
         </div>
 
         {/* Big Audio Play Button */}
         <div className="py-4 flex flex-col items-center justify-center gap-3">
           <button
             onClick={() => handlePlayAudio()}
-            className="w-20 h-20 rounded-full bg-gradient-to-tr from-[#DFBA7F] to-[#C9A063] text-[#080A0E] flex items-center justify-center shadow-lg hover:scale-105 transition-transform group"
+            className={`w-20 h-20 rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-transform group ${
+              isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+            }`}
             title="Listen to Arabic Audio"
           >
             <Volume2 className="w-8 h-8 group-hover:scale-110 transition-transform" />
@@ -233,15 +247,19 @@ export const ListeningView: React.FC<ListeningViewProps> = ({ isDark, language }
           <div className="flex items-center gap-3">
             <button
               onClick={() => handlePlayAudio(0.85)}
-              className="text-xs font-semibold text-stone-400 hover:text-[#DFBA7F] flex items-center gap-1"
+              className={`text-xs font-semibold flex items-center gap-1 transition-colors ${
+                isDark ? 'text-stone-400 hover:text-white' : 'text-[#5A5D63] hover:text-[#111214]'
+              }`}
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Normal Speed (1.0x)</span>
             </button>
-            <span className="text-stone-600">•</span>
+            <span className={isDark ? 'text-stone-600' : 'text-stone-300'}>•</span>
             <button
               onClick={() => handlePlayAudio(0.6)}
-              className="text-xs font-semibold text-stone-400 hover:text-[#DFBA7F] flex items-center gap-1"
+              className={`text-xs font-semibold flex items-center gap-1 transition-colors ${
+                isDark ? 'text-stone-400 hover:text-white' : 'text-[#5A5D63] hover:text-[#111214]'
+              }`}
             >
               <Gauge className="w-3.5 h-3.5" />
               <span>Slow Pace (0.6x)</span>
@@ -255,14 +273,18 @@ export const ListeningView: React.FC<ListeningViewProps> = ({ isDark, language }
             const isSelected = selectedOption === idx;
             const isCorrect = idx === currentQ.correctIndex;
             let btnStyle = isDark
-              ? 'bg-stone-900/60 border-white/5 text-stone-200 hover:bg-white/10'
-              : 'bg-stone-50 border-stone-200 text-stone-800 hover:bg-stone-100';
+              ? 'bg-[#1B1D23] border-white/[0.08] text-stone-200 hover:bg-white/10'
+              : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214] hover:bg-black/[0.08]';
 
             if (isAnswered) {
               if (isCorrect) {
-                btnStyle = 'bg-emerald-500/20 border-emerald-500/60 text-emerald-300 font-semibold';
+                btnStyle = isDark
+                  ? 'bg-emerald-500/20 border-emerald-500/60 text-emerald-300 font-semibold'
+                  : 'bg-emerald-50 border-emerald-500 text-emerald-800 font-semibold';
               } else if (isSelected) {
-                btnStyle = 'bg-rose-500/20 border-rose-500/60 text-rose-300';
+                btnStyle = isDark
+                  ? 'bg-rose-500/20 border-rose-500/60 text-rose-300'
+                  : 'bg-rose-50 border-rose-500 text-rose-700';
               }
             }
 
@@ -274,8 +296,8 @@ export const ListeningView: React.FC<ListeningViewProps> = ({ isDark, language }
                 className={`p-4 rounded-2xl border text-sm transition-all flex items-center justify-between gap-3 ${btnStyle}`}
               >
                 <span>{opt}</span>
-                {isAnswered && isCorrect && <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />}
-                {isAnswered && isSelected && !isCorrect && <XCircle className="w-4 h-4 text-rose-400 flex-shrink-0" />}
+                {isAnswered && isCorrect && <CheckCircle2 className={`w-4 h-4 flex-shrink-0 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`} />}
+                {isAnswered && isSelected && !isCorrect && <XCircle className={`w-4 h-4 flex-shrink-0 ${isDark ? 'text-rose-400' : 'text-rose-600'}`} />}
               </button>
             );
           })}
@@ -286,8 +308,12 @@ export const ListeningView: React.FC<ListeningViewProps> = ({ isDark, language }
           <div
             className={`p-4 rounded-2xl border text-left text-xs space-y-3 ${
               selectedOption === currentQ.correctIndex
-                ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
-                : 'border-rose-500/30 bg-rose-500/10 text-rose-300'
+                ? isDark
+                  ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
+                  : 'border-emerald-300 bg-emerald-50 text-emerald-800'
+                : isDark
+                ? 'border-rose-500/30 bg-rose-500/10 text-rose-300'
+                : 'border-rose-300 bg-rose-50 text-rose-800'
             }`}
           >
             <div className="flex items-center gap-2 font-semibold">
@@ -299,14 +325,18 @@ export const ListeningView: React.FC<ListeningViewProps> = ({ isDark, language }
               ) : (
                 <>
                   <XCircle className="w-4 h-4" />
-                  <span>Let's listen again and analyze:</span>
+                  <span>Let&apos;s listen again and analyze:</span>
                 </>
               )}
             </div>
-            <p className="text-stone-300">{currentQ.explanation}</p>
+            <p className={isDark ? 'text-stone-300' : 'text-[#3F4248]'}>{currentQ.explanation}</p>
             <button
               onClick={handleNext}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] font-semibold text-xs flex items-center gap-1.5 ml-auto"
+              className={`px-4 py-2 rounded-xl font-semibold text-xs flex items-center gap-1.5 ml-auto transition-colors ${
+                isDark
+                  ? 'bg-white text-[#111214] hover:bg-stone-200'
+                  : 'bg-[#111214] text-white hover:bg-[#27292D]'
+              }`}
             >
               <span>Next Exercise</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -314,9 +344,11 @@ export const ListeningView: React.FC<ListeningViewProps> = ({ isDark, language }
           </div>
         )}
 
-        <div className="text-xs text-stone-500 pt-2 border-t border-stone-200/40 dark:border-white/5 flex items-center justify-between">
+        <div className={`text-xs pt-2 border-t flex items-center justify-between ${
+          isDark ? 'text-stone-400 border-white/[0.08]' : 'text-[#6B6F76] border-black/[0.08]'
+        }`}>
           <span>Actual listening accuracy:</span>
-          <span className="font-semibold text-stone-300">
+          <span className={`font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
             {sessionScore.total > 0
               ? `${Math.round((sessionScore.correct / sessionScore.total) * 100)}% (${sessionScore.correct}/${sessionScore.total})`
               : '0%'}

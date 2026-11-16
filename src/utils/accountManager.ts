@@ -218,6 +218,9 @@ export async function registerAccount(
     unlockedAchievements: [],
     activityHistory: [],
     noorAiConversation: [],
+    noorAiSessions: [],
+    noorAiMemories: [],
+    noorAiMemoryEnabled: true,
   });
 
   const newAccount: UserAccount = {
@@ -424,6 +427,17 @@ function getStatsSnapshotHash(stats: UserStats): string {
     theme: stats.themePreference,
     name: stats.userName,
     sessionsCount: stats.noorAiSessions?.length || 0,
+    sessionsSig: (stats.noorAiSessions || [])
+      .slice(0, 60)
+      .map((s) => `${s.id}:${s.title}:${s.messages?.length || 0}:${s.updatedAt}`)
+      .join('|'),
+    activeSessionId: stats.activeNoorSessionId || '',
+    convCount: stats.noorAiConversation?.length || 0,
+    memoriesSig: (stats.noorAiMemories || [])
+      .map((m) => `${m.id}:${m.updatedAt}:${m.content.length}`)
+      .join('|'),
+    memoryEnabled: stats.noorAiMemoryEnabled !== false,
+    savedNoorCount: stats.savedNoorMessages?.length || 0,
   });
 }
 
@@ -837,7 +851,8 @@ export function exportUserDataJSON(stats: UserStats): string {
     },
     bookmarks: stats.bookmarks,
     savedDuas: stats.savedDuas,
-    noorAiConversationsCount: stats.noorAiConversation?.length || 0,
+    noorAiConversationsCount: stats.noorAiSessions?.length || stats.noorAiConversation?.length || 0,
+    noorAiMemories: stats.noorAiMemories || [],
   };
   return JSON.stringify(exportData, null, 2);
 }

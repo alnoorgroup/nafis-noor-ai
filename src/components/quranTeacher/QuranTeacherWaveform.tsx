@@ -52,18 +52,18 @@ export const QuranTeacherWaveform: React.FC<QuranTeacherWaveformProps> = ({
   // Color theme according to state
   const getBarColor = (index: number) => {
     if (state === 'ai_speaking') {
-      return isDark ? 'bg-[#DFBA7F]' : 'bg-[#C9A063]';
+      return isDark ? 'bg-white' : 'bg-[#111214]';
     }
     if (state === 'evaluating') {
-      return isDark ? 'bg-amber-400 animate-pulse' : 'bg-amber-600 animate-pulse';
+      return isDark ? 'bg-emerald-400 animate-pulse' : 'bg-emerald-600 animate-pulse';
     }
     if (state === 'listening') {
       if (audioLevel > 0.08) {
         return isDark
-          ? 'bg-gradient-to-t from-[#C9A063] to-[#F5EFE6] shadow-[0_0_12px_rgba(223,186,127,0.5)]'
-          : 'bg-gradient-to-t from-[#8E6527] to-[#C9A063] shadow-[0_0_8px_rgba(201,160,99,0.3)]';
+          ? 'bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.4)]'
+          : 'bg-emerald-600 shadow-[0_0_8px_rgba(5,150,105,0.3)]';
       }
-      return isDark ? 'bg-[#C9A063]/40' : 'bg-[#A67C38]/40';
+      return isDark ? 'bg-white/40' : 'bg-[#111214]/40';
     }
     return isDark ? 'bg-stone-700' : 'bg-stone-300';
   };

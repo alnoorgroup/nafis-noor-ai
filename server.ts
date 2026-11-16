@@ -124,13 +124,103 @@ function getGenAI(): GoogleGenAI {
   return aiClient;
 }
 
-// Ultra-low latency Gemini generator prioritizing fast responses
-const CANDIDATE_MODELS = ['gemini-3.1-flash-lite', 'gemini-3.8-flash', 'gemini-flash-latest'];
+// Ultra-low latency Gemini generator prioritizing valid, fast production models
+const CANDIDATE_MODELS = ['gemini-4-hydrogen', 'gemini-3.1-flash-lite', 'gemini-2.5-flash'];
+
+type ExtractedMemoryItem = {
+  content: string;
+  category?: 'preference' | 'personal' | 'learning' | 'goal' | 'context';
+};
+
+function parseMemoriesToSave(rawList: unknown): ExtractedMemoryItem[] | undefined {
+  if (!Array.isArray(rawList)) return undefined;
+  const validCats = new Set(['preference', 'personal', 'learning', 'goal', 'context']);
+  const out: ExtractedMemoryItem[] = [];
+  for (const item of rawList) {
+    if (typeof item === 'string' && item.trim()) {
+      out.push({ content: item.trim().slice(0, 300), category: 'context' });
+    } else if (item && typeof item === 'object' && typeof (item as any).content === 'string' && (item as any).content.trim()) {
+      const catRaw = String((item as any).category || '').trim().toLowerCase();
+      out.push({
+        content: (item as any).content.trim().slice(0, 300),
+        category: validCats.has(catRaw) ? (catRaw as ExtractedMemoryItem['category']) : 'context',
+      });
+    }
+    if (out.length >= 10) break;
+  }
+  return out.length > 0 ? out : undefined;
+}
+
+function parseMemoryIdsToForget(rawList: unknown): string[] | undefined {
+  if (!Array.isArray(rawList)) return undefined;
+  const ids = rawList
+    .filter((id): id is string => typeof id === 'string' && id.trim().length > 0)
+    .map((id) => id.trim().slice(0, 128))
+    .slice(0, 20);
+  return ids.length > 0 ? ids : undefined;
+}
+
+function extractNoorJson(raw: string): {
+  directAnswer: string;
+  suggestedTitle?: string;
+  transcript?: string;
+  memoriesToSave?: ExtractedMemoryItem[];
+  memoryIdsToForget?: string[];
+} {
+  const trimmed = (raw || '').trim();
+  const stripped = trimmed
+    .replace(/^```(?:json)?\s*/i, '')
+    .replace(/\s*```$/i, '')
+    .trim();
+
+  try {
+    const obj = JSON.parse(stripped);
+    if (obj && typeof obj.directAnswer === 'string' && obj.directAnswer.trim()) {
+      return {
+        directAnswer: obj.directAnswer,
+        suggestedTitle: typeof obj.suggestedTitle === 'string' ? obj.suggestedTitle : undefined,
+        transcript: typeof obj.transcript === 'string' && obj.transcript.trim() ? obj.transcript.trim() : undefined,
+        memoriesToSave: parseMemoriesToSave(obj.memoriesToSave),
+        memoryIdsToForget: parseMemoryIdsToForget(obj.memoryIdsToForget),
+      };
+    }
+  } catch {
+    const objMatch = stripped.match(/\{[\s\S]*\}/);
+    if (objMatch) {
+      try {
+        const obj = JSON.parse(objMatch[0]);
+        if (obj && typeof obj.directAnswer === 'string' && obj.directAnswer.trim()) {
+          return {
+            directAnswer: obj.directAnswer,
+            suggestedTitle: typeof obj.suggestedTitle === 'string' ? obj.suggestedTitle : undefined,
+            transcript: typeof obj.transcript === 'string' && obj.transcript.trim() ? obj.transcript.trim() : undefined,
+            memoriesToSave: parseMemoriesToSave(obj.memoriesToSave),
+            memoryIdsToForget: parseMemoryIdsToForget(obj.memoryIdsToForget),
+          };
+        }
+      } catch {
+        // Ignore parse error and fall through to raw text
+      }
+    }
+  }
+
+  return { directAnswer: stripped };
+}
+
+type NoorContentInput =
+  | string
+  | {
+      parts: Array<{
+        text?: string;
+        inlineData?: { mimeType: string; data: string };
+      }>;
+    };
 
 async function generateWithModelFallback(
-  promptText: string,
+  contents: NoorContentInput,
   systemInstruction: string,
-  responseSchema?: Record<string, unknown>
+  responseSchema?: Record<string, unknown>,
+  preferLowLatency = false
 ): Promise<string> {
   const ai = getGenAI();
   let lastError: unknown = null;
@@ -144,13 +234,13 @@ async function generateWithModelFallback(
       if (responseSchema) {
         config.responseSchema = responseSchema;
       }
-      if (model === 'gemini-3.8-flash') {
+      if (preferLowLatency && model === 'gemini-4-hydrogen') {
         config.thinkingConfig = { thinkingLevel: ThinkingLevel.LOW };
       }
 
       const response = await ai.models.generateContent({
         model,
-        contents: promptText,
+        contents,
         config,
       });
 
@@ -168,8 +258,22 @@ async function generateWithModelFallback(
 }
 
 // Topic-aware Islamic knowledge base with verified texts & teachings
-function getContextualIslamicFallback(question: string) {
+function getContextualIslamicFallback(question: string, langInput = 'en') {
   const q = question.toLowerCase();
+  const wantsArabic =
+    langInput.toLowerCase().startsWith('ar') ||
+    langInput.toLowerCase().includes('arab') ||
+    /[\u0600-\u06FF]/.test(question);
+
+  if (wantsArabic) {
+    return {
+      suggestedTitle: 'إرشاد وتدبر',
+      greeting: 'السلام عليكم ورحمة الله وبركاته.',
+      directAnswer:
+        'الحمد لله والصلاة والسلام على رسول الله وعلى آله وصحبه ومن والاه. طلب العلم النافع بإخلاصٍ وتأنٍّ من أعظم القربات إلى الله تعالى؛ وللتثبت من المسائل الشرعية وتدبر الآيات والأحاديث يُنصح بالرجوع إلى التفاسير الموثوقة كابن كثير والسعدي، ومراجعة أهل العلم المعتمدين في المسائل الخاصة.\n\n> ﴿وَقُل رَّبِّ زِدْنِي عِلْمًا﴾ (طه: 114)\n\nأسأل الله العظيم أن يرزقنا وإياكم الفهم السديد والعمل الصالح.',
+      sources: ['القرآن الكريم (سورة طه: 114)', 'صحيح مسلم (2699)'],
+    };
+  }
 
   if (q.includes('tahajjud') || q.includes('night prayer') || q.includes('qiyam')) {
     return {
@@ -327,68 +431,294 @@ function getContextualIslamicFallback(question: string) {
   };
 }
 
-// Noor AI Islamic Assistant Endpoint
-app.post('/api/noor-ai', async (req, res) => {
-  const { question, conversationHistory, language } = req.body;
-  if (!question || typeof question !== 'string') {
-    return res.status(400).json({ error: 'Question is required' });
+// Ephemeral store for Live Voice memory & history context hydration
+const liveContextStore = new Map<string, { memoryContext: string; expiresAt: number }>();
+
+function cleanupExpiredLiveContexts() {
+  const now = Date.now();
+  for (const [key, val] of liveContextStore.entries()) {
+    if (val.expiresAt <= now) {
+      liveContextStore.delete(key);
+    }
   }
+}
+
+app.post('/api/live/context', (req, res) => {
+  cleanupExpiredLiveContexts();
+  const rawContext = typeof req.body?.memoryContext === 'string' ? req.body.memoryContext.trim().slice(0, 8000) : '';
+  if (!rawContext) {
+    return res.json({ success: true, contextId: null });
+  }
+  const contextId = crypto.randomBytes(12).toString('hex');
+  liveContextStore.set(contextId, {
+    memoryContext: rawContext,
+    expiresAt: Date.now() + 2 * 60 * 1000,
+  });
+  return res.json({ success: true, contextId });
+});
+
+function buildNoorMemoryAndHistoryBlock(
+  conversationHistory: unknown,
+  pastConversations: unknown,
+  userMemories: unknown,
+  memoryEnabled: boolean
+): {
+  memorySection: string;
+  pastSection: string;
+  currentSection: string;
+} {
+  let memorySection = '';
+  if (memoryEnabled && Array.isArray(userMemories) && userMemories.length > 0) {
+    const lines = userMemories
+      .slice(0, 120)
+      .map((m: any) => {
+        const id = typeof m?.id === 'string' ? m.id.slice(0, 64) : '';
+        const content = typeof m?.content === 'string' ? m.content.trim().slice(0, 300) : '';
+        const category = typeof m?.category === 'string' ? m.category.slice(0, 24) : 'context';
+        if (!content) return '';
+        return `- [${id || 'mem'}] (${category}): ${content}`;
+      })
+      .filter(Boolean);
+    if (lines.length > 0) {
+      memorySection = `[SAVED LONG-TERM USER MEMORIES]\n${lines.join('\n')}`;
+    }
+  }
+
+  let pastSection = '';
+  if (Array.isArray(pastConversations) && pastConversations.length > 0) {
+    const formattedSessions: string[] = [];
+    let budget = 9500;
+    for (const sess of pastConversations.slice(0, 40)) {
+      if (!sess || typeof sess !== 'object') continue;
+      const title = typeof (sess as any).title === 'string' ? (sess as any).title.trim().slice(0, 120) : 'Conversation';
+      const updatedAt = typeof (sess as any).updatedAt === 'string' ? (sess as any).updatedAt.slice(0, 24) : '';
+      const msgs = Array.isArray((sess as any).messages) ? (sess as any).messages : [];
+      if (msgs.length === 0) continue;
+
+      const msgLines = msgs
+        .slice(-14)
+        .map((m: any) => {
+          const who = m?.sender === 'user' ? 'User' : 'Noor';
+          const txt = typeof m?.text === 'string' ? m.text.replace(/\s+/g, ' ').trim().slice(0, 420) : '';
+          return txt ? `  ${who}: ${txt}` : '';
+        })
+        .filter(Boolean);
+
+      if (msgLines.length === 0) continue;
+      const block = `Session "${title}"${updatedAt ? ` (${updatedAt})` : ''}:\n${msgLines.join('\n')}`;
+      if (budget - block.length < 0 && formattedSessions.length > 0) {
+        // Summarize remaining older titles concisely if budget reached
+        const remainingTitle = `- "${title}"${updatedAt ? ` (${updatedAt.slice(0, 10)})` : ''}`;
+        if (budget > remainingTitle.length) {
+          formattedSessions.push(remainingTitle);
+          budget -= remainingTitle.length;
+        }
+        continue;
+      }
+      formattedSessions.push(block);
+      budget -= block.length;
+    }
+
+    if (formattedSessions.length > 0) {
+      pastSection = `[PREVIOUS CONVERSATION HISTORY ARCHIVE (Non-Deleted Sessions, Newest First)]\n${formattedSessions.join('\n\n')}`;
+    }
+  }
+
+  let currentSection = '';
+  if (Array.isArray(conversationHistory) && conversationHistory.length > 0) {
+    const recentLines = conversationHistory
+      .slice(-24)
+      .map((m: any) => {
+        const who = m?.sender === 'user' ? 'User' : 'Noor';
+        const txt = typeof m?.text === 'string' ? m.text.trim().slice(0, 1500) : '';
+        return txt ? `${who}: ${txt}` : '';
+      })
+      .filter(Boolean);
+    if (recentLines.length > 0) {
+      currentSection = `[CURRENT CONVERSATION]\n${recentLines.join('\n')}`;
+    }
+  }
+
+  return { memorySection, pastSection, currentSection };
+}
+
+// Noor AI Islamic Assistant Endpoint (supports text, recorded voice audio, image, cross-session history, & long-term memory)
+app.post('/api/noor-ai', async (req, res) => {
+  const {
+    question,
+    audio,
+    image,
+    conversationHistory,
+    pastConversations,
+    userMemories,
+    memoryEnabled: rawMemoryEnabled,
+    language,
+  } = req.body || {};
+  const memoryEnabled = rawMemoryEnabled !== false;
+  const hasQuestion = typeof question === 'string' && question.trim().length > 0;
+  const rawAudioData =
+    audio && typeof audio === 'object' && typeof audio.data === 'string'
+      ? audio.data.replace(/^data:[^;]+;base64,/i, '').trim()
+      : '';
+  const hasAudio = rawAudioData.length > 0;
+
+  const rawImageData =
+    image && typeof image === 'object' && typeof image.data === 'string'
+      ? image.data.replace(/^data:[^;]+;base64,/i, '').trim()
+      : typeof image === 'string' && image.startsWith('data:')
+      ? image.replace(/^data:[^;]+;base64,/i, '').trim()
+      : '';
+  const hasImage = rawImageData.length > 0;
+
+  if (!hasQuestion && !hasAudio && !hasImage) {
+    return res.status(400).json({ error: 'Question, audio, or image input is required' });
+  }
+
+  const normalizedMime =
+    audio && typeof audio.mimeType === 'string' && audio.mimeType.trim()
+      ? audio.mimeType.split(';')[0].trim()
+      : 'audio/webm';
+
+  const normalizedImageMime =
+    image && typeof image === 'object' && typeof image.mimeType === 'string' && image.mimeType.trim()
+      ? image.mimeType.split(';')[0].trim()
+      : 'image/jpeg';
 
   const langInput = language || (req.headers['x-app-language'] as string) || (req.query?.language as string) || 'en';
   const meta = resolveLanguageMeta(langInput);
   const langDirective = getGlobalAiLanguageDirective(langInput);
 
+  const { memorySection, pastSection, currentSection } = buildNoorMemoryAndHistoryBlock(
+    conversationHistory,
+    pastConversations,
+    userMemories,
+    memoryEnabled
+  );
+
+  const memoryDirective = memoryEnabled
+    ? `3. CONTINUOUS MEMORY & CROSS-CONVERSATION RECALL (CHATGPT-STYLE):
+   - You NEVER forget the user's non-deleted previous conversations or saved long-term memories, even when they start a brand-new conversation.
+   - If the user asks about previous conversations, earlier questions, past topics, or what they discussed with you before, inspect [PREVIOUS CONVERSATION HISTORY ARCHIVE] and answer accurately, warmly, and specifically. If a topic is absent because they have not asked it or deleted that history, say so honestly without inventing anything.
+   - Automatically save NEW durable, genuinely useful facts into "memoriesToSave" (examples: user's name, location/country, learning goals, madhhab/reading preferences, desired answer style/length, personal context they share, or explicit "remember that..." / "تذكر أن..." instructions).
+   - Keep each saved memory as a concise, standalone fact (under 140 chars), in ${meta.name}. NEVER duplicate anything already listed in [SAVED LONG-TERM USER MEMORIES], and do NOT save trivial one-off questions.
+   - If the user explicitly asks you to forget or delete something from [SAVED LONG-TERM USER MEMORIES], return the exact matching memory ID(s) in "memoryIdsToForget" and confirm gently in your answer.`
+    : `3. CROSS-CONVERSATION RECALL & MEMORY TOGGLE:
+   - Automatic memory saving is currently paused by the user. Leave "memoriesToSave" empty ([]).
+   - Still answer questions about [PREVIOUS CONVERSATION HISTORY ARCHIVE] accurately if non-deleted history is provided.
+   - If the user asks to forget an existing memory ID from [SAVED LONG-TERM USER MEMORIES], include its ID in "memoryIdsToForget".`;
+
   const systemInstruction = `${langDirective}
 
-You are Noor AI, a tranquil, trustworthy, and precise Islamic assistant and scholar companion inside the NOOR app.
-You answer the seeker of knowledge with authentic Islamic scholarship, noble character (Adab), deep warmth, and heart-softening eloquence derived from the Holy Qur'an and authentic Sunnah.
+You are Noor AI, a serene, trustworthy, and scholarly Islamic assistant inside the NOOR app.
+You answer with authentic Islamic scholarship, noble character (Adab), clarity, and warmth grounded in the Holy Qur'an and authentic Sunnah.
 
 CORE DIRECTIVES:
-1. DIRECT, SHORT & UNIFIED ANSWER:
-   - Provide a direct, concise, and reverent answer in ${meta.name} (usually 1 to 2 focused, elegant paragraphs).
-   - Do NOT break your answer into multiple fragmented boxes, cards, or headings. Keep it as one unified, seamless explanation.
-   - If a Qur'anic verse or authentic Hadith is vital, weave it naturally, directly, and briefly into your text.
-   - If an important religious topic requires clarity, explain it clearly and smoothly in the body without creating extra sub-boxes or checklists.
+1. CLEAR, READABLE & NATURAL FORMATTING:
+   - Provide a clear, well-structured answer in ${meta.name}.
+   - Use clean Markdown when helpful: short focused paragraphs, **bold** key terms, bullet or numbered lists for steps/points, and Markdown blockquotes (>) for Qur'anic verses or Hadith.
+   - Do not wrap the response in decorative boxes or unnecessary filler.
 2. SCHOLARLY INTEGRITY & ADAB:
-   - Zero fabrication. Never invent any Hadith or Qur'anic verse.
-   - Conclude briefly and warmly with a natural short supplication if appropriate, woven into the text.
-   - For binding personal legal rulings, gently advise consulting a trusted local qualified scholar.`;
+   - Zero fabrication. Never invent any Hadith or Qur'anic verse. Cite chapter/verse or Hadith collection accurately when quoting.
+   - For binding personal legal rulings (Fatwa), gently advise consulting a trusted qualified local scholar.
+${memoryDirective}`;
 
-  const promptText = `User Question: "${question}"
-${conversationHistory && conversationHistory.length > 0 ? `Recent context: ${JSON.stringify(conversationHistory.slice(-3))}` : ''}
+  const contextSections = [memorySection, pastSection, currentSection].filter(Boolean).join('\n\n');
+  const contextPrefix = contextSections ? `${contextSections}\n\n` : '';
 
-Generate a concise, direct, and unified Islamic response in ${meta.name}. Keep the answer focused (1 to 2 short paragraphs max).`;
+  const promptText = hasAudio
+    ? `${contextPrefix}The user sent a voice message.${
+        hasQuestion ? ` Optional note: "${question.trim()}".` : ''
+      } Listen carefully to the attached audio, accurately transcribe what the user said into "transcript", and provide a clear, helpful, well-formatted Markdown Islamic response in ${meta.name} (matching the spoken language if clear, or ${meta.name}).`
+    : hasImage
+    ? `${contextPrefix}Analyze the attached image accurately and concisely.${
+        hasQuestion ? ` User question: "${question.trim()}".` : ''
+      } Respond in ${meta.name} using clean, scannable Markdown:
+- **Visual Summary**: Crisp, direct overview of what appears in the image.
+- **Text / Details** (include if text, Arabic calligraphy, verses, labels, or ingredients appear): Accurate transcription and meaning.
+- **Insight & Guidance**: Direct answer to the user's request with authentic, helpful context.
+Keep the response focused, insightful, and free of filler.`
+    : `${contextPrefix}User Question: "${question.trim()}"\nProvide a clear, helpful, well-formatted Markdown Islamic response in ${meta.name}.`;
+
+  const partsArray: Array<any> = [];
+  if (hasAudio) {
+    partsArray.push({
+      inlineData: {
+        mimeType: normalizedMime,
+        data: rawAudioData,
+      },
+    });
+  }
+  if (hasImage) {
+    partsArray.push({
+      inlineData: {
+        mimeType: normalizedImageMime,
+        data: rawImageData,
+      },
+    });
+  }
+  partsArray.push({ text: promptText });
+
+  const contents: NoorContentInput = partsArray.length > 1 ? { parts: partsArray } : promptText;
 
   const noorSchema = {
     type: Type.OBJECT,
     properties: {
       suggestedTitle: {
         type: Type.STRING,
-        description: `Short 2-4 word title for this conversation thread in ${meta.name}.`
+        description: `Short 2-5 word title for this conversation thread in ${meta.name}.`,
       },
+      ...(hasAudio
+        ? {
+            transcript: {
+              type: Type.STRING,
+              description: "Accurate concise transcription of the user's spoken voice message.",
+            },
+          }
+        : {}),
       directAnswer: {
         type: Type.STRING,
-        description: `Unified, concise, and clear answer to the user's question (1-2 focused paragraphs max) in ${meta.name}.`
-      }
+        description: `Clear, readable Markdown response to the user's question in ${meta.name}.`,
+      },
+      memoriesToSave: {
+        type: Type.ARRAY,
+        description:
+          'New durable user facts, preferences, goals, or explicit "remember" instructions NOT already in saved memories. Empty array if none or memory paused.',
+        items: {
+          type: Type.OBJECT,
+          properties: {
+            content: {
+              type: Type.STRING,
+              description: `Concise standalone memory fact (max 140 chars) in ${meta.name}.`,
+            },
+            category: {
+              type: Type.STRING,
+              description: 'One of: preference, personal, learning, goal, context',
+            },
+          },
+          required: ['content'],
+        },
+      },
+      memoryIdsToForget: {
+        type: Type.ARRAY,
+        description: 'IDs from [SAVED LONG-TERM USER MEMORIES] that the user explicitly asked to forget or delete.',
+        items: { type: Type.STRING },
+      },
     },
-    required: ['directAnswer']
+    required: ['directAnswer'],
   };
 
   try {
-    const rawOutput = await generateWithModelFallback(promptText, systemInstruction, noorSchema);
-    let parsed;
-    try {
-      parsed = JSON.parse(rawOutput);
-    } catch {
-      parsed = {
-        directAnswer: rawOutput,
-      };
-    }
-
+    const rawOutput = await generateWithModelFallback(
+      contents,
+      systemInstruction,
+      noorSchema,
+      hasImage || hasAudio
+    );
+    const parsed = extractNoorJson(rawOutput);
     return res.json({ success: true, data: parsed });
   } catch (error: unknown) {
-    console.warn('[Noor AI] Fallback activated for user question. Providing verified Islamic knowledge base response.');
-    const fallbackData = getContextualIslamicFallback(question);
+    console.warn('[Noor AI] Fallback activated for user query:', error instanceof Error ? error.message : error);
+    const fallbackData = getContextualIslamicFallback(hasQuestion ? question : 'voice message', langInput);
     return res.json({
       success: true,
       data: {
@@ -1174,29 +1504,31 @@ function pcmToWavBuffer(pcmBuffer: Buffer, sampleRate = 24000, numChannels = 1):
   return Buffer.concat([header, pcmBuffer]);
 }
 
-// Text-to-Speech (TTS) Endpoint - Highest Quality Neural Arabic-Capable Voice
+// Text-to-Speech (TTS) Endpoint - Natural Human-Sounding Neural Arabic & English Voice
 app.post('/api/tts', async (req, res) => {
-  const { text, voice } = req.body;
+  const { text, voice, mode } = req.body;
   if (!text || typeof text !== 'string') {
     return res.status(400).json({ error: 'Text is required' });
   }
 
-  // Flagship mature, calm, teacher-like voices: Fenrir (deep/mature Ustadh), Kore (warm/serene Ustadha)
-  const voiceName = voice || 'Fenrir';
+  const isDhikrMode = mode === 'dhikr';
+  // Warm, natural human male voices: Charon (calm/conversational natural male), Fenrir (deep/mature), Kore (warm female)
+  const voiceName = voice || (isDhikrMode ? 'Charon' : 'Fenrir');
 
   try {
-    // Clean markdown and formatting noise
+    // Clean markdown, Quranic ornate brackets, and formatting symbols so the speaker reads words naturally
     const cleanText = text
-      .replace(/[*_#`~\[\]\(\)]/g, ' ')
+      .replace(/[﴿﴾\[\]\(\)*_`#~•]/g, ' ')
+      .replace(/\b\d+\b/g, ' ')
       .replace(/\s+/g, ' ')
       .trim()
-      .slice(0, 1200);
+      .slice(0, 1500);
 
     if (!cleanText) {
       return res.status(400).json({ error: 'Valid text required' });
     }
 
-    const cacheKey = `${voiceName}:${cleanText}`;
+    const cacheKey = `${voiceName}:${isDhikrMode ? 'dhikr' : 'std'}:${cleanText}`;
     if (serverTtsCache.has(cacheKey)) {
       const cached = serverTtsCache.get(cacheKey)!;
       return res.json({
@@ -1204,22 +1536,35 @@ app.post('/api/tts', async (req, res) => {
         audio: cached.audio,
         wavUrl: cached.wavUrl,
         sampleRate: 24000,
-        mimeType: 'audio/pcm',
+        mimeType: 'audio/wav',
         cached: true,
       });
     }
 
     const ai = getGenAI();
 
-    // Direct the neural model to produce natural, warm, mature, calm teacher speech
     const isArabic = /[\u0600-\u06FF]/.test(cleanText);
-    const speechPrompt = isArabic
-      ? `Speak in a natural, warm, mature, calm, clear, and teacher-like voice with authentic Arabic pronunciation, classical articulation (مخارج الحروف), and smooth breathing pauses:\n\n${cleanText}`
-      : `Speak in a natural, warm, mature, calm, clear, and teacher-like tone with authentic Arabic pronunciation for any Quranic or Islamic terms, and smooth pauses:\n\n${cleanText}`;
+    const speechStyle = isDhikrMode
+      ? 'Warm, calm, sincere human male voice speaking naturally in clear classical Arabic, with gentle unhurried conversational rhythm, authentic pronunciation, and soft natural breathing pauses between phrases—never robotic or mechanical.'
+      : isArabic
+        ? 'Warm, calm, natural human voice speaking clearly in Arabic with authentic articulation and relaxed breathing pauses.'
+        : 'Warm, calm, natural human voice speaking clearly at a relaxed pace with authentic Arabic pronunciation for Islamic terms.';
 
     const response = await ai.models.generateContent({
       model: 'gemini-3.8-flash-lite-tts',
-      contents: [{ parts: [{ text: speechPrompt }] }],
+      contents: [
+        {
+          role: 'user',
+          parts: [
+            {
+              text: cleanText,
+              speechMetadata: {
+                style: speechStyle,
+              },
+            },
+          ],
+        },
+      ],
       config: {
         responseModalities: [Modality.AUDIO],
         speechConfig: {
@@ -1230,27 +1575,35 @@ app.post('/api/tts', async (req, res) => {
       },
     });
 
-    const base64Audio =
-      response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+    const inlineData = response.candidates?.[0]?.content?.parts?.[0]?.inlineData;
+    const base64Audio = inlineData?.data;
 
     if (base64Audio) {
-      const pcmBuffer = Buffer.from(base64Audio, 'base64');
-      const wavBuffer = pcmToWavBuffer(pcmBuffer, 24000, 1);
-      const wavUrl = `data:audio/wav;base64,${wavBuffer.toString('base64')}`;
+      const rawBuffer = Buffer.from(base64Audio, 'base64');
+      // Unary generateContent returns a complete WAV file (starting with 'RIFF');
+      // only prepend a WAV header if the payload is headerless raw PCM.
+      const isAlreadyWav =
+        rawBuffer.length >= 12 &&
+        rawBuffer.subarray(0, 4).toString('ascii') === 'RIFF' &&
+        rawBuffer.subarray(8, 12).toString('ascii') === 'WAVE';
+
+      const wavBuffer = isAlreadyWav ? rawBuffer : pcmToWavBuffer(rawBuffer, 24000, 1);
+      const wavBase64 = wavBuffer.toString('base64');
+      const wavUrl = `data:audio/wav;base64,${wavBase64}`;
 
       // Manage cache size limit
       if (serverTtsCache.size > 400) {
         const firstKey = serverTtsCache.keys().next().value;
         if (firstKey) serverTtsCache.delete(firstKey);
       }
-      serverTtsCache.set(cacheKey, { audio: base64Audio, wavUrl });
+      serverTtsCache.set(cacheKey, { audio: wavBase64, wavUrl });
 
       return res.json({
         success: true,
-        audio: base64Audio,
+        audio: wavBase64,
         wavUrl,
         sampleRate: 24000,
-        mimeType: 'audio/pcm',
+        mimeType: 'audio/wav',
         cached: false,
       });
     }
@@ -1261,6 +1614,100 @@ app.post('/api/tts', async (req, res) => {
     return res.status(500).json({
       error: error?.message || 'Text-to-speech generation failed',
     });
+  }
+});
+
+// =========================================================================
+// SMART IMAGE STUDIO: CREATE & ANALYZE IMAGES (gemini-nano-banana-2.1 & gemini-3.1-flash-lite)
+// =========================================================================
+
+app.post('/api/image/create', async (req, res) => {
+  const { prompt, aspectRatio } = req.body || {};
+  if (!prompt || typeof prompt !== 'string') {
+    return res.status(400).json({ error: 'Prompt is required' });
+  }
+
+  const ai = getGenAI();
+  const ratio = aspectRatio || '1:1';
+
+  try {
+    const response = await ai.models.generateContent({
+      model: 'gemini-nano-banana-2.1',
+      contents: [
+        {
+          parts: [
+            {
+              text: `Generate an exquisite, high-quality professional image of: ${prompt}. Aspect ratio: ${ratio}. Clean composition and lighting.`,
+            },
+          ],
+        },
+      ],
+      config: {
+        responseModalities: [Modality.IMAGE],
+        imageConfig: {
+          aspectRatio: ratio === '16:9' ? '16:9' : ratio === '4:3' ? '4:3' : ratio === '3:4' ? '3:4' : '1:1',
+        },
+      },
+    });
+
+    const candidatePart = response.candidates?.[0]?.content?.parts?.find(
+      (p: any) => p.inlineData && p.inlineData.mimeType?.startsWith('image/')
+    );
+
+    if (candidatePart && candidatePart.inlineData) {
+      const mime = candidatePart.inlineData.mimeType || 'image/png';
+      const b64 = candidatePart.inlineData.data;
+      const imageUrl = `data:${mime};base64,${b64}`;
+      return res.json({ success: true, imageUrl });
+    }
+
+    return res.status(502).json({
+      success: false,
+      error: 'No image was generated for this description. Please try a different prompt.',
+    });
+  } catch (err: any) {
+    console.error('[Image Creation Error]:', err);
+    return res.status(500).json({ success: false, error: err?.message || 'Failed to generate image' });
+  }
+});
+
+app.post('/api/image/analyze', async (req, res) => {
+  const { image, prompt } = req.body || {};
+  const rawData = image && typeof image.data === 'string' ? image.data.replace(/^data:[^;]+;base64,/i, '').trim() : '';
+  const mimeType = image && typeof image.mimeType === 'string' ? image.mimeType : 'image/jpeg';
+
+  if (!rawData) {
+    return res.status(400).json({ error: 'Valid image data is required' });
+  }
+
+  const ai = getGenAI();
+  const queryPrompt = typeof prompt === 'string' && prompt.trim() ? prompt.trim() : 'Analyze this image in detail.';
+
+  try {
+    const response = await ai.models.generateContent({
+      model: 'gemini-3.1-flash-lite',
+      contents: [
+        {
+          parts: [
+            {
+              inlineData: {
+                mimeType,
+                data: rawData,
+              },
+            },
+            {
+              text: queryPrompt,
+            },
+          ],
+        },
+      ],
+    });
+
+    const analysis = response.text || 'Analysis completed successfully.';
+    return res.json({ success: true, analysis });
+  } catch (err: any) {
+    console.error('[Image Analysis Error]:', err);
+    return res.status(500).json({ success: false, error: err?.message || 'Failed to analyze image' });
   }
 });
 
@@ -1727,6 +2174,7 @@ async function startServer() {
   wss.on('connection', async (clientWs: WebSocket, request: http.IncomingMessage) => {
     let isClosed = false;
     let liveSession: any = null;
+    const pendingInputs: Array<{ audio?: string; text?: string }> = [];
 
     clientWs.on('error', (err: any) => {
       isClosed = true;
@@ -1738,19 +2186,72 @@ async function startServer() {
       if (isClosed || clientWs.readyState !== WebSocket.OPEN) return;
       try {
         const str = typeof payload === 'string' ? payload : JSON.stringify(payload);
-        clientWs.send(str, (err) => {
-          if (err) {
-            // Socket may have disconnected mid-flight; safe to suppress
-          }
+        clientWs.send(str, () => {
+          // Suppress mid-flight disconnect write error
         });
-      } catch (err: any) {
+      } catch {
         // Suppress any synchronous socket send exceptions
       }
     };
 
+    const forwardInputToLive = (payload: { audio?: string; text?: string }) => {
+      if (isClosed) return;
+      if (!liveSession) {
+        if (pendingInputs.length < 40) {
+          pendingInputs.push(payload);
+        }
+        return;
+      }
+      try {
+        if (payload.audio) {
+          liveSession.sendRealtimeInput({
+            audio: {
+              data: payload.audio,
+              mimeType: 'audio/pcm;rate=16000',
+            },
+          });
+        } else if (payload.text) {
+          liveSession.sendRealtimeInput({
+            text: payload.text,
+          });
+        }
+      } catch {
+        // Suppress errors if session closed while sending
+      }
+    };
+
+    // Attach listeners immediately so early microphone frames are never lost during Gemini Live handshake
+    clientWs.on('message', (rawData: any) => {
+      if (isClosed) return;
+      try {
+        const payload = JSON.parse(rawData.toString());
+        if (payload && (payload.audio || payload.text)) {
+          forwardInputToLive(payload);
+        }
+      } catch {
+        // Ignore malformed messages
+      }
+    });
+
+    clientWs.on('close', () => {
+      isClosed = true;
+      pendingInputs.length = 0;
+      console.log('[Noor Live API] Client disconnected');
+      if (liveSession) {
+        try {
+          liveSession.close?.();
+        } catch {}
+        liveSession = null;
+      }
+    });
+
     const url = new URL(request.url || '', `http://${request.headers.host || 'localhost'}`);
     const voiceParam = url.searchParams.get('voice') || 'Fenrir';
     const langParam = url.searchParams.get('lang') || url.searchParams.get('language') || 'en';
+    const contextIdParam = url.searchParams.get('contextId') || '';
+    const liveMemoryContext = contextIdParam ? liveContextStore.get(contextIdParam)?.memoryContext || '' : '';
+    if (contextIdParam) liveContextStore.delete(contextIdParam);
+
     const validVoices = ['Fenrir', 'Kore', 'Charon', 'Zephyr', 'Puck'];
     const chosenVoice = validVoices.includes(voiceParam) ? voiceParam : 'Fenrir';
     const meta = resolveLanguageMeta(langParam);
@@ -1764,6 +2265,10 @@ async function startServer() {
         throw new Error('GEMINI_API_KEY is not configured on the server');
       }
 
+      const memoryBlock = liveMemoryContext
+        ? `\n\n[USER MEMORIES & RECENT CONVERSATION HISTORY]\nRemember this context silently and draw on it naturally when helpful or if the user asks about previous conversations:\n${liveMemoryContext}`
+        : '';
+
       const ai = getGenAI();
       liveSession = await ai.live.connect({
         model: 'gemini-3.8-live',
@@ -1776,26 +2281,17 @@ async function startServer() {
           },
           systemInstruction: `${liveLangDirective}
 
-You are Nafis Noor AI, a natural, warm, mature, calm, clear, and teacher-like Islamic companion and Quran teacher voice.
-You speak directly with the user in natural, real-time bidirectional spoken audio conversation.
-All conversational speech, explanations, instructions, and guidance MUST be spoken strictly in ${meta.name}.
+You are Nafis Noor AI, a warm, calm, articulate Islamic companion and teacher.
+Speak directly with the user in real-time spoken audio strictly in ${meta.name}.
 
-CORE VOICE & PHONOLOGY DIRECTIVES:
-1. Native Articulation & Fluency:
-   - When speaking in ${meta.name}, speak with natural, idiomatic, and culturally refined fluency.
-   - For Quranic or Arabic citations, articulate classical Arabic letters precisely from their authentic articulation points (مخارج الحروف): crisp 'Ayn (ع), Haa (ح), Daad (ض), Qaaf (ق), Taa (ط), Thaa (ث), Khaa (خ).
-2. Vocal Persona, Tone & Pacing:
-   - Vocal Presence: Warm, mature, serene, unhurried, patient, and teacher-like (معلم وقور، حليم، ناصح).
-   - Delivery: Speak with dignified calm, measured cadence, and natural smooth breathing pauses between thoughts. Never sound rushed, robotic, or breathless.
-   - Embody spiritual serenity (Sakinah) and compassionate encouragement.
+CORE VOICE & RESPONSIVENESS DIRECTIVES:
+1. Immediate, Natural Conversation:
+   - Respond promptly and naturally as soon as the user finishes speaking. Keep turns concise, warm, and listener-friendly (1–3 clear sentences unless asked for detail).
+2. Native Articulation & Authentic Knowledge:
+   - Pronounce classical Arabic and Islamic terms clearly and accurately.
+   - Cite only authentic Quran/Sunnah knowledge with wisdom and kindness.
 3. Strict Separation of Quran Recitation:
-   - Keep Quran recitation separate from your AI teacher voice.
-   - You are a wise teacher, mentor, and guide.
-   - When citing a verse for Tadabbur or pedagogical instruction, pronounce it clearly, reverently, and with classical Tajweed accuracy, but do NOT sing, perform artificial melodic tilawah, or attempt to clone real Sheikhs.
-4. Spoken Clarity & Adab:
-   - Begin with a warm, peaceful Islamic greeting in Arabic and ${meta.name}.
-   - Keep responses concise and listener-friendly (2-3 clear sentences per turn).
-   - Conclude spiritual counsel with a short, sincere Du'a in ${meta.name}.`,
+   - Keep Quran recitation separate from your conversational teacher voice; cite verses reverently without melodic tilawah or imitating reciters.${memoryBlock}`,
           outputAudioTranscription: {},
           inputAudioTranscription: {},
         },
@@ -1803,14 +2299,12 @@ CORE VOICE & PHONOLOGY DIRECTIVES:
           onmessage: (message: LiveServerMessage) => {
             if (isClosed) return;
 
-            // Audio output chunks
             for (const part of message.serverContent?.modelTurn?.parts ?? []) {
               if (part.inlineData?.data) {
                 safeSend({ type: 'audio', audio: part.inlineData.data });
               }
             }
 
-            // Output audio transcription (words spoken by Noor AI)
             const outputText =
               (message.serverContent as any)?.outputAudioTranscription?.text ||
               (message.serverContent as any)?.outputTranscription?.text;
@@ -1818,7 +2312,6 @@ CORE VOICE & PHONOLOGY DIRECTIVES:
               safeSend({ type: 'output_transcript', text: outputText });
             }
 
-            // Input audio transcription (words spoken by user)
             const inputText =
               (message.serverContent as any)?.inputAudioTranscription?.text ||
               (message.serverContent as any)?.inputTranscription?.text;
@@ -1826,12 +2319,10 @@ CORE VOICE & PHONOLOGY DIRECTIVES:
               safeSend({ type: 'input_transcript', text: inputText });
             }
 
-            // User interrupted Noor AI
             if (message.serverContent?.interrupted) {
               safeSend({ type: 'interrupted' });
             }
 
-            // Turn complete
             if (message.serverContent?.turnComplete) {
               safeSend({ type: 'turn_complete' });
             }
@@ -1853,38 +2344,20 @@ CORE VOICE & PHONOLOGY DIRECTIVES:
         },
       });
 
-      // Forward client audio & text to Gemini Live
-      clientWs.on('message', (rawData: any) => {
-        if (isClosed || !liveSession) return;
+      if (isClosed) {
         try {
-          const payload = JSON.parse(rawData.toString());
-          if (payload.audio && liveSession) {
-            liveSession.sendRealtimeInput({
-              audio: {
-                data: payload.audio,
-                mimeType: 'audio/pcm;rate=16000',
-              },
-            });
-          } else if (payload.text && liveSession) {
-            liveSession.sendRealtimeInput({
-              text: payload.text,
-            });
-          }
-        } catch {
-          // Suppress errors if session closed while sending
-        }
-      });
+          liveSession?.close?.();
+        } catch {}
+        liveSession = null;
+        return;
+      }
 
-      clientWs.on('close', () => {
-        isClosed = true;
-        console.log('[Noor Live API] Client disconnected');
-        if (liveSession) {
-          try {
-            liveSession.close?.();
-          } catch {}
-          liveSession = null;
-        }
-      });
+      // Notify client Live session is open and flush any buffered mic audio
+      safeSend({ type: 'ready' });
+      while (pendingInputs.length > 0 && !isClosed && liveSession) {
+        const nextPayload = pendingInputs.shift();
+        if (nextPayload) forwardInputToLive(nextPayload);
+      }
     } catch (err: any) {
       const errMsg = err?.message || 'Failed to initialize Gemini Live API session';
       console.warn('[Noor Live API] Failed to connect to Gemini Live:', errMsg);

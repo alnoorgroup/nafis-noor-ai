@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sun, Moon, Laptop, Check } from 'lucide-react';
+import { Sun, Moon, Laptop } from 'lucide-react';
 import { SupportedLanguageCode, t } from '../utils/i18n';
 
 export type ThemePreferenceMode = 'light' | 'dark' | 'system';
@@ -24,34 +24,30 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
     icon: typeof Sun;
     previewBg: string;
     previewBorder: string;
-    accentGlow: string;
   }[] = [
     {
       id: 'light',
       label: t(lang, 'themeLight'),
       description: t(lang, 'themeLightDesc'),
       icon: Sun,
-      previewBg: 'from-amber-100/90 via-stone-50 to-stone-100',
-      previewBorder: 'border-amber-300/60',
-      accentGlow: 'hover:shadow-[0_8px_30px_rgba(245,158,11,0.25)]',
+      previewBg: 'from-[#FCFCFA] via-white to-[#F3F3F1]',
+      previewBorder: 'border-black/15',
     },
     {
       id: 'dark',
       label: t(lang, 'themeDark'),
       description: t(lang, 'themeDarkDesc'),
       icon: Moon,
-      previewBg: 'from-[#0C1017] via-[#12161F] to-[#080B0F]',
-      previewBorder: 'border-[#C9A063]/50',
-      accentGlow: 'hover:shadow-[0_8px_30px_rgba(201,160,99,0.3)]',
+      previewBg: 'from-[#0B0C0E] via-[#14161A] to-[#0B0C0E]',
+      previewBorder: 'border-white/20',
     },
     {
       id: 'system',
       label: t(lang, 'themeSystem'),
       description: t(lang, 'themeSystemDesc'),
       icon: Laptop,
-      previewBg: 'from-stone-800/40 via-stone-900/60 to-stone-950',
-      previewBorder: 'border-sky-400/40',
-      accentGlow: 'hover:shadow-[0_8px_30px_rgba(56,189,248,0.25)]',
+      previewBg: 'from-[#FCFCFA] via-stone-400 to-[#14161A]',
+      previewBorder: 'border-black/15 dark:border-white/20',
     },
   ];
 
@@ -68,36 +64,38 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
               type="button"
               id={`theme-option-${theme.id}`}
               onClick={() => onSelectTheme(theme.id)}
-              className={`group relative text-start p-4 rounded-2xl border transition-all duration-300 transform active:scale-[0.97] focus:outline-none flex flex-col justify-between overflow-hidden card-hover-lift btn-press-bounce ${
+              className={`group relative text-start p-4 rounded-2xl border transition-all duration-200 transform active:scale-[0.98] focus:outline-none flex flex-col justify-between overflow-hidden cursor-pointer ${
                 isSelected
                   ? isDark
-                    ? 'liquid-glass border-[#DFBA7F] shadow-[0_0_25px_rgba(201,160,99,0.35)] ring-2 ring-[#DFBA7F]/40'
-                    : 'liquid-glass-light border-[#C9A063] shadow-[0_0_20px_rgba(201,160,99,0.25)] ring-2 ring-[#C9A063]/40'
+                    ? 'bg-[#1C1E24] border-white/40 ring-1 ring-white/20 shadow-md'
+                    : 'bg-white border-[#111214] ring-1 ring-[#111214]/15 shadow-sm'
                   : isDark
-                  ? 'bg-[#10141C]/60 border-stone-800/80 hover:border-stone-700 hover:bg-[#151B24]'
-                  : 'bg-stone-50 border-stone-200 hover:border-stone-300 hover:bg-stone-100/70'
-              } ${theme.accentGlow}`}
+                  ? 'bg-[#14161A] border-white/[0.08] hover:border-white/[0.18] hover:bg-[#1A1D23]'
+                  : 'bg-[#F3F3F1]/70 border-black/[0.08] hover:border-black/[0.18] hover:bg-white'
+              }`}
             >
-              {/* Top Row: Icon + Selection Indicator */}
               <div className="flex items-center justify-between w-full mb-3">
                 <div
                   className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
                     isSelected
-                      ? 'bg-gradient-to-tr from-[#C9A063] to-[#DFBA7F] text-[#0A0D12] shadow-md shadow-[#C9A063]/30 scale-105'
+                      ? isDark
+                        ? 'bg-white text-[#111214] shadow-sm scale-105'
+                        : 'bg-[#111214] text-white shadow-sm scale-105'
                       : isDark
-                      ? 'bg-stone-800/80 text-stone-300 group-hover:text-stone-100'
-                      : 'bg-stone-200/80 text-stone-700 group-hover:text-stone-900'
+                      ? 'bg-white/[0.06] text-stone-300 group-hover:text-white'
+                      : 'bg-white text-[#3F4248] border border-black/[0.06] group-hover:text-[#111214]'
                   }`}
                 >
                   <Icon className="w-5 h-5" />
                 </div>
 
-                {/* Animated Selection Radio Indicator with SVG Stroke Draw */}
                 <div
                   className={`w-6 h-6 rounded-full flex items-center justify-center transition-all ${
                     isSelected
-                      ? 'bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] text-[#0A0D12] scale-100 shadow-sm'
-                      : 'border border-stone-600/40 text-transparent opacity-0 group-hover:opacity-60 scale-90'
+                      ? isDark
+                        ? 'bg-white text-[#111214] scale-100'
+                        : 'bg-[#111214] text-white scale-100'
+                      : 'border border-stone-400/40 text-transparent opacity-0 group-hover:opacity-60 scale-90'
                   }`}
                 >
                   <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
@@ -106,37 +104,25 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
                 </div>
               </div>
 
-              {/* Theme Name & Description */}
               <div>
                 <div
-                  className={`text-sm font-bold font-serif-heading mb-0.5 transition-colors ${
-                    isSelected
-                      ? isDark
-                        ? 'text-[#F5EFE6]'
-                        : 'text-stone-900'
-                      : isDark
-                      ? 'text-stone-200 group-hover:text-stone-100'
-                      : 'text-stone-800 group-hover:text-stone-900'
+                  className={`text-sm font-bold font-display mb-0.5 transition-colors ${
+                    isDark ? 'text-white' : 'text-[#111214]'
                   }`}
                 >
                   {theme.label}
                 </div>
                 <div
-                  className={`text-[11px] leading-snug font-light ${
-                    isSelected
-                      ? isDark
-                        ? 'text-stone-300'
-                        : 'text-stone-600'
-                      : 'text-stone-400'
+                  className={`text-[11px] leading-snug ${
+                    isDark ? 'text-stone-400' : 'text-[#6B6F76]'
                   }`}
                 >
                   {theme.description}
                 </div>
               </div>
 
-              {/* Mini visual preview stripe */}
               <div
-                className={`mt-3 h-1.5 w-full rounded-full bg-gradient-to-r ${theme.previewBg} border ${theme.previewBorder} opacity-70 group-hover:opacity-100 transition-opacity`}
+                className={`mt-3 h-1.5 w-full rounded-full bg-gradient-to-r ${theme.previewBg} border ${theme.previewBorder} opacity-80 group-hover:opacity-100 transition-opacity`}
               />
             </button>
           );

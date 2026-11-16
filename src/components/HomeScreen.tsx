@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
   Clock,
   BookOpen,
@@ -34,9 +34,9 @@ import { LocationModal } from './LocationModal';
 import { recordUserActivity } from '../utils/streakManager';
 import { useBackHandler } from '../utils/historyManager';
 import { NoorAIIcon } from './NoorAIIcon';
-import { DhikrDuaSection } from './DhikrDuaSection';
 import { PullToRefresh } from './PullToRefresh';
 import { t, getLanguageCode } from '../utils/i18n';
+import { DhikrVoiceController } from '../utils/dhikrVoiceReader';
 
 interface HomeScreenProps {
   isDark: boolean;
@@ -67,8 +67,19 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   );
   const [copiedDua, setCopiedDua] = useState(false);
   const [isSpeakingDua, setIsSpeakingDua] = useState(false);
+  const [isLoadingDuaAudio, setIsLoadingDuaAudio] = useState(false);
   const [isDhikrAnimating, setIsDhikrAnimating] = useState(false);
   const [showAllPrayers, setShowAllPrayers] = useState(false);
+  const duaVoiceControllerRef = useRef<DhikrVoiceController | null>(null);
+  if (!duaVoiceControllerRef.current) {
+    duaVoiceControllerRef.current = new DhikrVoiceController();
+  }
+
+  useEffect(() => {
+    return () => {
+      duaVoiceControllerRef.current?.stop();
+    };
+  }, []);
 
   // Browser Back button navigation hooks
   useBackHandler(isLocationModalOpen, () => setIsLocationModalOpen(false), 'home-location-modal');
@@ -189,20 +200,27 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   };
 
   const handleSpeakDua = () => {
-    if ('speechSynthesis' in window) {
-      if (isSpeakingDua) {
-        window.speechSynthesis.cancel();
+    const controller = duaVoiceControllerRef.current;
+    if (!controller) return;
+    void controller.toggle(`home-${currentDua.id}`, currentDua.arabic, currentDua.audio, {
+      onLoading: (loading) => setIsLoadingDuaAudio(loading),
+      onPlay: () => {
+        setIsLoadingDuaAudio(false);
+        setIsSpeakingDua(true);
+      },
+      onPause: () => {
+        setIsLoadingDuaAudio(false);
         setIsSpeakingDua(false);
-        return;
-      }
-      const utterance = new SpeechSynthesisUtterance(currentDua.arabic);
-      utterance.lang = 'ar-SA';
-      utterance.rate = 0.85;
-      utterance.onend = () => setIsSpeakingDua(false);
-      utterance.onerror = () => setIsSpeakingDua(false);
-      setIsSpeakingDua(true);
-      window.speechSynthesis.speak(utterance);
-    }
+      },
+      onEnded: () => {
+        setIsLoadingDuaAudio(false);
+        setIsSpeakingDua(false);
+      },
+      onError: () => {
+        setIsLoadingDuaAudio(false);
+        setIsSpeakingDua(false);
+      },
+    });
   };
 
   const isDuaSaved = (userStats.savedDuas || []).includes(currentDua.id);
@@ -240,17 +258,17 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
       {/* ========================================================================= */}
       <div className="pt-1 px-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <p className="text-xs font-cinzel font-semibold tracking-widest text-[#DFBA7F]">
+          <p className={`text-xs font-cinzel font-semibold tracking-widest ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
             {t(lang, 'peaceBeUponYou')}
           </p>
           <h2
             className={`text-2xl sm:text-3xl font-serif-heading font-bold tracking-tight mt-0.5 ${
-              isDark ? 'text-[#F5EFE6]' : 'text-stone-900'
+              isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'
             }`}
           >
             {userStats.userName ? t(lang, 'welcomeUser', { name: userStats.userName }) : t(lang, 'authWelcomeTitle')}
           </h2>
-          <p className={`text-xs mt-1 font-light ${isDark ? 'text-stone-300' : 'text-stone-600'}`}>
+          <p className={`text-xs mt-1 font-light ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
             {t(lang, 'verseRestReflection')}
           </p>
         </div>
@@ -260,16 +278,16 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           <button
             id="home-location-badge"
             onClick={() => setIsLocationModalOpen(true)}
-            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-full border text-xs font-semibold transition-all group ${
+            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-full border text-xs font-semibold transition-all group cursor-pointer ${
               isDark
-                ? 'border-[#C9A063]/30 bg-[#C9A063]/10 text-[#DFBA7F] hover:bg-[#C9A063]/20 shadow-sm'
-                : 'border-[#A67C38]/30 bg-amber-50 text-[#8E6527] hover:bg-amber-100 shadow-2xs'
+                ? 'border-white/[0.1] bg-[#14161A] text-[#F3F4F6] hover:bg-[#1B1D23]'
+                : 'border-black/[0.08] bg-white text-[#111214] hover:bg-[#F3F3F1] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
             }`}
             title={lang === 'ar' ? 'تغيير الموقع وطريقة الحساب' : 'Change Location & Calculation Method'}
           >
-            <MapPin className="w-3.5 h-3.5 text-[#C9A063] group-hover:scale-110 transition-transform" />
+            <MapPin className={`w-3.5 h-3.5 group-hover:scale-110 transition-transform ${isDark ? 'text-white' : 'text-[#111214]'}`} />
             <span className="truncate max-w-[140px]">{userStats.userLocation || 'Makkah'}</span>
-            <Sliders className="w-3 h-3 text-[#DFBA7F]/70 ml-0.5" />
+            <Sliders className={`w-3 h-3 ml-0.5 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`} />
           </button>
         </div>
       </div>
@@ -281,10 +299,10 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         {/* PRAYER CARD */}
         <div
           id="home-prayer-card"
-          className={`rounded-[32px] p-5 sm:p-6 border transition-all duration-200 flex flex-col justify-between ${
+          className={`rounded-3xl p-5 sm:p-6 border transition-all duration-200 flex flex-col justify-between ${
             isDark
-              ? 'liquid-glass-hero-dark border-[#DFBA7F]/35 shadow-md'
-              : 'liquid-glass-hero-light border-[#A67C38]/30 shadow-sm'
+              ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+              : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
           }`}
         >
           <div>
@@ -292,10 +310,10 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               <div className="flex items-center gap-2.5">
                 <span className="text-2xl">🕌</span>
                 <div>
-                  <span className="text-[10px] font-cinzel font-bold tracking-widest text-[#DFBA7F] uppercase">
+                  <span className={`text-[10px] font-cinzel font-bold tracking-widest uppercase ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                     {t(lang, 'nextPrayer')}
                   </span>
-                  <h3 className={`text-xl font-bold font-cinzel ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+                  <h3 className="text-xl font-bold font-cinzel text-[#DFBA7F]">
                     {getPrayerLocalizedName(prayerData.nextPrayer.name)}
                   </h3>
                 </div>
@@ -305,11 +323,11 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               <div
                 className={`px-3 py-1.5 rounded-full border flex items-center gap-1.5 font-mono text-xs font-bold ${
                   isDark
-                    ? 'bg-[#080A0E]/80 border-[#DFBA7F]/40 text-[#DFBA7F] shadow-sm'
-                    : 'bg-white/90 border-[#A67C38]/40 text-[#8E6527] shadow-sm'
+                    ? 'bg-[#0B0C0E] border-white/[0.1] text-[#F3F4F6]'
+                    : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
                 }`}
               >
-                <Clock className="w-3.5 h-3.5 text-[#C9A063]" />
+                <Clock className={`w-3.5 h-3.5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
                 <span>{prayerData.timeUntilNext}</span>
               </div>
             </div>
@@ -324,23 +342,23 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                     className={`py-2.5 px-1 rounded-2xl text-center border transition-all ${
                       isNext
                         ? isDark
-                          ? 'bg-gradient-to-b from-[#DFBA7F]/25 to-[#C9A063]/15 border-[#DFBA7F] ring-2 ring-[#DFBA7F]/30 shadow-md'
-                          : 'bg-gradient-to-b from-amber-100 to-amber-50 border-[#A67C38] ring-2 ring-[#A67C38]/20 shadow-sm'
+                          ? 'bg-white text-[#111214] border-white shadow-sm'
+                          : 'bg-[#111214] text-white border-[#111214] shadow-sm'
                         : isDark
-                        ? 'bg-[#111620]/60 border-stone-800/80 text-stone-400'
-                        : 'bg-white/70 border-stone-200 text-stone-600'
+                        ? 'bg-[#1B1D23] border-white/[0.06] text-stone-400'
+                        : 'bg-[#F3F3F1] border-black/[0.06] text-[#5A5D63]'
                     }`}
                   >
                     <div
                       className={`text-[10px] font-medium tracking-tight ${
-                        isNext ? (isDark ? 'text-[#DFBA7F] font-bold' : 'text-[#8E6527] font-bold') : ''
+                        isNext ? 'font-bold' : ''
                       }`}
                     >
                       {getPrayerLocalizedName(prayer.name)}
                     </div>
                     <div
                       className={`text-[11px] font-bold font-mono mt-0.5 ${
-                        isNext ? (isDark ? 'text-white' : 'text-stone-950') : ''
+                        isNext ? '' : isDark ? 'text-stone-200' : 'text-[#111214]'
                       }`}
                     >
                       {prayer.time}
@@ -351,17 +369,21 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             </div>
 
             {/* Quick Access to Daily Prayer Check */}
-            <div className="pt-2">
+            <div className="pt-2.5">
               <button
                 type="button"
                 onClick={() => onNavigate('prayer-check')}
-                className="w-full py-2.5 px-3 rounded-2xl bg-gradient-to-r from-[#C9A063]/20 via-[#DFBA7F]/15 to-[#C9A063]/20 hover:from-[#C9A063]/30 hover:to-[#DFBA7F]/30 border border-[#C9A063]/40 text-[#DFBA7F] text-xs font-semibold flex items-center justify-between transition-all active:scale-[0.99] cursor-pointer shadow-xs"
+                className={`w-full py-2.5 px-3 rounded-2xl border text-xs font-semibold flex items-center justify-between transition-all active:scale-[0.99] cursor-pointer ${
+                  isDark
+                    ? 'bg-[#1B1D23] hover:bg-white/[0.08] border-[#DFBA7F]/40 text-[#DFBA7F]'
+                    : 'bg-[#F3F3F1] hover:bg-black/[0.06] border-[#DFBA7F]/40 text-[#A67C38]'
+                }`}
               >
                 <div className="flex items-center gap-2">
-                  <ShieldAlert className="w-4 h-4 text-[#DFBA7F]" />
+                  <ShieldAlert className={`w-4 h-4 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
                   <span>{t(lang, 'dailyPrayerCheck')}</span>
                 </div>
-                <div className="flex items-center gap-1 text-xs font-medium text-[#DFBA7F]">
+                <div className={`flex items-center gap-1 text-xs font-medium ${isDark ? 'text-stone-300' : 'text-[#5A5D63]'}`}>
                   <ChevronRight className="w-4 h-4" />
                 </div>
               </button>
@@ -369,18 +391,20 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           </div>
 
           {/* Toggle Calculation & Notification info */}
-          <div className="mt-4 pt-3 border-t border-[#C9A063]/15 flex items-center justify-between text-[11px]">
+          <div className={`mt-4 pt-3 border-t flex items-center justify-between text-[11px] ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
             <button
               onClick={() => onNavigate('profile')}
-              className="flex items-center gap-1.5 text-stone-400 hover:text-[#DFBA7F] transition-colors group"
+              className={`flex items-center gap-1.5 transition-colors group ${
+                isDark ? 'text-stone-400 hover:text-white' : 'text-[#5A5D63] hover:text-[#111214]'
+              }`}
               title={lang === 'ar' ? 'انقر لتعديل وتيرة التذكيرات' : 'Click to adjust notification frequency'}
             >
               {userStats.notificationsEnabled ? (
                 <>
-                  <BellRing className="w-3.5 h-3.5 text-[#DFBA7F] group-hover:scale-110 transition-transform" />
+                  <BellRing className={`w-3.5 h-3.5 group-hover:scale-110 transition-transform ${isDark ? 'text-white' : 'text-[#111214]'}`} />
                   <span>
                     {t(lang, 'remindersLabel')}:{' '}
-                    <strong className="text-[#DFBA7F]">
+                    <strong className={isDark ? 'text-white' : 'text-[#111214]'}>
                       {userStats.personalization?.reminderFrequency === 'Normal' || !userStats.personalization?.reminderFrequency
                         ? t(lang, 'remindersNormal')
                         : userStats.personalization.reminderFrequency}
@@ -396,7 +420,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             </button>
             <button
               onClick={() => setIsLocationModalOpen(true)}
-              className="text-[#DFBA7F] hover:underline font-semibold flex items-center gap-1"
+              className={`hover:underline font-semibold flex items-center gap-1 ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}
             >
               <Sliders className="w-3 h-3" />
               <span>{t(lang, 'edit')}</span>
@@ -408,25 +432,29 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         <div
           id="home-quran-card"
           onClick={() => onNavigate('quran')}
-          className={`group rounded-[32px] p-5 sm:p-6 border cursor-pointer transition-all duration-200 transform hover:-translate-y-0.5 active:scale-[0.99] flex flex-col justify-between ${
+          className={`group rounded-3xl p-5 sm:p-6 border cursor-pointer transition-all duration-200 transform hover:-translate-y-0.5 active:scale-[0.99] flex flex-col justify-between ${
             isDark
-              ? 'liquid-glass-primary-dark border-[#C9A063]/25 hover:border-[#DFBA7F]/45 shadow-md'
-              : 'liquid-glass-primary-light border-[#A67C38]/25 hover:border-[#A67C38]/45 shadow-sm'
+              ? 'bg-[#14161A] border-white/[0.08] hover:border-white/[0.2] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+              : 'bg-white border-black/[0.08] hover:border-black/[0.2] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
           }`}
         >
           <div>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#C9A063]/25 to-[#DFBA7F]/15 border border-[#C9A063]/35 flex items-center justify-center text-[#DFBA7F]">
-                  <BookOpen className="w-5 h-5" />
+                <div className={`w-10 h-10 rounded-2xl border flex items-center justify-center ${
+                  isDark
+                    ? 'bg-[#1B1D23] border-[#DFBA7F]/40 text-[#DFBA7F]'
+                    : 'bg-[#F3F3F1] border-[#DFBA7F]/40 text-[#A67C38]'
+                }`}>
+                  <BookOpen className="w-5 h-5 text-[#DFBA7F]" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-cinzel font-bold tracking-widest text-[#DFBA7F] uppercase">
+                    <span className={`text-[10px] font-cinzel font-bold tracking-widest uppercase ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                       {t(lang, 'quranHeader')}
                     </span>
                   </div>
-                  <h3 className={`text-lg font-bold font-serif-heading ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+                  <h3 className={`text-lg font-bold font-serif-heading ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
                     {userStats.quranPagesRead > 0
                       ? `${t(lang, 'surah')} ${userStats.lastReadSurah || 1} • ${t(lang, 'ayah')} ${userStats.lastReadAyah || 1}`
                       : t(lang, 'continueReading')}
@@ -434,28 +462,34 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                 </div>
               </div>
 
-              <div className="w-8 h-8 rounded-full border border-[#C9A063]/30 bg-[#C9A063]/10 flex items-center justify-center text-[#DFBA7F] group-hover:bg-[#C9A063] group-hover:text-[#080A0E] transition-all">
+              <div className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all ${
+                isDark
+                  ? 'border-white/[0.1] bg-[#1B1D23] text-stone-300 group-hover:bg-white group-hover:text-[#111214]'
+                  : 'border-black/[0.08] bg-[#F3F3F1] text-[#111214] group-hover:bg-[#111214] group-hover:text-white'
+              }`}>
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </div>
             </div>
 
             {/* Arabic Calligraphy Snippet */}
-            <div className="p-3.5 rounded-2xl bg-[#080A0E]/30 border border-[#C9A063]/15 my-2 text-center">
-              <p className="font-arabic text-xl text-[#DFBA7F]">
+            <div className={`p-3.5 rounded-2xl border my-2 text-center ${
+              isDark ? 'bg-[#0B0C0E] border-white/[0.07]' : 'bg-[#F3F3F1] border-black/[0.06]'
+            }`}>
+              <p className={`font-arabic text-xl ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                 بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
               </p>
-              <p className={`text-[11px] font-light mt-1 ${isDark ? 'text-stone-300' : 'text-stone-600'}`}>
+              <p className={`text-[11px] font-light mt-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 {t(lang, 'bismillahTranslation')}
               </p>
             </div>
           </div>
 
           {/* Action Button */}
-          <div className="flex items-center justify-between mt-3 text-xs pt-2 border-t border-[#C9A063]/15">
-            <span className={`text-[11px] ${isDark ? 'text-stone-400' : 'text-stone-500'}`}>
+          <div className={`flex items-center justify-between mt-3 text-xs pt-2 border-t ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
+            <span className={`text-[11px] ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
               {t(lang, 'pagesReadCount', { count: userStats.quranPagesRead })}
             </span>
-            <span className="font-cinzel font-bold text-[#DFBA7F] flex items-center gap-1 group-hover:underline">
+            <span className={`font-cinzel font-bold flex items-center gap-1 group-hover:underline ${isDark ? 'text-white' : 'text-[#111214]'}`}>
               <span>{userStats.quranPagesRead > 0 ? t(lang, 'continueReading') : t(lang, 'quran')}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </span>
@@ -470,23 +504,27 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         {/* DHIKR CARD */}
         <div
           id="home-dhikr-card"
-          className={`rounded-[30px] p-5 sm:p-6 border flex flex-col justify-between transition-all ${
+          className={`rounded-3xl p-5 sm:p-6 border flex flex-col justify-between transition-all ${
             isDark
-              ? 'liquid-glass-secondary-dark border-[#C9A063]/25 shadow-md'
-              : 'liquid-glass-secondary-light border-[#A67C38]/25 shadow-sm'
+              ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+              : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
           }`}
         >
           <div>
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-1.5">
                 <span className="text-base">📿</span>
-                <span className="text-[10px] font-cinzel font-bold tracking-widest text-[#DFBA7F] uppercase">
+                <span className={`text-[10px] font-cinzel font-bold tracking-widest uppercase ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                   {t(lang, 'tasbihCounter')}
                 </span>
               </div>
               <button
                 onClick={handleResetDhikr}
-                className="text-[10px] text-stone-400 hover:text-stone-200 flex items-center gap-1 px-2 py-0.5 rounded-md hover:bg-stone-800/40 transition-colors"
+                className={`text-[10px] flex items-center gap-1 px-2 py-0.5 rounded-md transition-colors ${
+                  isDark
+                    ? 'text-stone-400 hover:text-white hover:bg-white/[0.06]'
+                    : 'text-[#6B6F76] hover:text-[#111214] hover:bg-black/[0.05]'
+                }`}
                 title={lang === 'ar' ? 'إعادة ضبط العداد' : 'Reset counter'}
               >
                 <RotateCcw className="w-3 h-3" />
@@ -496,15 +534,15 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
             {/* Dhikr Arabic & Meaning */}
             <div className="text-center my-3">
-              <div className="font-arabic text-2xl font-bold text-[#DFBA7F]">
+              <div className={`font-arabic text-2xl font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                 {activeDhikrObj.arabic}
               </div>
               {lang !== 'ar' && (
-                <div className="text-xs font-semibold text-stone-200 mt-1">
+                <div className={`text-xs font-semibold mt-1 ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>
                   {activeDhikrObj.text}
                 </div>
               )}
-              <div className="text-[11px] text-stone-400 font-light mt-0.5">
+              <div className={`text-[11px] font-light mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 {lang === 'ar' ? activeDhikrObj.meaningAr : activeDhikrObj.meaning}
               </div>
             </div>
@@ -517,8 +555,12 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             onClick={() => handleIncrementDhikr(1)}
             className={`w-full mt-3 py-3.5 px-4 rounded-2xl font-mono text-center border transition-all duration-150 transform active:scale-95 ${
               isDhikrAnimating
-                ? 'scale-95 bg-[#DFBA7F] text-[#080A0E] border-[#DFBA7F] ring-4 ring-[#DFBA7F]/40'
-                : 'bg-gradient-to-r from-[#C9A063]/25 via-[#DFBA7F]/20 to-[#C9A063]/25 border-[#DFBA7F]/40 text-[#DFBA7F] hover:bg-[#C9A063]/35'
+                ? isDark
+                  ? 'scale-95 bg-white text-[#111214] border-white ring-4 ring-white/25'
+                  : 'scale-95 bg-[#111214] text-white border-[#111214] ring-4 ring-black/15'
+                : isDark
+                ? 'bg-[#1B1D23] border-white/[0.1] text-white hover:bg-white/[0.12]'
+                : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214] hover:bg-black/[0.08]'
             }`}
           >
             <div className="text-2xl sm:text-3xl font-bold">{userStats.dhikrCount}</div>
@@ -528,28 +570,31 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           </button>
 
           <button
-            onClick={() => onNavigate('dhikr')}
-            className="w-full mt-2.5 py-1.5 text-center text-xs text-[#DFBA7F] hover:text-[#FFE2AA] transition-colors flex items-center justify-center gap-1 opacity-90 hover:opacity-100"
+            type="button"
+            onClick={() => onNavigate('profile')}
+            className={`w-full mt-2.5 py-1.5 text-center text-xs transition-colors flex items-center justify-center gap-1.5 opacity-90 hover:opacity-100 cursor-pointer font-medium ${
+              isDark ? 'text-stone-300 hover:text-white' : 'text-[#3F4248] hover:text-[#111214]'
+            }`}
           >
-            <span>{t(lang, 'exploreFortressHome')}</span>
-            <ArrowRight className="w-3 h-3" />
+            <span>{lang === 'ar' ? 'مكتبة الأدعية والأذكار في قسم الرحلة' : "Dua’s & Dhikr Library in Journey"}</span>
+            <ArrowRight className={`w-3 h-3 ${lang === 'ar' ? 'rotate-180' : ''}`} />
           </button>
         </div>
 
         {/* DAILY DUA CARD */}
         <div
           id="home-daily-dua-card"
-          className={`rounded-[32px] p-5 sm:p-6 border flex flex-col justify-between transition-all ${
+          className={`rounded-3xl p-5 sm:p-6 border flex flex-col justify-between transition-all ${
             isDark
-              ? 'liquid-glass-primary-dark border-[#C9A063]/20 shadow-md'
-              : 'liquid-glass-primary-light border-[#A67C38]/20 shadow-sm'
+              ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+              : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
           }`}
         >
           <div>
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <Flame className="w-4 h-4 text-[#C9A063] fill-[#C9A063]" />
-                <span className="text-[10px] font-cinzel font-bold tracking-widest text-[#DFBA7F] uppercase">
+                <Flame className={`w-4 h-4 ${isDark ? 'text-white fill-white' : 'text-[#111214] fill-[#111214]'}`} />
+                <span className={`text-[10px] font-cinzel font-bold tracking-widest uppercase ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                   {t(lang, 'dailyReflection')} • {t(lang, 'streak')}: {userStats.overallStreak} {t(lang, 'days')}
                 </span>
               </div>
@@ -557,69 +602,92 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               <div className="flex items-center gap-1">
                 <button
                   onClick={handleSpeakDua}
-                  className={`p-1.5 rounded-full hover:bg-stone-800/40 transition-colors ${
-                    isSpeakingDua ? 'text-emerald-400 animate-pulse' : 'text-stone-400 hover:text-stone-200'
+                  className={`p-1.5 rounded-full transition-colors cursor-pointer ${
+                    isSpeakingDua
+                      ? isDark
+                        ? 'text-emerald-400 animate-pulse'
+                        : 'text-emerald-600 animate-pulse'
+                      : isDark
+                      ? 'text-stone-400 hover:text-white hover:bg-white/[0.06]'
+                      : 'text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05]'
                   }`}
                   title={t(lang, 'listenAyah')}
                 >
-                  {isSpeakingDua ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                  {isLoadingDuaAudio ? (
+                    <span className={`inline-block w-3.5 h-3.5 border-2 border-t-transparent rounded-full animate-spin ${isDark ? 'border-white' : 'border-[#111214]'}`} />
+                  ) : isSpeakingDua ? (
+                    <VolumeX className="w-4 h-4" />
+                  ) : (
+                    <Volume2 className="w-4 h-4" />
+                  )}
                 </button>
                 <button
                   onClick={handleCopyDua}
-                  className="p-1.5 rounded-full text-stone-400 hover:text-stone-200 hover:bg-stone-800/40 transition-colors"
+                  className={`p-1.5 rounded-full transition-colors ${
+                    isDark
+                      ? 'text-stone-400 hover:text-white hover:bg-white/[0.06]'
+                      : 'text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05]'
+                  }`}
                   title={t(lang, 'copy')}
                 >
-                  {copiedDua ? <Check className="w-4 h-4 text-emerald-400" /> : <Share2 className="w-4 h-4" />}
+                  {copiedDua ? <Check className={`w-4 h-4 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`} /> : <Share2 className="w-4 h-4" />}
                 </button>
                 <button
                   onClick={handleToggleSaveDua}
-                  className="p-1.5 rounded-full text-stone-400 hover:text-stone-200 hover:bg-stone-800/40 transition-colors"
+                  className={`p-1.5 rounded-full transition-colors ${
+                    isDark
+                      ? 'text-stone-400 hover:text-white hover:bg-white/[0.06]'
+                      : 'text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05]'
+                  }`}
                   title={t(lang, 'saveDua')}
                 >
-                  <Bookmark className={`w-4 h-4 ${isDuaSaved ? 'text-[#DFBA7F] fill-[#DFBA7F]' : ''}`} />
+                  <Bookmark className={`w-4 h-4 ${isDuaSaved ? (isDark ? 'text-white fill-white' : 'text-[#111214] fill-[#111214]') : ''}`} />
                 </button>
               </div>
             </div>
 
-            <h4 className={`text-base font-serif-heading font-bold ${lang === 'ar' ? 'font-arabic text-right' : ''} ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+            <h4 className={`text-base font-serif-heading font-bold ${lang === 'ar' ? 'font-arabic text-right' : ''} ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
               {lang === 'ar' ? (currentDua.titleAr || currentDua.title) : currentDua.title}
             </h4>
 
             {/* Arabic Text */}
-            <p className="font-arabic text-lg sm:text-xl text-[#DFBA7F] text-right my-2 leading-loose">
+            <p className={`font-arabic text-lg sm:text-xl text-right my-2 leading-loose ${isDark ? 'text-white' : 'text-[#111214]'}`}>
               {currentDua.arabic}
             </p>
 
             {/* Transliteration & Translation (Only for non-Arabic) */}
             {lang !== 'ar' && (
               <>
-                <p className="text-xs text-stone-300 italic mb-1 font-light">
+                <p className={`text-xs italic mb-1 font-light ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                   {currentDua.transliteration}
                 </p>
-                <p className={`text-xs leading-relaxed ${isDark ? 'text-stone-300' : 'text-stone-700'}`}>
+                <p className={`text-xs leading-relaxed ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                   "{currentDua.translation}"
                 </p>
               </>
             )}
             {lang === 'ar' && currentDua.benefit && (
-              <p className={`text-xs leading-relaxed font-light mt-1 text-right text-stone-300`}>
+              <p className={`text-xs leading-relaxed font-light mt-1 text-right ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                 {currentDua.benefit}
               </p>
             )}
           </div>
 
-          <div className="mt-3 pt-2 border-t border-[#C9A063]/15 flex items-center justify-between text-[10px] text-stone-400">
-            <a
-              href="#dhikr-dua-section"
-              className="text-[10px] text-[#DFBA7F] hover:underline font-semibold flex items-center gap-0.5 group"
+          <div className={`mt-3 pt-2 border-t flex items-center justify-between text-[10px] ${isDark ? 'border-white/[0.08] text-stone-400' : 'border-black/[0.08] text-[#6B6F76]'}`}>
+            <button
+              type="button"
+              onClick={() => onNavigate('profile')}
+              className={`text-[10px] hover:underline font-semibold flex items-center gap-0.5 group cursor-pointer ${
+                isDark ? 'text-stone-300 hover:text-white' : 'text-[#111214]'
+              }`}
             >
-              <span>{t(lang, 'viewAll')}</span>
-              <ChevronDown className="w-3 h-3 group-hover:translate-y-0.5 transition-transform" />
-            </a>
+              <span>{lang === 'ar' ? 'المكتبة في الرحلة' : 'Library in Journey'}</span>
+              <ArrowRight className={`w-3 h-3 group-hover:translate-x-0.5 transition-transform ${lang === 'ar' ? 'rotate-180 group-hover:-translate-x-0.5' : ''}`} />
+            </button>
             <div className="flex items-center gap-1.5">
               <button
                 onClick={() => setActiveDuaIndex((prev) => (prev > 0 ? prev - 1 : DUAS_LIST.length - 1))}
-                className="p-1 rounded hover:text-stone-200 transition-colors"
+                className={`p-1 rounded transition-colors ${isDark ? 'hover:text-white' : 'hover:text-[#111214]'}`}
               >
                 <ChevronLeft className="w-3.5 h-3.5" />
               </button>
@@ -628,7 +696,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               </span>
               <button
                 onClick={() => setActiveDuaIndex((prev) => (prev < DUAS_LIST.length - 1 ? prev + 1 : 0))}
-                className="p-1 rounded hover:text-stone-200 transition-colors"
+                className={`p-1 rounded transition-colors ${isDark ? 'hover:text-white' : 'hover:text-[#111214]'}`}
               >
                 <ChevronRight className="w-3.5 h-3.5" />
               </button>
@@ -645,40 +713,54 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         <div
           id="home-noor-ai-orb-card"
           onClick={() => onNavigate('noor-ai')}
-          className={`lg:col-span-2 group relative overflow-hidden rounded-[32px] p-5 sm:p-6 cursor-pointer border transition-all duration-200 transform hover:-translate-y-0.5 active:scale-[0.99] flex flex-col justify-between ${
+          className={`lg:col-span-2 group relative overflow-hidden rounded-3xl p-5 sm:p-6 cursor-pointer border transition-all duration-200 transform hover:-translate-y-0.5 active:scale-[0.99] flex flex-col justify-between ${
             isDark
-              ? 'liquid-glass-orb border-[#DFBA7F]/45 shadow-md'
-              : 'bg-gradient-to-r from-amber-500/15 via-amber-200/25 to-amber-500/15 border-[#A67C38]/40 shadow-sm'
+              ? 'bg-[#14161A] border-white/[0.1] hover:border-white/[0.24] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+              : 'bg-white border-black/[0.08] hover:border-black/[0.22] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
           }`}
         >
           <div>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3.5">
-                <div className="relative w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#C9A063] via-[#DFBA7F] to-[#B88E4F] flex items-center justify-center text-[#080A0E] shadow-sm ring-2 ring-white/25 shrink-0">
-                  <NoorAIIcon className="w-6 h-6 text-[#080A0E] animate-pulse" />
-                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full ring-2 ring-stone-950 shadow-sm" />
+                <div className={`relative w-12 h-12 rounded-2xl flex items-center justify-center shadow-sm shrink-0 ${
+                  isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+                }`}>
+                  <NoorAIIcon className="w-6 h-6 animate-pulse" />
+                  <div className={`absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full ring-2 shadow-sm ${isDark ? 'ring-[#14161A]' : 'ring-white'}`} />
                 </div>
 
                 <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-base font-cinzel font-bold tracking-wider text-[#DFBA7F]">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h3 className={`text-base font-cinzel font-bold tracking-wider ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                       ✦ {t(lang, 'noorCompanion')}
                     </h3>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#C9A063]/25 text-[#DFBA7F] border border-[#C9A063]/40">
+                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold border ${
+                      isDark
+                        ? 'bg-[#1B1D23] text-stone-200 border-white/[0.1]'
+                        : 'bg-[#F3F3F1] text-[#111214] border-black/[0.08]'
+                    }`}>
                       {t(lang, 'askNoor')}
                     </span>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold border flex items-center gap-1 ${
+                      isDark
+                        ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/35'
+                        : 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                    }`}>
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
                       {t(lang, 'liveGuide')}
                     </span>
                   </div>
-                  <p className="text-xs text-stone-300 font-light mt-0.5">
+                  <p className={`text-xs font-light mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     {t(lang, 'noorAiSubheader')}
                   </p>
                 </div>
               </div>
 
-              <div className="w-9 h-9 rounded-full border border-[#C9A063]/40 bg-[#C9A063]/15 flex items-center justify-center text-[#DFBA7F] group-hover:bg-[#C9A063] group-hover:text-[#080A0E] transition-all">
+              <div className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all shrink-0 ${
+                isDark
+                  ? 'border-white/[0.1] bg-[#1B1D23] text-stone-300 group-hover:bg-white group-hover:text-[#111214]'
+                  : 'border-black/[0.08] bg-[#F3F3F1] text-[#111214] group-hover:bg-[#111214] group-hover:text-white'
+              }`}>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </div>
             </div>
@@ -689,40 +771,44 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         <div
           id="home-learn-card"
           onClick={() => onNavigate('learn')}
-          className={`group rounded-[30px] p-5 sm:p-6 border cursor-pointer flex flex-col justify-between transition-all transform hover:-translate-y-0.5 active:scale-[0.99] ${
+          className={`group rounded-3xl p-5 sm:p-6 border cursor-pointer flex flex-col justify-between transition-all transform hover:-translate-y-0.5 active:scale-[0.99] ${
             isDark
-              ? 'liquid-glass-secondary-dark border-[#C9A063]/25 shadow-md'
-              : 'liquid-glass-secondary-light border-[#A67C38]/25 shadow-sm'
+              ? 'bg-[#14161A] border-white/[0.08] hover:border-white/[0.2] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+              : 'bg-white border-black/[0.08] hover:border-black/[0.2] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
           }`}
         >
           <div>
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-1.5">
-                <GraduationCap className="w-4 h-4 text-[#DFBA7F]" />
-                <span className="text-[10px] font-cinzel font-bold tracking-widest text-[#DFBA7F] uppercase">
+                <GraduationCap className={`w-4 h-4 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
+                <span className={`text-[10px] font-cinzel font-bold tracking-widest uppercase ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                   {t(lang, 'studyHeader')}
                 </span>
               </div>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#C9A063]/15 text-[#DFBA7F] border border-[#C9A063]/25">
+              <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${
+                isDark
+                  ? 'bg-[#1B1D23] text-stone-200 border-white/[0.08]'
+                  : 'bg-[#F3F3F1] text-[#111214] border-black/[0.06]'
+              }`}>
                 {userStats.totalXP} {lang === 'ar' ? 'نقطة خبرة' : 'XP'}
               </span>
             </div>
 
-            <h4 className={`text-base font-bold font-serif-heading mt-2 ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+            <h4 className={`text-base font-bold font-serif-heading mt-2 ${isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'}`}>
               {userStats.lessonsCompleted === 0
                 ? t(lang, 'startLesson')
                 : `${userStats.lessonsCompleted} ${t(lang, 'lessonsCompleted')}`}
             </h4>
-            <p className="text-xs text-stone-300 font-light mt-1 line-clamp-2">
+            <p className={`text-xs font-light mt-1 line-clamp-2 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               {t(lang, 'studySubheader')}
             </p>
           </div>
 
-          <div className="mt-4 pt-3 border-t border-[#C9A063]/15 flex items-center justify-between text-xs">
-            <span className="text-[11px] text-[#DFBA7F] font-semibold">
+          <div className={`mt-4 pt-3 border-t flex items-center justify-between text-xs ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
+            <span className={`text-[11px] font-semibold ${isDark ? 'text-stone-300' : 'text-[#5A5D63]'}`}>
               {userStats.completedLessonIds.length === 0 ? t(lang, 'courses') : t(lang, 'continueLesson')}
             </span>
-            <span className="font-cinzel font-bold text-[#DFBA7F] flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+            <span className={`font-cinzel font-bold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform ${isDark ? 'text-white' : 'text-[#111214]'}`}>
               <span>{t(lang, 'next')}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </span>
@@ -733,20 +819,28 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
       {/* ========================================================================= */}
       {/* 5. HOMEPAGE STUDY & ISLAMIC LEARNING SHOWCASE                            */}
       {/* ========================================================================= */}
-      <div className={`p-5 sm:p-6 rounded-[32px] border relative overflow-hidden ${
-        isDark ? 'liquid-glass-secondary-dark border-[#DFBA7F]/25 text-stone-100' : 'bg-white/95 border-[#C9A063]/30 text-stone-900 shadow-sm'
+      <div className={`p-5 sm:p-6 rounded-3xl border relative overflow-hidden ${
+        isDark
+          ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+          : 'bg-white border-black/[0.08] text-[#111214] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
       }`}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#C9A063] to-[#DFBA7F] text-[#090B0E] flex items-center justify-center font-bold shadow-md shrink-0">
+            <div className={`w-11 h-11 rounded-2xl flex items-center justify-center font-bold shadow-sm shrink-0 ${
+              isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+            }`}>
               <GraduationCap className="w-6 h-6" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-cinzel font-bold tracking-widest text-[#DFBA7F] uppercase">
+                <span className={`text-[10px] font-cinzel font-bold tracking-widest uppercase ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                   {lang === 'ar' ? 'التعليم والتفقه في الدين' : 'ISLAMIC STUDY PATH'}
                 </span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#DFBA7F]/15 text-[#DFBA7F] border border-[#DFBA7F]/25">
+                <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold border ${
+                  isDark
+                    ? 'bg-[#1B1D23] text-stone-200 border-white/[0.08]'
+                    : 'bg-[#F3F3F1] text-[#111214] border-black/[0.06]'
+                }`}>
                   {userStats.totalXP} XP
                 </span>
               </div>
@@ -758,7 +852,11 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
           <button
             onClick={() => onNavigate('learn')}
-            className="px-4 py-2 rounded-2xl bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] text-[#090B0E] text-xs font-bold font-cinzel flex items-center justify-center gap-1.5 shadow-sm hover:brightness-110 active:scale-95 transition-all self-start sm:self-auto"
+            className={`px-4 py-2 rounded-2xl text-xs font-bold font-cinzel flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all self-start sm:self-auto cursor-pointer ${
+              isDark
+                ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                : 'bg-[#111214] hover:bg-[#27292D] text-white'
+            }`}
           >
             <span>{lang === 'ar' ? 'استعراض المسارات' : 'Open Study'}</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -775,7 +873,6 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               descEn: 'Meanings of the verses and context',
               icon: BookOpen,
               tag: 'Tafsir',
-              color: 'from-amber-500/20 to-[#DFBA7F]/10',
             },
             {
               titleAr: 'مخارج الحروف والتجويد',
@@ -784,7 +881,6 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               descEn: 'Authentic Arabic articulation & rules',
               icon: Sparkles,
               tag: 'Tajweed',
-              color: 'from-emerald-500/20 to-teal-500/10',
             },
             {
               titleAr: 'الأحاديث النبوية والآداب',
@@ -793,7 +889,6 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               descEn: 'Forty Hadith and noble character',
               icon: Heart,
               tag: 'Hadith',
-              color: 'from-blue-500/20 to-indigo-500/10',
             },
             {
               titleAr: 'فقه العبادات والخشوع',
@@ -802,7 +897,6 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               descEn: 'Purity, Salah, and prayer focus',
               icon: Compass,
               tag: 'Fiqh',
-              color: 'from-purple-500/20 to-amber-500/10',
             },
           ].map((track, idx) => {
             const Icon = track.icon;
@@ -812,25 +906,33 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                 onClick={() => onNavigate('learn')}
                 className={`p-4 rounded-2xl border transition-all cursor-pointer group hover:-translate-y-0.5 active:scale-95 ${
                   isDark
-                    ? 'bg-black/30 hover:bg-black/50 border-white/10 hover:border-[#DFBA7F]/40'
-                    : 'bg-white hover:bg-amber-50/50 border-stone-200 hover:border-[#C9A063]/50 shadow-sm'
+                    ? 'bg-[#0B0C0E] hover:bg-[#1B1D23] border-white/[0.08] hover:border-white/[0.2]'
+                    : 'bg-[#FCFCFA] hover:bg-[#F3F3F1] border-black/[0.08] hover:border-black/[0.2]'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center bg-gradient-to-br ${track.color} text-[#DFBA7F]`}>
+                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${
+                    isDark ? 'bg-[#1B1D23] text-white' : 'bg-[#F3F3F1] text-[#111214]'
+                  }`}>
                     <Icon className="w-4 h-4" />
                   </div>
-                  <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-white/10 text-stone-300">
+                  <span className={`text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full ${
+                    isDark ? 'bg-white/[0.08] text-stone-300' : 'bg-white text-[#3F4248] border border-black/[0.08]'
+                  }`}>
                     {track.tag}
                   </span>
                 </div>
-                <h4 className="text-xs sm:text-sm font-bold font-serif-heading line-clamp-1 group-hover:text-[#DFBA7F] transition-colors">
+                <h4 className={`text-xs sm:text-sm font-bold font-serif-heading line-clamp-1 transition-colors ${
+                  isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'
+                }`}>
                   {lang === 'ar' ? track.titleAr : track.titleEn}
                 </h4>
-                <p className="text-[11px] text-stone-400 mt-1 line-clamp-1">
+                <p className={`text-[11px] mt-1 line-clamp-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                   {lang === 'ar' ? track.descAr : track.descEn}
                 </p>
-                <div className="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[10px] text-[#DFBA7F] font-semibold">
+                <div className={`mt-3 pt-2 border-t flex items-center justify-between text-[10px] font-semibold ${
+                  isDark ? 'border-white/[0.08] text-stone-300 group-hover:text-white' : 'border-black/[0.08] text-[#111214]'
+                }`}>
                   <span>{lang === 'ar' ? 'ابدأ الدرس' : 'Start Lesson'}</span>
                   <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                 </div>
@@ -843,15 +945,21 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
       {/* ========================================================================= */}
       {/* 6. HOMEPAGE QUICK TASBIH & DHIKR PULSE SHOWCASE CARD                      */}
       {/* ========================================================================= */}
-      <div className={`p-5 sm:p-6 rounded-[32px] border relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 ${
-        isDark ? 'liquid-glass-secondary-dark border-[#DFBA7F]/25 text-stone-100' : 'bg-white/95 border-[#C9A063]/30 text-stone-900 shadow-sm'
+      <div className={`p-5 sm:p-6 rounded-3xl border relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 ${
+        isDark
+          ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+          : 'bg-white border-black/[0.08] text-[#111214] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
       }`}>
         <div className="space-y-3 flex-1 text-center md:text-left rtl:md:text-right">
           <div className="flex items-center justify-center md:justify-start gap-2">
-            <span className="text-[10px] font-cinzel font-bold tracking-widest text-[#DFBA7F] uppercase">
+            <span className={`text-[10px] font-cinzel font-bold tracking-widest uppercase ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
               {lang === 'ar' ? 'المسبحة الإلكترونية اليومية' : 'DAILY TASBIH & DHIKR'}
             </span>
-            <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-semibold border border-emerald-500/30">
+            <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold border ${
+              isDark
+                ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+                : 'bg-emerald-50 text-emerald-800 border-emerald-300'
+            }`}>
               {userStats.dhikrStreak} {lang === 'ar' ? 'أيام متتالية' : 'Days Streak'}
             </span>
           </div>
@@ -860,7 +968,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             {lang === 'ar' ? 'ألا بذكر الله تطمئن القلوب' : 'Heartfelt Daily Remembrance'}
           </h3>
 
-          <p className="text-xs text-stone-400 max-w-lg">
+          <p className={`text-xs max-w-lg ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
             {lang === 'ar'
               ? 'ردد أذكار اليوم المباركة واكسب الحسنات وضاعف رصيدك الإيماني بنقرة واحدة.'
               : 'Recite authentic daily Adhkar to cultivate peace of mind and steady faith.'}
@@ -872,12 +980,14 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               <button
                 key={oIdx}
                 onClick={() => onUpdateStats({ currentDhikrText: opt.text })}
-                className={`px-3 py-1.5 rounded-xl text-xs font-arabic border transition-all ${
+                className={`px-3 py-1.5 rounded-xl text-xs font-arabic border transition-all cursor-pointer ${
                   userStats.currentDhikrText === opt.text
-                    ? 'bg-[#DFBA7F]/25 border-[#DFBA7F] text-[#DFBA7F] font-bold shadow-xs'
+                    ? isDark
+                      ? 'bg-white border-white text-[#111214] font-bold shadow-xs'
+                      : 'bg-[#111214] border-[#111214] text-white font-bold shadow-xs'
                     : isDark
-                    ? 'bg-white/5 hover:bg-white/10 border-white/10 text-stone-300'
-                    : 'bg-stone-100 hover:bg-stone-200 border-stone-200 text-stone-700'
+                    ? 'bg-[#1B1D23] hover:bg-white/[0.1] border-white/[0.08] text-stone-300'
+                    : 'bg-[#F3F3F1] hover:bg-black/[0.06] border-black/[0.06] text-[#3F4248]'
                 }`}
               >
                 {opt.arabic}
@@ -886,13 +996,17 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           </div>
         </div>
 
-        {/* Interactive Tasbih Tap Button with Peak Pulse Animation */}
+        {/* Interactive Tasbih Tap Button */}
         <div className="flex flex-col items-center justify-center shrink-0">
           <button
             onClick={() => handleIncrementDhikr(1)}
             className={`w-28 h-28 sm:w-32 sm:h-32 rounded-full relative flex flex-col items-center justify-center cursor-pointer transition-all active:scale-90 ${
               isDhikrAnimating ? 'scale-95' : 'hover:scale-105'
-            } bg-gradient-to-tr from-[#C9A063] via-[#DFBA7F] to-[#FFE3A8] text-[#080B10] shadow-[0_0_30px_rgba(223,186,127,0.5)] animate-peak-pulse`}
+            } ${
+              isDark
+                ? 'bg-white hover:bg-stone-200 text-[#111214] shadow-[0_8px_28px_rgba(255,255,255,0.14)]'
+                : 'bg-[#111214] hover:bg-[#27292D] text-white shadow-[0_8px_28px_rgba(0,0,0,0.14)]'
+            }`}
           >
             <span className="text-3xl font-bold font-mono tracking-tight leading-none">
               {userStats.dhikrCount}
@@ -901,21 +1015,97 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               {lang === 'ar' ? 'انقر للتسبيح' : 'TAP TASBIH'}
             </span>
           </button>
-          <span className="text-[11px] text-stone-400 mt-2 font-mono">
+          <span className={`text-[11px] mt-2 font-mono ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
             {lang === 'ar' ? `الهدف: ${userStats.dhikrGoal || 33} تسبيحة` : `Goal: ${userStats.dhikrGoal || 33} counts`}
           </span>
         </div>
       </div>
 
       {/* ========================================================================= */}
-      {/* 7. SCROLLABLE DHIKR & DU'A SECTION                                        */}
+      {/* 7. DUA'S & DHIKR SANCTUARY IN JOURNEY — EXPLANATION & ACTION CARD         */}
       {/* ========================================================================= */}
-      <DhikrDuaSection
-        isDark={isDark}
-        userStats={userStats}
-        onUpdateStats={onUpdateStats}
-        onOpenNoorAIWithPrompt={onOpenNoorAIWithPrompt}
-      />
+      <div
+        id="home-journey-dhikr-spotlight-card"
+        className={`rounded-3xl p-6 sm:p-8 border transition-all duration-300 relative overflow-hidden ${
+          isDark
+            ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+            : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
+        }`}
+      >
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="max-w-xl space-y-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className={`px-3 py-1 rounded-full text-[10px] sm:text-xs font-cinzel font-bold tracking-widest uppercase border flex items-center gap-1.5 ${
+                isDark
+                  ? 'bg-[#1B1D23] text-stone-200 border-white/[0.1]'
+                  : 'bg-[#F3F3F1] text-[#111214] border-black/[0.08]'
+              }`}>
+                <Sparkles className={`w-3.5 h-3.5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
+                {lang === 'ar' ? 'مكتبة رحلتي الإيمانية' : 'Spiritual Journey Library'}
+              </span>
+              <span className={`text-[11px] font-mono ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
+                {lang === 'ar' ? '٢٨٨ ذكراً ودعاءً' : '288 Authentic Invocations'}
+              </span>
+            </div>
+
+            <h3 className={`text-xl sm:text-2xl font-serif-heading font-bold tracking-tight ${
+              isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'
+            }`}>
+              {lang === 'ar' ? 'مكتبة الأدعية والأذكار في قسم الرحلة' : "Dua’s & Dhikr Library in Journey"}
+            </h3>
+
+            <p className={`text-xs sm:text-sm leading-relaxed font-light ${
+              isDark ? 'text-stone-300' : 'text-[#5A5D63]'
+            }`}>
+              {lang === 'ar'
+                ? 'المكتبة الشاملة لأذكار وأدعية حصن المسلم الموثقة تم حفظها بالكامل داخل قسم "الرحلة". يمكنك استعراض ٣٢ تصنيفاً مباركاً تشمل الأوراد اليومية، أذكار الصلوات، الحفظ، الرزق، والمناسبات مع التلاوات الصوتية والتخريج الصحيح.'
+                : 'The complete library of 288 authentic Hisn al-Muslim supplications is preserved inside your Spiritual Journey section. Explore 32 curated categories spanning Daily, Azkar, and Occasional invocations with verified Hadith citations and audio recitations.'}
+            </p>
+
+            {/* Feature Badges */}
+            <div className={`flex flex-wrap items-center gap-2 pt-1 text-[11px] font-medium ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
+              <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border ${
+                isDark ? 'bg-[#1B1D23] border-white/[0.08] text-stone-200' : 'bg-[#F3F3F1] border-black/[0.06] text-[#111214]'
+              }`}>
+                <BookOpen className={`w-3.5 h-3.5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
+                <span>{lang === 'ar' ? '٣٢ تصنيفاً شاملاً' : '32 Curated Categories'}</span>
+              </div>
+              <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border ${
+                isDark ? 'bg-[#1B1D23] border-white/[0.08] text-stone-200' : 'bg-[#F3F3F1] border-black/[0.06] text-[#111214]'
+              }`}>
+                <Volume2 className={`w-3.5 h-3.5 ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`} />
+                <span>{lang === 'ar' ? 'تلاوات صوتية صحيحة' : 'Audio Recitations'}</span>
+              </div>
+              <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border ${
+                isDark ? 'bg-[#1B1D23] border-white/[0.08] text-stone-200' : 'bg-[#F3F3F1] border-black/[0.06] text-[#111214]'
+              }`}>
+                <CheckCircle2 className={`w-3.5 h-3.5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
+                <span>{lang === 'ar' ? 'تخريج الأحاديث' : 'Hadith References'}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Button to Journey Section */}
+          <div className="shrink-0 flex flex-col sm:flex-row md:flex-col items-stretch md:items-end justify-center gap-2">
+            <button
+              id="home-open-journey-dhikr-btn"
+              type="button"
+              onClick={() => onNavigate('profile')}
+              className={`px-6 py-4 rounded-2xl font-cinzel text-xs sm:text-sm font-bold tracking-wider uppercase transition-all duration-200 flex items-center justify-center gap-2.5 shadow-sm active:scale-98 cursor-pointer group ${
+                isDark
+                  ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                  : 'bg-[#111214] hover:bg-[#27292D] text-white'
+              }`}
+            >
+              <span>{lang === 'ar' ? 'فتح مكتبة الأدعية في الرحلة' : 'Open Dua’s in Journey'}</span>
+              <ArrowRight className={`w-4 h-4 transition-transform group-hover:translate-x-1 ${lang === 'ar' ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
+            </button>
+            <p className={`text-[10px] text-center md:text-right ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
+              {lang === 'ar' ? 'قسم الرحلة > أذكار وأدعية حصن المسلم' : 'Spiritual Journey > Dua’s & Dhikr Library'}
+            </p>
+          </div>
+        </div>
+      </div>
 
       {/* Location Modal */}
       {isLocationModalOpen && (

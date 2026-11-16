@@ -21,7 +21,6 @@ export const Header: React.FC<HeaderProps> = memo(({
   hijriDate,
   language,
   isAtRisk = false,
-  riskFormattedTime,
   onOpenStreakRisk,
 }) => {
   const lang = getLanguageCode(language);
@@ -29,9 +28,11 @@ export const Header: React.FC<HeaderProps> = memo(({
   return (
     <header
       id="app-header"
-      className={`lg:hidden sticky top-0 z-30 px-3.5 sm:px-6 pt-[max(10px,env(safe-area-inset-top))] pb-2.5 ${
-        isDark ? 'bg-[#080A0E]/90' : 'bg-[#FAF9F5]/90'
-      } backdrop-blur-xl transition-colors duration-200 border-b border-[#C9A063]/15 shadow-2xs`}
+      className={`lg:hidden sticky top-0 z-30 px-3.5 sm:px-6 pt-[max(10px,env(safe-area-inset-top))] pb-2.5 backdrop-blur-xl transition-colors duration-200 border-b ${
+        isDark
+          ? 'bg-[#0B0C0E]/90 border-white/[0.08]'
+          : 'bg-[#FCFCFA]/90 border-black/[0.08]'
+      }`}
     >
       <div className="w-full max-w-4xl mx-auto flex items-center justify-between gap-2">
         {/* Brand & Calligraphy */}
@@ -41,15 +42,21 @@ export const Header: React.FC<HeaderProps> = memo(({
           </div>
           <div className="min-w-0">
             <div className="flex items-center gap-1 sm:gap-1.5">
-              <h1 className={`text-sm sm:text-base font-cinzel font-bold tracking-widest truncate ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
+              <h1 className={`text-sm sm:text-base font-cinzel font-bold tracking-widest truncate ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                 {isArabic ? 'نور' : 'NOOR'}
               </h1>
-              <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-medium bg-[#C9A063]/12 text-[#DFBA7F] border border-[#C9A063]/30 shrink-0">
-                <Sparkles className="w-2.5 h-2.5 mr-0.5 text-[#C9A063]" />
+              <span
+                className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-medium border shrink-0 ${
+                  isDark
+                    ? 'bg-white/[0.06] text-stone-300 border-white/[0.1]'
+                    : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.08]'
+                }`}
+              >
+                <Sparkles className={`w-2.5 h-2.5 mr-0.5 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`} />
                 {t(lang, 'sanctuaryEmblem')}
               </span>
             </div>
-            <p className={`text-[10px] sm:text-[11px] font-medium truncate ${isDark ? 'text-stone-400' : 'text-stone-500'}`}>
+            <p className={`text-[10px] sm:text-[11px] font-medium truncate ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
               {hijriDate}
             </p>
           </div>
@@ -63,10 +70,12 @@ export const Header: React.FC<HeaderProps> = memo(({
             onClick={isAtRisk && onOpenStreakRisk ? onOpenStreakRisk : undefined}
             className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full border min-h-[38px] transition-all cursor-pointer ${
               isAtRisk
-                ? 'bg-amber-500/25 border-amber-500/60 text-amber-300 shadow-[0_0_12px_rgba(245,158,11,0.4)] animate-pulse'
+                ? isDark
+                  ? 'bg-rose-500/20 border-rose-500/50 text-rose-300 animate-pulse'
+                  : 'bg-rose-50 border-rose-300 text-rose-700 animate-pulse'
                 : isDark
-                ? 'bg-[#C9A063]/10 border-[#C9A063]/30 text-[#DFBA7F]'
-                : 'bg-amber-50/90 border-[#C9A063]/40 text-amber-800'
+                ? 'bg-white/[0.06] border-white/[0.1] text-white'
+                : 'bg-white border-black/[0.08] text-[#111214] shadow-2xs'
             }`}
             title={
               isAtRisk
@@ -77,8 +86,12 @@ export const Header: React.FC<HeaderProps> = memo(({
             <Flame
               className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-all shrink-0 ${
                 isAtRisk
-                  ? 'text-amber-400 fill-amber-400 animate-bounce'
-                  : 'text-[#C9A063] fill-[#C9A063]'
+                  ? isDark
+                    ? 'text-rose-400 fill-rose-400 animate-bounce'
+                    : 'text-rose-600 fill-rose-600 animate-bounce'
+                  : isDark
+                  ? 'text-white fill-white'
+                  : 'text-[#111214] fill-[#111214]'
               }`}
             />
             <span className="text-[11px] sm:text-xs font-semibold whitespace-nowrap">
@@ -92,12 +105,12 @@ export const Header: React.FC<HeaderProps> = memo(({
             onClick={onToggleTheme}
             className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all cursor-pointer ${
               isDark
-                ? 'bg-[#12161D]/80 border-[#C9A063]/25 text-[#DFBA7F] hover:text-white hover:bg-[#1A202A]'
-                : 'bg-white/90 border-stone-200 text-stone-700 hover:text-stone-950 hover:bg-stone-100 shadow-xs'
+                ? 'bg-[#14161A] border-white/[0.1] text-stone-200 hover:text-white hover:bg-white/[0.08]'
+                : 'bg-white border-black/[0.08] text-[#111214] hover:bg-[#F3F3F1] shadow-2xs'
             }`}
             aria-label="Toggle theme"
           >
-            {isDark ? <Sun className="w-4 h-4 text-[#DFBA7F]" /> : <Moon className="w-4 h-4 text-stone-700" />}
+            {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </button>
         </div>
       </div>

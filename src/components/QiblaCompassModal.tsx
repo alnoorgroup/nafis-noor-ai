@@ -299,31 +299,36 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
     >
       <div
         dir={isArabic ? 'rtl' : 'ltr'}
-        className={`w-full max-w-lg rounded-3xl border shadow-[0_2px_8px_rgba(0,0,0,0.25)] relative overflow-hidden flex flex-col max-h-[min(92dvh,740px)] transition-all duration-200 ${
+        className={`w-full max-w-lg rounded-3xl border shadow-[0_12px_40px_rgba(0,0,0,0.3)] relative overflow-hidden flex flex-col max-h-[min(92dvh,740px)] transition-all duration-200 ${
           isDark
-            ? 'bg-gradient-to-b from-[#0B0E14] via-[#090C10] to-[#06080B] border-[#C9A063]/30 text-[#F5EFE6]'
-            : 'bg-gradient-to-b from-[#FFFDF9] via-stone-50 to-stone-100 border-[#C9A063]/40 text-stone-900 shadow-md'
+            ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6]'
+            : 'bg-white border-black/[0.08] text-[#111214]'
         }`}
       >
-        {/* Luminous Top Gold Trim */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#DFBA7F] to-transparent opacity-85" />
-
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-5 pt-5 pb-3 border-b border-[#C9A063]/15 shrink-0">
+        <div className={`flex items-center justify-between px-5 pt-5 pb-3 border-b shrink-0 ${
+          isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+        }`}>
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-[#C9A063]/15 border border-[#C9A063]/35 flex items-center justify-center shadow-xs">
-              <Compass className="w-5 h-5 text-[#DFBA7F] animate-spin-slow" />
+            <div className={`w-10 h-10 rounded-2xl border flex items-center justify-center shadow-xs ${
+              isDark ? 'bg-[#1B1D23] border-white/[0.1]' : 'bg-[#F3F3F1] border-black/[0.08]'
+            }`}>
+              <Compass className={`w-5 h-5 animate-spin-slow ${isDark ? 'text-white' : 'text-[#111214]'}`} />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <h3 className="text-base font-cinzel font-bold tracking-wider text-[#DFBA7F]">
+                <h3 className={`text-base font-cinzel font-bold tracking-wider ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                   {isArabic ? 'بوصلة القبلة الفلكية' : 'TRUE QIBLA COMPASS'}
                 </h3>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold">
+                <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border font-semibold ${
+                  isDark
+                    ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
+                    : 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                }`}>
                   {isArabic ? 'فلكي دقيق' : 'Astronomical'}
                 </span>
               </div>
-              <p className="text-[11px] text-stone-400 font-arabic" dir="rtl">
+              <p className={`text-[11px] font-arabic ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`} dir="rtl">
                 بوصلة القبلة الدقيقة نحو الكعبة المشرفة
               </p>
             </div>
@@ -333,12 +338,16 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
             {/* Toggle Audio Chime */}
             <button
               onClick={() => setSoundEnabled(!soundEnabled)}
-              className="p-2 rounded-xl text-stone-400 hover:text-[#DFBA7F] hover:bg-[#C9A063]/10 transition-colors cursor-pointer"
+              className={`p-2 rounded-xl transition-colors cursor-pointer ${
+                isDark
+                  ? 'text-stone-400 hover:text-white hover:bg-white/[0.08]'
+                  : 'text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05]'
+              }`}
               title={soundEnabled ? (isArabic ? 'كتم رنين المحاذاة' : 'Mute Alignment Chime') : (isArabic ? 'تفعيل رنين المحاذاة' : 'Enable Alignment Chime')}
               aria-label="Toggle chime sound"
             >
               {soundEnabled ? (
-                <Volume2 className="w-4 h-4 text-[#DFBA7F]" />
+                <Volume2 className={`w-4 h-4 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
               ) : (
                 <VolumeX className="w-4 h-4 text-stone-500" />
               )}
@@ -347,7 +356,11 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="p-2 rounded-xl text-stone-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+              className={`p-2 rounded-xl transition-colors cursor-pointer ${
+                isDark
+                  ? 'text-stone-400 hover:text-white hover:bg-white/[0.08]'
+                  : 'text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05]'
+              }`}
               title={isArabic ? 'إغلاق البوصلة' : 'Close Qibla Compass'}
               aria-label="Close"
             >
@@ -362,14 +375,14 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
           <div
             className={`p-3 rounded-2xl border flex flex-wrap items-center justify-between gap-2 text-xs ${
               isDark
-                ? 'bg-[#12161F]/70 border-[#C9A063]/20 text-stone-300'
-                : 'bg-amber-50/70 border-[#C9A063]/30 text-amber-950'
+                ? 'bg-[#1B1D23] border-white/[0.08] text-stone-300'
+                : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
             }`}
           >
             <div className="flex items-center gap-2 min-w-0">
-              <MapPin className="w-4 h-4 text-[#DFBA7F] shrink-0" />
+              <MapPin className={`w-4 h-4 shrink-0 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
               <div className="truncate">
-                <span className="font-semibold text-[#DFBA7F]">{isArabic ? 'من: ' : 'From: '}</span>
+                <span className={`font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>{isArabic ? 'من: ' : 'From: '}</span>
                 <span className="truncate">{coords.displayName}</span>
               </div>
             </div>
@@ -377,7 +390,11 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
             <button
               onClick={handleDetectGPS}
               disabled={isLocatingGPS}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-[#C9A063]/20 hover:bg-[#C9A063]/30 text-[#DFBA7F] border border-[#C9A063]/40 text-[11px] font-semibold transition-all active:scale-95 shrink-0 cursor-pointer"
+              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-xl border text-[11px] font-semibold transition-all active:scale-95 shrink-0 cursor-pointer ${
+                isDark
+                  ? 'bg-white/[0.08] hover:bg-white/[0.14] text-white border-white/[0.15]'
+                  : 'bg-white hover:bg-black/[0.04] text-[#111214] border-black/[0.12] shadow-2xs'
+              }`}
               title={isArabic ? 'تحديد إحداثيات GPS بدقة' : 'Detect precise GPS coordinates'}
             >
               <Locate className={`w-3.5 h-3.5 ${isLocatingGPS ? 'animate-spin' : ''}`} />
@@ -391,14 +408,20 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
 
           {/* iOS Sensor Permission Banner (if needed) */}
           {sensorPermissionNeeded && (
-            <div className="p-3.5 rounded-2xl bg-amber-500/15 border border-amber-500/40 flex items-center justify-between gap-3 text-xs text-amber-200">
+            <div className={`p-3.5 rounded-2xl border flex items-center justify-between gap-3 text-xs ${
+              isDark
+                ? 'bg-[#1B1D23] border-white/[0.14] text-[#F3F4F6]'
+                : 'bg-[#F3F3F1] border-black/[0.12] text-[#111214]'
+            }`}>
               <div className="flex items-center gap-2">
-                <Smartphone className="w-4 h-4 text-amber-400 shrink-0" />
+                <Smartphone className={`w-4 h-4 shrink-0 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
                 <span>{isArabic ? 'انقر لتفعيل حساس الحركة والبوصلة' : 'Tap to enable motion & compass sensor'}</span>
               </div>
               <button
                 onClick={requestOrientationPermission}
-                className="px-3 py-1.5 rounded-xl bg-amber-500 text-stone-950 font-bold text-xs hover:bg-amber-400 transition-colors shrink-0 shadow-sm cursor-pointer"
+                className={`px-3 py-1.5 rounded-xl font-bold text-xs transition-colors shrink-0 shadow-sm cursor-pointer ${
+                  isDark ? 'bg-white text-[#111214] hover:bg-stone-200' : 'bg-[#111214] text-white hover:bg-[#27292D]'
+                }`}
               >
                 {isArabic ? 'تفعيل البوصلة' : 'Enable Compass'}
               </button>
@@ -411,29 +434,29 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
             <div
               className={`absolute w-72 h-72 sm:w-80 sm:h-80 rounded-full transition-opacity duration-200 pointer-events-none ${
                 isAligned
-                  ? 'bg-gradient-to-tr from-emerald-500/20 via-[#DFBA7F]/20 to-emerald-400/15 shadow-[0_2px_8px_rgba(52,211,153,0.3)] scale-105'
+                  ? 'bg-gradient-to-tr from-emerald-500/20 via-emerald-400/15 to-emerald-400/15 shadow-[0_2px_8px_rgba(52,211,153,0.3)] scale-105'
                   : 'bg-transparent'
               }`}
             />
 
             {/* Compass Container */}
             <div
-              className={`relative w-64 h-64 sm:w-72 sm:h-72 rounded-full border-4 shadow-[0_2px_8px_rgba(0,0,0,0.3)] flex items-center justify-center overflow-hidden transition-all duration-200 ${
+              className={`relative w-64 h-64 sm:w-72 sm:h-72 rounded-full border-4 shadow-[0_2px_12px_rgba(0,0,0,0.35)] flex items-center justify-center overflow-hidden transition-all duration-200 ${
                 isAligned
-                  ? 'border-emerald-400 shadow-[0_2px_8px_rgba(52,211,153,0.4)]'
+                  ? 'border-emerald-400 shadow-[0_2px_12px_rgba(52,211,153,0.4)] bg-[#0B0C0E]'
                   : isDark
-                  ? 'border-[#C9A063]/40 bg-[#080B10]'
-                  : 'border-[#C9A063]/50 bg-stone-900 text-stone-100'
+                  ? 'border-white/[0.18] bg-[#0B0C0E]'
+                  : 'border-black/[0.2] bg-[#111214] text-stone-100'
               }`}
             >
               {/* UNIFIED MATHEMATICALLY EXACT SVG COMPASS */}
               <svg viewBox="0 0 300 300" className="w-full h-full select-none pointer-events-none">
                 <defs>
-                  {/* Luxury Gold Linear Gradient */}
-                  <linearGradient id="qiblaGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#FFF2CC" />
-                    <stop offset="50%" stopColor="#DFBA7F" />
-                    <stop offset="100%" stopColor="#A87B38" />
+                  {/* Monochrome Needle Gradient */}
+                  <linearGradient id="qiblaMonoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#FFFFFF" />
+                    <stop offset="50%" stopColor="#E5E7EB" />
+                    <stop offset="100%" stopColor="#9CA3AF" />
                   </linearGradient>
 
                   {/* Luminous Emerald Glow for Alignment */}
@@ -447,10 +470,10 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
                 {/* 1. ROTATING COMPASS DIAL (Rotates so North points to True North) */}
                 <g transform={`rotate(${dialRotation} 150 150)`} style={{ willChange: 'transform' }}>
                   {/* Outer Concentric Border Circles */}
-                  <circle cx="150" cy="150" r="144" fill="none" stroke="#C9A063" strokeWidth="1.5" strokeOpacity="0.3" />
-                  <circle cx="150" cy="150" r="136" fill="none" stroke="#C9A063" strokeWidth="1" strokeOpacity="0.45" />
-                  <circle cx="150" cy="150" r="110" fill="none" stroke="#C9A063" strokeWidth="0.8" strokeOpacity="0.25" strokeDasharray="3 3" />
-                  <circle cx="150" cy="150" r="75" fill="none" stroke="#C9A063" strokeWidth="0.8" strokeOpacity="0.2" />
+                  <circle cx="150" cy="150" r="144" fill="none" stroke="#FFFFFF" strokeWidth="1.5" strokeOpacity="0.22" />
+                  <circle cx="150" cy="150" r="136" fill="none" stroke="#FFFFFF" strokeWidth="1" strokeOpacity="0.35" />
+                  <circle cx="150" cy="150" r="110" fill="none" stroke="#FFFFFF" strokeWidth="0.8" strokeOpacity="0.2" strokeDasharray="3 3" />
+                  <circle cx="150" cy="150" r="75" fill="none" stroke="#FFFFFF" strokeWidth="0.8" strokeOpacity="0.16" />
 
                   {/* 360 Degree Tick Marks (every 5° and 15°) */}
                   {Array.from({ length: 72 }).map((_, i) => {
@@ -458,8 +481,8 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
                     const isMajor = deg % 30 === 0;
                     const isMedium = deg % 15 === 0;
                     const length = isMajor ? 12 : isMedium ? 8 : 4;
-                    const stroke = isMajor ? '#DFBA7F' : isMedium ? '#C9A063' : '#6B7280';
-                    const opacity = isMajor ? '0.9' : isMedium ? '0.6' : '0.35';
+                    const stroke = isMajor ? '#FFFFFF' : isMedium ? '#D1D5DB' : '#6B7280';
+                    const opacity = isMajor ? '0.9' : isMedium ? '0.55' : '0.35';
 
                     return (
                       <line
@@ -484,11 +507,11 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
                         key={`deg-${deg}`}
                         x="150"
                         y="34"
-                        fill="#C9A063"
+                        fill="#D1D5DB"
                         fontSize="8"
                         fontFamily="monospace"
                         textAnchor="middle"
-                        opacity="0.75"
+                        opacity="0.7"
                         transform={`rotate(${deg} 150 150)`}
                       >
                         {deg}°
@@ -509,59 +532,59 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
 
                   {/* EAST (E / ق) */}
                   <g transform="rotate(90 150 150)">
-                    <text x="150" y="38" fill="#DFBA7F" fontSize="13" fontWeight="bold" fontFamily="Cinzel, serif" textAnchor="middle">
+                    <text x="150" y="38" fill="#F3F4F6" fontSize="13" fontWeight="bold" fontFamily="Cinzel, serif" textAnchor="middle">
                       E
                     </text>
-                    <text x="150" y="49" fill="#DFBA7F" fontSize="8" fontFamily="Amiri, serif" textAnchor="middle" opacity="0.85">
+                    <text x="150" y="49" fill="#D1D5DB" fontSize="8" fontFamily="Amiri, serif" textAnchor="middle" opacity="0.85">
                       شرق
                     </text>
                   </g>
 
                   {/* SOUTH (S / ج) */}
                   <g transform="rotate(180 150 150)">
-                    <text x="150" y="38" fill="#DFBA7F" fontSize="13" fontWeight="bold" fontFamily="Cinzel, serif" textAnchor="middle">
+                    <text x="150" y="38" fill="#F3F4F6" fontSize="13" fontWeight="bold" fontFamily="Cinzel, serif" textAnchor="middle">
                       S
                     </text>
-                    <text x="150" y="49" fill="#DFBA7F" fontSize="8" fontFamily="Amiri, serif" textAnchor="middle" opacity="0.85">
+                    <text x="150" y="49" fill="#D1D5DB" fontSize="8" fontFamily="Amiri, serif" textAnchor="middle" opacity="0.85">
                       جنوب
                     </text>
                   </g>
 
                   {/* WEST (W / غ) */}
                   <g transform="rotate(270 150 150)">
-                    <text x="150" y="38" fill="#DFBA7F" fontSize="13" fontWeight="bold" fontFamily="Cinzel, serif" textAnchor="middle">
+                    <text x="150" y="38" fill="#F3F4F6" fontSize="13" fontWeight="bold" fontFamily="Cinzel, serif" textAnchor="middle">
                       W
                     </text>
-                    <text x="150" y="49" fill="#DFBA7F" fontSize="8" fontFamily="Amiri, serif" textAnchor="middle" opacity="0.85">
+                    <text x="150" y="49" fill="#D1D5DB" fontSize="8" fontFamily="Amiri, serif" textAnchor="middle" opacity="0.85">
                       غرب
                     </text>
                   </g>
 
-                  {/* Golden Qibla Angle Ray on Dial */}
+                  {/* Qibla Angle Ray on Dial */}
                   <line
                     x1="150"
                     y1="150"
                     x2="150"
                     y2="20"
-                    stroke="#DFBA7F"
+                    stroke="#FFFFFF"
                     strokeWidth="2"
                     strokeDasharray="4 2"
                     transform={`rotate(${qiblaBearing} 150 150)`}
-                    opacity="0.85"
+                    opacity="0.75"
                   />
 
                   {/* THE HOLY KAABA BEACON ON THE COMPASS RIM */}
                   <g transform={`rotate(${qiblaBearing} 150 150)`}>
                     {/* Glowing beacon circle */}
-                    <circle cx="150" cy="22" r="14" fill="#C9A063" fillOpacity={isAligned ? '0.45' : '0.2'} />
-                    <circle cx="150" cy="22" r="10" fill="#0C0E14" stroke={isAligned ? '#34D399' : '#DFBA7F'} strokeWidth="1.5" />
+                    <circle cx="150" cy="22" r="14" fill="#FFFFFF" fillOpacity={isAligned ? '0.35' : '0.16'} />
+                    <circle cx="150" cy="22" r="10" fill="#0B0C0E" stroke={isAligned ? '#34D399' : '#FFFFFF'} strokeWidth="1.5" />
 
                     {/* Kaaba Cube Icon */}
-                    <rect x="143" y="15" width="14" height="14" rx="2" fill="#090B0E" stroke={isAligned ? '#34D399' : '#DFBA7F'} strokeWidth="1" />
-                    {/* Golden Kiswah Band */}
-                    <line x1="143" y1="18.5" x2="157" y2="18.5" stroke="#DFBA7F" strokeWidth="1.8" />
-                    {/* Golden Door of Kaaba */}
-                    <rect x="145" y="21" width="3" height="6" rx="0.5" fill="#DFBA7F" />
+                    <rect x="143" y="15" width="14" height="14" rx="2" fill="#090B0E" stroke={isAligned ? '#34D399' : '#FFFFFF'} strokeWidth="1" />
+                    {/* Kiswah Band */}
+                    <line x1="143" y1="18.5" x2="157" y2="18.5" stroke="#E5E7EB" strokeWidth="1.8" />
+                    {/* Door of Kaaba */}
+                    <rect x="145" y="21" width="3" height="6" rx="0.5" fill="#E5E7EB" />
                   </g>
                 </g>
 
@@ -570,15 +593,15 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
                   {/* Pointed Head of Needle (Points directly to Holy Kaaba) */}
                   <polygon
                     points="150,32 142,75 158,75"
-                    fill={isAligned ? 'url(#emeraldGrad)' : 'url(#qiblaGoldGrad)'}
-                    filter="drop-shadow(0 0 6px rgba(223, 186, 127, 0.8))"
+                    fill={isAligned ? 'url(#emeraldGrad)' : 'url(#qiblaMonoGrad)'}
+                    filter="drop-shadow(0 0 6px rgba(255, 255, 255, 0.55))"
                   />
                   <line
                     x1="150"
                     y1="75"
                     x2="150"
                     y2="150"
-                    stroke={isAligned ? '#34D399' : '#DFBA7F'}
+                    stroke={isAligned ? '#34D399' : '#FFFFFF'}
                     strokeWidth="3.5"
                     strokeLinecap="round"
                   />
@@ -602,15 +625,15 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
                 </g>
 
                 {/* 3. CENTER ASTROLABE JEWEL PIVOT */}
-                <circle cx="150" cy="150" r="14" fill="#0C0E14" stroke="#DFBA7F" strokeWidth="2" />
+                <circle cx="150" cy="150" r="14" fill="#0B0C0E" stroke="#FFFFFF" strokeWidth="2" />
                 <circle
                   cx="150"
                   cy="150"
                   r="6"
-                  fill={isAligned ? '#34D399' : '#DFBA7F'}
+                  fill={isAligned ? '#34D399' : '#FFFFFF'}
                   className={isAligned ? 'animate-ping' : ''}
                 />
-                <circle cx="150" cy="150" r="3" fill="#FFFDF9" />
+                <circle cx="150" cy="150" r="3" fill="#FFFFFF" />
 
                 {/* 4. FIXED TOP FORWARD RETICLE (Points to 12 o'clock, represents where user's phone is facing) */}
                 <polygon
@@ -626,22 +649,28 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
           <div
             className={`p-4 rounded-2xl border text-center transition-all duration-200 ${
               isAligned
-                ? 'bg-gradient-to-b from-emerald-500/20 via-emerald-500/10 to-[#0A1612] border-emerald-500/50 shadow-xs'
+                ? isDark
+                  ? 'bg-gradient-to-b from-emerald-500/20 via-emerald-500/10 to-[#0B0C0E] border-emerald-500/50 shadow-xs'
+                  : 'bg-gradient-to-b from-emerald-50 via-emerald-50/70 to-white border-emerald-400 shadow-xs'
                 : isDark
-                ? 'bg-[#10141D] border-[#C9A063]/25 shadow-sm'
-                : 'bg-stone-100 border-[#C9A063]/30 shadow-xs'
+                ? 'bg-[#1B1D23] border-white/[0.08] shadow-sm'
+                : 'bg-[#F3F3F1] border-black/[0.08] shadow-xs'
             }`}
           >
             {isAligned ? (
               <div className="space-y-1 animate-fadeIn">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/25 text-emerald-300 border border-emerald-500/40 text-xs font-bold font-cinzel">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-bold font-cinzel ${
+                  isDark
+                    ? 'bg-emerald-500/25 text-emerald-300 border-emerald-500/40'
+                    : 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                }`}>
+                  <CheckCircle2 className={`w-4 h-4 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`} />
                   <span>{isArabic ? 'مواجه للكعبة المشرفة' : 'ALIGNED WITH KAABA'}</span>
                 </div>
-                <div className="text-base font-bold text-emerald-300 font-arabic pt-1" dir="rtl">
+                <div className={`text-base font-bold font-arabic pt-1 ${isDark ? 'text-emerald-300' : 'text-emerald-800'}`} dir="rtl">
                   مواجه للقبلة المشرفة مباشرة · تقبل الله
                 </div>
-                <p className="text-xs text-stone-300 font-light">
+                <p className={`text-xs font-light ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                   {isArabic
                     ? 'أنت الآن مواجه للكعبة المشرفة بدقة تامة. استعد للصلاة.'
                     : 'You are accurately facing the Holy Kaaba. Ready for Salah.'}
@@ -649,17 +678,17 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
               </div>
             ) : (
               <div className="space-y-1">
-                <div className="text-xs font-mono font-bold text-[#DFBA7F] flex items-center justify-center gap-1.5">
-                  <Navigation className="w-3.5 h-3.5 text-[#DFBA7F] rotate-45" />
+                <div className={`text-xs font-mono font-bold flex items-center justify-center gap-1.5 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
+                  <Navigation className={`w-3.5 h-3.5 rotate-45 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
                   <span>
                     {angleDiff > 0
                       ? (isArabic ? `اتجه ${Math.round(absDiff)}° لليمين ↷` : `Turn ${Math.round(absDiff)}° to your right ↷`)
                       : (isArabic ? `اتجه ${Math.round(absDiff)}° لليسار ↶` : `Turn ${Math.round(absDiff)}° to your left ↶`)}
                   </span>
                 </div>
-                <p className="text-xs text-stone-400 font-light">
+                <p className={`text-xs font-light ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                   {isArabic
-                    ? 'قم بتدوير هاتفك حتى يشير السهم الذهبي إلى المؤشر العلوي مباشرة.'
+                    ? 'قم بتدوير هاتفك حتى يشير السهم إلى المؤشر العلوي مباشرة.'
                     : 'Rotate your phone until the needle points straight up to the red reticle.'}
                 </p>
               </div>
@@ -667,16 +696,22 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
           </div>
 
           {/* COMPASS CONTROLS & CALIBRATION BAR */}
-          <div className="flex items-center justify-between gap-2 p-2.5 rounded-2xl bg-[#0E1218] border border-white/5 text-xs">
+          <div className={`flex items-center justify-between gap-2 p-2.5 rounded-2xl border text-xs ${
+            isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
+          }`}>
             {/* View Mode Toggle */}
             <div className="flex items-center gap-1">
               <button
                 type="button"
                 onClick={() => setViewMode(viewMode === 'phone_target' ? 'north_up' : 'phone_target')}
-                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-white/5 hover:bg-[#C9A063]/15 text-stone-300 hover:text-[#DFBA7F] transition-colors text-[11px] cursor-pointer"
+                className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-xl transition-colors text-[11px] cursor-pointer ${
+                  isDark
+                    ? 'bg-white/[0.06] hover:bg-white/[0.12] text-stone-200 hover:text-white'
+                    : 'bg-white hover:bg-black/[0.04] text-[#111214] border border-black/[0.08]'
+                }`}
                 title={isArabic ? 'تبديل نمط عرض البوصلة' : 'Switch compass view style'}
               >
-                <Eye className="w-3 h-3 text-[#DFBA7F]" />
+                <Eye className={`w-3 h-3 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
                 <span>
                   {viewMode === 'phone_target'
                     ? (isArabic ? 'توجيه الهاتف' : 'Phone Target')
@@ -690,12 +725,16 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
                 onClick={toggleInverted}
                 className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-xl transition-colors text-[11px] cursor-pointer ${
                   isInverted
-                    ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                    : 'bg-white/5 hover:bg-white/10 text-stone-400'
+                    ? isDark
+                      ? 'bg-white text-[#111214] font-semibold'
+                      : 'bg-[#111214] text-white font-semibold'
+                    : isDark
+                    ? 'bg-white/[0.06] hover:bg-white/[0.12] text-stone-400'
+                    : 'bg-white hover:bg-black/[0.04] text-[#5A5D63] border border-black/[0.08]'
                 }`}
                 title={isArabic ? 'عكس اتجاه الدوران إذا كان حساس جهازك يدور بالعكس' : 'Flip rotation direction if your device sensor moves backwards'}
               >
-                <RefreshCw className={`w-3 h-3 ${isInverted ? 'text-amber-400' : ''}`} />
+                <RefreshCw className="w-3 h-3" />
                 <span>
                   {isInverted
                     ? (isArabic ? 'دوران معكوس' : 'Inverted')
@@ -708,7 +747,7 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
             <button
               type="button"
               onClick={() => setIsCalibrating(!isCalibrating)}
-              className="text-[11px] text-[#DFBA7F] hover:underline cursor-pointer"
+              className={`text-[11px] hover:underline cursor-pointer font-medium ${isDark ? 'text-white' : 'text-[#111214]'}`}
             >
               {isCalibrating
                 ? (isArabic ? 'إخفاء الدليل' : 'Hide Info')
@@ -721,16 +760,16 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
             {/* Current Heading */}
             <div
               className={`p-3 rounded-2xl border ${
-                isDark ? 'bg-[#0E1218] border-white/5' : 'bg-white border-stone-200 shadow-2xs'
+                isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#FCFCFA] border-black/[0.08] shadow-2xs'
               }`}
             >
-              <div className="text-[10px] text-stone-400 uppercase tracking-wider font-mono">
+              <div className={`text-[10px] uppercase tracking-wider font-mono ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                 {isArabic ? 'الاتجاه الحالي' : 'Current Heading'}
               </div>
-              <div className="text-sm sm:text-base font-bold text-stone-200 font-mono mt-0.5">
+              <div className={`text-sm sm:text-base font-bold font-mono mt-0.5 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                 {Math.round(heading)}°
               </div>
-              <div className="text-[10px] text-[#DFBA7F] truncate">
+              <div className={`text-[10px] truncate ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                 {isArabic ? currentHeadingInfo.arabic : `${currentHeadingInfo.code} · ${currentHeadingInfo.arabic}`}
               </div>
             </div>
@@ -738,16 +777,16 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
             {/* Qibla Direction */}
             <div
               className={`p-3 rounded-2xl border ${
-                isDark ? 'bg-[#0E1218] border-[#C9A063]/30' : 'bg-white border-[#C9A063]/40 shadow-2xs'
+                isDark ? 'bg-[#1B1D23] border-white/[0.16]' : 'bg-[#F3F3F1] border-black/[0.12] shadow-2xs'
               }`}
             >
-              <div className="text-[10px] text-[#DFBA7F] uppercase tracking-wider font-mono font-bold">
+              <div className={`text-[10px] uppercase tracking-wider font-mono font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                 {isArabic ? 'زاوية القبلة' : 'Qibla Bearing'}
               </div>
-              <div className="text-sm sm:text-base font-bold text-[#DFBA7F] font-mono mt-0.5">
+              <div className={`text-sm sm:text-base font-bold font-mono mt-0.5 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                 {qiblaBearing.toFixed(1)}°
               </div>
-              <div className="text-[10px] text-stone-300 truncate">
+              <div className={`text-[10px] truncate ${isDark ? 'text-stone-300' : 'text-[#5A5D63]'}`}>
                 {isArabic ? qiblaHeadingInfo.arabic : `${qiblaHeadingInfo.code} · ${qiblaHeadingInfo.arabic}`}
               </div>
             </div>
@@ -755,16 +794,16 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
             {/* Distance to Kaaba */}
             <div
               className={`p-3 rounded-2xl border ${
-                isDark ? 'bg-[#0E1218] border-white/5' : 'bg-white border-stone-200 shadow-2xs'
+                isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#FCFCFA] border-black/[0.08] shadow-2xs'
               }`}
             >
-              <div className="text-[10px] text-stone-400 uppercase tracking-wider font-mono">
+              <div className={`text-[10px] uppercase tracking-wider font-mono ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                 {isArabic ? 'المسافة إلى الكعبة' : 'Kaaba Distance'}
               </div>
-              <div className="text-sm sm:text-base font-bold text-stone-200 font-mono mt-0.5">
+              <div className={`text-sm sm:text-base font-bold font-mono mt-0.5 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                 {distance.km.toLocaleString()} <span className="text-[10px]">{isArabic ? 'كم' : 'km'}</span>
               </div>
-              <div className="text-[10px] text-stone-400 truncate">
+              <div className={`text-[10px] truncate ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
                 {isArabic ? `${distance.miles.toLocaleString()} ميل` : `${distance.miles.toLocaleString()} mi`}
               </div>
             </div>
@@ -774,11 +813,11 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
           {(hasSensor === false || typeof window === 'undefined') && (
             <div
               className={`p-3.5 rounded-2xl border space-y-2 ${
-                isDark ? 'bg-[#121620]/60 border-[#C9A063]/20' : 'bg-stone-100 border-[#C9A063]/30'
+                isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
               }`}
             >
               <div className="flex items-center justify-between text-xs">
-                <span className="font-semibold text-[#DFBA7F] flex items-center gap-1.5">
+                <span className={`font-semibold flex items-center gap-1.5 ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                   <Sliders className="w-3.5 h-3.5" />
                   {isArabic ? 'ضبط الاتجاه يدوياً' : 'Manual Heading Adjustment'}
                 </span>
@@ -788,7 +827,11 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
                     targetHeadingRef.current = qiblaBearing;
                     setHeading(qiblaBearing);
                   }}
-                  className="px-2 py-0.5 rounded-lg bg-[#C9A063]/20 text-[#DFBA7F] text-[10px] font-semibold hover:bg-[#C9A063]/30 cursor-pointer"
+                  className={`px-2 py-0.5 rounded-lg text-[10px] font-semibold cursor-pointer ${
+                    isDark
+                      ? 'bg-white text-[#111214] hover:bg-stone-200'
+                      : 'bg-[#111214] text-white hover:bg-[#27292D]'
+                  }`}
                 >
                   {isArabic ? 'محاذاة للقبلة' : 'Snap to Qibla'}
                 </button>
@@ -803,10 +846,10 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
                   targetHeadingRef.current = val;
                   setHeading(val);
                 }}
-                className="w-full accent-[#DFBA7F] cursor-pointer"
+                className={`w-full cursor-pointer ${isDark ? 'accent-white' : 'accent-[#111214]'}`}
                 aria-label="Compass heading rotation slider"
               />
-              <p className="text-[11px] text-stone-400 font-light leading-relaxed">
+              <p className={`text-[11px] font-light leading-relaxed ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 {isArabic
                   ? 'اسحب المؤشر لتدوير زاوية البوصلة، أو انقر "محاذاة للقبلة" لمعاينة الوضع الصحيح.'
                   : 'Drag to rotate the compass facing angle. Tap "Snap to Qibla" to see the direct alignment position.'}
@@ -818,14 +861,14 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
           {isCalibrating && (
             <div
               className={`p-3.5 rounded-2xl border space-y-2 text-xs animate-fadeIn ${
-                isDark ? 'bg-[#0E1218]/80 border-[#C9A063]/20' : 'bg-white/90 border-stone-200'
+                isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#FCFCFA] border-black/[0.08]'
               }`}
             >
-              <div className="flex items-center gap-1.5 text-[#DFBA7F] font-semibold">
+              <div className={`flex items-center gap-1.5 font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                 <ShieldCheck className="w-4 h-4" />
                 <span>{isArabic ? 'معايرة الحساس ودقة الاتجاه' : 'Sensor Calibration & Accuracy'}</span>
               </div>
-              <div className="text-[11px] text-stone-400 space-y-1.5 leading-relaxed">
+              <div className={`text-[11px] space-y-1.5 leading-relaxed ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 <p>
                   {isArabic
                     ? '• حركة الرقم ٨: إذا كان اتجاه البوصلة غير دقيق، حرّك هاتفك في الهواء على شكل رقم ٨ لمعايرة الحساس المغناطيسي.'
@@ -841,7 +884,7 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
                     ? '• التداخل الكهرومغناطيسي: ابتعد عن الأجهزة الإلكترونية والأجسام المعدنية والشواحن اللاسلكية وأغطية الهاتف المغناطيسية.'
                     : '• Magnetic Interference: Keep away from metal laptops, magnets, wireless chargers, and thick phone cases with metal plates.'}
                 </p>
-                <p className="italic text-stone-300 pt-1 border-t border-white/5 font-arabic" dir="rtl">
+                <p className={`italic pt-1 border-t font-arabic ${isDark ? 'text-stone-300 border-white/[0.08]' : 'text-[#111214] border-black/[0.08]'}`} dir="rtl">
                   {isArabic
                     ? '﴿فَوَلِّ وَجْهَكَ شَطْرَ الْمَسْجِدِ الْحَرَامِ وَحَيْثُ مَا كُنتُمْ فَوَلُّوا وُجُوهَكُمْ شَطْرَهُ﴾ [البقرة: ١٤٤]'
                     : '"Turn your face toward al-Masjid al-Haram. And wherever you [believers] are, turn your faces toward it [in prayer]." (Surah Al-Baqarah 2:144)'}
@@ -852,15 +895,21 @@ export const QiblaCompassModal: React.FC<QiblaCompassModalProps> = ({
         </div>
 
         {/* Modal Bottom Footer */}
-        <div className="px-5 py-3.5 border-t border-[#C9A063]/15 flex items-center justify-between bg-[#080B10]/80 shrink-0">
-          <div className="text-[11px] text-stone-400 flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-[#DFBA7F]" />
+        <div className={`px-5 py-3.5 border-t flex items-center justify-between shrink-0 ${
+          isDark ? 'bg-[#0B0C0E]/80 border-white/[0.08]' : 'bg-[#F3F3F1] border-black/[0.08]'
+        }`}>
+          <div className={`text-[11px] flex items-center gap-1.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
+            <Sparkles className={`w-3.5 h-3.5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
             <span>{isArabic ? 'المسجد الحرام، مكة المكرمة' : 'Al-Masjid Al-Haram, Makkah'}</span>
           </div>
 
           <button
             onClick={onClose}
-            className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] text-[#080A0E] text-xs font-bold hover:brightness-110 transition-all active:scale-95 shadow-sm cursor-pointer"
+            className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all active:scale-95 shadow-sm cursor-pointer ${
+              isDark
+                ? 'bg-white text-[#111214] hover:bg-stone-200'
+                : 'bg-[#111214] text-white hover:bg-[#27292D]'
+            }`}
           >
             {isArabic ? 'تم' : 'Done'}
           </button>

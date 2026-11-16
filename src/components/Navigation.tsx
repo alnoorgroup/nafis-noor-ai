@@ -72,14 +72,19 @@ export const Navigation: React.FC<NavigationProps> = memo(({
     prevDateRef.current = lastActivityDate;
   }, [lastActivityDate]);
 
-  // Listen to global activity completed event
+  // Listen to global activity completed and external mobile drawer trigger events
   useEffect(() => {
     const handleActivity = () => {
       triggerStreakGlow();
     };
+    const handleOpenDrawer = () => {
+      setIsMobileDrawerOpen(true);
+    };
     window.addEventListener('noor:activity-completed', handleActivity);
+    window.addEventListener('noor:open-mobile-drawer', handleOpenDrawer);
     return () => {
       window.removeEventListener('noor:activity-completed', handleActivity);
+      window.removeEventListener('noor:open-mobile-drawer', handleOpenDrawer);
       if (glowTimerRef.current) clearTimeout(glowTimerRef.current);
     };
   }, []);
@@ -88,19 +93,14 @@ export const Navigation: React.FC<NavigationProps> = memo(({
   const isCompletedToday = lastActivityDate === todayStr;
 
   const isArabic = lang === 'ar' || language?.toLowerCase() === 'arabic' || language === 'ar';
-  const bottomLogoSrc = isArabic
-    ? isDark
-      ? 'https://img.sanishtech.com/u/6b5138e1cc808c3100e2c1e21e9bb415.png'
-      : 'https://img.sanishtech.com/u/cfa42449de79e4e28b5e89bc3647fb0f.png'
-    : isDark
-      ? 'https://img.sanishtech.com/u/4839c88e05c99a48b9e5f34c39915b4f.png'
-      : 'https://img.sanishtech.com/u/90884012596474b554555f339ebce3f7.png';
+  const bottomLogoSrc = isDark
+    ? 'https://img.sanishtech.com/u/f1fc3476b9fdb454435a4cebfce95b0d.png'
+    : 'https://img.sanishtech.com/u/c22bfd5390c8f55c5594618f292c141c.png';
 
   const desktopTabs = [
     { id: 'home' as NavTab, label: t(lang, 'home'), icon: Home, desc: t(lang, 'homeDesc') },
     { id: 'prayer-check' as NavTab, label: t(lang, 'prayerCheck'), icon: ShieldAlert, desc: t(lang, 'prayerCheckDesc') },
     { id: 'quran' as NavTab, label: t(lang, 'quran'), icon: BookOpen, desc: t(lang, 'quranDesc') },
-    { id: 'dhikr' as NavTab, label: t(lang, 'dhikr'), icon: Sparkles, desc: t(lang, 'dhikrDesc') },
     { id: 'noor-ai' as NavTab, label: t(lang, 'noorAi'), icon: NoorAIIcon, isSpecial: true, desc: t(lang, 'noorAiDesc') },
     { id: 'learn' as NavTab, label: t(lang, 'study'), icon: GraduationCap, desc: t(lang, 'studyDesc') },
     { id: 'profile' as NavTab, label: t(lang, 'profile'), icon: User, desc: t(lang, 'profileDesc') },
@@ -149,8 +149,14 @@ export const Navigation: React.FC<NavigationProps> = memo(({
                 <h1 className={`text-base font-cinzel font-bold tracking-widest ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
                   {isArabic ? 'نور' : 'NOOR'}
                 </h1>
-                <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-semibold bg-[#C9A063]/15 text-[#DFBA7F] border border-[#C9A063]/30">
-                  <Sparkles className="w-2.5 h-2.5 mr-0.5 text-[#C9A063]" />
+                <span
+                  className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-semibold border ${
+                    isDark
+                      ? 'bg-[#C9A063]/15 text-[#DFBA7F] border-[#C9A063]/30'
+                      : 'bg-amber-50 text-[#7A541E] border-[#C9A063]/40'
+                  }`}
+                >
+                  <Sparkles className={`w-2.5 h-2.5 mr-0.5 ${isDark ? 'text-[#C9A063]' : 'text-[#8E6527]'}`} />
                   {t(lang, 'sanctuaryEmblem')}
                 </span>
               </div>
@@ -203,7 +209,13 @@ export const Navigation: React.FC<NavigationProps> = memo(({
                     <div className="flex items-center justify-between">
                       <span className="text-xs tracking-wide">{tab.label}</span>
                       {tab.isSpecial && (
-                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-[#DFBA7F]/20 text-[#DFBA7F] border border-[#DFBA7F]/30">
+                        <span
+                          className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full border ${
+                            isDark
+                              ? 'bg-[#DFBA7F]/20 text-[#DFBA7F] border-[#DFBA7F]/30'
+                              : 'bg-amber-50 text-[#7A541E] border-[#C9A063]/40'
+                          }`}
+                        >
                           {isArabic ? 'ذكي' : 'AI'}
                         </span>
                       )}
@@ -229,13 +241,11 @@ export const Navigation: React.FC<NavigationProps> = memo(({
             <img
               src={bottomLogoSrc}
               alt="Logo"
-              className="h-9 xl:h-10 w-auto max-w-[180px] object-contain opacity-90 hover:opacity-100 transition-opacity select-none pointer-events-none drop-shadow-xs"
+              className="h-10 xl:h-11 w-auto max-w-[180px] object-contain opacity-90 hover:opacity-100 transition-opacity select-none pointer-events-none drop-shadow-xs"
               loading="lazy"
               decoding="async"
               onError={(e) => {
-                const fallback = isArabic
-                  ? (isDark ? '/brand-logo-ar-dark.svg' : '/brand-logo-ar-light.svg')
-                  : (isDark ? '/brand-logo-en-dark.svg' : '/brand-logo-en-light.svg');
+                const fallback = isDark ? '/dark_bg.png' : '/light_bg.png';
                 const img = e.currentTarget as HTMLImageElement;
                 if (!img.src.includes(fallback)) {
                   img.src = fallback;
@@ -287,7 +297,7 @@ export const Navigation: React.FC<NavigationProps> = memo(({
               </div>
 
               <div>
-                <div className="text-[10px] uppercase font-cinzel font-bold text-[#DFBA7F] flex items-center gap-1.5">
+                <div className={`text-[10px] uppercase font-cinzel font-bold flex items-center gap-1.5 ${isDark ? 'text-[#DFBA7F]' : 'text-[#7A541E]'}`}>
                   <span>{t(lang, 'activeStreak')}</span>
                   {isCompletedToday ? (
                     <span
@@ -305,20 +315,24 @@ export const Navigation: React.FC<NavigationProps> = memo(({
                   <div
                     className={`text-xs font-bold font-mono transition-all duration-200 ${
                       isStreakGlowing
-                        ? 'text-[#FFF2CC] scale-110 font-extrabold'
+                        ? isDark
+                          ? 'text-[#FFF2CC] scale-110 font-extrabold'
+                          : 'text-[#7A541E] scale-110 font-extrabold'
                         : isAtRisk
-                        ? 'text-amber-300 font-extrabold'
+                        ? isDark
+                          ? 'text-amber-300 font-extrabold'
+                          : 'text-amber-800 font-extrabold'
                         : ''
                     }`}
                   >
                     {streak} {t(lang, 'days')}
                   </div>
                   {isCompletedToday ? (
-                    <span className="text-[9px] font-semibold text-emerald-400 font-mono tracking-tight">
+                    <span className={`text-[9px] font-semibold font-mono tracking-tight ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>
                       ✓ {t(lang, 'done')}
                     </span>
                   ) : isAtRisk ? (
-                    <span className="text-[9px] font-bold text-amber-400 font-mono tracking-tight animate-pulse">
+                    <span className={`text-[9px] font-bold font-mono tracking-tight animate-pulse ${isDark ? 'text-amber-400' : 'text-amber-700'}`}>
                       ⚠️ {riskFormattedTime ? `${riskFormattedTime}` : t(lang, 'atRisk')}
                     </span>
                   ) : null}
@@ -366,11 +380,12 @@ export const Navigation: React.FC<NavigationProps> = memo(({
           aria-label="Bottom Mobile Navigation"
         >
           <div
+            dir={isRtl ? 'rtl' : 'ltr'}
             className={`pointer-events-auto rounded-[32px] transition-all duration-200 transform-gpu ${
               isDark
                 ? 'liquid-glass-floating-nav-dark text-stone-100'
                 : 'liquid-glass-floating-nav-light text-stone-900'
-            } px-2.5 py-2 flex items-center justify-around shadow-md`}
+            } px-2 py-2 flex items-center justify-between gap-0.5 shadow-md`}
           >
             {mobileTabs.map((tab) => {
               const Icon = tab.icon;
@@ -383,7 +398,7 @@ export const Navigation: React.FC<NavigationProps> = memo(({
                     id={`nav-${tab.id}`}
                     type="button"
                     onClick={() => onTabChange(tab.id)}
-                    className="relative -top-5 flex flex-col items-center group focus:outline-none min-w-[56px] active:scale-95 transition-transform"
+                    className="relative -top-5 flex flex-col items-center justify-center text-center group focus:outline-none flex-1 min-w-0 active:scale-95 transition-transform"
                     aria-label={tab.label}
                   >
                     <div
@@ -398,7 +413,7 @@ export const Navigation: React.FC<NavigationProps> = memo(({
                       <Icon className="w-6 h-6 animate-pulse" />
                     </div>
                     <span
-                      className={`text-[11px] font-medium mt-1 tracking-tight flex items-center gap-0.5 ${
+                      className={`text-[10px] sm:text-[11px] font-medium mt-1 tracking-tight flex items-center justify-center text-center gap-0.5 whitespace-nowrap ${
                         isActive
                           ? 'text-[#DFBA7F] font-bold'
                           : isDark
@@ -418,7 +433,7 @@ export const Navigation: React.FC<NavigationProps> = memo(({
                   id={`nav-${tab.id}`}
                   type="button"
                   onClick={() => onTabChange(tab.id)}
-                  className={`relative flex flex-col items-center py-1.5 px-3 rounded-2xl min-h-[44px] min-w-[48px] justify-center transition-all duration-150 active:scale-90 focus:outline-none ${
+                  className={`relative flex flex-col items-center py-1.5 px-1 rounded-2xl min-h-[44px] flex-1 min-w-0 justify-center transition-all duration-150 active:scale-90 focus:outline-none text-center ${
                     isActive
                       ? isDark
                         ? 'text-[#DFBA7F] font-medium bg-[#DFBA7F]/10'
@@ -428,20 +443,20 @@ export const Navigation: React.FC<NavigationProps> = memo(({
                       : 'text-stone-500 hover:text-stone-800'
                   }`}
                 >
-                  <div className="relative">
+                  <div className="relative flex items-center justify-center">
                     <Icon className={`w-5 h-5 transition-transform duration-150 ${isActive ? 'scale-110' : ''}`} />
                     {isActive && (
                       <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[#DFBA7F] rounded-full shadow-[0_0_8px_#DFBA7F]" />
                     )}
                   </div>
-                  <span className="text-[11px] mt-1.5 tracking-tight">{tab.label}</span>
+                  <span className="text-[10px] sm:text-[11px] mt-1.5 tracking-tight whitespace-nowrap">{tab.label}</span>
                 </button>
               );
             })}
           </div>
         </nav>
-      ) : (
-        /* In AI and Quran modes on mobile: Hide bottom bar, show floating arrow trigger in top-right frame */
+      ) : activeTab === 'quran' ? (
+        /* In Quran mode on mobile: Hide bottom bar, show floating arrow trigger in top-right frame (Noor AI embeds it directly in its top-right capsule) */
         <motion.button
           id="mobile-drawer-trigger"
           type="button"
@@ -452,16 +467,20 @@ export const Navigation: React.FC<NavigationProps> = memo(({
           whileTap={{ scale: 0.9 }}
           transition={{ type: 'spring', stiffness: 450, damping: 25 }}
           onClick={() => setIsMobileDrawerOpen(true)}
-          className="lg:hidden fixed top-3 right-3 z-40 w-11 h-11 rounded-2xl bg-black/85 backdrop-blur-2xl border border-[#DFBA7F]/60 text-[#DFBA7F] shadow-[0_8px_32px_rgba(0,0,0,0.6),0_0_20px_rgba(201,160,99,0.35)] flex items-center justify-center cursor-pointer group active:scale-95"
+          className={`lg:hidden fixed top-3 right-3 z-40 w-11 h-11 rounded-2xl backdrop-blur-2xl border flex items-center justify-center cursor-pointer group active:scale-95 transition-colors ${
+            isDark
+              ? 'bg-black/85 border-[#DFBA7F]/60 text-[#DFBA7F] shadow-[0_8px_32px_rgba(0,0,0,0.6),0_0_20px_rgba(201,160,99,0.35)]'
+              : 'bg-white/92 border-[#A67C38]/45 text-[#8E6527] shadow-[0_6px_24px_rgba(45,35,20,0.14)]'
+          }`}
           aria-label={isArabic ? 'فتح قائمة التنقل وتغيير الأقسام' : 'Open Navigation & Change Sections'}
           title={isArabic ? 'تغيير الأقسام أو الخروج' : 'Exit or change sections'}
         >
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-[#C9A063]/30 via-[#DFBA7F]/15 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-[#C9A063]/20 via-[#DFBA7F]/10 to-transparent pointer-events-none" />
           <div className="relative flex items-center justify-center">
-            <ChevronLeft className={`w-5 h-5 text-[#DFBA7F] transition-transform duration-200 group-hover:-translate-x-0.5 ${isRtl ? 'rotate-180 group-hover:translate-x-0.5' : ''}`} />
+            <ChevronLeft className={`w-5 h-5 transition-transform duration-200 group-hover:-translate-x-0.5 ${isDark ? 'text-[#DFBA7F]' : 'text-[#8E6527]'} ${isRtl ? 'rotate-180 group-hover:translate-x-0.5' : ''}`} />
           </div>
         </motion.button>
-      )}
+      ) : null}
 
       {/* Mobile Left-Side Navigation Drawer with Premium Spring & Exit Animation */}
       <AnimatePresence>
@@ -517,8 +536,12 @@ export const Navigation: React.FC<NavigationProps> = memo(({
                         <h1 className={`text-base font-cinzel font-bold tracking-widest ${isDark ? 'text-[#F5EFE6]' : 'text-stone-900'}`}>
                           {isArabic ? 'نور' : 'NOOR'}
                         </h1>
-                        <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-semibold bg-[#C9A063]/15 text-[#DFBA7F] border border-[#C9A063]/30">
-                          <Sparkles className="w-2.5 h-2.5 mr-0.5 text-[#C9A063]" />
+                        <span className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-semibold border ${
+                          isDark
+                            ? 'bg-[#C9A063]/15 text-[#DFBA7F] border-[#C9A063]/30'
+                            : 'bg-amber-50 text-[#8E6527] border-[#A67C38]/30'
+                        }`}>
+                          <Sparkles className={`w-2.5 h-2.5 mr-0.5 ${isDark ? 'text-[#C9A063]' : 'text-[#8E6527]'}`} />
                           {t(lang, 'sanctuaryEmblem')}
                         </span>
                       </div>
@@ -531,7 +554,11 @@ export const Navigation: React.FC<NavigationProps> = memo(({
                   <button
                     type="button"
                     onClick={() => setIsMobileDrawerOpen(false)}
-                    className="p-2 rounded-xl text-stone-400 hover:text-white hover:bg-white/10 active:scale-90 transition-all cursor-pointer"
+                    className={`p-2 rounded-xl active:scale-90 transition-all cursor-pointer ${
+                      isDark
+                        ? 'text-stone-400 hover:text-white hover:bg-white/10'
+                        : 'text-stone-500 hover:text-stone-900 hover:bg-stone-100'
+                    }`}
                     aria-label="Close"
                   >
                     <X className="w-5 h-5" />
@@ -584,7 +611,13 @@ export const Navigation: React.FC<NavigationProps> = memo(({
                           <div className="flex items-center justify-between">
                             <span className="text-xs tracking-wide">{tab.label}</span>
                             {tab.isSpecial && (
-                              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-[#DFBA7F]/20 text-[#DFBA7F] border border-[#DFBA7F]/30">
+                              <span
+                                className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full border ${
+                                  isDark
+                                    ? 'bg-[#DFBA7F]/20 text-[#DFBA7F] border-[#DFBA7F]/30'
+                                    : 'bg-amber-50 text-[#7A541E] border-[#C9A063]/40'
+                                }`}
+                              >
                                 {isArabic ? 'ذكي' : 'AI'}
                               </span>
                             )}
@@ -604,8 +637,8 @@ export const Navigation: React.FC<NavigationProps> = memo(({
               <div className="space-y-2.5 pt-3 border-t border-[#C9A063]/20">
                 <div className="flex items-center justify-between px-1">
                   <div className="flex items-center gap-2">
-                    <Flame className="w-4 h-4 text-[#DFBA7F]" />
-                    <span className="text-xs font-mono font-bold text-[#DFBA7F]">{streak} {t(lang, 'days')}</span>
+                    <Flame className={`w-4 h-4 ${isDark ? 'text-[#DFBA7F]' : 'text-[#8E6527]'}`} />
+                    <span className={`text-xs font-mono font-bold ${isDark ? 'text-[#DFBA7F]' : 'text-[#7A541E]'}`}>{streak} {t(lang, 'days')}</span>
                   </div>
 
                   {onToggleTheme && (

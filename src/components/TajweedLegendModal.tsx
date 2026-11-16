@@ -31,25 +31,28 @@ export const TajweedLegendModal: React.FC<TajweedLegendModalProps> = ({
           transition={{ type: 'spring', damping: 28, stiffness: 320, mass: 0.8 }}
           className={`w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 border shadow-2xl max-h-[88vh] flex flex-col relative overflow-hidden ${
             isDark
-              ? 'bg-[#0A0D13]/98 border-[#DFBA7F]/35 text-stone-100'
-              : 'bg-white/98 border-[#C9A063]/40 text-stone-900 shadow-xl'
+              ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6]'
+              : 'bg-white border-black/[0.08] text-[#111214] shadow-xl'
           }`}
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Subtle Golden Glow Line on Top */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#DFBA7F] to-transparent opacity-60" />
-
           {/* Header */}
-          <div className="flex items-center justify-between pb-3.5 border-b border-[#C9A063]/20 mb-4 shrink-0">
+          <div className={`flex items-center justify-between pb-3.5 border-b mb-4 shrink-0 ${
+            isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+          }`}>
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-[#C9A063]/15 border border-[#C9A063]/30 flex items-center justify-center text-[#DFBA7F]">
-                <Sparkles className="w-4 h-4 text-[#C9A063]" />
+              <div className={`w-8 h-8 rounded-xl border flex items-center justify-center ${
+                isDark
+                  ? 'bg-white/[0.06] border-white/[0.1] text-white'
+                  : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+              }`}>
+                <Sparkles className={`w-4 h-4 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
               </div>
               <div>
-                <h2 className="text-base sm:text-lg font-serif-heading font-bold text-[#DFBA7F]">
+                <h2 className={`text-base sm:text-lg font-serif-heading font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                   {isArabic ? 'دليل أحكام التجويد والألوان' : 'Tajweed Color Rules Legend'}
                 </h2>
-                <p className="text-[11px] text-stone-400">
+                <p className={`text-[11px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                   {isArabic ? 'دليل الألوان التوضيحية لتلاوة صحيحة ومحكمة' : 'Visual color-coded guide for accurate recitation'}
                 </p>
               </div>
@@ -58,7 +61,9 @@ export const TajweedLegendModal: React.FC<TajweedLegendModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="p-2 rounded-xl text-stone-400 hover:text-white hover:bg-white/10 active:scale-90 transition-all cursor-pointer"
+              className={`p-2 rounded-xl active:scale-90 transition-all cursor-pointer ${
+                isDark ? 'text-stone-400 hover:text-white hover:bg-white/[0.08]' : 'text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05]'
+              }`}
               aria-label={isArabic ? 'إغلاق' : 'Close'}
             >
               <X className="w-4.5 h-4.5" />
@@ -67,7 +72,9 @@ export const TajweedLegendModal: React.FC<TajweedLegendModalProps> = ({
 
           {/* Scrollable Body */}
           <div className="overflow-y-auto pr-1 space-y-3 no-scrollbar flex-1 pb-2">
-            <div className="text-xs text-stone-300 bg-[#C9A063]/10 border border-[#C9A063]/25 p-3 rounded-2xl mb-3 leading-relaxed">
+            <div className={`text-xs border p-3 rounded-2xl mb-3 leading-relaxed ${
+              isDark ? 'text-stone-300 bg-white/[0.04] border-white/[0.08]' : 'text-[#3F4248] bg-[#F3F3F1] border-black/[0.08]'
+            }`}>
               {isArabic
                 ? 'تظهر ألوان التجويد تلقائياً عند تفعيل "ألوان أحكام التجويد" في إعدادات المصحف لمساعدتك على تطبيق قواعد المد، الغنة، القلقلة والإقلاب بدقة أثناء القراءة.'
                 : 'Tajweed colors automatically highlight when enabled in Mushaf settings, helping you master rules like Madd, Ghunnah, Qalqalah, and Iqlab while reading.'}
@@ -80,8 +87,8 @@ export const TajweedLegendModal: React.FC<TajweedLegendModalProps> = ({
                   key={idx}
                   className={`p-3.5 rounded-2xl border flex items-start gap-3.5 transition-all ${
                     isDark
-                      ? 'bg-white/5 border-white/10 hover:border-[#C9A063]/30'
-                      : 'bg-stone-50 border-stone-200 hover:border-[#C9A063]/40'
+                      ? 'bg-[#1B1D23] border-white/[0.08] hover:border-white/[0.18]'
+                      : 'bg-[#FCFCFA] border-black/[0.08] hover:border-black/[0.16]'
                   }`}
                 >
                   {/* Color Dot / Badge */}
@@ -92,11 +99,13 @@ export const TajweedLegendModal: React.FC<TajweedLegendModalProps> = ({
                       <span className={`text-sm font-bold font-serif-heading ${textColor}`}>
                         {isArabic ? item.labelAr : item.labelEn}
                       </span>
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-lg bg-black/20 text-stone-300 border border-white/10">
+                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded-lg border ${
+                        isDark ? 'bg-white/[0.06] text-stone-300 border-white/[0.1]' : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.08]'
+                      }`}>
                         {isArabic ? item.labelEn : item.labelAr}
                       </span>
                     </div>
-                    <p className="text-xs text-stone-300 font-light leading-relaxed">
+                    <p className={`text-xs font-light leading-relaxed ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                       {item.descAr}
                     </p>
                   </div>
@@ -106,11 +115,15 @@ export const TajweedLegendModal: React.FC<TajweedLegendModalProps> = ({
           </div>
 
           {/* Bottom Close Button */}
-          <div className="pt-3 border-t border-[#C9A063]/20 mt-2 shrink-0">
+          <div className={`pt-3 border-t mt-2 shrink-0 ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
             <button
               type="button"
               onClick={onClose}
-              className="w-full py-2.5 rounded-xl bg-gradient-to-tr from-[#C9A063] via-[#DFBA7F] to-[#B88E4F] text-[#090B0E] font-bold text-xs shadow-md active:scale-[0.99] transition-all cursor-pointer flex items-center justify-center gap-1.5"
+              className={`w-full py-2.5 rounded-xl font-bold text-xs shadow-sm active:scale-[0.99] transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                isDark
+                  ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                  : 'bg-[#111214] hover:bg-[#27292D] text-white'
+              }`}
             >
               <Check className="w-4 h-4" />
               <span>{isArabic ? 'فهمت، العودة للمصحف' : 'Got it, Return to Mushaf'}</span>

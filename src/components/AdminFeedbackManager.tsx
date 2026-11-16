@@ -334,8 +334,8 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
       dir={isRtl ? 'rtl' : 'ltr'}
       className={`fixed inset-0 z-50 overflow-y-auto transition-colors duration-300 ${
         isDark
-          ? 'bg-[#070A0F]/95 text-[#F5EFE6]'
-          : 'bg-[#F8F5EE]/95 text-stone-900'
+          ? 'bg-[#0B0C0E]/95 text-[#F3F4F6]'
+          : 'bg-[#FCFCFA]/95 text-[#111214]'
       } backdrop-blur-xl animate-fadeIn`}
     >
       <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-5 pb-24">
@@ -347,8 +347,8 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
             onClick={onClose}
             className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-2xl border text-xs font-semibold transition-all cursor-pointer ${
               isDark
-                ? 'bg-[#12161F]/90 border-[#C9A063]/30 text-[#DFBA7F] hover:bg-[#181E29]'
-                : 'bg-white border-stone-300 text-stone-800 hover:bg-stone-100 shadow-xs'
+                ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6] hover:bg-white/[0.06]'
+                : 'bg-white border-black/[0.08] text-[#111214] hover:bg-black/[0.04] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
             }`}
           >
             {isRtl ? <ArrowRight className="w-4 h-4" /> : <ArrowLeft className="w-4 h-4" />}
@@ -361,7 +361,11 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
               type="button"
               onClick={loadFeedback}
               disabled={isLoading}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-2xl border border-emerald-500/40 bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 text-xs font-bold transition-all cursor-pointer"
+              className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-2xl border text-xs font-bold transition-all cursor-pointer ${
+                isDark
+                  ? 'border-emerald-500/40 bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300'
+                  : 'border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-800'
+              }`}
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
               <span>{isArabic ? 'تحديث القائمة' : 'Refresh Submissions'}</span>
@@ -373,29 +377,37 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
         <div
           className={`rounded-3xl p-5 sm:p-6 border mb-5 ${
             isDark
-              ? 'liquid-glass border-emerald-500/35 shadow-lg'
-              : 'liquid-glass-light border-emerald-600/35 shadow-sm'
+              ? 'bg-[#14161A] border-emerald-500/30 shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+              : 'bg-white border-emerald-600/30 shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
           }`}
         >
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-3.5">
-              <div className="w-11 h-11 rounded-2xl bg-emerald-500/15 border border-emerald-500/35 text-emerald-400 flex items-center justify-center shrink-0">
+              <div className={`w-11 h-11 rounded-2xl border flex items-center justify-center shrink-0 ${
+                isDark
+                  ? 'bg-emerald-500/15 border-emerald-500/35 text-emerald-400'
+                  : 'bg-emerald-50 border-emerald-300 text-emerald-700'
+              }`}>
                 <Shield className="w-5 h-5" />
               </div>
               <div>
                 <div className="flex items-center gap-2 flex-wrap">
                   <h1
-                    className={`text-base sm:text-lg font-serif-heading font-bold ${
-                      isDark ? 'text-[#F5EFE6]' : 'text-stone-900'
+                    className={`text-base sm:text-xl font-bold ${
+                      isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'
                     }`}
                   >
                     {tr.adminConsoleTitle}
                   </h1>
-                  <span className="text-[10px] px-2 py-0.5 rounded-md font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                  <span className={`text-[10px] px-2 py-0.5 rounded-md font-bold border ${
+                    isDark
+                      ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
+                      : 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                  }`}>
                     {isArabic ? 'خاص بالمؤسس والمسؤولين' : 'FOUNDER & ADMIN ONLY'}
                   </span>
                 </div>
-                <p className="text-xs text-stone-400 mt-1">{tr.adminConsoleSubtitle}</p>
+                <p className={`text-xs mt-1 ${isDark ? 'text-stone-400' : 'text-stone-600'}`}>{tr.adminConsoleSubtitle}</p>
               </div>
             </div>
           </div>
@@ -407,21 +419,25 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
             id="founder-admin-auth-gate"
             className={`max-w-md mx-auto rounded-3xl p-6 sm:p-7 border space-y-5 ${
               isDark
-                ? 'liquid-glass border-[#C9A063]/35 shadow-xl'
-                : 'liquid-glass-light border-[#C9A063]/40 shadow-lg'
+                ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+                : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
             }`}
           >
-            <div className="w-12 h-12 rounded-2xl bg-[#C9A063]/20 border border-[#C9A063]/40 text-[#DFBA7F] flex items-center justify-center mx-auto">
+            <div className={`w-12 h-12 rounded-2xl border flex items-center justify-center mx-auto ${
+              isDark
+                ? 'bg-white/[0.06] border-white/[0.1] text-white'
+                : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+            }`}>
               <Lock className="w-6 h-6" />
             </div>
 
             <div className="text-center space-y-1.5">
-              <h2 className="text-base font-serif-heading font-bold">
+              <h2 className="text-base font-bold">
                 {isArabic
                   ? 'التحقق من صلاحية مؤسس نفيس نور'
                   : 'Authorized Founder Verification'}
               </h2>
-              <p className="text-xs text-stone-400 leading-relaxed">
+              <p className={`text-xs leading-relaxed ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 {isArabic
                   ? 'محتوى الملاحظات وعناوين البريد الإلكتروني محمية بالكامل. يرجى تسجيل الدخول بحساب المؤسس أو رمز المسؤول.'
                   : 'User feedback and email addresses are strictly protected. Sign in as the Founder or enter the server Administrator password.'}
@@ -433,7 +449,11 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
               type="button"
               onClick={handleFounderGoogleSignIn}
               disabled={isAuthenticating}
-              className="w-full py-3 px-4 rounded-2xl border border-[#C9A063]/45 bg-[#C9A063]/15 hover:bg-[#C9A063]/25 text-[#DFBA7F] text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer"
+              className={`w-full py-3 px-4 rounded-2xl border text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                isDark
+                  ? 'border-white/[0.1] bg-white/[0.06] hover:bg-white/[0.1] text-[#F3F4F6]'
+                  : 'border-black/[0.1] bg-[#F3F3F1] hover:bg-black/[0.08] text-[#111214]'
+              }`}
             >
               <Shield className="w-4 h-4" />
               <span>
@@ -444,16 +464,16 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
             </button>
 
             <div className="relative flex py-1 items-center">
-              <div className="flex-grow border-t border-stone-700/40" />
-              <span className="shrink mx-3 text-[10px] uppercase tracking-wider text-stone-400">
+              <div className={`flex-grow border-t ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`} />
+              <span className={`shrink mx-3 text-[10px] uppercase tracking-wider ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                 {isArabic ? 'أو عبر مفتاح المسؤول' : 'OR ADMIN KEY'}
               </span>
-              <div className="flex-grow border-t border-stone-700/40" />
+              <div className={`flex-grow border-t ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`} />
             </div>
 
             <form onSubmit={handlePasswordAuth} className="space-y-3">
               <div className="relative">
-                <KeyRound className="w-4 h-4 text-[#DFBA7F] absolute top-1/2 -translate-y-1/2 left-3.5" />
+                <KeyRound className={`w-4 h-4 absolute top-1/2 -translate-y-1/2 left-3.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`} />
                 <input
                   id="founder-admin-password-input"
                   type="password"
@@ -462,14 +482,18 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
                   placeholder={isArabic ? 'كلمة مرور المسؤول...' : 'Administrator password...'}
                   className={`w-full pl-10 pr-4 py-3 rounded-2xl border text-xs focus:outline-none ${
                     isDark
-                      ? 'bg-[#0D1119] border-stone-800 text-stone-100 focus:border-[#DFBA7F]'
-                      : 'bg-white border-stone-300 text-stone-900 focus:border-[#C9A063]'
+                      ? 'bg-[#1B1D23] border-white/[0.08] text-[#F3F4F6] focus:border-white/35'
+                      : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214] focus:border-[#111214]/40'
                   }`}
                 />
               </div>
 
               {authError && (
-                <div className="p-3 rounded-xl bg-red-500/15 border border-red-500/35 text-red-300 text-xs flex items-center gap-2">
+                <div className={`p-3 rounded-xl border text-xs flex items-center gap-2 ${
+                  isDark
+                    ? 'bg-red-500/15 border-red-500/35 text-red-300'
+                    : 'bg-red-50 border-red-300 text-red-700'
+                }`}>
                   <AlertTriangle className="w-4 h-4 shrink-0" />
                   <span>{authError}</span>
                 </div>
@@ -479,7 +503,11 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
                 id="founder-admin-login-submit-btn"
                 type="submit"
                 disabled={isAuthenticating}
-                className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#090C11] font-bold text-xs shadow-md hover:opacity-95 transition-all cursor-pointer"
+                className={`w-full py-3 px-4 rounded-2xl font-bold text-xs transition-all cursor-pointer ${
+                  isDark
+                    ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                    : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                }`}
               >
                 {isAuthenticating
                   ? isArabic
@@ -499,36 +527,36 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
                 {
                   label: isArabic ? 'الإجمالي' : 'Total',
                   value: totalCount,
-                  tone: 'text-[#DFBA7F] border-[#C9A063]/30',
+                  tone: isDark ? 'text-[#F3F4F6] border-white/[0.08]' : 'text-[#111214] border-black/[0.08]',
                 },
                 {
                   label: tr.statuses.Pending,
                   value: pendingCount,
-                  tone: 'text-amber-300 border-amber-500/30',
+                  tone: isDark ? 'text-stone-200 border-white/[0.12]' : 'text-[#3F4248] border-black/[0.12]',
                 },
                 {
                   label: tr.statuses['Under Review'],
                   value: reviewCount,
-                  tone: 'text-sky-300 border-sky-500/30',
+                  tone: isDark ? 'text-sky-300 border-sky-500/30' : 'text-sky-800 border-sky-300',
                 },
                 {
                   label: tr.statuses.Answered,
                   value: answeredCount,
-                  tone: 'text-emerald-300 border-emerald-500/30',
+                  tone: isDark ? 'text-emerald-300 border-emerald-500/30' : 'text-emerald-800 border-emerald-300',
                 },
                 {
                   label: tr.resolvedBadge,
                   value: resolvedCount,
-                  tone: 'text-teal-300 border-teal-500/30',
+                  tone: isDark ? 'text-teal-300 border-teal-500/30' : 'text-teal-800 border-teal-300',
                 },
               ].map((stat, idx) => (
                 <div
                   key={idx}
                   className={`p-3.5 rounded-2xl border ${stat.tone} ${
-                    isDark ? 'bg-[#0E131C]/90' : 'bg-white/90'
+                    isDark ? 'bg-[#14161A]' : 'bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
                   }`}
                 >
-                  <div className="text-[11px] text-stone-400 truncate">{stat.label}</div>
+                  <div className={`text-[11px] truncate ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{stat.label}</div>
                   <div className="text-lg font-mono font-bold mt-0.5">{stat.value}</div>
                 </div>
               ))}
@@ -538,14 +566,14 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
             <div
               className={`rounded-3xl p-4 sm:p-5 border space-y-3 ${
                 isDark
-                  ? 'liquid-glass border-[#C9A063]/25'
-                  : 'liquid-glass-light border-[#C9A063]/30'
+                  ? 'bg-[#14161A] border-white/[0.08]'
+                  : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
               }`}
             >
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {/* Search Input */}
                 <div className="relative">
-                  <Search className="w-4 h-4 text-stone-400 absolute top-1/2 -translate-y-1/2 left-3.5" />
+                  <Search className={`w-4 h-4 absolute top-1/2 -translate-y-1/2 left-3.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`} />
                   <input
                     id="admin-feedback-search-input"
                     type="text"
@@ -558,23 +586,23 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
                     }
                     className={`w-full pl-10 pr-3.5 py-2.5 rounded-2xl border text-xs focus:outline-none ${
                       isDark
-                        ? 'bg-[#0D1119] border-stone-800 text-stone-100 focus:border-[#DFBA7F]'
-                        : 'bg-white border-stone-300 text-stone-900 focus:border-[#C9A063]'
+                        ? 'bg-[#1B1D23] border-white/[0.08] text-[#F3F4F6] focus:border-white/35'
+                        : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214] focus:border-[#111214]/40'
                     }`}
                   />
                 </div>
 
                 {/* Category Filter */}
                 <div className="flex items-center gap-2">
-                  <Filter className="w-4 h-4 text-[#DFBA7F] shrink-0" />
+                  <Filter className={`w-4 h-4 shrink-0 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`} />
                   <select
                     id="admin-feedback-category-filter"
                     value={categoryFilter}
                     onChange={(e) => setCategoryFilter(e.target.value)}
                     className={`w-full px-3.5 py-2.5 rounded-2xl border text-xs font-medium focus:outline-none ${
                       isDark
-                        ? 'bg-[#0D1119] border-stone-800 text-stone-100'
-                        : 'bg-white border-stone-300 text-stone-900'
+                        ? 'bg-[#1B1D23] border-white/[0.08] text-[#F3F4F6]'
+                        : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
                     }`}
                   >
                     <option value="All">{tr.allCategories}</option>
@@ -594,8 +622,8 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
                     onChange={(e) => setStatusFilter(e.target.value)}
                     className={`w-full px-3.5 py-2.5 rounded-2xl border text-xs font-medium focus:outline-none ${
                       isDark
-                        ? 'bg-[#0D1119] border-stone-800 text-stone-100'
-                        : 'bg-white border-stone-300 text-stone-900'
+                        ? 'bg-[#1B1D23] border-white/[0.08] text-[#F3F4F6]'
+                        : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
                     }`}
                   >
                     <option value="All">{tr.allStatuses}</option>
@@ -611,14 +639,22 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
             </div>
 
             {actionToast && (
-              <div className="p-3.5 rounded-2xl bg-emerald-500/15 border border-emerald-500/35 text-emerald-300 text-xs flex items-center gap-2 animate-fadeIn">
+              <div className={`p-3.5 rounded-2xl border text-xs flex items-center gap-2 animate-fadeIn ${
+                isDark
+                  ? 'bg-emerald-500/15 border-emerald-500/35 text-emerald-300'
+                  : 'bg-emerald-50 border-emerald-300 text-emerald-800'
+              }`}>
                 <CheckCircle2 className="w-4 h-4 shrink-0" />
                 <span className="font-semibold">{actionToast}</span>
               </div>
             )}
 
             {loadError && (
-              <div className="p-3.5 rounded-2xl bg-red-500/15 border border-red-500/35 text-red-300 text-xs flex items-center gap-2">
+              <div className={`p-3.5 rounded-2xl border text-xs flex items-center gap-2 ${
+                isDark
+                  ? 'bg-red-500/15 border-red-500/35 text-red-300'
+                  : 'bg-red-50 border-red-300 text-red-700'
+              }`}>
                 <AlertTriangle className="w-4 h-4 shrink-0" />
                 <span>{loadError}</span>
               </div>
@@ -629,11 +665,11 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
               <div
                 className={`rounded-3xl p-10 border text-center space-y-2 ${
                   isDark
-                    ? 'liquid-glass border-stone-800 text-stone-400'
-                    : 'liquid-glass-light border-stone-200 text-stone-600'
+                    ? 'bg-[#14161A] border-white/[0.08] text-stone-400'
+                    : 'bg-white border-black/[0.08] text-[#5A5D63]'
                 }`}
               >
-                <MessageSquare className="w-8 h-8 text-[#DFBA7F] mx-auto opacity-75" />
+                <MessageSquare className={`w-8 h-8 mx-auto opacity-75 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`} />
                 <div className="text-sm font-semibold">{tr.noFeedbackFound}</div>
               </div>
             ) : (
@@ -650,30 +686,42 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
                         onClick={() => setSelectedId(item.id)}
                         className={`w-full text-start p-4 rounded-2xl border transition-all space-y-2 cursor-pointer ${
                           isSelected
-                            ? 'bg-[#C9A063]/20 border-[#DFBA7F] shadow-md'
+                            ? isDark
+                              ? 'bg-white/[0.1] border-white/35 text-white'
+                              : 'bg-[#111214]/[0.06] border-[#111214]/40 text-[#111214]'
                             : isDark
-                            ? 'bg-[#0E131D]/90 border-stone-800 hover:border-stone-700'
-                            : 'bg-white border-stone-200 hover:border-stone-300'
+                            ? 'bg-[#14161A] border-white/[0.08] hover:border-white/[0.18]'
+                            : 'bg-white border-black/[0.08] hover:border-black/[0.18]'
                         }`}
                       >
                         <div className="flex items-center justify-between gap-2">
-                          <span className="text-[10px] font-mono font-bold text-[#DFBA7F]">
+                          <span className={`text-[10px] font-mono font-bold ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                             {item.id}
                           </span>
                           <div className="flex items-center gap-1.5">
                             <span
                               className={`text-[10px] px-2 py-0.5 rounded-md font-bold border ${
                                 item.status === 'Answered'
-                                  ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+                                  ? isDark
+                                    ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+                                    : 'bg-emerald-50 text-emerald-800 border-emerald-300'
                                   : item.status === 'Under Review'
-                                  ? 'bg-sky-500/15 text-sky-300 border-sky-500/30'
-                                  : 'bg-amber-500/15 text-amber-300 border-amber-500/30'
+                                  ? isDark
+                                    ? 'bg-sky-500/15 text-sky-300 border-sky-500/30'
+                                    : 'bg-sky-50 text-sky-800 border-sky-300'
+                                  : isDark
+                                  ? 'bg-white/[0.08] text-stone-200 border-white/[0.15]'
+                                  : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.12]'
                               }`}
                             >
                               {tr.statuses[item.status] || item.status}
                             </span>
                             {item.isResolved && (
-                              <span className="text-[10px] px-1.5 py-0.5 rounded-md font-bold bg-teal-500/20 text-teal-300 border border-teal-500/35">
+                              <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-bold border ${
+                                isDark
+                                  ? 'bg-teal-500/20 text-teal-300 border-teal-500/35'
+                                  : 'bg-teal-50 text-teal-800 border-teal-300'
+                              }`}>
                                 ✓
                               </span>
                             )}
@@ -682,17 +730,19 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
 
                         <div
                           className={`text-xs font-bold line-clamp-1 ${
-                            isDark ? 'text-stone-100' : 'text-stone-900'
+                            isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'
                           }`}
                         >
                           {item.title}
                         </div>
 
-                        <p className="text-[11px] text-stone-400 line-clamp-2 leading-relaxed">
+                        <p className={`text-[11px] line-clamp-2 leading-relaxed ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                           {item.message}
                         </p>
 
-                        <div className="flex items-center justify-between text-[10px] text-stone-400 pt-1 border-t border-stone-700/20">
+                        <div className={`flex items-center justify-between text-[10px] pt-1 border-t ${
+                          isDark ? 'text-stone-400 border-white/[0.08]' : 'text-[#5A5D63] border-black/[0.08]'
+                        }`}>
                           <span>{tr.categories[item.category] || item.category}</span>
                           <span>{new Date(item.createdAt).toLocaleDateString()}</span>
                         </div>
@@ -707,30 +757,40 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
                     id="admin-feedback-detail-panel"
                     className={`lg:col-span-7 rounded-3xl p-5 sm:p-6 border space-y-5 ${
                       isDark
-                        ? 'liquid-glass border-[#C9A063]/35 shadow-xl'
-                        : 'liquid-glass-light border-[#C9A063]/35 shadow-md'
+                        ? 'bg-[#14161A] border-white/[0.08] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+                        : 'bg-white border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
                     }`}
                   >
                     {/* Top Metadata & Badges */}
-                    <div className="flex flex-wrap items-start justify-between gap-3 border-b border-stone-700/30 pb-4">
+                    <div className={`flex flex-wrap items-start justify-between gap-3 border-b pb-4 ${
+                      isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+                    }`}>
                       <div>
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="font-mono text-xs font-bold text-[#DFBA7F]">
+                          <span className={`font-mono text-xs font-bold ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                             {activeItem.id}
                           </span>
-                          <span className="text-[11px] px-2.5 py-0.5 rounded-lg bg-[#C9A063]/15 text-[#DFBA7F] border border-[#C9A063]/30 font-semibold">
+                          <span className={`text-[11px] px-2.5 py-0.5 rounded-lg border font-semibold ${
+                            isDark
+                              ? 'bg-white/[0.06] text-stone-200 border-white/[0.1]'
+                              : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.08]'
+                          }`}>
                             {tr.categories[activeItem.category] || activeItem.category}
                           </span>
                           {activeItem.isResolved && (
-                            <span className="text-[11px] px-2.5 py-0.5 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold flex items-center gap-1">
+                            <span className={`text-[11px] px-2.5 py-0.5 rounded-lg border font-bold flex items-center gap-1 ${
+                              isDark
+                                ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                                : 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                            }`}>
                               <Check className="w-3 h-3" />
                               {tr.resolvedBadge}
                             </span>
                           )}
                         </div>
                         <h2
-                          className={`text-base sm:text-lg font-serif-heading font-bold mt-2 ${
-                            isDark ? 'text-[#F5EFE6]' : 'text-stone-900'
+                          className={`text-base sm:text-lg font-bold mt-2 ${
+                            isDark ? 'text-[#F3F4F6]' : 'text-[#111214]'
                           }`}
                         >
                           {activeItem.title}
@@ -745,10 +805,12 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
                         onClick={() => handleToggleResolved(activeItem)}
                         className={`px-3.5 py-2 rounded-xl text-xs font-bold border transition-all flex items-center gap-1.5 cursor-pointer ${
                           activeItem.isResolved
-                            ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
+                            ? isDark
+                              ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
+                              : 'bg-emerald-50 border-emerald-300 text-emerald-800'
                             : isDark
-                            ? 'bg-[#121722] border-stone-700 text-stone-300 hover:border-emerald-500/40'
-                            : 'bg-stone-100 border-stone-300 text-stone-800 hover:border-emerald-600/40'
+                            ? 'bg-[#1B1D23] border-white/[0.08] text-stone-300 hover:border-emerald-500/40'
+                            : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214] hover:border-emerald-600/40'
                         }`}
                       >
                         <CheckCircle2 className="w-3.5 h-3.5" />
@@ -762,25 +824,25 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
                     <div
                       className={`p-3.5 rounded-2xl border grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs ${
                         isDark
-                          ? 'bg-[#0B0F17] border-stone-800'
-                          : 'bg-stone-50 border-stone-200'
+                          ? 'bg-[#1B1D23] border-white/[0.08]'
+                          : 'bg-[#F3F3F1] border-black/[0.08]'
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <User className="w-3.5 h-3.5 text-[#DFBA7F] shrink-0" />
+                        <User className={`w-3.5 h-3.5 shrink-0 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`} />
                         <span className="truncate font-medium">
                           {activeItem.userName || 'Guest User'}
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Mail className="w-3.5 h-3.5 text-[#DFBA7F] shrink-0" />
+                        <Mail className={`w-3.5 h-3.5 shrink-0 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`} />
                         <span className="truncate font-mono text-[11px]">
                           {activeItem.email || (isArabic ? 'لم يُرفق بريد' : 'No email provided')}
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Clock className="w-3.5 h-3.5 text-[#DFBA7F] shrink-0" />
-                        <span className="truncate text-[11px] text-stone-400">
+                        <Clock className={`w-3.5 h-3.5 shrink-0 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`} />
+                        <span className={`truncate text-[11px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                           {new Date(activeItem.createdAt).toLocaleString()}
                         </span>
                       </div>
@@ -788,14 +850,14 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
 
                     {/* Full Message Body */}
                     <div>
-                      <div className="text-[11px] font-bold uppercase tracking-wider text-[#DFBA7F] mb-1.5">
+                      <div className={`text-[11px] font-bold uppercase tracking-wider mb-1.5 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                         {tr.messageLabel}
                       </div>
                       <div
                         className={`p-4 rounded-2xl border text-xs sm:text-sm whitespace-pre-wrap leading-relaxed ${
                           isDark
-                            ? 'bg-[#0B0F17]/90 border-stone-800 text-stone-100'
-                            : 'bg-white border-stone-200 text-stone-800'
+                            ? 'bg-[#1B1D23] border-white/[0.08] text-[#F3F4F6]'
+                            : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
                         }`}
                       >
                         {activeItem.message}
@@ -804,7 +866,7 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
 
                     {/* Status Selector (Pending | Under Review | Answered) */}
                     <div>
-                      <div className="text-[11px] font-bold uppercase tracking-wider text-[#DFBA7F] mb-2">
+                      <div className={`text-[11px] font-bold uppercase tracking-wider mb-2 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                         {tr.statusLabel}
                       </div>
                       <div className="grid grid-cols-3 gap-2.5">
@@ -819,10 +881,12 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
                               onClick={() => handleStatusUpdate(activeItem, st)}
                               className={`py-2.5 px-3 rounded-xl text-xs font-bold border transition-all cursor-pointer ${
                                 isCurrent
-                                  ? 'bg-[#DFBA7F] text-[#090C11] border-[#DFBA7F] shadow-sm'
+                                  ? isDark
+                                    ? 'bg-white text-[#111214] border-white'
+                                    : 'bg-[#111214] text-white border-[#111214]'
                                   : isDark
-                                  ? 'bg-[#101520] border-stone-800 text-stone-300 hover:border-[#C9A063]/40'
-                                  : 'bg-white border-stone-300 text-stone-700 hover:border-[#C9A063]'
+                                  ? 'bg-[#1B1D23] border-white/[0.08] text-stone-300 hover:border-white/25'
+                                  : 'bg-[#F3F3F1] border-black/[0.08] text-[#3F4248] hover:border-black/25'
                               }`}
                             >
                               {tr.statuses[st] || st}
@@ -833,16 +897,16 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
                     </div>
 
                     {/* Reply to User Composer */}
-                    <div className="space-y-2.5 pt-2 border-t border-stone-700/30">
+                    <div className={`space-y-2.5 pt-2 border-t ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
                       <div className="flex items-center justify-between">
                         <label
                           htmlFor="admin-reply-textarea"
-                          className="text-xs font-bold text-[#DFBA7F]"
+                          className={`text-xs font-bold ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}
                         >
                           {tr.founderReplyLabel}
                         </label>
                         {activeItem.email && (
-                          <span className="text-[11px] text-emerald-400 font-mono">
+                          <span className={`text-[11px] font-mono ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`}>
                             {isArabic
                               ? `سيُرسل الرد أيضاً إلى: ${activeItem.email}`
                               : `Will also email reply to: ${activeItem.email}`}
@@ -863,8 +927,8 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
                         placeholder={tr.replyPlaceholder}
                         className={`w-full px-4 py-3 rounded-2xl border text-xs sm:text-sm leading-relaxed focus:outline-none ${
                           isDark
-                            ? 'bg-[#0B0F17] border-stone-800 text-stone-100 focus:border-[#DFBA7F]'
-                            : 'bg-white border-stone-300 text-stone-900 focus:border-[#C9A063]'
+                            ? 'bg-[#1B1D23] border-white/[0.08] text-[#F3F4F6] focus:border-white/35'
+                            : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214] focus:border-[#111214]/40'
                         }`}
                       />
 
@@ -876,7 +940,11 @@ export const AdminFeedbackManager: React.FC<AdminFeedbackManagerProps> = ({
                           !(replyDrafts[activeItem.id] ?? activeItem.adminReply ?? '').trim()
                         }
                         onClick={() => handleSendReply(activeItem)}
-                        className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#090C11] font-bold text-xs sm:text-sm shadow-md hover:opacity-95 disabled:opacity-50 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                        className={`w-full py-3 px-4 rounded-2xl font-bold text-xs sm:text-sm disabled:opacity-50 transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                          isDark
+                            ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                            : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                        }`}
                       >
                         <Send className="w-4 h-4" />
                         <span>{tr.sendReplyBtn}</span>

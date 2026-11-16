@@ -81,25 +81,26 @@ export const MushafLayoutModal: React.FC<MushafLayoutModalProps> = ({
           transition={{ type: 'spring', damping: 28, stiffness: 320, mass: 0.8 }}
           className={`w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 border shadow-2xl max-h-[88vh] flex flex-col relative overflow-hidden ${
             isDark
-              ? 'bg-[#0A0D13]/98 border-[#DFBA7F]/35 text-stone-100'
-              : 'bg-white/98 border-[#C9A063]/40 text-stone-900 shadow-xl'
+              ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6]'
+              : 'bg-white border-black/[0.08] text-[#111214] shadow-xl'
           }`}
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Subtle Golden Glow Line on Top */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#DFBA7F] to-transparent opacity-60" />
-
           {/* Header */}
-          <div className="flex items-center justify-between pb-3.5 border-b border-[#C9A063]/20 mb-4 shrink-0">
+          <div className={`flex items-center justify-between pb-3.5 border-b mb-4 shrink-0 ${
+            isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+          }`}>
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-[#C9A063]/15 border border-[#C9A063]/30 flex items-center justify-center text-[#DFBA7F]">
-                <Book className="w-4 h-4 text-[#C9A063]" />
+              <div className={`w-8 h-8 rounded-xl border flex items-center justify-center ${
+                isDark ? 'bg-white/[0.06] border-white/[0.1] text-white' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
+              }`}>
+                <Book className={`w-4 h-4 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
               </div>
               <div>
-                <h2 className="text-base sm:text-lg font-serif-heading font-bold text-[#DFBA7F]">
+                <h2 className={`text-base sm:text-lg font-serif-heading font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                   {isArabic ? 'تخطيط المصحف الشريف' : 'Mushaf Layout'}
                 </h2>
-                <p className="text-[11px] text-stone-400">
+                <p className={`text-[11px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                   {isArabic ? 'اختر طريقة العرض المفضلة ومصحف القراءة' : 'Select your reading layout and Mushaf edition'}
                 </p>
               </div>
@@ -108,7 +109,9 @@ export const MushafLayoutModal: React.FC<MushafLayoutModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="p-2 rounded-xl text-stone-400 hover:text-white hover:bg-white/10 active:scale-90 transition-all cursor-pointer"
+              className={`p-2 rounded-xl active:scale-90 transition-all cursor-pointer ${
+                isDark ? 'text-stone-400 hover:text-white hover:bg-white/[0.08]' : 'text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05]'
+              }`}
               aria-label={isArabic ? 'إغلاق' : 'Close'}
             >
               <X className="w-4.5 h-4.5" />
@@ -120,10 +123,10 @@ export const MushafLayoutModal: React.FC<MushafLayoutModalProps> = ({
             {/* 1. Reading Layout Options */}
             <div>
               <div className="flex items-center justify-between mb-2 px-1">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#DFBA7F]">
+                <span className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                   {isArabic ? 'طريقة القراءة والعرض' : 'Reading Layout'}
                 </span>
-                <span className="text-[10px] text-stone-400">
+                <span className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                   {isArabic ? '٣ طرق عرض معتمدة' : '3 Verified Views'}
                 </span>
               </div>
@@ -141,11 +144,11 @@ export const MushafLayoutModal: React.FC<MushafLayoutModalProps> = ({
                       className={`w-full p-3.5 rounded-2xl text-left rtl:text-right border transition-all duration-200 cursor-pointer active:scale-[0.99] relative overflow-hidden ${
                         isSelected
                           ? isDark
-                            ? 'bg-[#C9A063]/15 border-[#DFBA7F] shadow-[0_0_20px_rgba(201,160,99,0.2)]'
-                            : 'bg-amber-50/80 border-[#C9A063] shadow-sm'
+                            ? 'bg-white/[0.1] border-white/35 text-white'
+                            : 'bg-[#111214]/[0.06] border-[#111214]/40 text-[#111214] shadow-xs'
                           : isDark
-                          ? 'bg-white/5 border-white/10 hover:border-[#C9A063]/30 hover:bg-white/8'
-                          : 'bg-stone-50 border-stone-200 hover:border-[#C9A063]/40 hover:bg-stone-100/80'
+                          ? 'bg-[#1B1D23] border-white/[0.08] hover:border-white/[0.2] hover:bg-white/[0.06]'
+                          : 'bg-[#FCFCFA] border-black/[0.08] hover:border-black/[0.18] hover:bg-black/[0.03]'
                       }`}
                     >
                       <div className="flex items-start gap-3">
@@ -153,8 +156,10 @@ export const MushafLayoutModal: React.FC<MushafLayoutModalProps> = ({
                         <div
                           className={`w-5 h-5 rounded-full border-2 mt-0.5 flex items-center justify-center shrink-0 transition-all ${
                             isSelected
-                              ? 'border-[#DFBA7F] bg-[#DFBA7F] text-[#090B0E]'
-                              : 'border-stone-500 bg-transparent'
+                              ? isDark
+                                ? 'border-white bg-white text-[#111214]'
+                                : 'border-[#111214] bg-[#111214] text-white'
+                              : isDark ? 'border-stone-500 bg-transparent' : 'border-stone-400 bg-transparent'
                           }`}
                         >
                           {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
@@ -164,16 +169,18 @@ export const MushafLayoutModal: React.FC<MushafLayoutModalProps> = ({
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between gap-2 mb-1">
                             <div className="flex items-center gap-2 min-w-0">
-                              <Icon className={`w-4 h-4 ${isSelected ? 'text-[#DFBA7F]' : 'text-stone-400'}`} />
-                              <span className={`text-xs sm:text-sm font-bold truncate ${isSelected ? 'text-[#DFBA7F]' : ''}`}>
+                              <Icon className={`w-4 h-4 ${isSelected ? (isDark ? 'text-white' : 'text-[#111214]') : (isDark ? 'text-stone-400' : 'text-[#5A5D63]')}`} />
+                              <span className={`text-xs sm:text-sm font-bold truncate ${isSelected ? (isDark ? 'text-white' : 'text-[#111214]') : ''}`}>
                                 {opt.title}
                               </span>
                             </div>
-                            <span className="text-[9px] px-1.5 py-0.5 rounded-md font-mono font-medium border bg-[#C9A063]/10 text-[#DFBA7F] border-[#C9A063]/25 shrink-0">
+                            <span className={`text-[9px] px-1.5 py-0.5 rounded-md font-mono font-medium border shrink-0 ${
+                              isDark ? 'bg-white/[0.06] text-stone-300 border-white/[0.1]' : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.08]'
+                            }`}>
                               {opt.badge}
                             </span>
                           </div>
-                          <p className="text-[11px] text-stone-400 leading-relaxed">
+                          <p className={`text-[11px] leading-relaxed ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                             {opt.subtitle}
                           </p>
                         </div>
@@ -187,10 +194,10 @@ export const MushafLayoutModal: React.FC<MushafLayoutModalProps> = ({
             {/* 2. Mushaf Edition Selection */}
             <div>
               <div className="flex items-center justify-between mb-2 px-1">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#DFBA7F]">
+                <span className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                   {isArabic ? 'طبعة المصحف الشريف' : 'Mushaf Edition'}
                 </span>
-                <span className="text-[10px] text-emerald-400 flex items-center gap-1">
+                <span className={`text-[10px] flex items-center gap-1 ${isDark ? 'text-emerald-400' : 'text-emerald-700 font-semibold'}`}>
                   <ShieldCheck className="w-3 h-3" />
                   {isArabic ? 'موثق ومعتمد' : 'Verified'}
                 </span>
@@ -200,33 +207,39 @@ export const MushafLayoutModal: React.FC<MushafLayoutModalProps> = ({
                 className={`p-3.5 rounded-2xl border transition-all ${
                   activeEdition === 'madani-1405'
                     ? isDark
-                      ? 'bg-gradient-to-tr from-[#C9A063]/15 to-[#DFBA7F]/10 border-[#DFBA7F]/50 shadow-sm'
-                      : 'bg-amber-50/70 border-[#C9A063]/50'
-                    : 'bg-white/5 border-white/10'
+                      ? 'bg-white/[0.08] border-white/30 shadow-sm'
+                      : 'bg-[#111214]/[0.05] border-[#111214]/35'
+                    : isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#FCFCFA] border-black/[0.08]'
                 }`}
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#C9A063] to-[#DFBA7F] text-[#090B0E] flex items-center justify-center font-bold text-xs shadow-sm shrink-0">
+                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-xs shadow-sm shrink-0 ${
+                      isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+                    }`}>
                       ١٤٠٥
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs sm:text-sm font-bold text-[#DFBA7F]">
+                        <span className={`text-xs sm:text-sm font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                           {isArabic ? 'مصحف المدينة المنورة (١٤٠٥هـ)' : 'Madani Mushaf (1405 AH)'}
                         </span>
-                        <span className="text-[9px] px-1.5 py-0.2 rounded-md bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold">
+                        <span className={`text-[9px] px-1.5 py-0.2 rounded-md border font-semibold ${
+                          isDark ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' : 'bg-emerald-50 text-emerald-700 border-emerald-300'
+                        }`}>
                           {isArabic ? 'المعتمد الرسمي' : 'Official Print'}
                         </span>
                       </div>
-                      <p className="text-[10px] text-stone-400 mt-0.5">
+                      <p className={`text-[10px] mt-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                         {isArabic
                           ? 'مجمع الملك فهد لطباعة المصحف الشريف بالمدينة المنورة - الخطاط عثمان طه (٦٠٤ صفحة)'
                           : 'King Fahd Complex for Printing the Holy Quran, Medina - Calligrapher Uthman Taha (604 pages)'}
                       </p>
                     </div>
                   </div>
-                  <div className="w-5 h-5 rounded-full bg-[#DFBA7F] text-[#090B0E] flex items-center justify-center shrink-0">
+                  <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${
+                    isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+                  }`}>
                     <Check className="w-3 h-3 stroke-[3]" />
                   </div>
                 </div>
@@ -236,24 +249,24 @@ export const MushafLayoutModal: React.FC<MushafLayoutModalProps> = ({
             {/* 3. Reading Customization Options */}
             <div>
               <div className="flex items-center justify-between mb-2 px-1">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#DFBA7F]">
+                <span className={`text-xs font-bold uppercase tracking-wider ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                   {isArabic ? 'إعدادات القراءة والخط' : 'Reading Customization'}
                 </span>
-                <SlidersHorizontal className="w-3.5 h-3.5 text-stone-400" />
+                <SlidersHorizontal className={`w-3.5 h-3.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`} />
               </div>
 
               <div
                 className={`p-4 rounded-2xl border space-y-4 ${
-                  isDark ? 'bg-white/5 border-white/10' : 'bg-stone-50 border-stone-200'
+                  isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#FCFCFA] border-black/[0.08]'
                 }`}
               >
                 {/* Arabic Font Size Slider */}
                 <div>
                   <div className="flex items-center justify-between text-xs mb-1.5">
-                    <span className="font-medium text-stone-300">
+                    <span className={`font-medium ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                       {isArabic ? 'حجم الخط العربي' : 'Arabic Font Size'}
                     </span>
-                    <span className="font-mono font-bold text-[#DFBA7F]">{arabicFontSize}px</span>
+                    <span className={`font-mono font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>{arabicFontSize}px</span>
                   </div>
                   <input
                     type="range"
@@ -262,20 +275,20 @@ export const MushafLayoutModal: React.FC<MushafLayoutModalProps> = ({
                     step="1"
                     value={arabicFontSize}
                     onChange={(e) => onChangeArabicFontSize(Number(e.target.value))}
-                    className="w-full accent-[#C9A063] cursor-pointer h-2 bg-stone-700/60 rounded-lg"
+                    className={`w-full cursor-pointer h-2 rounded-lg ${isDark ? 'accent-white bg-white/[0.14]' : 'accent-[#111214] bg-black/[0.12]'}`}
                   />
-                  <div className="text-right font-arabic text-sm text-[#DFBA7F] mt-1 select-none" dir="rtl">
+                  <div className={`text-right font-arabic text-sm mt-1 select-none ${isDark ? 'text-white' : 'text-[#111214]'}`} dir="rtl">
                     بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
                   </div>
                 </div>
 
                 {/* Transliteration Toggle */}
-                <div className="flex items-center justify-between pt-2 border-t border-[#C9A063]/15">
+                <div className={`flex items-center justify-between pt-2 border-t ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
                   <div>
                     <div className="text-xs font-semibold">
                       {isArabic ? 'اللفظ الصوتي اللاتيني (Transliteration)' : 'Phonetic Transliteration'}
                     </div>
-                    <div className="text-[10px] text-stone-400">
+                    <div className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                       {isArabic ? 'مساعدة نطق الكلمات بالحروف اللاتينية' : 'Romanized pronunciation guide beneath verses'}
                     </div>
                   </div>
@@ -283,11 +296,15 @@ export const MushafLayoutModal: React.FC<MushafLayoutModalProps> = ({
                     type="button"
                     onClick={() => onToggleTransliteration(!showTransliteration)}
                     className={`w-11 h-6 rounded-full transition-colors p-0.5 cursor-pointer shrink-0 ${
-                      showTransliteration ? 'bg-[#C9A063]' : 'bg-stone-700'
+                      showTransliteration
+                        ? isDark ? 'bg-white' : 'bg-[#111214]'
+                        : isDark ? 'bg-white/[0.16]' : 'bg-black/[0.16]'
                     }`}
                   >
                     <div
-                      className={`w-5 h-5 rounded-full bg-white transition-transform ${
+                      className={`w-5 h-5 rounded-full shadow-sm transition-transform ${
+                        showTransliteration && isDark ? 'bg-[#111214]' : 'bg-white'
+                      } ${
                         showTransliteration ? 'translate-x-5 rtl:-translate-x-5' : 'translate-x-0'
                       }`}
                     />
@@ -295,14 +312,14 @@ export const MushafLayoutModal: React.FC<MushafLayoutModalProps> = ({
                 </div>
 
                 {/* Tajweed Colors Toggle & Legend Button */}
-                <div className="space-y-2.5 pt-2 border-t border-[#C9A063]/15">
+                <div className={`space-y-2.5 pt-2 border-t ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="text-xs font-semibold flex items-center gap-1.5">
                         <span>{isArabic ? 'ألوان أحكام التجويد' : 'Tajweed Rule Colors'}</span>
-                        <Sparkles className="w-3 h-3 text-[#DFBA7F]" />
+                        <Sparkles className={`w-3 h-3 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`} />
                       </div>
-                      <div className="text-[10px] text-stone-400">
+                      <div className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                         {isArabic ? 'تمييز الغنة والمدود والقلقلة' : 'Visual color guidance for Ghunnah, Madd and Qalqalah'}
                       </div>
                     </div>
@@ -310,11 +327,15 @@ export const MushafLayoutModal: React.FC<MushafLayoutModalProps> = ({
                       type="button"
                       onClick={() => onToggleTajweedColors(!enableTajweedColors)}
                       className={`w-11 h-6 rounded-full transition-colors p-0.5 cursor-pointer shrink-0 ${
-                        enableTajweedColors ? 'bg-[#C9A063]' : 'bg-stone-700'
+                        enableTajweedColors
+                          ? isDark ? 'bg-white' : 'bg-[#111214]'
+                          : isDark ? 'bg-white/[0.16]' : 'bg-black/[0.16]'
                       }`}
                     >
                       <div
-                        className={`w-5 h-5 rounded-full bg-white transition-transform ${
+                        className={`w-5 h-5 rounded-full shadow-sm transition-transform ${
+                          enableTajweedColors && isDark ? 'bg-[#111214]' : 'bg-white'
+                        } ${
                           enableTajweedColors ? 'translate-x-5 rtl:-translate-x-5' : 'translate-x-0'
                         }`}
                       />
@@ -327,8 +348,8 @@ export const MushafLayoutModal: React.FC<MushafLayoutModalProps> = ({
                     onClick={onOpenTajweedLegend}
                     className={`w-full py-2.5 px-3 rounded-xl border text-xs flex items-center justify-center gap-2 transition-all cursor-pointer ${
                       isDark
-                        ? 'bg-[#C9A063]/10 border-[#DFBA7F]/30 text-[#DFBA7F] hover:bg-[#C9A063]/20'
-                        : 'bg-amber-50 border-[#C9A063]/45 text-[#8E6527] hover:bg-amber-100'
+                        ? 'bg-white/[0.06] border-white/[0.1] text-stone-200 hover:bg-white/[0.12]'
+                        : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214] hover:bg-black/[0.08]'
                     }`}
                   >
                     <BookOpen className="w-3.5 h-3.5" />
@@ -339,12 +360,12 @@ export const MushafLayoutModal: React.FC<MushafLayoutModalProps> = ({
                 </div>
 
                 {/* Translation Toggle */}
-                <div className="flex items-center justify-between pt-2 border-t border-[#C9A063]/15">
+                <div className={`flex items-center justify-between pt-2 border-t ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
                   <div>
                     <div className="text-xs font-semibold">
                       {isArabic ? 'إظهار الترجمة المعتمدة' : 'Show Verified Translation'}
                     </div>
-                    <div className="text-[10px] text-stone-400">
+                    <div className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                       {isArabic ? 'ترجمة معاني الآيات باللغة المختارة' : 'Displays approved translation below verses'}
                     </div>
                   </div>
@@ -352,11 +373,15 @@ export const MushafLayoutModal: React.FC<MushafLayoutModalProps> = ({
                     type="button"
                     onClick={() => onToggleTranslation(!showTranslation)}
                     className={`w-11 h-6 rounded-full transition-colors p-0.5 cursor-pointer shrink-0 ${
-                      showTranslation ? 'bg-[#C9A063]' : 'bg-stone-700'
+                      showTranslation
+                        ? isDark ? 'bg-white' : 'bg-[#111214]'
+                        : isDark ? 'bg-white/[0.16]' : 'bg-black/[0.16]'
                     }`}
                   >
                     <div
-                      className={`w-5 h-5 rounded-full bg-white transition-transform ${
+                      className={`w-5 h-5 rounded-full shadow-sm transition-transform ${
+                        showTranslation && isDark ? 'bg-[#111214]' : 'bg-white'
+                      } ${
                         showTranslation ? 'translate-x-5 rtl:-translate-x-5' : 'translate-x-0'
                       }`}
                     />
@@ -367,11 +392,15 @@ export const MushafLayoutModal: React.FC<MushafLayoutModalProps> = ({
           </div>
 
           {/* Bottom Confirmation Button */}
-          <div className="pt-3 border-t border-[#C9A063]/20 mt-2 shrink-0">
+          <div className={`pt-3 border-t mt-2 shrink-0 ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
             <button
               type="button"
               onClick={onClose}
-              className="w-full py-2.5 rounded-xl bg-gradient-to-tr from-[#C9A063] via-[#DFBA7F] to-[#B88E4F] text-[#090B0E] font-bold text-xs shadow-md active:scale-[0.99] transition-all cursor-pointer flex items-center justify-center gap-1.5"
+              className={`w-full py-2.5 rounded-xl font-bold text-xs shadow-sm active:scale-[0.99] transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                isDark
+                  ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                  : 'bg-[#111214] hover:bg-[#27292D] text-white'
+              }`}
             >
               <Check className="w-4 h-4" />
               <span>{isArabic ? 'تطبيق وحفظ التفضيلات' : 'Apply & Save Preferences'}</span>

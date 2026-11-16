@@ -256,22 +256,25 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
           transition={{ type: 'spring', damping: 28, stiffness: 320, mass: 0.8 }}
           className={`w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 border shadow-2xl max-h-[90vh] flex flex-col relative overflow-hidden ${
             isDark
-              ? 'bg-[#0A0D13]/98 border-[#DFBA7F]/35 text-stone-100'
-              : 'bg-white/98 border-[#C9A063]/40 text-stone-900 shadow-2xl'
+              ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6]'
+              : 'bg-white border-black/[0.08] text-[#111214] shadow-2xl'
           }`}
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Subtle Golden Glow Line */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#DFBA7F] to-transparent opacity-60" />
-
           {/* Header Bar */}
-          <div className="flex items-center justify-between pb-3.5 border-b border-[#C9A063]/20 mb-3 shrink-0">
+          <div className={`flex items-center justify-between pb-3.5 border-b mb-3 shrink-0 ${
+            isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+          }`}>
             <div className="flex items-center gap-2">
               {viewMode === 'noor-ai' && (
                 <button
                   type="button"
                   onClick={() => setViewMode('details')}
-                  className="p-1.5 rounded-xl border border-[#C9A063]/30 text-[#DFBA7F] hover:bg-white/10 active:scale-90 transition-all cursor-pointer flex items-center gap-1 text-xs"
+                  className={`p-1.5 rounded-xl border active:scale-90 transition-all cursor-pointer flex items-center gap-1 text-xs ${
+                    isDark
+                      ? 'border-white/[0.12] text-white hover:bg-white/[0.08]'
+                      : 'border-black/[0.12] text-[#111214] hover:bg-black/[0.05]'
+                  }`}
                 >
                   <ChevronLeft className="w-4 h-4 rtl:rotate-180" />
                   <span>{isArabic ? 'الآية' : 'Ayah'}</span>
@@ -289,12 +292,12 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
               />
 
               <div>
-                <h3 className="text-xs sm:text-sm font-serif-heading font-bold text-[#DFBA7F]">
+                <h3 className={`text-xs sm:text-sm font-serif-heading font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                   {isArabic
                     ? `سورة ${surah.name} — آية ${ayah.numberInSurah}`
                     : `Surah ${surah.englishName} — Ayah ${ayah.numberInSurah}`}
                 </h3>
-                <div className="flex items-center gap-2 text-[10px] text-stone-400">
+                <div className={`flex items-center gap-2 text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                   <span>{isArabic ? `الجزء ${ayah.juz || surah.juzNumber}` : `Juz ${ayah.juz || surah.juzNumber}`}</span>
                   <span>•</span>
                   <span>{isArabic ? `الصفحة ${ayah.page || surah.pageNumber}` : `Page ${ayah.page || surah.pageNumber}`}</span>
@@ -312,28 +315,36 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                   onClick={() => onToggleBookmark(ayah.numberInSurah)}
                   className={`p-2 rounded-xl border transition-all active:scale-90 ${
                     isBookmarked
-                      ? 'bg-[#C9A063]/25 text-[#DFBA7F] border-[#C9A063]/40'
-                      : 'border-transparent text-stone-400 hover:text-white hover:bg-white/5'
+                      ? isDark
+                        ? 'bg-white/[0.12] text-white border-white/30'
+                        : 'bg-[#111214]/[0.08] text-[#111214] border-[#111214]/35'
+                      : isDark
+                      ? 'border-transparent text-stone-400 hover:text-white hover:bg-white/[0.06]'
+                      : 'border-transparent text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05]'
                   }`}
                   title={isBookmarked ? 'Bookmarked' : 'Bookmark'}
                 >
-                  <Bookmark className={`w-4 h-4 ${isBookmarked ? 'fill-[#DFBA7F]' : ''}`} />
+                  <Bookmark className={`w-4 h-4 ${isBookmarked ? (isDark ? 'fill-white' : 'fill-[#111214]') : ''}`} />
                 </button>
               )}
 
               <button
                 type="button"
                 onClick={handleCopy}
-                className="p-2 rounded-xl text-stone-400 hover:text-white hover:bg-white/5 active:scale-90 transition-all cursor-pointer"
+                className={`p-2 rounded-xl active:scale-90 transition-all cursor-pointer ${
+                  isDark ? 'text-stone-400 hover:text-white hover:bg-white/[0.06]' : 'text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05]'
+                }`}
                 title="Copy Ayah"
               >
-                {copied ? <Check className="w-4 h-4 text-[#DFBA7F]" /> : <Copy className="w-4 h-4" />}
+                {copied ? <Check className={`w-4 h-4 ${isDark ? 'text-emerald-400' : 'text-emerald-700'}`} /> : <Copy className="w-4 h-4" />}
               </button>
 
               <button
                 type="button"
                 onClick={handleShare}
-                className="p-2 rounded-xl text-stone-400 hover:text-white hover:bg-white/5 active:scale-90 transition-all cursor-pointer"
+                className={`p-2 rounded-xl active:scale-90 transition-all cursor-pointer ${
+                  isDark ? 'text-stone-400 hover:text-white hover:bg-white/[0.06]' : 'text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05]'
+                }`}
                 title="Share"
               >
                 <Share2 className="w-4 h-4" />
@@ -342,7 +353,9 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                className="p-2 rounded-xl text-stone-400 hover:text-white hover:bg-white/10 active:scale-90 transition-all cursor-pointer ml-1"
+                className={`p-2 rounded-xl active:scale-90 transition-all cursor-pointer ml-1 ${
+                  isDark ? 'text-stone-400 hover:text-white hover:bg-white/[0.08]' : 'text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05]'
+                }`}
                 aria-label="Close"
               >
                 <X className="w-4.5 h-4.5" />
@@ -355,13 +368,13 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
             {/* Authentic Arabic Ayah Calligraphy Box */}
             <div
               className={`p-4 sm:p-5 rounded-2xl border relative overflow-hidden ${
-                isDark ? 'bg-black/40 border-[#DFBA7F]/25' : 'bg-[#FAF9F5] border-[#C9A063]/30'
+                isDark ? 'bg-[#0B0C0E] border-white/[0.08]' : 'bg-[#FCFCFA] border-black/[0.08]'
               }`}
             >
               <div
                 dir="rtl"
                 className={`font-arabic text-right leading-[2.4] sm:leading-[2.6] text-xl sm:text-2xl select-text ${
-                  isDark ? 'text-white' : 'text-stone-950 font-bold'
+                  isDark ? 'text-white' : 'text-[#111214] font-bold'
                 }`}
               >
                 {ayah.text}{' '}
@@ -382,12 +395,14 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                 {/* Audio Recitation Player with Sheikh Yasser Al-Dossari */}
                 <div
                   className={`p-3.5 sm:p-4 rounded-2xl border transition-all ${
-                    isDark ? 'bg-white/5 border-white/10' : 'bg-stone-50 border-stone-200'
+                    isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#FCFCFA] border-black/[0.08]'
                   }`}
                 >
                   <div className="flex items-center justify-between gap-3 mb-2.5">
                     <div className="flex items-center gap-2.5 min-w-0">
-                      <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#C9A063] to-[#DFBA7F] text-[#090B0E] flex items-center justify-center font-bold shadow-sm shrink-0">
+                      <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold shadow-sm shrink-0 ${
+                        isDark ? 'bg-white text-[#111214]' : 'bg-[#111214] text-white'
+                      }`}>
                         {isPlayingAudio ? (
                           <Volume2 className="w-4.5 h-4.5 animate-pulse" />
                         ) : (
@@ -396,14 +411,16 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-1.5">
-                          <span className="text-xs sm:text-sm font-bold text-[#DFBA7F] truncate">
+                          <span className={`text-xs sm:text-sm font-bold truncate ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                             {isArabic ? 'الشيخ ياسر الدوسري' : 'Sheikh Yasser Al-Dossari'}
                           </span>
-                          <span className="text-[9px] px-1.5 py-0.2 rounded-md bg-[#C9A063]/15 text-[#DFBA7F] border border-[#C9A063]/30 font-semibold shrink-0">
+                          <span className={`text-[9px] px-1.5 py-0.2 rounded-md border font-semibold shrink-0 ${
+                            isDark ? 'bg-white/[0.06] text-stone-300 border-white/[0.1]' : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.08]'
+                          }`}>
                             {isArabic ? 'تلاوة مرئية' : 'Murattal'}
                           </span>
                         </div>
-                        <p className="text-[10px] text-stone-400">
+                        <p className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                           {isArabic ? 'تسجيل رسمي موثق للآية الكريمة' : 'Official high-fidelity recitation'}
                         </p>
                       </div>
@@ -413,28 +430,32 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                       type="button"
                       onClick={togglePlayAudio}
                       disabled={isAudioLoading}
-                      className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#C9A063] via-[#DFBA7F] to-[#B88E4F] text-[#090B0E] flex items-center justify-center shadow-md active:scale-90 hover:brightness-110 transition-all cursor-pointer shrink-0"
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center shadow-sm active:scale-90 transition-all cursor-pointer shrink-0 ${
+                        isDark
+                          ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                          : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                      }`}
                       title={isPlayingAudio ? 'Pause' : 'Play'}
                     >
                       {isAudioLoading ? (
-                        <div className="w-5 h-1.5 rounded-full bg-[#090B0E]/60 animate-pulse" />
+                        <div className={`w-5 h-1.5 rounded-full animate-pulse ${isDark ? 'bg-[#111214]/60' : 'bg-white/60'}`} />
                       ) : isPlayingAudio ? (
-                        <Pause className="w-4.5 h-4.5 fill-[#090B0E]" />
+                        <Pause className={`w-4.5 h-4.5 ${isDark ? 'fill-[#111214]' : 'fill-white'}`} />
                       ) : (
-                        <Play className="w-4.5 h-4.5 fill-[#090B0E] ml-0.5" />
+                        <Play className={`w-4.5 h-4.5 ml-0.5 ${isDark ? 'fill-[#111214]' : 'fill-white'}`} />
                       )}
                     </button>
                   </div>
 
                   {/* Audio Progress Bar */}
                   <div className="space-y-1">
-                    <div className="h-1.5 w-full bg-stone-700/40 rounded-full overflow-hidden">
+                    <div className={`h-1.5 w-full rounded-full overflow-hidden ${isDark ? 'bg-white/[0.1]' : 'bg-black/[0.08]'}`}>
                       <div
-                        className="h-full bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] transition-all duration-200"
+                        className={`h-full transition-all duration-200 ${isDark ? 'bg-white' : 'bg-[#111214]'}`}
                         style={{ width: `${audioProgress}%` }}
                       />
                     </div>
-                    <div className="flex items-center justify-between text-[10px] text-stone-400 font-mono">
+                    <div className={`flex items-center justify-between text-[10px] font-mono ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                       <span>{formatSeconds(currentTime)}</span>
                       <span>{audioDuration ? formatSeconds(audioDuration) : '--:--'}</span>
                     </div>
@@ -444,14 +465,14 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                 {/* Verified Translation */}
                 <div
                   className={`p-3.5 sm:p-4 rounded-2xl border ${
-                    isDark ? 'bg-white/5 border-white/10' : 'bg-stone-50 border-stone-200'
+                    isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#FCFCFA] border-black/[0.08]'
                   }`}
                 >
-                  <div className="flex items-center gap-1.5 mb-1.5 text-xs font-bold text-[#DFBA7F]">
+                  <div className={`flex items-center gap-1.5 mb-1.5 text-xs font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                     <Languages className="w-3.5 h-3.5" />
                     <span>{isArabic ? 'ترجمة معاني الآية' : 'Verified Translation'}</span>
                   </div>
-                  <p className="text-xs sm:text-sm leading-relaxed text-stone-200">
+                  <p className={`text-xs sm:text-sm leading-relaxed ${isDark ? 'text-stone-200' : 'text-[#3F4248]'}`}>
                     {ayah.translation}
                   </p>
                 </div>
@@ -460,14 +481,14 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                 {transliterationText && (
                   <div
                     className={`p-3.5 sm:p-4 rounded-2xl border ${
-                      isDark ? 'bg-white/5 border-white/10' : 'bg-stone-50 border-stone-200'
+                      isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#FCFCFA] border-black/[0.08]'
                     }`}
                   >
-                    <div className="flex items-center gap-1.5 mb-1 text-xs font-bold text-[#DFBA7F]">
+                    <div className={`flex items-center gap-1.5 mb-1 text-xs font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                       <FileText className="w-3.5 h-3.5" />
                       <span>{isArabic ? 'اللفظ الصوتي (Transliteration)' : 'Phonetic Transliteration'}</span>
                     </div>
-                    <p className="text-xs font-serif italic text-stone-300 tracking-wide">
+                    <p className={`text-xs font-serif italic tracking-wide ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
                       {transliterationText}
                     </p>
                   </div>
@@ -476,34 +497,36 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                 {/* Concise Tafsir Al-Muyassar (مختصر التفسير الميسر) */}
                 <div
                   className={`p-3.5 sm:p-4 rounded-2xl border ${
-                    isDark ? 'bg-white/5 border-white/10' : 'bg-stone-50 border-stone-200'
+                    isDark ? 'bg-[#1B1D23] border-white/[0.08]' : 'bg-[#FCFCFA] border-black/[0.08]'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-[#DFBA7F]">
+                    <div className={`flex items-center gap-1.5 text-xs font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                       <BookOpen className="w-3.5 h-3.5" />
                       <span>{isArabic ? 'التفسير الميسر المعتمد' : 'Concise Classical Tafsir'}</span>
                     </div>
-                    <span className="text-[9px] px-1.5 py-0.2 rounded bg-[#C9A063]/15 text-[#DFBA7F] font-mono">
+                    <span className={`text-[9px] px-1.5 py-0.2 rounded font-mono border ${
+                      isDark ? 'bg-white/[0.06] text-stone-300 border-white/[0.1]' : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.08]'
+                    }`}>
                       {isArabic ? 'مجمع الملك فهد' : 'King Fahd Complex'}
                     </span>
                   </div>
 
                   {isLoadingTafsir ? (
                     <div className="space-y-2 py-1 animate-pulse">
-                      <div className="h-3.5 w-full rounded-md bg-[#C9A063]/20" />
-                      <div className="h-3.5 w-5/6 rounded-md bg-[#C9A063]/15" />
-                      <div className="h-3.5 w-2/3 rounded-md bg-[#C9A063]/10" />
+                      <div className={`h-3.5 w-full rounded-md ${isDark ? 'bg-white/[0.1]' : 'bg-black/[0.08]'}`} />
+                      <div className={`h-3.5 w-5/6 rounded-md ${isDark ? 'bg-white/[0.08]' : 'bg-black/[0.06]'}`} />
+                      <div className={`h-3.5 w-2/3 rounded-md ${isDark ? 'bg-white/[0.05]' : 'bg-black/[0.04]'}`} />
                     </div>
                   ) : tafsirText ? (
                     <p
                       dir={isArabic ? 'rtl' : 'ltr'}
-                      className="text-xs sm:text-sm leading-relaxed text-stone-300"
+                      className={`text-xs sm:text-sm leading-relaxed ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}
                     >
                       {tafsirText}
                     </p>
                   ) : (
-                    <p className="text-xs text-stone-400">
+                    <p className={`text-xs ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                       {isArabic
                         ? 'تفسير معاني هذه الآية الكريمة يوضح سياق الهدى والرحمة الربانية للمؤمنين.'
                         : 'Classical commentary underscores divine guidance, solace, and spiritual wisdom.'}
@@ -516,17 +539,23 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                   type="button"
                   id="btn-ask-noor-ai-ayah"
                   onClick={() => setViewMode('noor-ai')}
-                  className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-tr from-[#C9A063] via-[#DFBA7F] to-[#B88E4F] text-[#090B0E] font-bold text-xs sm:text-sm shadow-lg hover:brightness-110 active:scale-[0.99] transition-all cursor-pointer flex items-center justify-between group"
+                  className={`w-full py-3.5 px-4 rounded-2xl font-bold text-xs sm:text-sm shadow-sm active:scale-[0.99] transition-all cursor-pointer flex items-center justify-between group ${
+                    isDark
+                      ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                      : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                  }`}
                 >
                   <div className="flex items-center gap-2.5">
-                    <div className="w-7 h-7 rounded-lg bg-[#090B0E] text-[#DFBA7F] flex items-center justify-center shrink-0">
-                      <NoorAIIcon className="w-4 h-4 text-[#DFBA7F]" />
+                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
+                      isDark ? 'bg-[#111214] text-white' : 'bg-white text-[#111214]'
+                    }`}>
+                      <NoorAIIcon className="w-4 h-4" />
                     </div>
                     <div className="text-left rtl:text-right">
                       <div className="font-serif-heading font-bold text-xs sm:text-sm">
                         {isArabic ? 'اسأل نور الإسلامي عن هذه الآية' : 'Ask Noor AI About This Verse'}
                       </div>
-                      <div className="text-[10px] text-[#090B0E]/80 font-medium">
+                      <div className={`text-[10px] font-medium ${isDark ? 'text-[#111214]/75' : 'text-white/75'}`}>
                         {isArabic
                           ? 'تدبر قرآني، أسباب النزول، ولطائف بلاغية موثوقة'
                           : 'Tafsir context, spiritual reflections & linguistic insights'}
@@ -534,7 +563,7 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                     </div>
                   </div>
 
-                  <Sparkles className="w-4 h-4 text-[#090B0E] group-hover:rotate-12 transition-transform" />
+                  <Sparkles className="w-4 h-4 group-hover:rotate-12 transition-transform" />
                 </button>
               </>
             )}
@@ -543,21 +572,23 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
             {viewMode === 'noor-ai' && (
               <div className="space-y-4">
                 {/* Noor AI Mode Banner */}
-                <div className="flex items-center justify-between p-3 rounded-2xl bg-[#C9A063]/15 border border-[#C9A063]/30">
+                <div className={`flex items-center justify-between p-3 rounded-2xl border ${
+                  isDark ? 'bg-white/[0.06] border-white/[0.1]' : 'bg-[#F3F3F1] border-black/[0.08]'
+                }`}>
                   <div className="flex items-center gap-2">
-                    <NoorAIIcon className="w-4 h-4 text-[#DFBA7F]" />
-                    <span className="text-xs font-bold text-[#DFBA7F]">
+                    <NoorAIIcon className={`w-4 h-4 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
+                    <span className={`text-xs font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                       {isArabic ? 'مساعد نور لتدبر الآيات' : 'Noor AI Quranic Reflection'}
                     </span>
                   </div>
-                  <span className="text-[10px] text-stone-400">
+                  <span className={`text-[10px] ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     {isArabic ? 'استناد حصري للتفاسير المعتمدة' : 'Grounded in classical sources'}
                   </span>
                 </div>
 
                 {/* Quick Question Chips */}
                 <div>
-                  <div className="text-[11px] text-stone-400 mb-2 px-1">
+                  <div className={`text-[11px] mb-2 px-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                     {isArabic ? 'اختر سؤالاً سريعاً أو اكتب استفسارك:' : 'Select a reflection topic or type your question:'}
                   </div>
                   <div className="grid grid-cols-2 gap-2">
@@ -598,10 +629,16 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                           type="button"
                           onClick={() => handleAskNoorAI(chip.prompt)}
                           disabled={isAiLoading}
-                          className="p-2.5 rounded-xl border border-white/10 hover:border-[#DFBA7F]/40 hover:bg-[#C9A063]/10 text-left rtl:text-right transition-all active:scale-95 text-xs flex items-center gap-2 cursor-pointer group"
+                          className={`p-2.5 rounded-xl border text-left rtl:text-right transition-all active:scale-95 text-xs flex items-center gap-2 cursor-pointer group ${
+                            isDark
+                              ? 'bg-[#1B1D23] border-white/[0.08] hover:border-white/[0.25] hover:bg-white/[0.08]'
+                              : 'border-black/[0.08] bg-[#FCFCFA] hover:border-black/[0.2] hover:bg-black/[0.04]'
+                          }`}
                         >
-                          <Icon className="w-3.5 h-3.5 text-[#DFBA7F] shrink-0 group-hover:scale-110 transition-transform" />
-                          <span className="text-[11px] font-medium text-stone-300 group-hover:text-[#DFBA7F] truncate">
+                          <Icon className={`w-3.5 h-3.5 shrink-0 group-hover:scale-110 transition-transform ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`} />
+                          <span className={`text-[11px] font-medium truncate ${
+                            isDark ? 'text-stone-300 group-hover:text-white' : 'text-[#3F4248] group-hover:text-[#111214]'
+                          }`}>
                             {chip.label}
                           </span>
                         </button>
@@ -624,20 +661,24 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
                         ? 'اكتب سؤالك عن هذه الآية...'
                         : 'Ask any question about this verse...'
                     }
-                    className={`flex-1 px-3.5 py-2.5 rounded-xl text-xs border transition-all focus:outline-none focus:ring-1 focus:ring-[#C9A063] ${
+                    className={`flex-1 px-3.5 py-2.5 rounded-xl text-xs border transition-all focus:outline-none focus:ring-1 ${
                       isDark
-                        ? 'bg-stone-900 border-[#C9A063]/30 text-stone-100 placeholder-stone-500'
-                        : 'bg-stone-100 border-stone-200 text-stone-900 placeholder-stone-400'
+                        ? 'bg-[#1B1D23] border-white/[0.1] text-[#F3F4F6] placeholder-stone-500 focus:ring-white/30'
+                        : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214] placeholder-[#6B6F76] focus:ring-black/25'
                     }`}
                   />
                   <button
                     type="button"
                     onClick={() => handleAskNoorAI(userQuery)}
                     disabled={!userQuery.trim() || isAiLoading}
-                    className="p-2.5 rounded-xl bg-gradient-to-tr from-[#C9A063] to-[#DFBA7F] text-[#090B0E] disabled:opacity-40 active:scale-90 transition-all cursor-pointer shrink-0"
+                    className={`p-2.5 rounded-xl disabled:opacity-40 active:scale-90 transition-all cursor-pointer shrink-0 ${
+                      isDark
+                        ? 'bg-white hover:bg-stone-200 text-[#111214]'
+                        : 'bg-[#111214] hover:bg-[#27292D] text-white'
+                    }`}
                   >
                     {isAiLoading ? (
-                      <div className="w-4 h-4 rounded-md bg-[#090B0E]/40 animate-pulse" />
+                      <div className={`w-4 h-4 rounded-md animate-pulse ${isDark ? 'bg-[#111214]/40' : 'bg-white/40'}`} />
                     ) : (
                       <Send className="w-4 h-4 rtl:rotate-180" />
                     )}
@@ -646,38 +687,44 @@ export const AyahDetailsModal: React.FC<AyahDetailsModalProps> = ({
 
                 {/* AI Response Skeleton Loader */}
                 {isAiLoading && (
-                  <div className="p-4 rounded-2xl border border-[#C9A063]/30 bg-[#C9A063]/10 space-y-2.5 animate-pulse">
-                    <div className="h-3.5 w-1/3 rounded-md bg-[#DFBA7F]/30" />
-                    <div className="h-3 w-full rounded-md bg-[#DFBA7F]/20" />
-                    <div className="h-3 w-5/6 rounded-md bg-[#DFBA7F]/15" />
-                    <div className="h-3 w-3/4 rounded-md bg-[#DFBA7F]/15" />
+                  <div className={`p-4 rounded-2xl border space-y-2.5 animate-pulse ${
+                    isDark ? 'border-white/[0.1] bg-white/[0.04]' : 'border-black/[0.08] bg-[#F3F3F1]'
+                  }`}>
+                    <div className={`h-3.5 w-1/3 rounded-md ${isDark ? 'bg-white/[0.14]' : 'bg-black/[0.12]'}`} />
+                    <div className={`h-3 w-full rounded-md ${isDark ? 'bg-white/[0.1]' : 'bg-black/[0.08]'}`} />
+                    <div className={`h-3 w-5/6 rounded-md ${isDark ? 'bg-white/[0.08]' : 'bg-black/[0.06]'}`} />
+                    <div className={`h-3 w-3/4 rounded-md ${isDark ? 'bg-white/[0.06]' : 'bg-black/[0.05]'}`} />
                   </div>
                 )}
 
                 {aiResponse && (
                   <div
                     className={`p-4 rounded-2xl border transition-all ${
-                      isDark ? 'bg-black/40 border-[#DFBA7F]/30' : 'bg-amber-50/70 border-[#C9A063]/40'
+                      isDark ? 'bg-[#0B0C0E] border-white/[0.1]' : 'bg-[#FCFCFA] border-black/[0.08]'
                     }`}
                   >
-                    <div className="flex items-center gap-2 mb-2 pb-2 border-b border-[#C9A063]/20">
-                      <NoorAIIcon className="w-4 h-4 text-[#DFBA7F]" />
-                      <span className="text-xs font-bold text-[#DFBA7F]">
+                    <div className={`flex items-center gap-2 mb-2 pb-2 border-b ${
+                      isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+                    }`}>
+                      <NoorAIIcon className={`w-4 h-4 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
+                      <span className={`text-xs font-bold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
                         {isArabic ? 'بيان نور الإسلامي' : 'Noor AI Explanation'}
                       </span>
                     </div>
 
                     <p
                       dir={isArabic ? 'rtl' : 'ltr'}
-                      className="text-xs sm:text-sm leading-relaxed text-stone-200"
+                      className={`text-xs sm:text-sm leading-relaxed ${isDark ? 'text-stone-200' : 'text-[#3F4248]'}`}
                     >
                       {aiResponse}
                     </p>
 
                     {aiKeyTakeaway && (
-                      <div className="mt-3 pt-2.5 border-t border-[#C9A063]/20 flex items-start gap-2">
-                        <Lightbulb className="w-3.5 h-3.5 text-[#DFBA7F] shrink-0 mt-0.5" />
-                        <p className="text-[11px] text-[#DFBA7F] font-medium leading-relaxed">
+                      <div className={`mt-3 pt-2.5 border-t flex items-start gap-2 ${
+                        isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'
+                      }`}>
+                        <Lightbulb className={`w-3.5 h-3.5 shrink-0 mt-0.5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
+                        <p className={`text-[11px] font-medium leading-relaxed ${isDark ? 'text-stone-200' : 'text-[#111214]'}`}>
                           {aiKeyTakeaway}
                         </p>
                       </div>

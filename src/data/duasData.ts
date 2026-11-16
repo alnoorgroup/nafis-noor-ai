@@ -1,11 +1,18 @@
 import { Dua, DhikrDuaCategory } from '../types';
 import rawHisnAdhkar from './hisnulMuslimComplete.json';
+import { SUPPLEMENTAL_DUAS } from './duasLibrary';
 
-// Strongly typed list of all authentic Adhkar from Fortress of the Muslim (Hisn al-Muslim)
-export const DUAS_LIST: Dua[] = (rawHisnAdhkar as unknown as Dua[]).map((d) => ({
-  ...d,
-  isSaved: false,
-}));
+// Strongly typed list of all authentic Adhkar from Fortress of the Muslim (Hisn al-Muslim) + verified Qur'anic/Sunnah entries
+export const DUAS_LIST: Dua[] = [
+  ...(rawHisnAdhkar as unknown as Dua[]).map((d) => ({
+    ...d,
+    isSaved: false,
+  })),
+  ...SUPPLEMENTAL_DUAS.map((d) => ({
+    ...d,
+    isSaved: false,
+  })),
+];
 
 export const DHIKR_CATEGORIES: {
   id: DhikrDuaCategory;

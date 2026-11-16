@@ -171,7 +171,7 @@ export const MadaniAyahOrnament: React.FC<MadaniAyahOrnamentProps> = ({
         {/* Top & Bottom Traditional Mushaf Finial Crowns */}
         <path
           d="M20 1 L23 5 L17 5 Z M20 43 L23 39 L17 39 Z"
-          fill={isPlaying ? '#34D399' : '#C9A063'}
+          fill={isPlaying ? '#34D399' : isDark ? '#D4D4D8' : '#111214'}
         />
         {/* Outer 8-lobed Islamic Ayah Medallion Ring */}
         <path
@@ -183,10 +183,10 @@ export const MadaniAyahOrnament: React.FC<MadaniAyahOrnamentProps> = ({
                 ? 'rgba(16, 185, 129, 0.30)'
                 : 'rgba(16, 185, 129, 0.22)'
               : isDark
-              ? 'rgba(201, 160, 99, 0.16)'
-              : 'rgba(201, 160, 99, 0.20)'
+              ? 'rgba(255, 255, 255, 0.08)'
+              : 'rgba(17, 18, 20, 0.06)'
           }
-          stroke={isPlaying ? '#34D399' : '#C9A063'}
+          stroke={isPlaying ? '#34D399' : isDark ? 'rgba(255, 255, 255, 0.45)' : 'rgba(17, 18, 20, 0.45)'}
           strokeWidth="1.8"
         />
         {/* Inner Authentic Double-Ring Circle where the Ayah number sits */}
@@ -200,10 +200,10 @@ export const MadaniAyahOrnament: React.FC<MadaniAyahOrnamentProps> = ({
                 ? '#064E3B'
                 : '#D1FAE5'
               : isDark
-              ? '#0B0F17'
-              : '#FFFDF8'
+              ? '#14161A'
+              : '#FFFFFF'
           }
-          stroke={isPlaying ? '#34D399' : '#DFBA7F'}
+          stroke={isPlaying ? '#34D399' : isDark ? 'rgba(255, 255, 255, 0.65)' : 'rgba(17, 18, 20, 0.6)'}
           strokeWidth="1.25"
         />
       </svg>
@@ -217,8 +217,8 @@ export const MadaniAyahOrnament: React.FC<MadaniAyahOrnamentProps> = ({
               ? 'text-emerald-300'
               : 'text-emerald-950'
             : isDark
-            ? 'text-[#DFBA7F] group-hover:text-white'
-            : 'text-stone-950 group-hover:text-[#8E6527]'
+            ? 'text-white group-hover:text-stone-200'
+            : 'text-[#111214] group-hover:text-black'
         }`}
       >
         {arabicNum}

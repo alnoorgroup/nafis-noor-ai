@@ -1,5 +1,5 @@
 import DOMPurify from 'dompurify';
-import { UserStats } from '../types';
+import { NoorAIMessage, NoorAIConversationSession, NoorMemoryItem, UserStats } from '../types';
 
 /**
  * Strips all HTML tags, script payloads, inline event handlers, and dangerous URI schemes
@@ -52,6 +52,39 @@ export function sanitizeSafeUrl(url: unknown): string {
   return '#';
 }
 
+function sanitizeNoorMessage(msg: NoorAIMessage): NoorAIMessage {
+  return {
+    ...msg,
+    id: sanitizeUserText(msg.id || `msg-${Date.now()}`, 128) || `msg-${Date.now()}`,
+    sender: msg.sender === 'user' ? 'user' : 'noor',
+    text: sanitizeMarkdownContent(msg.text, 12000),
+    timestamp: sanitizeUserText(msg.timestamp || '', 64),
+    savedMemories: Array.isArray(msg.savedMemories)
+      ? msg.savedMemories.slice(0, 20).map((m) => sanitizeUserText(m, 300)).filter(Boolean)
+      : undefined,
+    forgotMemories: Array.isArray(msg.forgotMemories)
+      ? msg.forgotMemories.slice(0, 20).map((m) => sanitizeUserText(m, 300)).filter(Boolean)
+      : undefined,
+  };
+}
+
+function sanitizeNoorMemoryItem(mem: NoorMemoryItem): NoorMemoryItem | null {
+  const content = sanitizeUserText(mem?.content, 400);
+  if (!content) return null;
+  const validCategories = ['preference', 'personal', 'learning', 'goal', 'context'] as const;
+  const category = validCategories.includes(mem?.category as any)
+    ? (mem.category as NoorMemoryItem['category'])
+    : 'context';
+  return {
+    id: sanitizeUserText(mem.id || `mem-${Date.now()}`, 128) || `mem-${Date.now()}`,
+    content,
+    category,
+    createdAt: sanitizeUserText(mem.createdAt || new Date().toISOString(), 64) || new Date().toISOString(),
+    updatedAt: sanitizeUserText(mem.updatedAt || new Date().toISOString(), 64) || new Date().toISOString(),
+    sourceSessionId: mem.sourceSessionId ? sanitizeUserText(mem.sourceSessionId, 128) : undefined,
+  };
+}
+
 /**
  * Enforces firebase-blueprint.json volumetric boundaries and XSS sanitization on UserStats
  * prior to saving to Firestore or localStorage.
@@ -75,10 +108,29 @@ export function sanitizeUserStatsPayload(stats: UserStats): UserStats {
     prayerHistory: Array.isArray(stats.prayerHistory) ? stats.prayerHistory.slice(-120) : [],
     activityHistory: Array.isArray(stats.activityHistory) ? stats.activityHistory.slice(-120) : [],
     noorAiConversation: Array.isArray(stats.noorAiConversation)
-      ? stats.noorAiConversation.slice(-100).map((msg) => ({
-          ...msg,
-          text: sanitizeMarkdownContent(msg.text, 8000),
+      ? stats.noorAiConversation.slice(-200).map(sanitizeNoorMessage)
+      : [],
+    noorAiSessions: Array.isArray(stats.noorAiSessions)
+      ? stats.noorAiSessions.slice(0, 120).map((sess: NoorAIConversationSession) => ({
+          id: sanitizeUserText(sess.id || `session-${Date.now()}`, 128) || `session-${Date.now()}`,
+          title: sanitizeUserText(sess.title || 'New Conversation', 200) || 'New Conversation',
+          createdAt: sanitizeUserText(sess.createdAt || new Date().toISOString(), 64) || new Date().toISOString(),
+          updatedAt: sanitizeUserText(sess.updatedAt || new Date().toISOString(), 64) || new Date().toISOString(),
+          messages: Array.isArray(sess.messages) ? sess.messages.slice(-200).map(sanitizeNoorMessage) : [],
         }))
       : [],
+    activeNoorSessionId: stats.activeNoorSessionId
+      ? sanitizeUserText(stats.activeNoorSessionId, 128)
+      : undefined,
+    savedNoorMessages: Array.isArray(stats.savedNoorMessages)
+      ? stats.savedNoorMessages.slice(0, 200).map(sanitizeNoorMessage)
+      : [],
+    noorAiMemories: Array.isArray(stats.noorAiMemories)
+      ? stats.noorAiMemories
+          .slice(0, 200)
+          .map(sanitizeNoorMemoryItem)
+          .filter((item): item is NoorMemoryItem => item !== null)
+      : [],
+    noorAiMemoryEnabled: stats.noorAiMemoryEnabled !== false,
   };
 }

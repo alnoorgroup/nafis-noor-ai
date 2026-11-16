@@ -85,7 +85,7 @@ export const StudyHeader: React.FC<StudyHeaderProps> = ({
   return (
     <div
       className={`w-full border-b transition-colors px-4 sm:px-6 py-4 ${
-        isDark ? 'bg-[#0A0D14]/95 border-white/10' : 'bg-white/95 border-stone-200'
+        isDark ? 'bg-[#14161A]/95 border-white/[0.08]' : 'bg-white/95 border-black/[0.08]'
       }`}
     >
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -93,7 +93,7 @@ export const StudyHeader: React.FC<StudyHeaderProps> = ({
         <div className="flex flex-wrap items-center gap-2.5">
           {/* Subject Dropdown */}
           <div className="relative group">
-            <label className="text-[10px] uppercase font-semibold tracking-wider text-stone-500 block mb-0.5">
+            <label className={`text-[10px] uppercase font-semibold tracking-wider block mb-0.5 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
               Subject
             </label>
             <div className="flex items-center gap-1.5">
@@ -106,8 +106,8 @@ export const StudyHeader: React.FC<StudyHeaderProps> = ({
                 }}
                 className={`text-sm font-semibold rounded-xl px-3 py-2 border pr-8 appearance-none cursor-pointer outline-none transition-all shadow-sm ${
                   isDark
-                    ? 'bg-[#121722] border-white/15 text-stone-100 hover:border-[#C9A063]/50 focus:border-[#C9A063]'
-                    : 'bg-stone-50 border-stone-200 text-stone-900 hover:border-[#C9A063]/50 focus:border-[#C9A063]'
+                    ? 'bg-[#1B1D23] border-white/10 text-[#F3F4F6] hover:border-white/25 focus:border-white/40'
+                    : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214] hover:border-black/25 focus:border-[#111214]'
                 }`}
               >
                 {subjects.map((sub) => (
@@ -122,8 +122,8 @@ export const StudyHeader: React.FC<StudyHeaderProps> = ({
                 title="Add custom subject"
                 className={`p-2 rounded-xl border transition-colors ${
                   isDark
-                    ? 'border-white/10 text-stone-400 hover:text-stone-100 hover:bg-white/5'
-                    : 'border-stone-200 text-stone-600 hover:text-stone-900 hover:bg-stone-100'
+                    ? 'border-white/10 text-stone-400 hover:text-white hover:bg-white/[0.06]'
+                    : 'border-black/[0.08] text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05]'
                 }`}
               >
                 <Plus className="w-3.5 h-3.5" />
@@ -133,7 +133,7 @@ export const StudyHeader: React.FC<StudyHeaderProps> = ({
 
           {/* Topic Dropdown */}
           <div className="relative group">
-            <label className="text-[10px] uppercase font-semibold tracking-wider text-stone-500 block mb-0.5">
+            <label className={`text-[10px] uppercase font-semibold tracking-wider block mb-0.5 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`}>
               Topic
             </label>
             <div className="flex items-center gap-1.5">
@@ -143,8 +143,8 @@ export const StudyHeader: React.FC<StudyHeaderProps> = ({
                 onChange={(e) => onSelectTopic(e.target.value || undefined)}
                 className={`text-sm font-medium rounded-xl px-3 py-2 border pr-8 appearance-none cursor-pointer outline-none transition-all shadow-sm max-w-[200px] sm:max-w-xs truncate ${
                   isDark
-                    ? 'bg-[#121722] border-white/15 text-stone-100 hover:border-[#C9A063]/50 focus:border-[#C9A063]'
-                    : 'bg-stone-50 border-stone-200 text-stone-900 hover:border-[#C9A063]/50 focus:border-[#C9A063]'
+                    ? 'bg-[#1B1D23] border-white/10 text-[#F3F4F6] hover:border-white/25 focus:border-white/40'
+                    : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214] hover:border-black/25 focus:border-[#111214]'
                 }`}
               >
                 <option value="">All Topics (General)</option>
@@ -160,8 +160,8 @@ export const StudyHeader: React.FC<StudyHeaderProps> = ({
                 title="Add topic to this subject"
                 className={`p-2 rounded-xl border transition-colors ${
                   isDark
-                    ? 'border-white/10 text-stone-400 hover:text-stone-100 hover:bg-white/5'
-                    : 'border-stone-200 text-stone-600 hover:text-stone-900 hover:bg-stone-100'
+                    ? 'border-white/10 text-stone-400 hover:text-white hover:bg-white/[0.06]'
+                    : 'border-black/[0.08] text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05]'
                 }`}
               >
                 <FolderPlus className="w-3.5 h-3.5" />
@@ -178,14 +178,14 @@ export const StudyHeader: React.FC<StudyHeaderProps> = ({
             onClick={onOpenSearch}
             className={`flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-xl border transition-all ${
               isDark
-                ? 'bg-[#121722] border-white/10 text-stone-300 hover:border-white/20 hover:text-white'
-                : 'bg-stone-50 border-stone-200 text-stone-600 hover:border-stone-300 hover:text-stone-900'
+                ? 'bg-[#1B1D23] border-white/10 text-stone-300 hover:border-white/20 hover:text-white'
+                : 'bg-[#F3F3F1] border-black/[0.08] text-[#3F4248] hover:border-black/20 hover:text-[#111214]'
             }`}
           >
-            <Search className="w-3.5 h-3.5 text-stone-400" />
+            <Search className={`w-3.5 h-3.5 ${isDark ? 'text-stone-400' : 'text-[#6B6F76]'}`} />
             <span className="hidden sm:inline">Search Study Data</span>
             <span className="sm:hidden">Search</span>
-            <kbd className="hidden md:inline px-1.5 py-0.5 text-[10px] rounded bg-black/20 text-stone-400 font-mono">
+            <kbd className={`hidden md:inline px-1.5 py-0.5 text-[10px] rounded font-mono ${isDark ? 'bg-black/30 text-stone-400' : 'bg-black/[0.06] text-[#5A5D63]'}`}>
               /
             </kbd>
           </button>
@@ -195,9 +195,9 @@ export const StudyHeader: React.FC<StudyHeaderProps> = ({
             <button
               type="button"
               onClick={onOpenLiveStudy}
-              className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-all shadow-xs"
+              className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20 transition-all shadow-xs"
             >
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <Radio className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Live Study</span>
             </button>
@@ -208,7 +208,11 @@ export const StudyHeader: React.FC<StudyHeaderProps> = ({
             <button
               type="button"
               onClick={onOpenFocusMode}
-              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-gradient-to-r from-[#DFBA7F] to-[#C9A063] text-[#080A0E] shadow-sm hover:opacity-95 transition-opacity"
+              className={`flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl shadow-sm transition-colors ${
+                isDark
+                  ? 'bg-white text-[#111214] hover:bg-stone-200'
+                  : 'bg-[#111214] text-white hover:bg-[#27292D]'
+              }`}
             >
               <Timer className="w-3.5 h-3.5" />
               <span>Focus Mode</span>
@@ -222,8 +226,8 @@ export const StudyHeader: React.FC<StudyHeaderProps> = ({
             title="Study Assistant Guide"
             className={`p-2 rounded-xl border transition-colors ${
               isDark
-                ? 'border-white/10 text-stone-400 hover:text-stone-200 hover:bg-white/5'
-                : 'border-stone-200 text-stone-500 hover:text-stone-900 hover:bg-stone-100'
+                ? 'border-white/10 text-stone-400 hover:text-white hover:bg-white/[0.06]'
+                : 'border-black/[0.08] text-[#5A5D63] hover:text-[#111214] hover:bg-black/[0.05]'
             }`}
           >
             <HelpCircle className="w-4 h-4" />
@@ -236,11 +240,11 @@ export const StudyHeader: React.FC<StudyHeaderProps> = ({
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div
             className={`w-full max-w-md rounded-2xl p-6 border shadow-2xl animate-fadeIn ${
-              isDark ? 'bg-[#0F131C] border-white/15 text-stone-100' : 'bg-white border-stone-200 text-stone-900'
+              isDark ? 'bg-[#14161A] border-white/10 text-[#F3F4F6]' : 'bg-white border-black/[0.08] text-[#111214]'
             }`}
           >
             <h3 className="text-lg font-bold mb-1">Create Custom Subject</h3>
-            <p className="text-xs text-stone-500 mb-4">
+            <p className={`text-xs mb-4 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               Add any field of study (e.g. Organic Chemistry, Macroeconomics, Robotics).
             </p>
             <form onSubmit={handleCreateSubject} className="space-y-4">
@@ -251,21 +255,23 @@ export const StudyHeader: React.FC<StudyHeaderProps> = ({
                 value={newSubjectName}
                 onChange={(e) => setNewSubjectName(e.target.value)}
                 className={`w-full px-3.5 py-2.5 rounded-xl text-sm border outline-none ${
-                  isDark ? 'bg-[#181F2E] border-white/10 text-stone-100' : 'bg-stone-50 border-stone-200 text-stone-900'
+                  isDark ? 'bg-[#1B1D23] border-white/10 text-[#F3F4F6] placeholder:text-stone-500' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214] placeholder:text-[#6B6F76]'
                 }`}
               />
               <div className="flex items-center justify-end gap-2 pt-2">
                 <button
                   type="button"
                   onClick={() => setShowSubjectModal(false)}
-                  className="px-4 py-2 text-xs font-medium rounded-xl text-stone-400 hover:text-stone-200"
+                  className={`px-4 py-2 text-xs font-medium rounded-xl ${isDark ? 'text-stone-400 hover:text-white' : 'text-[#5A5D63] hover:text-[#111214]'}`}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={!newSubjectName.trim()}
-                  className="px-4 py-2 text-xs font-semibold rounded-xl bg-[#C9A063] text-[#080A0E] disabled:opacity-40"
+                  className={`px-4 py-2 text-xs font-semibold rounded-xl disabled:opacity-40 ${
+                    isDark ? 'bg-white text-[#111214] hover:bg-stone-200' : 'bg-[#111214] text-white hover:bg-[#27292D]'
+                  }`}
                 >
                   Add Subject
                 </button>
@@ -280,11 +286,11 @@ export const StudyHeader: React.FC<StudyHeaderProps> = ({
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div
             className={`w-full max-w-md rounded-2xl p-6 border shadow-2xl animate-fadeIn ${
-              isDark ? 'bg-[#0F131C] border-white/15 text-stone-100' : 'bg-white border-stone-200 text-stone-900'
+              isDark ? 'bg-[#14161A] border-white/10 text-[#F3F4F6]' : 'bg-white border-black/[0.08] text-[#111214]'
             }`}
           >
             <h3 className="text-lg font-bold mb-1">Add Topic to {currentSubject?.name}</h3>
-            <p className="text-xs text-stone-500 mb-4">
+            <p className={`text-xs mb-4 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               Break down the subject into clear study modules (e.g. Newton&apos;s Laws, Mitochondria, Linear Equations).
             </p>
             <form onSubmit={handleCreateTopic} className="space-y-4">
@@ -295,21 +301,23 @@ export const StudyHeader: React.FC<StudyHeaderProps> = ({
                 value={newTopicName}
                 onChange={(e) => setNewTopicName(e.target.value)}
                 className={`w-full px-3.5 py-2.5 rounded-xl text-sm border outline-none ${
-                  isDark ? 'bg-[#181F2E] border-white/10 text-stone-100' : 'bg-stone-50 border-stone-200 text-stone-900'
+                  isDark ? 'bg-[#1B1D23] border-white/10 text-[#F3F4F6] placeholder:text-stone-500' : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214] placeholder:text-[#6B6F76]'
                 }`}
               />
               <div className="flex items-center justify-end gap-2 pt-2">
                 <button
                   type="button"
                   onClick={() => setShowTopicModal(false)}
-                  className="px-4 py-2 text-xs font-medium rounded-xl text-stone-400 hover:text-stone-200"
+                  className={`px-4 py-2 text-xs font-medium rounded-xl ${isDark ? 'text-stone-400 hover:text-white' : 'text-[#5A5D63] hover:text-[#111214]'}`}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={!newTopicName.trim()}
-                  className="px-4 py-2 text-xs font-semibold rounded-xl bg-[#C9A063] text-[#080A0E] disabled:opacity-40"
+                  className={`px-4 py-2 text-xs font-semibold rounded-xl disabled:opacity-40 ${
+                    isDark ? 'bg-white text-[#111214] hover:bg-stone-200' : 'bg-[#111214] text-white hover:bg-[#27292D]'
+                  }`}
                 >
                   Add Topic
                 </button>

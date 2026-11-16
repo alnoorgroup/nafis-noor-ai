@@ -81,7 +81,7 @@ export const QuranTeacherLesson: React.FC<QuranTeacherLessonProps> = ({
       case 'ai_speaking':
         return {
           label: isArabic ? 'المعلم يتلو الآية المباركة...' : 'AI Teacher Speaking',
-          color: isDark ? 'bg-[#DFBA7F]/20 text-[#DFBA7F] border-[#DFBA7F]/40' : 'bg-amber-100 text-[#8E6527] border-[#C9A063]/40',
+          color: isDark ? 'bg-white/[0.1] text-white border-white/25' : 'bg-[#111214]/[0.06] text-[#111214] border-[#111214]/25',
           icon: Volume2,
           pulse: true,
         };
@@ -95,29 +95,29 @@ export const QuranTeacherLesson: React.FC<QuranTeacherLessonProps> = ({
               ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
               : 'bg-emerald-100 text-emerald-800 border-emerald-300'
             : isDark
-            ? 'bg-[#C9A063]/20 text-[#DFBA7F] border-[#C9A063]/40'
-            : 'bg-amber-100 text-[#8E6527] border-[#C9A063]/40',
+            ? 'bg-white/[0.1] text-white border-white/25'
+            : 'bg-[#111214]/[0.06] text-[#111214] border-[#111214]/25',
           icon: Mic,
           pulse: true,
         };
       case 'evaluating':
         return {
           label: isArabic ? 'تحليل التلاوة وتأكيد الحفظ...' : 'Analyzing Recitation...',
-          color: isDark ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' : 'bg-amber-100 text-amber-800 border-amber-300',
+          color: isDark ? 'bg-sky-500/20 text-sky-300 border-sky-500/40' : 'bg-sky-100 text-sky-800 border-sky-300',
           icon: Sparkles,
           pulse: true,
         };
       case 'paused':
         return {
           label: isArabic ? 'الجلسة متوقفة مؤقتاً' : 'Lesson Paused',
-          color: isDark ? 'bg-stone-800 text-stone-300 border-stone-700' : 'bg-stone-200 text-stone-700 border-stone-300',
+          color: isDark ? 'bg-[#1B1D23] text-stone-300 border-white/[0.1]' : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.1]',
           icon: Pause,
           pulse: false,
         };
       default:
         return {
           label: isArabic ? 'جاهز للتلاوة' : 'Ready',
-          color: isDark ? 'bg-stone-800 text-stone-300 border-stone-700' : 'bg-stone-200 text-stone-700 border-stone-300',
+          color: isDark ? 'bg-[#1B1D23] text-stone-300 border-white/[0.1]' : 'bg-[#F3F3F1] text-[#3F4248] border-black/[0.1]',
           icon: Mic,
           pulse: false,
         };
@@ -139,14 +139,20 @@ export const QuranTeacherLesson: React.FC<QuranTeacherLessonProps> = ({
     <div
       className={`w-full max-w-4xl mx-auto rounded-[36px] border shadow-md overflow-hidden flex flex-col transition-all duration-200 ${
         isDark
-          ? 'bg-[#06080C]/98 border-[#C9A063]/30 text-stone-100'
-          : 'bg-white/98 border-[#C9A063]/35 text-stone-900 shadow-[0_2px_8px_rgba(45,35,20,0.06)]'
+          ? 'bg-[#14161A] border-white/[0.08] text-[#F3F4F6] shadow-[0_2px_10px_rgba(0,0,0,0.25)]'
+          : 'bg-white border-black/[0.08] text-[#111214] shadow-[0_1px_3px_rgba(0,0,0,0.05)]'
       }`}
     >
       {/* Top Navigation Bar */}
-      <div className="px-6 py-4 border-b border-[#C9A063]/20 flex items-center justify-between">
+      <div className={`px-6 py-4 border-b flex items-center justify-between ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-[#C9A063]/15 text-[#DFBA7F] border border-[#C9A063]/30 flex items-center justify-center font-serif-heading font-bold text-xs">
+          <div
+            className={`w-9 h-9 rounded-xl border flex items-center justify-center font-serif-heading font-bold text-xs ${
+              isDark
+                ? 'bg-[#1B1D23] text-white border-white/[0.1]'
+                : 'bg-[#F3F3F1] text-[#111214] border-black/[0.08]'
+            }`}
+          >
             {surah.number}
           </div>
           <div>
@@ -155,17 +161,17 @@ export const QuranTeacherLesson: React.FC<QuranTeacherLessonProps> = ({
                 {isArabic ? `سورة ${surah.name}` : `Surah ${surah.englishName}`}
               </span>
               {!isArabic && (
-                <span className="text-xs text-stone-400 font-arabic">
+                <span className={`text-xs font-arabic ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
                   {surah.name}
                 </span>
               )}
             </div>
-            <div className="text-[11px] text-stone-400 flex items-center gap-1.5">
+            <div className={`text-[11px] flex items-center gap-1.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>
               <span>{isArabic ? `الآية ${currentAyah.numberInSurah} من أصل ${surah.numberOfAyahs} آية` : `Ayah ${currentAyah.numberInSurah} of ${surah.numberOfAyahs}`}</span>
               <span>•</span>
               <span>{modeDisplayName}</span>
               <span>•</span>
-              <span className="text-[#DFBA7F] font-medium">{teacherDisplayName}</span>
+              <span className={`font-medium ${isDark ? 'text-white' : 'text-[#111214]'}`}>{teacherDisplayName}</span>
             </div>
           </div>
         </div>
@@ -173,26 +179,25 @@ export const QuranTeacherLesson: React.FC<QuranTeacherLessonProps> = ({
         {/* Progress & Exit */}
         <div className="flex items-center gap-3">
           <div className="hidden sm:flex flex-col items-end">
-            <span className="text-[11px] font-mono font-semibold text-[#DFBA7F]">
+            <span className={`text-[11px] font-mono font-semibold ${isDark ? 'text-white' : 'text-[#111214]'}`}>
               {isArabic ? `${currentAyahIndex + 1} من ${ayahs.length} آيات` : `${currentAyahIndex + 1} / ${ayahs.length} Ayahs`}
             </span>
-            <div className="w-24 h-1.5 rounded-full bg-stone-800/40 overflow-hidden mt-1 border border-[#C9A063]/20">
+            <div className={`w-24 h-1.5 rounded-full overflow-hidden mt-1 border ${isDark ? 'bg-white/[0.08] border-white/[0.1]' : 'bg-black/[0.08] border-black/[0.08]'}`}>
               <div
-                className="h-full bg-gradient-to-r from-[#C9A063] to-[#DFBA7F] transition-all duration-200"
+                className={`h-full transition-all duration-200 ${isDark ? 'bg-white' : 'bg-[#111214]'}`}
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
           </div>
 
-          {/* Settings / Return to Setup */}
           {onReturnToSetup && (
             <button
               type="button"
               onClick={onReturnToSetup}
               className={`hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium border transition-colors ${
                 isDark
-                  ? 'bg-stone-900/80 border-stone-700 text-stone-300 hover:text-white hover:bg-stone-800'
-                  : 'bg-stone-100 border-stone-300 text-stone-700 hover:text-stone-900 hover:bg-stone-200'
+                  ? 'bg-[#1B1D23] border-white/[0.1] text-stone-300 hover:text-white hover:bg-white/[0.08]'
+                  : 'bg-[#F3F3F1] border-black/[0.08] text-[#3F4248] hover:text-[#111214] hover:bg-black/[0.06]'
               }`}
               title={isArabic ? 'تغيير إعدادات الجلسة' : 'Session Settings'}
             >
@@ -200,11 +205,14 @@ export const QuranTeacherLesson: React.FC<QuranTeacherLessonProps> = ({
             </button>
           )}
 
-          {/* Prominent Exit Button */}
           <button
             type="button"
             onClick={onExitLesson}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border border-rose-500/35 transition-all shadow-xs cursor-pointer active:scale-95"
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all shadow-xs cursor-pointer active:scale-95 ${
+              isDark
+                ? 'bg-rose-500/15 hover:bg-rose-500/25 text-rose-400 border-rose-500/35'
+                : 'bg-rose-50 hover:bg-rose-100 text-rose-700 border-rose-300'
+            }`}
             title={isArabic ? 'خروج من المعلم والعودة للمصحف' : 'Exit Lesson and return to reader'}
           >
             <X className="w-4 h-4" />
@@ -224,56 +232,75 @@ export const QuranTeacherLesson: React.FC<QuranTeacherLessonProps> = ({
             <span>{statusBadge.label}</span>
           </span>
 
-          {/* Teacher Badge */}
-          <span className="px-3 py-1 rounded-full text-[11px] font-medium bg-[#C9A063]/10 text-[#DFBA7F] border border-[#C9A063]/25 flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-[#DFBA7F]" />
+          <span
+            className={`px-3 py-1 rounded-full text-[11px] font-medium border flex items-center gap-1.5 ${
+              isDark
+                ? 'bg-white/[0.06] text-[#F3F4F6] border-white/[0.1]'
+                : 'bg-[#F3F3F1] text-[#111214] border-black/[0.08]'
+            }`}
+          >
+            <Sparkles className={`w-3.5 h-3.5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
             <span>{teacherDisplayName}</span>
           </span>
 
           {isMuted && (
-            <span className="px-2.5 py-1 rounded-full text-[10px] font-medium bg-red-500/10 text-red-400 border border-red-500/20">
+            <span
+              className={`px-2.5 py-1 rounded-full text-[10px] font-medium border ${
+                isDark
+                  ? 'bg-red-500/10 text-red-400 border-red-500/20'
+                  : 'bg-red-50 text-red-700 border-red-300'
+              }`}
+            >
               {isArabic ? 'الصوت مكتوم' : 'AI Audio Muted'}
             </span>
           )}
         </div>
 
         {/* Authentic Quran Ayah Card */}
-        <div className="w-full max-w-3xl my-auto text-center px-4 py-8 sm:py-10 rounded-3xl relative overflow-hidden bg-gradient-to-b from-[#C9A063]/5 via-transparent to-[#C9A063]/5 border border-[#C9A063]/15">
-          {/* Bismillah Header if applicable */}
+        <div className={`w-full max-w-3xl my-auto text-center px-4 py-8 sm:py-10 rounded-3xl relative overflow-hidden border ${
+          isDark ? 'bg-[#0B0C0E] border-white/[0.08]' : 'bg-[#FCFCFA] border-black/[0.08]'
+        }`}>
           {currentAyah.numberInSurah === 1 && surah.number !== 9 && surah.number !== 1 && (
-            <div className="font-arabic text-xl sm:text-2xl text-[#DFBA7F]/80 mb-6 select-none">
+            <div className={`font-arabic text-xl sm:text-2xl mb-6 select-none ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
               بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
             </div>
           )}
 
-          {/* Large Authentic Quran Text */}
           <div
             className={`font-arabic text-3xl sm:text-4xl md:text-5xl leading-[2.2] sm:leading-[2.3] transition-all tracking-normal ${
-              isDark ? 'text-[#F5EFE6]' : 'text-stone-900'
+              isDark ? 'text-white' : 'text-[#111214]'
             }`}
             dir="rtl"
           >
             {currentAyah.text}
-            <span className="inline-flex items-center justify-center w-9 h-9 sm:w-11 sm:h-11 mx-2 rounded-full border border-[#C9A063]/40 text-xs sm:text-sm font-sans font-bold text-[#DFBA7F] align-middle bg-[#C9A063]/10">
+            <span
+              className={`inline-flex items-center justify-center w-9 h-9 sm:w-11 sm:h-11 mx-2 rounded-full border text-xs sm:text-sm font-sans font-bold align-middle ${
+                isDark ? 'border-white/[0.15] text-white bg-[#1B1D23]' : 'border-black/[0.12] text-[#111214] bg-[#F3F3F1]'
+              }`}
+            >
               {currentAyah.numberInSurah}
             </span>
           </div>
 
-          {/* Translation */}
           {!isArabic && currentAyah.translation && (
             <p
               className={`mt-6 text-xs sm:text-sm max-w-xl mx-auto font-light leading-relaxed ${
-                isDark ? 'text-stone-300' : 'text-stone-600'
+                isDark ? 'text-stone-300' : 'text-[#3F4248]'
               }`}
             >
               "{currentAyah.translation}"
             </p>
           )}
 
-          {/* Live Recognized Spoken Preview */}
           {spokenTranscript && (
-            <div className="mt-5 inline-block px-4 py-2 rounded-2xl bg-[#080A0E]/70 border border-[#C9A063]/25 text-xs text-[#DFBA7F] max-w-lg">
-              <span className="text-[10px] uppercase font-mono text-stone-400 block mb-0.5">{isArabic ? 'ما تم سماعه:' : 'Heard:'}</span>
+            <div
+              className={`mt-5 inline-block px-4 py-2 rounded-2xl border text-xs max-w-lg ${
+                isDark
+                  ? 'bg-[#14161A] border-white/[0.1] text-white'
+                  : 'bg-white border-black/[0.1] text-[#111214]'
+              }`}
+            >
+              <span className={`text-[10px] uppercase font-mono block mb-0.5 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{isArabic ? 'ما تم سماعه:' : 'Heard:'}</span>
               <span className="font-arabic text-sm">{spokenTranscript}</span>
             </div>
           )}
@@ -292,38 +319,37 @@ export const QuranTeacherLesson: React.FC<QuranTeacherLessonProps> = ({
 
         {/* Teacher Instruction Bubble */}
         <div
-          className={`w-full max-w-xl p-4 sm:p-5 rounded-2xl border text-center transition-all duration-200 shadow-md ${
+          className={`w-full max-w-xl p-4 sm:p-5 rounded-2xl border text-center transition-all duration-200 shadow-sm ${
             isDark
-              ? 'bg-[#0E1218]/90 border-[#C9A063]/25 text-stone-200'
-              : 'bg-stone-50 border-[#C9A063]/30 text-stone-800'
+              ? 'bg-[#1B1D23] border-white/[0.08] text-stone-200'
+              : 'bg-[#F3F3F1] border-black/[0.08] text-[#111214]'
           }`}
         >
-          <div className="flex items-center justify-center gap-1.5 text-[11px] font-semibold text-[#DFBA7F] uppercase tracking-wider mb-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-[#DFBA7F]" />
+          <div className={`flex items-center justify-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider mb-1.5 ${isDark ? 'text-stone-300' : 'text-[#3F4248]'}`}>
+            <Sparkles className={`w-3.5 h-3.5 ${isDark ? 'text-white' : 'text-[#111214]'}`} />
             <span>{isArabic ? `توجيه ${teacherDisplayName}` : `${teacherDisplayName} Feedback`}</span>
           </div>
 
-          <p className="text-sm font-medium leading-relaxed font-arabic text-base sm:text-lg text-[#DFBA7F]/95 my-1" dir="rtl">
+          <p className={`text-sm font-medium leading-relaxed font-arabic text-base sm:text-lg my-1 ${isDark ? 'text-white' : 'text-[#111214]'}`} dir="rtl">
             {teacherLanguage === 'ar' && lastEvaluation?.spokenFeedbackInstructionAr
               ? lastEvaluation.spokenFeedbackInstructionAr
               : teacherMessage || 'السَّلامُ عَلَيْكُمْ. تَفَضَّلْ بِالتِّلَاوَةِ حِينَ تَكُونُ مُسْتَعِدًّا.'}
           </p>
 
           {teacherLanguage !== 'ar' && teacherMessage && (
-            <p className="text-xs text-stone-400 font-sans mt-1">{teacherMessage}</p>
+            <p className={`text-xs font-sans mt-1 ${isDark ? 'text-stone-400' : 'text-[#5A5D63]'}`}>{teacherMessage}</p>
           )}
 
-          {/* Specific mistake breakdown if student struggled */}
           {lastEvaluation && !lastEvaluation.isCorrect && (
-            <div className="mt-3 pt-2.5 border-t border-stone-700/30 text-xs">
+            <div className={`mt-3 pt-2.5 border-t text-xs ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
               {lastEvaluation.missingWords.length > 0 && (
-                <div className="text-amber-400 font-medium">
+                <div className={`font-medium ${isDark ? 'text-sky-300' : 'text-sky-700'}`}>
                   <span>{isArabic ? 'كلمات ساقطة من التلاوة: ' : 'Missing: '}</span>
                   <span className="font-arabic font-bold text-sm">{lastEvaluation.missingWords.join(' · ')}</span>
                 </div>
               )}
               {lastEvaluation.incorrectWords.length > 0 && (
-                <div className="text-rose-400 mt-1 font-medium">
+                <div className={`mt-1 font-medium ${isDark ? 'text-rose-400' : 'text-rose-700'}`}>
                   <span>{isArabic ? 'الصواب: ' : 'Expected: '}</span>
                   <span className="font-arabic font-bold text-sm">{lastEvaluation.incorrectWords[0].expected}</span>
                 </div>
@@ -334,25 +360,25 @@ export const QuranTeacherLesson: React.FC<QuranTeacherLessonProps> = ({
       </div>
 
       {/* Bottom Controls Bar */}
-      <div className="px-6 py-4 border-t border-[#C9A063]/20 flex items-center justify-between gap-2 flex-wrap">
+      <div className={`px-6 py-4 border-t flex items-center justify-between gap-2 flex-wrap ${isDark ? 'border-white/[0.08]' : 'border-black/[0.08]'}`}>
         <div className="flex items-center gap-2">
-          {/* Pause / Resume */}
           <button
             type="button"
             onClick={onTogglePause}
             className={`px-3.5 py-2 rounded-xl text-xs font-semibold border flex items-center gap-1.5 transition-all ${
               state === 'paused'
-                ? 'bg-[#C9A063] text-[#080A0E] border-[#C9A063]'
+                ? isDark
+                  ? 'bg-white text-[#111214] border-white'
+                  : 'bg-[#111214] text-white border-[#111214]'
                 : isDark
-                ? 'bg-stone-900 border-stone-700 text-stone-300 hover:text-white'
-                : 'bg-stone-100 border-stone-300 text-stone-700 hover:text-stone-950'
+                ? 'bg-[#1B1D23] border-white/[0.1] text-stone-300 hover:text-white'
+                : 'bg-[#F3F3F1] border-black/[0.1] text-[#3F4248] hover:text-[#111214]'
             }`}
           >
             {state === 'paused' ? <Play className="w-3.5 h-3.5 fill-current" /> : <Pause className="w-3.5 h-3.5" />}
             <span>{state === 'paused' ? (isArabic ? 'متابعة' : 'Resume') : (isArabic ? 'إيقاف مؤقت' : 'Pause')}</span>
           </button>
 
-          {/* Mute AI */}
           <button
             type="button"
             onClick={onToggleMute}
@@ -360,19 +386,22 @@ export const QuranTeacherLesson: React.FC<QuranTeacherLessonProps> = ({
               isMuted
                 ? 'bg-red-500/20 text-red-400 border-red-500/30'
                 : isDark
-                ? 'bg-stone-900 border-stone-700 text-stone-300 hover:text-white'
-                : 'bg-stone-100 border-stone-300 text-stone-700 hover:text-stone-950'
+                ? 'bg-[#1B1D23] border-white/[0.1] text-stone-300 hover:text-white'
+                : 'bg-[#F3F3F1] border-black/[0.1] text-[#3F4248] hover:text-[#111214]'
             }`}
             title={isMuted ? (isArabic ? 'تشغيل صوت المعلم' : 'Unmute AI voice') : (isArabic ? 'كتم صوت المعلم' : 'Mute AI voice')}
           >
             {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
           </button>
 
-          {/* Exit Lesson */}
           <button
             type="button"
             onClick={onExitLesson}
-            className="px-3 py-2 rounded-xl text-xs font-semibold border flex items-center gap-1.5 transition-all text-rose-400 border-rose-500/30 hover:bg-rose-500/15"
+            className={`px-3 py-2 rounded-xl text-xs font-semibold border flex items-center gap-1.5 transition-all ${
+              isDark
+                ? 'text-rose-400 border-rose-500/30 hover:bg-rose-500/15'
+                : 'text-rose-700 border-rose-300 hover:bg-rose-50'
+            }`}
             title={isArabic ? 'إنهاء جلسة التسميع والخروج' : 'Exit lesson and return to reader'}
           >
             <X className="w-3.5 h-3.5" />
@@ -380,15 +409,14 @@ export const QuranTeacherLesson: React.FC<QuranTeacherLessonProps> = ({
           </button>
         </div>
 
-        {/* Repeat Actions */}
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={onRepeatInstruction}
             className={`px-3 py-2 rounded-xl text-xs font-medium border flex items-center gap-1.5 transition-all ${
               isDark
-                ? 'bg-stone-900 border-stone-700 text-stone-300 hover:text-white'
-                : 'bg-stone-100 border-stone-300 text-stone-700 hover:text-stone-950'
+                ? 'bg-[#1B1D23] border-white/[0.1] text-stone-300 hover:text-white'
+                : 'bg-[#F3F3F1] border-black/[0.1] text-[#3F4248] hover:text-[#111214]'
             }`}
             title={isArabic ? 'إعادة توجيه المعلم' : "Repeat teacher's instruction"}
           >
@@ -401,8 +429,8 @@ export const QuranTeacherLesson: React.FC<QuranTeacherLessonProps> = ({
             onClick={onRepeatCurrentAyah}
             className={`px-3 py-2 rounded-xl text-xs font-medium border flex items-center gap-1.5 transition-all ${
               isDark
-                ? 'bg-stone-900 border-stone-700 text-[#DFBA7F] hover:bg-stone-800'
-                : 'bg-amber-50 border-[#C9A063]/40 text-[#8E6527] hover:bg-amber-100'
+                ? 'bg-[#1B1D23] border-white/[0.12] text-white hover:bg-white/[0.1]'
+                : 'bg-[#F3F3F1] border-black/[0.1] text-[#111214] hover:bg-black/[0.06]'
             }`}
             title={isArabic ? 'إعادة الاستماع للآية الحالية' : 'Repeat current ayah from beginning'}
           >
